@@ -100,12 +100,10 @@ hr {
   height: auto;
   display: block;
 }
-.icon-ok a {
-  width:130px;
-}
 .dropdown-menu a 
 {
   text-align:left;
+  width:130px;
 }
 .submenu-show
 {
