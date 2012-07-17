@@ -17,7 +17,8 @@ class window.sirius.AppView extends Backbone.View
     @_layersMenu()
     @_messagePanel()
     self = @
-    google.maps.event.addDomListener(window, 'keydown', (event) -> self._setKeyEvents(event))
+    google.maps.event.addDomListener(window, 'keydown', (event) -> self._setKeyDownEvents(event))
+    google.maps.event.addDomListener(window, 'keyup', (event) -> self._setKeyUpEvents(event))
     $a.broker.on('map:upload_complete', @_displayMap, @)
     $a.broker.on("app:clear_map", @clearMap, @)
     @
@@ -71,20 +72,23 @@ class window.sirius.AppView extends Backbone.View
     new $a.MapNetworkModel()
     @mapView = new $a.MapNetworkView $a.models
 
-  _setKeyEvents: (e) ->
+  _setKeyDownEvents: (e) =>
     # Open Local Network ALT-A
-    if e.type == 'keydown' and $a.ALT_DOWN and e.keyCode == 65
+    if $a.ALT_DOWN and e.keyCode == 65
       @clearMap()
       $("#uploadField").click() 
     
     # Set multi-select of map elements with the shift key
-    $a.SHIFT_DOWN = false
-    $a.SHIFT_DOWN = true if e.type == 'keydown' and e.keyCode == 16
+    $a.SHIFT_DOWN = true if e.keyCode == 16
     
-    # Set multi-select of map elements with the shift key
-    $a.ALT_DOWN = false
-    $a.ALT_DOWN = true if e.type == 'keydown' and e.keyCode == 18
-    
+    # Set alt key down in order to set up quick key for opening files
+    $a.ALT_DOWN = true if e.keyCode == 18
+  
+  _setKeyUpEvents: (e) => 
+    # Turn off shift and alt down flags where appropriate
+    $a.SHIFT_DOWN = false if e.keyCode == 16
+    $a.ALT_DOWN = false  if e.keyCode == 18
+  
   clearMap: =>
     $a.broker.trigger('map:clear_map')
     $a.broker.trigger('app:tree_clear')
