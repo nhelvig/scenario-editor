@@ -1,8 +1,15 @@
 html { height: 100% }
 body { height: 100%; margin: 5px; padding: 0 }
-button {}
-#map_canvas { height: 100%; width:78%; float:left}
-#right_tree { height: 100%; width:22%; float:right; overflow: scroll}
+#map_canvas { height: 100%; width:100%; float:left}
+#right_tree {
+  position: absolute;
+  background: #fff;
+  height: 100%;
+  width:22%;
+  right:0;
+  overflow: scroll;
+  z-index: 2
+}
 #map_canvas img { max-width:none; }
 #header {width:100%}
 .navbar {margin-bottom: 0px}
@@ -10,6 +17,10 @@ button {}
 #uploadField {
   visibility:hidden; 
   position:absolute;
+}
+
+#collapseTree {
+  right:22%;
 }
 
 .alert-bottom {position:absolute; bottom:0; right:23%; max-width:200px}
@@ -50,6 +61,7 @@ button {}
   background-clip: padding-box;
   *border-right-width: 2px;
   *border-bottom-width: 2px;
+  z-index:3;
 }
 .context_menu_item {
   display: block;

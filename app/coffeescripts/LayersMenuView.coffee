@@ -41,27 +41,5 @@ class window.sirius.LayersMenuView extends Backbone.View
   
   attachEvents: ->
     $('#collapseTree').click ->
-      $a.broker.trigger('toggleTree')
-
-    $("ul > li > a.jmodal").click ->
-      navId = @id
-
-          $("#linkbrowser").dialog "open"
-          true
-        when "pb"
-          $("#pathbrowser").dialog "open"
-          true
-        when "eb"
-          $("#eventbrowser").dialog "open"
-          true
-        when "cb"
-          $("#controlbrowser").dialog "open"
-          true
-        when "sb"
-          $("#sensorbrowser").dialog "open"
-          true
-        when "np"
-          $("#netprop").dialog "open"
-          true
-        else
-          true
+      alert "nooo"
+      $a.broker.trigger('map:toggleTree')
