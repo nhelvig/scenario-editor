@@ -32,8 +32,11 @@ sirius_classes_without_extensions = [
 ]
 
 sirius_map_view_classes = [
-  'AppView', 'ContextMenuItemView','ContextMenuView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem','MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView', 'MapSignalView', 'Util',
-  'MessagePanelView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView', 'TreeChildItemLinkView', 'TreeChildItemNodeView', 'NavBarView','NavParentItemView','NavChildItemView'
+  'AppView', 'ContextMenuItemView','ContextMenuView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
+  'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView', 
+  'MapSignalView', 'Util', 'MessagePanelView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView', 
+  'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView', 
+  'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
 sirius_model_view_classes = [
@@ -58,7 +61,6 @@ window.load_sirius = ->
               load_sirius_classes ->
                   # static instance level event aggegator that most classes use to register their
                   # own listeners on
-                  window.sirius.broker = _.clone(Backbone.Events)
                   new window.sirius.AppView()
 
 head.js('https://www.google.com/jsapi',
@@ -66,7 +68,7 @@ head.js('https://www.google.com/jsapi',
         '../libs/js/jquery-ui-1.8.18.min.js',
         '../libs/js/underscore.js',
         '../libs/js/backbone.js',
-        '../libs/js/bootstrap/js/bootstrap.js', ->
+        '../libs/js/bootstrap/js/bootstrap.min.js', ->
                google.load("maps", "3", {
                   callback: "window.load_sirius()",
                   other_params: "libraries=geometry,drawing&sensor=false"

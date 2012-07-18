@@ -13,7 +13,7 @@ class window.sirius.TreeView extends Backbone.View
       links = $a.MapNetworkModel.LINKS
       nodes = $a.MapNetworkModel.NODES
       @_createParentNodes $a.main_tree_elements
-      @_createChildren(scenario.get('networklist'), 'network', "network-list", null)
+      @_createNetworkChildren(scenario.get('networklist'), 'network', "network-list")
       @_createChildren(scenario.get('networkconnections'), 'network', "network-connections", null)
       @_createLinkChildren(scenario.get('initialdensityset'), 'density', "initial-density-profiles",links)
       @_createLinkChildren(scenario.get('controllerset'), 'controller', "controllers", links)
@@ -53,6 +53,10 @@ class window.sirius.TreeView extends Backbone.View
   _createNodeChildren : (parentList, modelListName, attach_id, nameList) ->
     @_createChildren(parentList, modelListName, attach_id, nameList,'node')
 
+  # This function creates node tree items by pass the 'node' argument to _createChildren
+  _createNetworkChildren : (parentList, modelListName, attach_id) ->
+    @_createChildren(parentList, modelListName, attach_id, null,'network')
+
   # If there are no items defined for a parent we add an empty node labelled None Defined
   _createEmptyChild : (attach) ->
     new $a.TreeChildItemView(null, null, "None Defined", attach)
@@ -71,6 +75,7 @@ class window.sirius.TreeView extends Backbone.View
       switch type
         when 'link' then new $a.TreeChildItemLinkView(e, targets, name, attach)
         when 'node' then new $a.TreeChildItemNodeView(e, targets, name, attach)
+        when 'network' then new $a.TreeChildItemNetworkView(e, targets, name, attach)
         else new $a.TreeChildItemView(e, targets, name, attach, type)
     )
 
