@@ -31,8 +31,7 @@ class window.sirius.Util
 
   @copy: (items) ->
     temp = []
-    self = @
-    _.each(items, (item) ->
+    _.each(items, (item) =>
       temp.push {label: item.label, className: item.className, event: item.event}
     )
     temp

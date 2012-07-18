@@ -4,15 +4,18 @@ class window.sirius.MapMarkerView extends Backbone.View
   @IMAGE_PATH: '../libs/data/img/'
   $a = window.sirius
   
-  initialize: (@model, @latLng) ->
-    self = @
-    @draw()
+  initialize: (@model) ->
+    # get the position, we only draw if the position is defined
+    # TODO deal with getting a position if it is not defined
+    @latLng = $a.Util.getLatLng(model)
+    @draw() 
     google.maps.event.addListener(@marker, 'dragend', @dragMarker())
-    google.maps.event.addListener(@marker, 'click', (event) -> self.manageMarkerSelect())
+    google.maps.event.addListener(@marker, 'click', (event) => @manageMarkerSelect())
     $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on('map:init', @render, @)
+    $a.broker.on('map:clear_map', @removeElement, @)
     
   render: =>
     @marker.setMap($a.map)
@@ -41,6 +44,18 @@ class window.sirius.MapMarkerView extends Backbone.View
       new google.maps.Point(0,0),
       new google.maps.Point(16, 16)
     );
+  
+  # in order to remove an element you need to unpublish the events, hide the marker
+  # and set it to null
+  removeElement: =>
+    $a.broker.off('map:init')
+    $a.broker.off('map:clear_selected')
+    $a.broker.off("map:select_item:#{@model.cid}")
+    $a.broker.off("map:clear_item:#{@model.cid}")
+    $a.broker.off('map:init')
+    $a.broker.off('map:clear_map')
+    @hideMarker() if @marker?
+    @marker = null
 
   # Context Menu
   # Create the Marker Context Menu. This class is always called by it overridden subclass method.
@@ -54,12 +69,10 @@ class window.sirius.MapMarkerView extends Backbone.View
     @contextMenuOptions.id = "context-menu-#{type}-#{@model.id}"
     @contextMenuOptions.menuItems = $a.Util.copy(menuItems)
     #set this id for the select item so we know what event to call
-    self = @
-    _.each(self.contextMenuOptions.menuItems, (item) -> item.id = "#{self.model.cid}")
+    _.each(@contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
     
     @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
-    self = @
-    google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) -> self.contextMenu.show mouseEvent.latLng )
+    google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) => @contextMenu.show mouseEvent.latLng )
     @model.set('contextMenu', @contextMenu)
     
   # events used to move the marker and update its position

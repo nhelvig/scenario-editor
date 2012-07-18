@@ -4,15 +4,13 @@
 class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   @ICON: 'camera-orig'
   @SELECTED_ICON: 'camera-selected'
-  @view_sensors = []
   $a = window.sirius
   
   # we pass in the network links so the sensors can figure out which link they 
   # belong too 
-  initialize: (model, lat_lng, links) ->
-    super model, lat_lng
+  initialize: (model, links) ->
+    super model
     @model.links = links
-    MapSensorView.view_sensors.push @
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
@@ -22,18 +20,23 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   getIcon: ->
     super MapSensorView.ICON
 
-  # Reset the static array
-  @removeAll: ->
-    @view_sensors = []
+  # This method overrides MapMarkerView to unpublish specific events to this type
+  # and then calls super to set itself to null, unpublish the general events, and hide itself
+  removeElement: =>
+    $a.broker.off("map:select_neighbors:#{@model.cid}")
+    $a.broker.off("map:clear_neighbors:#{@model.cid}")
+    $a.broker.off('map:hide_sensor_layer')
+    $a.broker.off('map:show_sensor_layer')
+    super
 
   # Context Menu
   # Create the Sensor Context Menu. Call the super class method to create the context menu
   _contextMenu: () ->
     super 'sensor', $a.sensor_context_menu
-  
+
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
   manageMarkerSelect: () =>
-    iconName = MapSensorView.__super__._getIconName.apply(@, []) 
+    iconName = MapSensorView.__super__._getIconName.apply(@, [])
     if iconName == "#{MapSensorView.ICON}.png"
       @_triggerClearSelectEvents()
       target = $a.Util.getElement(@model.get('link_reference').get('id'), @model.links)
@@ -53,8 +56,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   selectSelfandMyLinks: () ->
     @_triggerClearSelectEvents()
     @makeSelected()
-    self = @
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) -> link.get('id') == self.model.get('link_reference').get('id'))
+    links =  _.filter($a.MapNetworkModel.LINKS, (link) => link.get('id') == @model.get('link_reference').get('id'))
     _.each(links, (link) -> 
         $a.broker.trigger("app:tree_highlight:#{link.cid}")
         $a.broker.trigger("map:select_item:#{link.cid}")
@@ -64,8 +66,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   # Note we filter the Network links for all links with this node attached.
   clearSelfandMyLinks: () ->
     @clearSelected()
-    self = @
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) -> link.get('id') == self.model.get('link_reference').get('id'))
+    links =  _.filter($a.MapNetworkModel.LINKS, (link) => link.get('id') == @model.get('link_reference').get('id'))
     _.each(links, (link) -> 
         $a.broker.trigger("map:clear_item:#{link.cid}")
         $a.broker.trigger("app:tree_remove_highlight:#{link.cid}")

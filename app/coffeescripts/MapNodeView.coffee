@@ -7,12 +7,10 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   @TERMINAL_ICON: 'square'
   @SELECTED_TERMINAL_ICON: 'red-square'
   @TERMINAL_TYPE: 'terminal'
-  @view_nodes: []
   $a = window.sirius
 
-  initialize: (model, lat_lng) ->
-    super model, lat_lng
-    MapNodeView.view_nodes.push @
+  initialize: (model) ->
+    super model
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:select_neighbors_outgoing:#{@model.cid}", @selectMyLinks, @)
@@ -32,9 +30,18 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   _contextMenu: () ->
     super 'node', $a.node_context_menu
 
-  # Reset the static array
-  @removeAll: ->
-    @view_nodes = []
+  # This method overrides MapMarkerView to unpublish specific events to this type
+  # and then calls super to set itself to null, unpublish the general events, and hide itself
+  removeElement: =>
+    $a.broker.off("map:select_neighbors:#{@model.cid}")
+    $a.broker.off("map:select_neighbors_outgoing:#{@model.cid}")
+    $a.broker.off("map:select_neighbors_incoming:#{@model.cid}")
+    $a.broker.off("map:clear_neighbors:#{@model.cid}")
+    $a.broker.off('map:show_node_layer')
+    $a.broker.off('map:hide_node_layer')
+    $a.broker.off("map:nodes:show_#{@model.get('type')}")
+    $a.broker.off("map:nodes:hide_#{@model.get('type')}")
+    super
 
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
@@ -60,9 +67,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     @_triggerClearSelectEvents()
     @makeSelected()
     $a.broker.trigger("app:tree_highlight:#{@model.cid}")
-    self = @
-    _.each(['input','output'], (type) -> 
-        _.each(self._getInputOrOutputLinks(type), (link) -> 
+    _.each(['input','output'], (type) => 
+        _.each(@_getInputOrOutputLinks(type), (link) -> 
           $a.broker.trigger("map:select_item:#{link.get('link').cid}")
           $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}")
         )
@@ -73,9 +79,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   clearSelfandMyLinks: () ->
     @clearSelected()
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
-    self = @
-    _.each(['input','output'], (type) -> 
-        _.each(self._getInputOrOutputLinks(type), (link) -> 
+    _.each(['input','output'], (type) => 
+        _.each(@_getInputOrOutputLinks(type), (link) -> 
               $a.broker.trigger("map:clear_item:#{link.get('link').cid}")
               $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}")
         )
@@ -86,8 +91,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   selectMyLinks: (type) ->
     # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
-    self = @
-    _.each(self._getInputOrOutputLinks(type), (link) -> 
+    _.each(@_getInputOrOutputLinks(type), (link) => 
         $a.broker.trigger("map:select_item:#{link.get('link').cid}")
         $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}")
       )

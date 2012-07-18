@@ -11,13 +11,10 @@ $a.nav_bar_menu_items = {
     'File': {
               'New' : (() -> alert('Not Configured'))
               'Open Local Network' : ((e) ->
-                                        $a.broker.trigger('map:clearMap')
+                                        $a.broker.trigger('app:clear_map')
                                         $("#uploadField").click()
                                         e.preventDefault())
-              'Close Local Network' : (() -> 
-                                        $a.broker.trigger('map:clearMap')
-                                        $a.broker.trigger('map:alert', 
-                                        'Closed map', 'alert-success'))
+              'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
             }
     'Windows': {
@@ -74,26 +71,27 @@ $a.node_context_menu = [
 
 # Layers Menu
 $a.layers_node_type_list = [
-       { label: 'Freeway Nodes', event: 'toggleVisabilty', triggerShow: "map:nodes:show_freeway", triggerHide: "map:nodes:hide_freeway" }
-       { label: 'Highway Nodes',  event: ((e) -> alert('Not Configured'))  }
+       { label: 'Freeway', event: 'toggleVisabilty', triggerShow: "map:nodes:show_freeway", triggerHide: "map:nodes:hide_freeway" }
+       { label: 'Highway',   event: 'toggleVisabilty', triggerShow: "map:nodes:show_highway", triggerHide: "map:nodes:hide_higway"  }
        { label: 'Signalized Intersections', event: 'toggleVisabilty', triggerShow: "map:nodes:show_signalized_intersection", triggerHide: "map:nodes:hide_signalized_intersection"  }
-       { label: 'Stop Intersections',  event: ((e) -> alert('Not Configured')) }
+       { label: 'Simple', event: 'toggleVisabilty', triggerShow: "map:nodes:show_simple", triggerHide: "map:nodes:hide_simple" }
+       { label: 'Stop Intersections',   event: 'toggleVisabilty', triggerShow: "map:nodes:show_stop_intersection", triggerHide: "map:nodes:hide_stop_intersection"  }
        { label: 'Terminals', event: 'toggleVisabilty', triggerShow: "map:nodes:show_terminal", triggerHide: "map:nodes:hide_terminal"  }
-       { label: 'Other', event: 'toggleVisabilty', triggerShow: "map:nodes:show_simple", triggerHide: "map:nodes:hide_simple"  }  
+       { label: 'Other', event: 'toggleVisabilty', triggerShow: "map:nodes:show_other", triggerHide: "map:nodes:hide_other"  }  
      ]
 
 $a.layers_link_type_list = [
+      { label: 'Elec. toll coll. lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_electric_toll", triggerHide: "map:links:hide_electric_toll" }
       { label: 'Freeway mainlines', event: 'toggleVisabilty', triggerShow: "map:links:show_freeway", triggerHide: "map:links:hide_freeway"  }
       { label: 'Highway mainlines', event: 'toggleVisabilty', triggerShow: "map:links:show_highway", triggerHide: "map:links:hide_highway"  }
+      { label: 'Heavy vehicle lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_heavy_vehicle", triggerHide: "map:links:hide_heavy_vehicle" }
       { label: 'HOV lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_hov", triggerHide: "map:links:hide_hov"  }
       { label: 'HOT lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_hot", triggerHide: "map:links:hide_hot"  }
-      { label: 'Heavy vehicle lanes', event: ((e) -> alert('Not Configured'))  }
-      { label: 'Elec. toll coll. lanes',  event: ((e) -> alert('Not Configured'))   }
+      { label: 'Interconnects', event: 'toggleVisabilty', triggerShow: "map:links:show_freeway_connector", triggerHide: "map:links:hide_freeway_connector" }
+      { label: 'Intersection Approach', event: 'toggleVisabilty', triggerShow: "map:links:show_intersection_approach", triggerHide: "map:links:hide_intersection_approach" }
       { label: 'On-ramps', event: 'toggleVisabilty', triggerShow: "map:links:show_onramp", triggerHide: "map:links:hide_onramp"  }
       { label: 'Off-ramps', event: 'toggleVisabilty', triggerShow: "map:links:show_offramp", triggerHide: "map:links:hide_offramp"  }
-      { label: 'Interconnects', event: 'toggleVisabilty', triggerShow: "map:links:show_freeway_connector", triggerHide: "map:links:hide_freeway_connector" }
       { label: 'Streets', event: 'toggleVisabilty', triggerShow: "map:links:show_street", triggerHide: "map:links:hide_street"  }
-      { label: 'Dummy links', event: ((e) -> alert('Not Configured')) }
     ]
 
 $a.layers_menu = [

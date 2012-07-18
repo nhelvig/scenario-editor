@@ -15,9 +15,11 @@ class window.sirius.AppView extends Backbone.View
     @_navBar()
     @_contextMenu()
     @_layersMenu()
-    self = @
-    google.maps.event.addDomListener(window, 'keydown', (event) -> self._setKeyEvents(event))
+    @_messagePanel()
+    google.maps.event.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
+    google.maps.event.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $a.broker.on('map:upload_complete', @_displayMap, @)
+    $a.broker.on("app:clear_map", @clearMap, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -60,23 +62,37 @@ class window.sirius.AppView extends Backbone.View
 
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
-  _displayMap: (fileText) ->
+  _displayMap: (fileText) =>
     try
       xml = $.parseXML(fileText)
     catch error
-      $a.broker.trigger("map:alert", error, "alert-error")
+      $a.broker.trigger("app:show_message:error", error)
     $a.models = $a.Scenario.from_xml($(xml).children())
     new $a.MapNetworkModel()
     @mapView = new $a.MapNetworkView $a.models
 
-  _setKeyEvents: (e) ->
+  _setKeyDownEvents: (e) =>
     # Open Local Network ALT-A
-    $("#uploadField").click() if e.type == 'keydown' and $a.ALT_DOWN and e.keyCode == 65
+    if $a.ALT_DOWN and e.keyCode == 65
+      @clearMap()
+      $("#uploadField").click() 
     
     # Set multi-select of map elements with the shift key
-    $a.SHIFT_DOWN = false
-    $a.SHIFT_DOWN = true if e.type == 'keydown' and e.keyCode == 16
+    $a.SHIFT_DOWN = true if e.keyCode == 16
     
-    # Set multi-select of map elements with the shift key
-    $a.ALT_DOWN = false
-    $a.ALT_DOWN = true if e.type == 'keydown' and e.keyCode == 18
+    # Set alt key down in order to set up quick key for opening files
+    $a.ALT_DOWN = true if e.keyCode == 18
+  
+  _setKeyUpEvents: (e) => 
+    # Turn off shift and alt down flags where appropriate
+    $a.SHIFT_DOWN = false if e.keyCode == 16
+    $a.ALT_DOWN = false  if e.keyCode == 18
+  
+  clearMap: =>
+    $a.broker.trigger('map:clear_map')
+    $a.broker.trigger('app:tree_clear')
+    $a.broker.trigger('app:show_message:success', 'Cleared map')
+    
+  _messagePanel: ->
+    new $a.MessagePanelView()
+

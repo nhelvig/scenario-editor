@@ -23,16 +23,16 @@ class window.sirius.TreeChildItemView extends Backbone.View
     @template = _.template($('#child-item-menu-template').html())
     @$el.html(@template({text: displayName})) 
     $a.broker.on('app:child_trees', @render, @)
-    self = @
-    _.each(self.targets, (target) -> 
-      $a.broker.on("app:tree_highlight:#{target.cid}", self.highlight, self)
-      $a.broker.on("app:tree_remove_highlight:#{target.cid}", self.removeHighlight, self)
+    _.each(@targets, (target) => 
+      $a.broker.on("app:tree_highlight:#{target.cid}", @highlight, self)
+      $a.broker.on("app:tree_remove_highlight:#{target.cid}", @removeHighlight, self)
       ) if @targets?
     $a.broker.on('app:tree_remove_highlight', @removeHighlight, @)
+    $a.broker.on('app:tree_clear', @removeItem, @)
+
   
   render: =>
-    self = @
-    $("#tree-parent-#{@element}").append(self.el)
+    $("#tree-parent-#{@element}").append(@el)
     @
   
   manageHighlight:  =>
@@ -41,8 +41,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
    
     if !@highlighted
       @highlighted = true
-      self = @
-      _.each(self.targets, (elem) ->
+      _.each(@targets, (elem) =>
             $a.broker.trigger("app:tree_highlight:#{elem.cid}")
             $a.broker.trigger("map:select_item:#{elem.cid}")
           ) if @targets?
@@ -57,6 +56,18 @@ class window.sirius.TreeChildItemView extends Backbone.View
   
   removeHighlight: =>
     $(@el).removeClass "highlight"
+  
+  # in order to remove an element you need to unpublish the events, and remove it from the DOM
+  removeItem: =>
+    $(@el).remove()
+    $a.broker.off('app:child_trees')
+    _.each(@targets, (target) => 
+      $a.broker.off("app:tree_highlight:#{target.cid}")
+      $a.broker.off("app:tree_remove_highlight:#{target.cid}")
+      ) if @targets?
+    $a.broker.off('app:tree_remove_highlight')
+    $a.broker.off('app:tree_clear')
+    
   
   # This method adds either the node or links context menu to the tree item.
   # We offset the x and y by 5 in order to make sure the window stays open 

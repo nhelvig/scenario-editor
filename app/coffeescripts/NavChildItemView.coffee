@@ -16,7 +16,6 @@ class window.sirius.NavChildItemView extends Backbone.View
     @render()
 
   render: =>
-    self = @
-    $("##{@parent} ul").append(self.el)
+    $("##{@parent} ul").append(@el)
     @
 

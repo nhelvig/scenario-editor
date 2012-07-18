@@ -4,22 +4,23 @@
 class window.sirius.MapSignalView extends window.sirius.MapMarkerView
   @ICON: 'green-triangle'
   @SELECTED_ICON: 'red-triangle'
-  @view_signals = []
   $a = window.sirius
 
-  initialize: (model, lat_lng) ->
-    super  model, lat_lng
-    MapSignalView.view_signals.push @
+  initialize: (model) ->
+    super  model
     $a.broker.on('map:hide_signal_layer', @hideMarker, @)
     $a.broker.on('map:show_signal_layer', @showMarker, @)
 
   getIcon: ->
     super MapSignalView.ICON
   
-  # Reset the static array
-  @removeAll: ->
-    @view_signals = []
-    
+  # This method overrides MapMarkerView to unpublish specific events to this type
+  # and then calls super to set itself to null, unpublish the general events, and hide itself
+  removeElement: =>
+    $a.broker.off('map:hide_signal_layer')
+    $a.broker.off('map:show_signal_layer')
+    super
+
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
   manageMarkerSelect: () =>
@@ -42,8 +43,7 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
   # output can be used in the future but test data was not configured correctly
   selectSelfandMyLinks: () ->
     @makeSelected()
-    self = @
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) -> link.get('id') == self.model.get('link_reference').get('id'))
+    links =  _.filter($a.MapNetworkModel.LINKS, (link) => link.get('id') == @model.get('link_reference').get('id'))
     _.each(links, (link) -> $a.broker.trigger("map:select_item:#{link.cid}"))
 
   # This method swaps the icon for the selected icon

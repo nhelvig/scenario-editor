@@ -4,24 +4,25 @@
 class window.sirius.MapEventView extends window.sirius.MapMarkerView
   @ICON: 'event-deselected'
   @SELECTED_ICON: 'event-selected'
-  @view_events = []
   $a = window.sirius
 
-  initialize: (model, lat_lng) ->
-    super model, lat_lng
+  initialize: (model) ->
+    super model
     @model.scenElements = @model.get('targetelements').get('scenarioelement')
     @model.links = @_getLinks()
-    MapEventView.view_events.push @
     $a.broker.on('map:hide_event_layer', @hideMarker, @)
     $a.broker.on('map:show_event_layer', @showMarker, @)
 
   getIcon: ->
     super MapEventView.ICON
   
-  # Reset the static array
-  @removeAll: ->
-    @view_events = []
-
+  # This method overrides MapMarkerView to unpublish specific events to this type
+  # and then calls super to set itself to null, unpublish the general events, and hide itself
+  removeElement: =>
+    $a.broker.off('map:hide_event_layer')
+    $a.broker.off('map:show_event_layer')
+    super
+    
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
   manageMarkerSelect: () =>
@@ -41,8 +42,7 @@ class window.sirius.MapEventView extends window.sirius.MapMarkerView
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->
-    self = @
-    _.each(self.model.links, (link) -> 
+    _.each(@model.links, (link) => 
           $a.broker.trigger("map:select_item:#{link.cid}")
           $a.broker.trigger("app:tree_highlight:#{link.cid}")
         )
@@ -55,8 +55,7 @@ class window.sirius.MapEventView extends window.sirius.MapMarkerView
   # Iterate over the list to find name associated with the id
   _getLinks: ->
     links = []
-    self = @
-    _.each(self.model.scenElements, (elem) -> links.push $a.Util.getElement(elem.id,$a.MapNetworkModel.LINKS))
+    _.each(@model.scenElements, (elem) => links.push $a.Util.getElement(elem.id,$a.MapNetworkModel.LINKS))
     links
     
   

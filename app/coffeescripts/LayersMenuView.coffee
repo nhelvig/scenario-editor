@@ -19,8 +19,7 @@ class window.sirius.LayersMenuView extends Backbone.View
     @$el.attr 'class', @options.className if @options.className
     @$el.attr 'id', @options.id if @options.id
     @render()
-    self = @
-    _.each(self.menuItems, (item) -> new $a.LayersMenuViewItem(self.id, item))
+    _.each(@menuItems, (item) => new $a.LayersMenuViewItem(@id, item))
   
   render: ->
     $("##{@options.parentId}").append(@el)
@@ -39,46 +38,8 @@ class window.sirius.LayersMenuView extends Backbone.View
 
   hoverSubOff: (e) =>
     $("##{e.currentTarget.id}").children("ul").removeClass("submenu-show").addClass "submenu-hide"
-
-  clearMap: ->
-    $a.broker.trigger('map:hide_node_layer')
-    $a.broker.trigger('map:hide_link_layer')
-    $a.broker.trigger('map:hide_event_layer')
-    $a.broker.trigger('map:hide_controller_layer')
-    $a.broker.trigger('map:hide_sensor_layer')
-    $a.broker.trigger('map:hide_signal_layer')
-    $a.MapControllerView.removeAll()
-    $a.MapEventView.removeAll()
-    $a.MapLinkView.removeAll()
-    $a.MapNodeView.removeAll()
-    $a.MapSensorView.removeAll()
-    $a.MapSignalView.removeAll()
-    $a.MapNetworkModel.removeAll()
-
-
-  showAlert: (message, type) ->
-    alertBox = document.createElement 'div'
-    alertBox.className = "alert #{type} alert-bottom"
-    alertBox.innerHTML = message
-
-    closeButton = document.createElement 'button'
-    closeButton.className = 'close'
-    closeButton.setAttribute('data-dismiss', 'alert')
-    closeButton.innerHTML = 'x'
-    closeButton.href = '#'
-
-    alertBox.appendChild closeButton
-    bod = document.getElementById 'body'
-    bod.appendChild alertBox
-
-    setTimeout( ->
-      closeButton.click()
-    , 2000)
   
-    
   attachEvents: ->
-    $a.broker.on("map:clearMap", @clearMap, @)
-    $a.broker.on("map:alert", @showAlert, @)
     
     $(".jdialog").dialog
       autoOpen: false

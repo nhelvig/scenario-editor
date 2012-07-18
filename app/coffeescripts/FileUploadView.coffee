@@ -13,9 +13,8 @@ class window.sirius.FileUploadView extends Backbone.View
     @events = {'change' : "handleFiles"}
     @render()
   
-  render: ->
-    self = @
-    $(@parent).append(self.el)
+  render: =>
+    $(@parent).append(@el)
     @
 
   # This function is File upload handler. It will load
@@ -23,11 +22,13 @@ class window.sirius.FileUploadView extends Backbone.View
   # an event indicating the upload is complete
   handleFiles : ->
     reader = new FileReader()
-    self = @
     reader.onloadend = (e) ->
       fileText = e.target.result
-      $a.broker.trigger("map:upload_complete", fileText)
-      $a.broker.trigger("map:alert", "Loaded map successfully", "alert-success")
-
+      $a.broker.trigger('map:upload_complete', fileText)
+      
     reader.readAsText(@el.files[0])
+    # if you don't reset the value to '' on the input file tag it won't register
+    # a change event if you pick the same file two times in a row
+    @$el.attr('value', '')
+  
  
