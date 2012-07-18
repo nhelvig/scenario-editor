@@ -12,7 +12,6 @@ class window.sirius.TreeChildItemNodeView extends window.sirius.TreeChildItemVie
       $a.broker.on("app:tree_remove_highlight:#{target.cid}", @removeHighlight, self)
       $a.broker.on("map:nodes:show_#{target.get('type')}", @showItem, @)
       $a.broker.on("map:nodes:hide_#{target.get('type')}", @hideItem, @)
-      
       ) if @targets?
     super
     
