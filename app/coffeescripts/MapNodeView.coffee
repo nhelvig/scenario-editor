@@ -67,9 +67,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     @_triggerClearSelectEvents()
     @makeSelected()
     $a.broker.trigger("app:tree_highlight:#{@model.cid}")
-    self = @
-    _.each(['input','output'], (type) -> 
-        _.each(self._getInputOrOutputLinks(type), (link) -> 
+    _.each(['input','output'], (type) => 
+        _.each(@_getInputOrOutputLinks(type), (link) -> 
           $a.broker.trigger("map:select_item:#{link.get('link').cid}")
           $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}")
         )
@@ -80,9 +79,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   clearSelfandMyLinks: () ->
     @clearSelected()
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
-    self = @
-    _.each(['input','output'], (type) -> 
-        _.each(self._getInputOrOutputLinks(type), (link) -> 
+    _.each(['input','output'], (type) => 
+        _.each(@_getInputOrOutputLinks(type), (link) -> 
               $a.broker.trigger("map:clear_item:#{link.get('link').cid}")
               $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}")
         )
@@ -93,8 +91,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   selectMyLinks: (type) ->
     # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
-    self = @
-    _.each(self._getInputOrOutputLinks(type), (link) -> 
+    _.each(@_getInputOrOutputLinks(type), (link) => 
         $a.broker.trigger("map:select_item:#{link.get('link').cid}")
         $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}")
       )

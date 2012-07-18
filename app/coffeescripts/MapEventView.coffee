@@ -42,8 +42,7 @@ class window.sirius.MapEventView extends window.sirius.MapMarkerView
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->
-    self = @
-    _.each(self.model.links, (link) -> 
+    _.each(@model.links, (link) => 
           $a.broker.trigger("map:select_item:#{link.cid}")
           $a.broker.trigger("app:tree_highlight:#{link.cid}")
         )
@@ -56,8 +55,7 @@ class window.sirius.MapEventView extends window.sirius.MapMarkerView
   # Iterate over the list to find name associated with the id
   _getLinks: ->
     links = []
-    self = @
-    _.each(self.model.scenElements, (elem) -> links.push $a.Util.getElement(elem.id,$a.MapNetworkModel.LINKS))
+    _.each(@model.scenElements, (elem) => links.push $a.Util.getElement(elem.id,$a.MapNetworkModel.LINKS))
     links
     
   

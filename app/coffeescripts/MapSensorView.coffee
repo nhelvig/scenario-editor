@@ -56,8 +56,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   selectSelfandMyLinks: () ->
     @_triggerClearSelectEvents()
     @makeSelected()
-    self = @
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) -> link.get('id') == self.model.get('link_reference').get('id'))
+    links =  _.filter($a.MapNetworkModel.LINKS, (link) => link.get('id') == @model.get('link_reference').get('id'))
     _.each(links, (link) -> 
         $a.broker.trigger("app:tree_highlight:#{link.cid}")
         $a.broker.trigger("map:select_item:#{link.cid}")
@@ -67,8 +66,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   # Note we filter the Network links for all links with this node attached.
   clearSelfandMyLinks: () ->
     @clearSelected()
-    self = @
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) -> link.get('id') == self.model.get('link_reference').get('id'))
+    links =  _.filter($a.MapNetworkModel.LINKS, (link) => link.get('id') == @model.get('link_reference').get('id'))
     _.each(links, (link) -> 
         $a.broker.trigger("map:clear_item:#{link.cid}")
         $a.broker.trigger("app:tree_remove_highlight:#{link.cid}")

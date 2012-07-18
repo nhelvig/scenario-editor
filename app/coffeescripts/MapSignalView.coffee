@@ -43,8 +43,7 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
   # output can be used in the future but test data was not configured correctly
   selectSelfandMyLinks: () ->
     @makeSelected()
-    self = @
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) -> link.get('id') == self.model.get('link_reference').get('id'))
+    links =  _.filter($a.MapNetworkModel.LINKS, (link) => link.get('id') == @model.get('link_reference').get('id'))
     _.each(links, (link) -> $a.broker.trigger("map:select_item:#{link.cid}"))
 
   # This method swaps the icon for the selected icon
