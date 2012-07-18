@@ -1,15 +1,6 @@
 html { height: 100% }
 body { height: 100%; margin: 5px; padding: 0 }
 #map_canvas { height: 100%; width:100%; float:left}
-#right_tree {
-  position: absolute;
-  background: #fff;
-  height: 100%;
-  width:22%;
-  right:0;
-  overflow: scroll;
-  z-index: 2
-}
 #map_canvas img { max-width:none; }
 #header {width:100%}
 .navbar {margin-bottom: 0px}
@@ -17,10 +8,6 @@ body { height: 100%; margin: 5px; padding: 0 }
 #uploadField {
   visibility:hidden; 
   position:absolute;
-}
-
-#collapseTree {
-  right:22%;
 }
 
 .alert-bottom {position:absolute; bottom:0; right:23%; max-width:200px}
@@ -85,7 +72,7 @@ body { height: 100%; margin: 5px; padding: 0 }
 .context_menu_item:hover {
   color: #ffffff;
   text-decoration: none;
-  background-color: #0088cc;
+  background-color: #99d3f0;
 }
 hr {
   margin:0;
@@ -140,7 +127,7 @@ hr {
 #collapseTree
 {
   position:fixed;
-  float:right;
+  right:22%;
   z-index: 2
 }
 
@@ -236,3 +223,13 @@ hr {
 
 #tree  li input:checked ~ ol > li.hide {display: none}
 #tree  li input:checked ~ ol > li.show {display: block}
+
+#right_tree {
+  position: absolute;
+  background: #fff;
+  height: 100%;
+  width:22%;
+  right:0;
+  overflow: scroll;
+  z-index: 2
+}
