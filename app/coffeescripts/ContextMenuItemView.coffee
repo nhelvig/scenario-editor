@@ -12,8 +12,7 @@ class window.sirius.ContextMenuItemView extends Backbone.View
     @events = {'click': values.event } if values.event
     @render()
   
-  render: () ->
-    self = @
-    $("##{@parentId}").append(self.el)
+  render: () =>
+    $("##{@parentId}").append(@el)
     @
 

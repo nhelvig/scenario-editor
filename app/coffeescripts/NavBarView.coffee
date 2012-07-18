@@ -5,7 +5,6 @@ class window.sirius.NavBarView extends Backbone.View
   className: "nav"
 
   initialize: (args) ->
-    self = @
     @parent = args.attach
     @render()
     for key, values of args.menuItems
@@ -15,6 +14,5 @@ class window.sirius.NavBarView extends Backbone.View
          new $a.NavChildItemView({text: subkey, textLower: $a.Util.toLowerCaseAndDashed(subkey), event: event, attach: keyLower})
 
   render: ->
-    self = @
-    $(@parent).append(self.el)
+    $(@parent).append(@el)
     @

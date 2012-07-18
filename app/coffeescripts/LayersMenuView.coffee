@@ -19,8 +19,7 @@ class window.sirius.LayersMenuView extends Backbone.View
     @$el.attr 'class', @options.className if @options.className
     @$el.attr 'id', @options.id if @options.id
     @render()
-    self = @
-    _.each(self.menuItems, (item) -> new $a.LayersMenuViewItem(self.id, item))
+    _.each(@menuItems, (item) => new $a.LayersMenuViewItem(@id, item))
   
   render: ->
     $("##{@options.parentId}").append(@el)
