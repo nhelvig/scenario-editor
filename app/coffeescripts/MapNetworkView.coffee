@@ -68,13 +68,12 @@ class window.sirius.MapNetworkView extends Backbone.View
   # We attempt to get the route for the link 3 times and then give up. If get a route, this method calls _drawLink
   # to render the link on the page
   _directionsRequest: (request, linkModel, attempts) ->
-    self = @
-    @directionsService.route(request, (response, status) ->
+    @directionsService.route(request, (response, status) =>
       if (status == google.maps.DirectionsStatus.OK)
         $a.broker.trigger('app:show_message:info', "Directions API Warning(s): #{response.routes[0].warnings}") if response.routes[0].warnings.length > 
-        self._drawLink linkModel, response.routes[0].legs
+        @_drawLink linkModel, response.routes[0].legs
       else if status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT and attempts < 3
-        setTimeout (() -> self._directionsRequest(request, linkModel, attempts + 1)), 3000
+        setTimeout (() => @_directionsRequest(request, linkModel, attempts + 1)), 3000
       else #TODO configure into html
         $a.broker.trigger('app:show_message:error', "Directions API Error: Could not render link : #{status}")
     )

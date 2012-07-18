@@ -16,9 +16,8 @@ class window.sirius.AppView extends Backbone.View
     @_contextMenu()
     @_layersMenu()
     @_messagePanel()
-    self = @
-    google.maps.event.addDomListener(window, 'keydown', (event) -> self._setKeyDownEvents(event))
-    google.maps.event.addDomListener(window, 'keyup', (event) -> self._setKeyUpEvents(event))
+    google.maps.event.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
+    google.maps.event.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $a.broker.on('map:upload_complete', @_displayMap, @)
     $a.broker.on("app:clear_map", @clearMap, @)
     @

@@ -9,7 +9,6 @@ class window.sirius.MapLinkView extends Backbone.View
   $a = window.sirius
 
   initialize: (@model, @legs) ->
-    self = @
     @drawLink @legs
     #@drawArrow @leg
     @_contextMenu()
@@ -22,7 +21,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
-    google.maps.event.addListener(@link, 'click', (event) -> self.manageLinkSelect())
+    google.maps.event.addListener(@link, 'click', (event) => @manageLinkSelect())
     $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:clear_map", @removeLink, @)
   
@@ -81,13 +80,11 @@ class window.sirius.MapLinkView extends Backbone.View
     @contextMenuOptions.menuItems = []
     @contextMenuOptions.menuItems = $a.Util.copy($a.link_context_menu)
     #set this id for the select item so we know what event to call
-    self = @
-    _.each(self.contextMenuOptions.menuItems, (item) -> item.id = "#{self.model.cid}")
+    _.each(@contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
     @contextMenuOptions.class = 'context_menu'
     @contextMenuOptions.id = "context-menu-link-#{@model.cid}"
     @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
-    self = @
-    google.maps.event.addListener(@link, 'rightclick', (mouseEvent) -> self.contextMenu.show mouseEvent.latLng )
+    google.maps.event.addListener(@link, 'rightclick', (mouseEvent) => @contextMenu.show mouseEvent.latLng )
     @model.set('contextMenu', @contextMenu)
 
   ################# The following handles the show and hide of link layers including the arrow heads
@@ -173,7 +170,6 @@ class window.sirius.MapLinkView extends Backbone.View
   #   if arrow_step.path.length > 2
   #     #calculate direction of arrow
   #     dir = @getAngleOfArrow(arrow_lat_lng_pos,arrow_angle_to)
-  #     self = this
   #     @arrow = new google.maps.Marker({
   #       position: arrow_lat_lng_pos,
   #       icon: new google.maps.MarkerImage('http://maps.google.com/mapfiles/dir_'+dir+'.png',

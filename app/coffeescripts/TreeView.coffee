@@ -27,9 +27,8 @@ class window.sirius.TreeView extends Backbone.View
       $a.broker.on('app:main_tree', @render, @)
       
   # Attach itself as well as trigger events for the parent and child nodes to be rendered
-  render: ->
-    self = @
-    $(@parent).append(self.el)
+  render: =>
+    $(@parent).append(@el)
     $a.broker.trigger("app:parent_tree")
     $a.broker.trigger("app:child_trees")
     @
@@ -53,9 +52,8 @@ class window.sirius.TreeView extends Backbone.View
   # in that the different types of elements have different ways of storing what node
   # or link they are attached to 
   _createChildNodes: (list, attach, nameList) ->
-    self = @
-    _.each(list, (e) ->
-      targets = self._findTargetElements(e, attach, nameList)
+    _.each(list, (e) =>
+      targets = @_findTargetElements(e, attach, nameList)
       name = targets[0].get('name')
       name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1 #for OD Profiles
       new $a.TreeChildItemView(e, targets, name, attach))
