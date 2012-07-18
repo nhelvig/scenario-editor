@@ -40,35 +40,12 @@ class window.sirius.LayersMenuView extends Backbone.View
     $("##{e.currentTarget.id}").children("ul").removeClass("submenu-show").addClass "submenu-hide"
   
   attachEvents: ->
-    
-    $(".jdialog").dialog
-      autoOpen: false
-      show:
-        effect: "drop"
-        direction: "left"
-        duration: 200
-
-      hide:
-        effect: "drop"
-        direction: "right"
-        duration: 200
-
-
-    $('.ui-dialog-titlebar-close').ready ->
-      titlebar = $('.ui-dialog-titlebar-close')
-      i = 0;
-      while i < titlebar.length
-        titlebar[i].innerHTML = '<i class="icon-remove"></i>'
-        i++
-
+    $('#collapseTree').click ->
+      $a.broker.trigger('toggleTree')
 
     $("ul > li > a.jmodal").click ->
       navId = @id
-      switch navId
-        when "nb"
-          $("#nodebrowser").dialog "open"
-          true
-        when "lb"
+
           $("#linkbrowser").dialog "open"
           true
         when "pb"

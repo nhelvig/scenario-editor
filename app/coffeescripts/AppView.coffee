@@ -19,7 +19,14 @@ class window.sirius.AppView extends Backbone.View
     google.maps.event.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     google.maps.event.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $a.broker.on('map:upload_complete', @_displayMap, @)
+<<<<<<< Updated upstream
     $a.broker.on("app:clear_map", @clearMap, @)
+=======
+    $a.broker.on("map:clearMap", @clearMap, @)
+    $a.broker.on("map:alert", @showAlert, @)
+    $a.broker.on("map:toggleTree", @toggleTree, @)
+    @_treeMenuToggle()
+>>>>>>> Stashed changes
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -59,7 +66,14 @@ class window.sirius.AppView extends Backbone.View
     lmenu = new $a.LayersMenuView({className: 'dropdown-menu bottom-up', id : 'l_list', parentId: 'lh', menuItems: $a.layers_menu})
     # we'll need to get rid of this call -- it is doing things that it shouldn't do to the modals, clear map, etc
     lmenu.attachEvents()
-
+  
+  _treeMenuToggle: () ->
+    toggleTree = document.createElement "button"
+    toggleTree.setAttribute("data-toggle", "collapse")
+    toggleTree.setAttribute("data-target", "#right_tree")
+    toggleTree.innerHTML = " > "
+    toggleTree.id = "collapseTree"
+    document.getElementById("map_canvas").appendChild toggleTree
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
   _displayMap: (fileText) =>
@@ -74,7 +88,7 @@ class window.sirius.AppView extends Backbone.View
   _setKeyDownEvents: (e) =>
     # Open Local Network ALT-A
     if $a.ALT_DOWN and e.keyCode == 65
-      @clearMap()
+      #@clearMap()
       $("#uploadField").click() 
     
     # Set multi-select of map elements with the shift key
@@ -95,4 +109,9 @@ class window.sirius.AppView extends Backbone.View
     
   _messagePanel: ->
     new $a.MessagePanelView()
+    setTimeout( ->
+      closeButton.click()
+    , 2000)
 
+  toggleTree: () ->
+    $('#map_canvas').style.width = '100%'

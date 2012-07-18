@@ -2,16 +2,16 @@ html { height: 100% }
 body { height: 100%; margin: 5px; padding: 0 }
 button {}
 #map_canvas { height: 100%; width:78%; float:left}
-#right_tree { height: 100%; width:22%; float:right;}
+#right_tree { height: 100%; width:22%; float:right; overflow: scroll}
 #map_canvas img { max-width:none; }
 #header {width:100%}
 .navbar {margin-bottom: 0px}
 
-/** File upload **/
 #uploadField {
   visibility:hidden; 
   position:absolute;
 }
+
 .alert-bottom {position:absolute; bottom:0; right:23%; max-width:200px}
 .container {position:absolute; z-index:1; width: 278px; margin-top:5px;margin-left:80px; background-color: #444444;}
 .ui-dialog {
@@ -125,6 +125,13 @@ hr {
 }
 
 /**** TreeView *****/
+#collapseTree
+{
+  position:fixed;
+  float:right;
+  z-index: 2
+}
+
 #right_tree ol.tree
 {
   padding: 0 0 0 30px;

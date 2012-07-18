@@ -11,7 +11,7 @@ $a.nav_bar_menu_items = {
     'File': {
               'New' : (() -> alert('Not Configured'))
               'Open Local Network' : ((e) ->
-                                        $a.broker.trigger('app:clear_map')
+                                        #$a.broker.trigger('app:clear_map')
                                         $("#uploadField").click()
                                         e.preventDefault())
               'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
