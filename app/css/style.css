@@ -178,22 +178,31 @@ hr {
   top: 0;
 }
 
-#tree li input + ol
+#tree li input + label 
 {
-  background: url(../../libs/data/img/toggle-small-expand.png) 40px 0 no-repeat;
-  margin: -1.6em 0 0 -44px; /* 15px */
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+}
+
+#tree li input + label
+{
+  background: url(../../libs/data/img/toggle-small-expand.png) 40px 0px no-repeat; 
+  margin: 0em 0 0 -44px; /* 15px */
+  padding: 1.563em 0 0 80px;
   height: 1em;
 }
 
-#tree li input:checked + ol
+#tree li input:checked + label
 {
-  background: url(../../libs/data/img/toggle-small.png) 40px 5px no-repeat;
-  margin: -1.9em 0 0 -44px; /* 20px */
+  background: url(../../libs/data/img/toggle-small.png) 40px 0px no-repeat;
+  margin: 0em 0 0 -44px; /* 20px */
   padding: 1.563em 0 0 80px;
   height: auto;
 }
 
-#tree li input + ol > li { display: none; margin-left: -14px !important; padding-left: 1px; }
+#tree li input + label + ol > li { display: none; margin-left: -14px !important; padding-left: 1px; }
 
 #tree li label
 {
@@ -203,6 +212,6 @@ hr {
   padding-left: 37px;
 }
 
-#tree li input:checked + ol > li { display: block; margin: 0 0 0.125em;  /* 2px */}
-#tree li input:checked + ol > li:last-child { margin: 0 0 0.063em; /* 1px */ }
+#tree li input:checked ~ ol > li { display: block; margin: 0 0 0.125em;  /* 2px */}
+#tree li input:checked ~ ol > li:last-child { margin: 0 0 0.063em; /* 1px */ }
 
