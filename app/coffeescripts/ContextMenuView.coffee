@@ -62,7 +62,7 @@ class window.sirius.ContextMenuView extends google.maps.OverlayView
       @isVisible = true
 
   onAdd: () ->
-    _.each(@options.menuItems, (item) -> new $a.ContextMenuItemView(@options.id, item))
+    _.each(@options.menuItems, (item) => new $a.ContextMenuItemView(@options.id, item))
 
   onRemove: () ->
     $("##{@options.id}").remove()

@@ -1,5 +1,6 @@
 # The view class for each child item in the tree view. Each child item
-# is <li> tag with an anchor surrounding the name. 
+# is <li> tag with an anchor surrounding the name. It is the super of Link and Node Tree Items but 
+# can also render non-link/node tree items
 class window.sirius.TreeChildItemView extends Backbone.View
   $a = window.sirius
   tagName: "li"
@@ -22,19 +23,19 @@ class window.sirius.TreeChildItemView extends Backbone.View
     displayName =  name
     @template = _.template($('#child-item-menu-template').html())
     @$el.html(@template({text: displayName})) 
-    $a.broker.on('app:child_trees', @render, @)
-    _.each(@targets, (target) => 
-      $a.broker.on("app:tree_highlight:#{target.cid}", @highlight, self)
-      $a.broker.on("app:tree_remove_highlight:#{target.cid}", @removeHighlight, self)
-      ) if @targets?
-    $a.broker.on('app:tree_remove_highlight', @removeHighlight, @)
-    $a.broker.on('app:tree_clear', @removeItem, @)
+    @setUpEvents()
 
-  
   render: =>
     $("#tree-parent-#{@element}").append(@el)
     @
   
+  # This method overridden in the subclasses to register events for specific types of 
+  # tree items -- node or link.  All tree items register for the links here
+  setUpEvents: ->
+    $a.broker.on('app:child_trees', @render, @)
+    $a.broker.on('app:tree_remove_highlight', @removeHighlight, @)
+    $a.broker.on('app:tree_clear', @removeItem, @)
+    
   manageHighlight:  =>
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
@@ -67,8 +68,13 @@ class window.sirius.TreeChildItemView extends Backbone.View
       ) if @targets?
     $a.broker.off('app:tree_remove_highlight')
     $a.broker.off('app:tree_clear')
-    
   
+  hideItem: =>
+    @$el.addClass('hide').removeClass('show')
+
+  showItem: =>
+    @$el.addClass('show').removeClass('hide')
+
   # This method adds either the node or links context menu to the tree item.
   # We offset the x and y by 5 in order to make sure the window stays open 
   # once the button is released in FF and we return false to turn off the browsers default
