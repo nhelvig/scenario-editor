@@ -94,6 +94,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     _.each(@_getInputOrOutputLinks(type), (link) => 
         $a.broker.trigger("map:select_item:#{link.get('link').cid}")
         $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}")
+        $a.broker.trigger("app:tree_show_item:#{link.get('link').cid}")
       )
 
   _getInputOrOutputLinks: (type) ->
