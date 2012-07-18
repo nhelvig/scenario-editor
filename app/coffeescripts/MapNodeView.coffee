@@ -9,7 +9,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   @TERMINAL_TYPE: 'terminal'
   $a = window.sirius
 
-  initialize: (model) ->
+  initialize: (model, @network) ->
     super model
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
@@ -20,6 +20,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $a.broker.on('map:hide_node_layer', @hideMarker, @)
     $a.broker.on("map:nodes:show_#{@model.get('type')}", @showMarker, @)
     $a.broker.on("map:nodes:hide_#{@model.get('type')}", @hideMarker, @)
+    $a.broker.on("map:select_network:#{@network.cid}", @makeSelected, @)
+    $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
     
     
   getIcon: ->
@@ -41,6 +43,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $a.broker.off('map:hide_node_layer')
     $a.broker.off("map:nodes:show_#{@model.get('type')}")
     $a.broker.off("map:nodes:hide_#{@model.get('type')}")
+    $a.broker.off("map:select_network:#{@network.cid}")
+    $a.broker.off("map:clear_network:#{@network.cid}")
     super
 
   ################# select events for marker
@@ -101,7 +105,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     @model.get("#{type}s").get("#{type}")
     
   # This method swaps the icon for the selected icon
-  makeSelected: () ->
+  makeSelected: () =>
     super @_getTypeIcon true
   
   # This method swaps the icon for the de-selected icon

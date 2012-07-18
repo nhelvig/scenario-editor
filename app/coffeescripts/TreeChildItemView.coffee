@@ -22,7 +22,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
       $(@el).attr 'id', @id
     displayName =  name
     @template = _.template($('#child-item-menu-template').html())
-    @$el.html(@template({text: displayName})) 
+    @$el.html(@template({text: displayName}))
     @setUpEvents()
 
   render: =>

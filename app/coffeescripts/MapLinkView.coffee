@@ -8,7 +8,7 @@ class window.sirius.MapLinkView extends Backbone.View
   
   $a = window.sirius
 
-  initialize: (@model, @legs) ->
+  initialize: (@model, @network, @legs) ->
     @drawLink @legs
     #@drawArrow @leg
     @_contextMenu()
@@ -24,6 +24,9 @@ class window.sirius.MapLinkView extends Backbone.View
     google.maps.event.addListener(@link, 'click', (event) => @manageLinkSelect())
     $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:clear_map", @removeLink, @)
+    $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
+    $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
+
   
   render: =>
     @link.setMap($a.map)
@@ -42,6 +45,8 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.off("map:clear_item:#{@model.cid}")
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
+    $a.broker.off("map:select_network:#{@network.cid}")
+    $a.broker.off("map:clear_network:#{@network.cid}")
     @hideLink() if @link
     @link = null
 
