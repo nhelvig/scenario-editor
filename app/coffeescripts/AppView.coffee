@@ -17,13 +17,14 @@ class window.sirius.AppView extends Backbone.View
     @_contextMenu()
     @_layersMenu()
     @_messagePanel()
+    @_treeMenuToggle()
     google.maps.event.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     google.maps.event.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
+    google.maps.event.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
     $a.broker.on('map:upload_complete', @_displayMap, @)
     $a.broker.on("map:clear_map", @clearMap, @)
     $a.broker.on("map:alert", @showAlert, @)
     $a.broker.on("map:toggle_tree", @toggleTree, @)
-    @_treeMenuToggle()
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -66,13 +67,11 @@ class window.sirius.AppView extends Backbone.View
   
   _treeMenuToggle: () ->
     toggleTree = document.createElement "button"
-    #toggleTree.setAttribute("data-toggle", "collapse")
-    #toggleTree.setAttribute("data-target", "#right_tree")
-    toggleTree.innerHTML = " > "
+    toggleTree.innerHTML = " < "
     toggleTree.id = "collapseTree"
     document.getElementById("map_canvas").appendChild toggleTree
     toggleTree.onclick = ->
-      $a.broker.trigger('map:toggle_tree', toggleTree)
+      $a.broker.trigger('map:toggle_tree', 0)
       
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
@@ -102,21 +101,27 @@ class window.sirius.AppView extends Backbone.View
     $a.SHIFT_DOWN = false if e.keyCode == 16
     $a.ALT_DOWN = false  if e.keyCode == 18
   
+  fadeIn: =>
+    $('.container').fadeIn(200)
+    $('#lh').fadeIn(200)
+    $('#mh').fadeIn(200)
+    
   clearMap: =>
-    #$a.broker.trigger('map:clear_map')
+    $a.broker.trigger('map:toggle_tree', false)
     $a.broker.trigger('app:tree_clear')
     $a.broker.trigger('app:show_message:success', 'Cleared map')
     
   _messagePanel: ->
     new $a.MessagePanelView()
 
-  toggleTree: (button) ->
-    if button.innerHTML == ' &gt; '
+  toggleTree: (display) =>
+    button = document.getElementById 'collapseTree'
+    if button.innerHTML == ' &gt; ' and (display == 0 or display == false)
       button.innerHTML = ' < '
       $('#right_tree').hide(200)
       align = right: '0%'
       $('#collapseTree').animate(align, 200)
-    else
+    else if button.innerHTML == ' &lt; ' and (display == 0 or display == true)
       button.innerHTML = ' > '
       $('#right_tree').show(200)
       align = right: '22%'

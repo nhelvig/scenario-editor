@@ -40,6 +40,4 @@ class window.sirius.LayersMenuView extends Backbone.View
     $("##{e.currentTarget.id}").children("ul").removeClass("submenu-show").addClass "submenu-hide"
   
   attachEvents: ->
-    $('#collapseTree').click ->
-      alert "nooo"
-      $a.broker.trigger('map:toggleTree')
+    
