@@ -9,7 +9,8 @@ class window.sirius.MapLinkView extends Backbone.View
   $a = window.sirius
 
   initialize: (@model, @network, @legs) ->
-    @drawLink @legs
+    @_createPath @legs
+    @drawLink()
     #@drawArrow @leg
     @_contextMenu()
     $a.broker.on('map:init', @render, @)
@@ -50,24 +51,30 @@ class window.sirius.MapLinkView extends Backbone.View
     @hideLink() if @link
     @link = null
 
-  # this method reads the path of points contained in the leg
-  # and converts it into a polyline object to be drawn on the map
-  # The Polyline map attribute will be null until render is called
-  drawLink: (legs) ->
-    sm_path = []
+  # this method reads the path of points contained in the legs, joins them into one
+  # array with no duplicates and then encodes the using googles geomtry package in order to save 
+  # the path to models linkgeometry field
+  _createPath: (legs) -> 
+    smPath = []
     for leg in legs
       for step in leg.steps
         for pt in step.path
-          if !(pt in sm_path)
-            sm_path.push pt
-          
+          if !(pt in smPath)
+            smPath.push pt
+    smPath = google.maps.geometry.encoding.encodePath smPath
+ 
+    # save the encoded path to the model
+    @model.set({linkgeometry: smPath})
+
+  # Creates the Polyline to rendered on the map
+  # The Polyline map attribute will be null until render is called
+  drawLink: ->
     @link = new google.maps.Polyline({
-      path: sm_path
+      path: google.maps.geometry.encoding.decodePath @model.get('linkgeometry')
       map: $a.map
       strokeColor:  MapLinkView.LINK_COLOR
       icons: [{
           icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW } 
-          #icon: {path : 'M0 0,4 0,3 5,z'} # manually vectorized
           fillColor: 'blue'
           offset: '50%'
         }]
