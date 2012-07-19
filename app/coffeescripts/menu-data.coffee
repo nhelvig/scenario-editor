@@ -11,11 +11,12 @@ $a.nav_bar_menu_items = {
     'File': {
               'New' : (() -> alert('Not Configured'))
               'Open Local Network' : ((e) ->
-                                        #$a.broker.trigger('app:clear_map')
                                         $("#uploadField").click()
                                         e.preventDefault())
-              'Close Local Network' : (() ->
-                                        $a.broker.trigger('app:clear_map'))
+              
+              'Save Local Network' : (() ->
+                                          $a.models.to_xml(Nokogiri::XML) if $a.models?)
+              'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
             }
     'Windows': {
