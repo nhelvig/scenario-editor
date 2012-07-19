@@ -7,6 +7,7 @@ class window.sirius.TreeView extends Backbone.View
 
   # The args contains the scenario models as well as what parent div it should attach the tree too.
   initialize: (args) ->
+      
       scenario = args.scenario
       @parent = args.attach
       links = $a.MapNetworkModel.LINKS

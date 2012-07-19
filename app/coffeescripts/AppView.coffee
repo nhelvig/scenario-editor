@@ -20,7 +20,10 @@ class window.sirius.AppView extends Backbone.View
     google.maps.event.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     google.maps.event.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $a.broker.on('map:upload_complete', @_displayMap, @)
-    $a.broker.on("app:clear_map", @clearMap, @)
+    $a.broker.on("map:clear_map", @clearMap, @)
+    $a.broker.on("map:alert", @showAlert, @)
+    $a.broker.on("map:toggle_tree", @toggleTree, @)
+    @_treeMenuToggle()
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -60,7 +63,17 @@ class window.sirius.AppView extends Backbone.View
     lmenu = new $a.LayersMenuView({className: 'dropdown-menu bottom-up', id : 'l_list', parentId: 'lh', menuItems: $a.layers_menu})
     # we'll need to get rid of this call -- it is doing things that it shouldn't do to the modals, clear map, etc
     lmenu.attachEvents()
-
+  
+  _treeMenuToggle: () ->
+    toggleTree = document.createElement "button"
+    #toggleTree.setAttribute("data-toggle", "collapse")
+    #toggleTree.setAttribute("data-target", "#right_tree")
+    toggleTree.innerHTML = " > "
+    toggleTree.id = "collapseTree"
+    document.getElementById("map_canvas").appendChild toggleTree
+    toggleTree.onclick = ->
+      $a.broker.trigger('map:toggle_tree', toggleTree)
+      
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
   _displayMap: (fileText) =>
@@ -75,7 +88,7 @@ class window.sirius.AppView extends Backbone.View
   _setKeyDownEvents: (e) =>
     # Open Local Network ALT-A
     if $a.ALT_DOWN and e.keyCode == 65
-      @clearMap()
+      #@clearMap()
       $("#uploadField").click() 
     
     # Set multi-select of map elements with the shift key
@@ -90,10 +103,21 @@ class window.sirius.AppView extends Backbone.View
     $a.ALT_DOWN = false  if e.keyCode == 18
   
   clearMap: =>
-    $a.broker.trigger('map:clear_map')
+    #$a.broker.trigger('map:clear_map')
     $a.broker.trigger('app:tree_clear')
     $a.broker.trigger('app:show_message:success', 'Cleared map')
     
   _messagePanel: ->
     new $a.MessagePanelView()
 
+  toggleTree: (button) ->
+    if button.innerHTML == ' &gt; '
+      button.innerHTML = ' < '
+      $('#right_tree').hide(200)
+      align = right: '0%'
+      $('#collapseTree').animate(align, 200)
+    else
+      button.innerHTML = ' > '
+      $('#right_tree').show(200)
+      align = right: '22%'
+      $('#collapseTree').animate(align, 200)
