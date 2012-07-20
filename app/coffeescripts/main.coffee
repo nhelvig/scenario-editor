@@ -73,6 +73,7 @@ head.js('https://www.google.com/jsapi',
         '../libs/js/jquery-ui-1.8.18.min.js',
         '../libs/js/underscore.js',
         '../libs/js/backbone.js',
+        '../libs/js/modernizr.custom.localstorage.js',
         '../libs/js/bootstrap/js/bootstrap.min.js', ->
                google.load("maps", "3", {
                   callback: "window.load_sirius()",

@@ -84,6 +84,12 @@ class window.sirius.AppView extends Backbone.View
     $a.models = $a.Scenario.from_xml($(xml).children())
     new $a.MapNetworkModel()
     @mapView = new $a.MapNetworkView $a.models
+    if Modernizr.localstorage
+      # window.localStorage is available!
+      $a.broker.trigger("app:show_message:info", "Local Storage is available")
+    else 
+      # no native support for HTML5 storage :(
+      $a.broker.trigger("app:show_message:info", "Local Storage is not available in your browser -- be sure to save from the File menu often.")
 
   _setKeyDownEvents: (e) =>
     # Open Local Network ALT-A
