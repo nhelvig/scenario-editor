@@ -16,7 +16,7 @@ sirius_classes_with_extensions = [
 ]
 
 sirius_classes_without_extensions = [
-  'ALatLng', 'CapacityProfile', 'Data_source', 'Decision_point', 'Decision_point_split',
+  'ArrayText', 'ALatLng', 'CapacityProfile', 'Data_source', 'Decision_point', 'Decision_point_split',
   'Decision_points', 'DecisionPoints', 'DemandProfile', 'DemandProfileSet', 'Description',
   'DirectionsCacheEntry', 'DirectionsCache', 'DownstreamBoundaryCapacityProfileSet', 'EncodedPolyline',
   'FeedbackElements', 'From', 'FundamentalDiagram', 'FundamentalDiagramProfile', 'FundamentalDiagramProfileSet', 

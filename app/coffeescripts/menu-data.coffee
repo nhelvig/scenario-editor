@@ -15,7 +15,9 @@ $a.nav_bar_menu_items = {
                                         e.preventDefault())
               
               'Save Local Network' : (() ->
-                                          $a.models.to_xml(Nokogiri::XML) if $a.models?)
+                                            doc = document.implementation.createDocument(null, null, null)
+                                            $a.xml = $a.models.to_xml(doc) if $a.models?
+                                            )
               'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
             }

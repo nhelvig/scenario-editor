@@ -9,7 +9,8 @@ class window.sirius.MapLinkView extends Backbone.View
   $a = window.sirius
 
   initialize: (@model, @network, @legs) ->
-    @_createPath @legs
+    @_createEncodedPath @legs
+    @_saveEncodedPath()
     @drawLink()
     #@drawArrow @leg
     @_contextMenu()
@@ -54,23 +55,30 @@ class window.sirius.MapLinkView extends Backbone.View
   # this method reads the path of points contained in the legs, joins them into one
   # array with no duplicates and then encodes the using googles geomtry package in order to save 
   # the path to models linkgeometry field
-  _createPath: (legs) -> 
+  _createEncodedPath: (legs) -> 
     smPath = []
     for leg in legs
       for step in leg.steps
         for pt in step.path
           if !(pt in smPath)
             smPath.push pt
-    smPath = google.maps.geometry.encoding.encodePath smPath
+    @encodedPath = google.maps.geometry.encoding.encodePath smPath
  
-    # save the encoded path to the model
-    @model.set({linkgeometry: smPath})
-
+  # save the encoded path to the model
+  _saveEncodedPath: ->
+    lg = new $a.LinkGeometry()
+    ep = new $a.EncodedPolyline()
+    pts = new $a.Points()
+    pts.set({text:@encodedPath})
+    ep.set({points: pts})
+    lg.set({encodedpolyline:ep})
+    @model.set({linkgeometry: lg})
+  
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
   drawLink: ->
     @link = new google.maps.Polyline({
-      path: google.maps.geometry.encoding.decodePath @model.get('linkgeometry')
+      path: google.maps.geometry.encoding.decodePath @model.get('linkgeometry').get('encodedpolyline').get('points').get('text')
       map: $a.map
       strokeColor:  MapLinkView.LINK_COLOR
       icons: [{
