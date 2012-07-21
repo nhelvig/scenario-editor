@@ -90,11 +90,16 @@ class window.sirius.AppView extends Backbone.View
       #@clearMap()
       $("#uploadField").click() 
     
+    # Save Local Network
+    if $a.ALT_DOWN and e.keyCode == 83
+      $("#save-local-network").click()
+      
     # Set multi-select of map elements with the shift key
     $a.SHIFT_DOWN = true if e.keyCode == 16
     
     # Set alt key down in order to set up quick key for opening files
     $a.ALT_DOWN = true if e.keyCode == 18
+    
   
   _setKeyUpEvents: (e) => 
     # Turn off shift and alt down flags where appropriate

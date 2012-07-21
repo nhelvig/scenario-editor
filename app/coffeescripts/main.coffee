@@ -16,7 +16,7 @@ sirius_classes_with_extensions = [
 ]
 
 sirius_classes_without_extensions = [
-  'ALatLng', 'CapacityProfile', 'Data_source', 'Decision_point', 'Decision_point_split',
+  'ArrayText', 'ALatLng', 'CapacityProfile', 'Data_source', 'Decision_point', 'Decision_point_split',
   'Decision_points', 'DecisionPoints', 'DemandProfile', 'DemandProfileSet', 'Description',
   'DirectionsCacheEntry', 'DirectionsCache', 'DownstreamBoundaryCapacityProfileSet', 'EncodedPolyline',
   'FeedbackElements', 'From', 'FundamentalDiagram', 'FundamentalDiagramProfile', 'FundamentalDiagramProfileSet', 
@@ -43,11 +43,16 @@ sirius_model_view_classes = [
   'MapNetworkModel'
 ]
 
+sirius_collection_classes = [
+  'NodesCollection'
+]
+
 load_sirius_classes = (after) ->
   head.js "js/Sirius.js", ->
     class_paths = _.map(sirius_classes_without_extensions, (cname) -> "js/#{cname}.js")
     class_paths = class_paths.concat _.flatten(_.map(sirius_map_view_classes, (cname) -> "js/#{cname}.js"))
     class_paths = class_paths.concat _.flatten(_.map(sirius_model_view_classes, (cname) -> "js/#{cname}.js"))
+    class_paths = class_paths.concat _.flatten(_.map(sirius_collection_classes, (cname) -> "js/#{cname}.js"))
     class_paths = class_paths.concat _.flatten(_.map(
       sirius_classes_with_extensions,
       (cname) -> ["js/#{cname}.js","js/extensions/#{cname}.js"]
@@ -68,6 +73,7 @@ head.js('https://www.google.com/jsapi',
         '../libs/js/jquery-ui-1.8.18.min.js',
         '../libs/js/underscore.js',
         '../libs/js/backbone.js',
+        '../libs/js/modernizr.custom.localstorage.js',
         '../libs/js/bootstrap/js/bootstrap.min.js', ->
                google.load("maps", "3", {
                   callback: "window.load_sirius()",
