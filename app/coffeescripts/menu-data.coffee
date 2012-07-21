@@ -14,10 +14,12 @@ $a.nav_bar_menu_items = {
                                         $("#uploadField").click()
                                         e.preventDefault())
               
-              'Save Local Network' : (() ->
-                                            doc = document.implementation.createDocument(null, null, null)
-                                            $a.xml = $a.models.to_xml(doc) if $a.models?
-                                            )
+              'Save Local Network' : (() ->  if $a.models?
+                                                doc = document.implementation.createDocument(null, null, null)
+                                                $a.Util.writeAndDownloadXML $a.models.to_xml(doc), "../scenario.php", "../scenario-download.php"
+                                             else
+                                                $a.broker.trigger("app:show_message:info", "No scenario loaded")
+                                    )
               'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
             }

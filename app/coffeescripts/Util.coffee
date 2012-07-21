@@ -28,10 +28,27 @@ class window.sirius.Util
   # The list is the list you want to iterate over and the id is what you want to find
   @getElement: (id, list) ->
     _.find(list, (elem) ->  elem.get('id') == id)  
-
+  
+  # creates a copy of of item array. The items array is a list menu items for context menus.
   @copy: (items) ->
     temp = []
     _.each(items, (item) =>
       temp.push {label: item.label, className: item.className, event: item.event}
     )
     temp
+  
+  # This makes an ajax call to the server in order to write the model's xml file and 
+  # download it back to the user. Call From "Save Local Network" menu item
+  @writeAndDownloadXML: (xml, serverWrite, serverDownload) ->
+    xhReq = new XMLHttpRequest()
+    xhReq.open("post", serverWrite, false)
+    xhReq.setRequestHeader('Content-Type',"text/xml")
+    xhReq.onload = (() -> 
+      elemIF = document.createElement("iframe")
+      elemIF.id = "download-iframe"
+      elemIF.src = serverDownload
+      elemIF.style.display = "none"
+      $('body').append(elemIF)
+      )
+    xhReq.send(new XMLSerializer().serializeToString(xml))
+  
