@@ -32,7 +32,7 @@ sirius_classes_without_extensions = [
 ]
 
 sirius_map_view_classes = [
-  'AppView', 'ContextMenuItemView','ContextMenuView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
+  'AppView', 'ContextMenuItemView','ContextMenuView', 'EditorView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
   'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView', 
   'MapSignalView', 'Util', 'MessagePanelView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView', 
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView', 
@@ -70,10 +70,9 @@ window.load_sirius = ->
 
 head.js('https://www.google.com/jsapi',
         '../libs/js/jquery-1.7.1.js',
-        '../libs/js/jquery-ui-1.8.18.min.js',
+        '../libs/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
         '../libs/js/underscore.js',
         '../libs/js/backbone.js',
-        '../libs/js/modernizr.custom.localstorage.js',
         '../libs/js/bootstrap/js/bootstrap.min.js', ->
                google.load("maps", "3", {
                   callback: "window.load_sirius()",

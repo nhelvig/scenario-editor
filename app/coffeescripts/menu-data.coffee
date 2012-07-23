@@ -17,7 +17,7 @@ $a.nav_bar_menu_items = {
                                                 doc = document.implementation.createDocument(null, null, null)
                                                 $a.Util.writeAndDownloadXML $a.models.to_xml(doc), "../scenario.php", "../scenario-download.php"
                                              else
-                                                $a.broker.trigger("app:show_message:info", "No scenario loaded")
+                                                $a.broker.trigger("app:show_message:info", "No scenario loaded - nothing to save")
                                     )
               'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))

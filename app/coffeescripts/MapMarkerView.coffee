@@ -8,9 +8,10 @@ class window.sirius.MapMarkerView extends Backbone.View
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
     @latLng = $a.Util.getLatLng(model)
-    @draw() 
+    @draw()
     google.maps.event.addListener(@marker, 'dragend', @dragMarker())
     google.maps.event.addListener(@marker, 'click', (event) => @manageMarkerSelect())
+    google.maps.event.addListener(@marker, 'dblclick', (mouseEvent) => @_editor() )
     $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
@@ -74,6 +75,11 @@ class window.sirius.MapMarkerView extends Backbone.View
     @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
     google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) => @contextMenu.show mouseEvent.latLng )
     @model.set('contextMenu', @contextMenu)
+  
+  _editor: ->
+    new $a.EditorView()
+    $( "#dialog-form" ).tabs();
+    $( "#dialog-form" ).dialog( "open" ) 
     
   # events used to move the marker and update its position
   dragMarker: =>
