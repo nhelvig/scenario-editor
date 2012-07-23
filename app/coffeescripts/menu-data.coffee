@@ -19,7 +19,7 @@ $a.nav_bar_menu_items = {
                                              else
                                                 $a.broker.trigger("app:show_message:info", "No scenario loaded")
                                     )
-              'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
+              'Close Local Network' : (() -> $a.broker.trigger('map:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
             }
     'Windows': {
