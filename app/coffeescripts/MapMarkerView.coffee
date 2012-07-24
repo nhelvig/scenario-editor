@@ -99,11 +99,11 @@ class window.sirius.MapMarkerView extends Backbone.View
     lastIndex =  tokens.length - 1
     tokens[lastIndex]
   
-  _setSelected: (img) =>
+  _setSelected: (img) ->
     @marker.setIcon(@getMarkerImage(img))
       
   # This method swaps the icon for the selected icon
-  makeSelected: (img) =>
+  makeSelected: (img) ->
     @_setSelected img
   
   # This method swaps the icon for the de-selected icon

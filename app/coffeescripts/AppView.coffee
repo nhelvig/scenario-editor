@@ -84,7 +84,7 @@ class window.sirius.AppView extends Backbone.View
 
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
-  _displayMap: (fileText) =>
+  _displayMap: (fileText) ->
     try
       xml = $.parseXML(fileText)
     catch error
@@ -102,7 +102,7 @@ class window.sirius.AppView extends Backbone.View
   _messagePanel: ->
     new $a.MessagePanelView()
     
-  _setKeyDownEvents: (e) =>
+  _setKeyDownEvents: (e) ->
     # Open Local Network ALT-A
     # We set ALT_DOWN to false here because
     # the click event is preventing key up from being called
@@ -121,7 +121,8 @@ class window.sirius.AppView extends Backbone.View
     # Set alt key down in order to set up quick key for opening files
     $a.ALT_DOWN = true if e.keyCode == 18
     
-  _setKeyUpEvents: (e) =>    
+
+  _setKeyUpEvents: (e) -> 
     # Turn off shift and alt down flags where appropriate
     $a.SHIFT_DOWN = false if e.keyCode == 16
     $a.ALT_DOWN = false  if e.keyCode == 18
@@ -139,7 +140,7 @@ class window.sirius.AppView extends Backbone.View
     toggleTree.onclick = ->
       $a.broker.trigger('map:toggle_tree', 0)
   
-  toggleTree: (display) =>
+  toggleTree: (display) ->
     button = document.getElementById 'collapseTree'
     if button.innerHTML == ' &gt; ' and (display == 0 or display == false)
       button.innerHTML = ' < '

@@ -36,7 +36,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
     $a.broker.on('app:tree_remove_highlight', @removeHighlight, @)
     $a.broker.on('app:tree_clear', @removeItem, @)
 
-  manageHighlight:  =>
+  manageHighlight:  ->
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
 
@@ -52,7 +52,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
       @highlighted = false
       @removeHighlight()
 
-  highlight: () =>
+  highlight: () ->
     $(@el).addClass "highlight"
 
   removeHighlight: ->
@@ -79,7 +79,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
   # We offset the x and y by 5 in order to make sure the window stays open
   # once the button is released in FF and we return false to turn off the browsers default
   # context menu
-  showContext: (e) =>
+  showContext: (e) ->
     position = {}
     position.x = e.clientX - 5
     position.y = e.clientY - 5
