@@ -10,7 +10,7 @@ describe("Begin", function() {
 
     it("should not blow up on to_xml", function() {
 	var doc = document.implementation.createDocument("document:xml", "begin");
-	var out = testBegin.to_xml(doc) 
+	var out = testBegin.to_xml(doc); 
 	expect(out).not.toBeNull();
     });
 
@@ -35,4 +35,5 @@ describe("Begin", function() {
 	testBegin.encode_references();
 	expect(testBegin.get('node_id')).toEqual(testNodeId);
     })
+
 });
