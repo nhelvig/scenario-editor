@@ -22,7 +22,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
 
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
-  removeElement: =>
+  removeElement: ->
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off('map:hide_sensor_layer')
@@ -35,7 +35,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
     super 'sensor', $a.sensor_context_menu
 
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
-  manageMarkerSelect: () =>
+  manageMarkerSelect: () ->
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
     if iconName == "#{MapSensorView.ICON}.png"
       @_triggerClearSelectEvents()
@@ -77,7 +77,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
     super MapSensorView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
-  clearSelected: () =>
+  clearSelected: () ->
     super MapSensorView.ICON
     
 

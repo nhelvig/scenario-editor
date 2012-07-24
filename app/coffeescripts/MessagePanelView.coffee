@@ -18,11 +18,11 @@ class window.sirius.MessagePanelView extends Backbone.View
     @$el.html(@template({message: message})) 
     @$el.fadeIn(2000, () => @$el.fadeOut(2000))
   
-  success: (message) =>
+  success: (message) ->
     @show message, 'alert-success'
   
-  error: (message) =>
+  error: (message) ->
     @show message, 'alert-error'
   
-  info: (message) =>
+  info: (message) ->
     @show message, 'alert-info'

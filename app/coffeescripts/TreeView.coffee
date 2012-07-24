@@ -28,7 +28,7 @@ class window.sirius.TreeView extends Backbone.View
       $a.broker.on('app:main_tree', @render, @)
       
   # Attach itself as well as trigger events for the parent and child nodes to be rendered
-  render: =>
+  render: ->
     $(@parent).append(@el)
     $a.broker.trigger("app:parent_tree")
     $a.broker.trigger("app:child_trees")

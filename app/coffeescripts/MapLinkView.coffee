@@ -30,7 +30,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
 
   
-  render: =>
+  render: ->
     @link.setMap($a.map)
     #@arrow.setMap($a.map) if @arrow?
     @
@@ -112,7 +112,7 @@ class window.sirius.MapLinkView extends Backbone.View
     @link.setMap(null)
     #@arrow.setMap(null) if @arrow?
   
-  showLink: () =>
+  showLink: () ->
     @link.setMap($a.map)
     #@arrow.setMap($a.map) if @arrow?
 
@@ -139,7 +139,7 @@ class window.sirius.MapLinkView extends Backbone.View
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
     
   # This method swaps the icon for the de-selected color
-  clearSelected: () =>
+  clearSelected: () ->
     @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
   
   # This method is called from the context menu and selects itself and all the links nodes as the higlighted tree items

@@ -34,7 +34,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
 
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
-  removeElement: =>
+  removeElement: ->
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:select_neighbors_outgoing:#{@model.cid}")
     $a.broker.off("map:select_neighbors_incoming:#{@model.cid}")
@@ -49,7 +49,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
 
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
-  manageMarkerSelect: () =>
+  manageMarkerSelect: () ->
     iconName = MapNodeView.__super__._getIconName.apply(@, []) 
     if iconName == "#{@_getTypeIcon(false)}.png"
       @_triggerClearSelectEvents()
@@ -105,11 +105,11 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     @model.get("#{type}s").get("#{type}")
     
   # This method swaps the icon for the selected icon
-  makeSelected: () =>
+  makeSelected: () ->
     super @_getTypeIcon true
   
   # This method swaps the icon for the de-selected icon
-  clearSelected: () =>
+  clearSelected: () ->
     super @_getTypeIcon false
   
   # This returns the appropriate icon for terminals and selected or not

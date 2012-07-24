@@ -16,14 +16,14 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
   
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
-  removeElement: =>
+  removeElement: ->
     $a.broker.off('map:hide_signal_layer')
     $a.broker.off('map:show_signal_layer')
     super
 
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
-  manageMarkerSelect: () =>
+  manageMarkerSelect: () ->
     iconName = MapSignalView.__super__._getIconName.apply(@, []) 
     if iconName == "#{MapSignalView.ICON}.png"
       @_triggerClearSelectEvents()
@@ -51,5 +51,5 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
     super MapSignalView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
-  clearSelected: () =>
+  clearSelected: () ->
     super MapSignalView.ICON
