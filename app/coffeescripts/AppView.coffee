@@ -17,6 +17,7 @@ class window.sirius.AppView extends Backbone.View
     @_layersMenu()
     @_messagePanel()
     @_treeMenuToggle()
+    @_attachEvents()
     google.maps.event.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     google.maps.event.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     google.maps.event.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
@@ -63,8 +64,6 @@ class window.sirius.AppView extends Backbone.View
   # This creates the layers menu bar
   _layersMenu: () ->
     lmenu = new $a.LayersMenuView({className: 'dropdown-menu bottom-up', id : 'l_list', parentId: 'lh', menuItems: $a.layers_menu})
-    # we'll need to get rid of this call -- it is doing things that it shouldn't do to the modals, clear map, etc
-    lmenu.attachEvents()
       
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
@@ -81,7 +80,6 @@ class window.sirius.AppView extends Backbone.View
 
   openScenario: ->  
     $("#uploadField").click()
-
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
   _displayMap: (fileText) ->
@@ -139,8 +137,18 @@ class window.sirius.AppView extends Backbone.View
     document.getElementById("map_canvas").appendChild toggleTree
     toggleTree.onclick = ->
       $a.broker.trigger('map:toggle_tree', 0)
-  
-  toggleTree: (display) ->
+
+  _attachEvents: ->
+    
+    $('#expand-all').click( ->
+      checkBox.checked = true for checkBox in $('.expand-tree')
+      )
+      
+    $('#collapse-all').click( ->
+      checkBox.checked = false for checkBox in $('.expand-tree')
+      )
+      
+  toggleTree: (display) =>
     button = document.getElementById 'collapseTree'
     if button.innerHTML == ' &gt; ' and (display == 0 or display == false)
       button.innerHTML = ' < '
@@ -152,3 +160,4 @@ class window.sirius.AppView extends Backbone.View
       $('#right_tree').show(200)
       align = right: '22%'
       $('#collapseTree').animate(align, 200)
+    

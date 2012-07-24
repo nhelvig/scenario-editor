@@ -53,7 +53,6 @@ class window.sirius.MapMarkerView extends Backbone.View
     $a.broker.off('map:clear_selected')
     $a.broker.off("map:select_item:#{@model.cid}")
     $a.broker.off("map:clear_item:#{@model.cid}")
-    #$a.broker.off('map:clear_map')
     @hideMarker() if @marker?
     @marker = null
 
