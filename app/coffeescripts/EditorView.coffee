@@ -1,8 +1,10 @@
 # This creates the editor dialogs for all elements
 class window.sirius.EditorView extends Backbone.View
   $a = window.sirius
-          
-  initialize: (@elem, model, templateData) ->
+  events : {
+    'blur #name, #description, #type, #latitude, #longitude, #elevation' : 'save'
+  }    
+  initialize: (@elem, @model, templateData) ->
     title = (word[0].toUpperCase() + word[1..].toLowerCase() for word in elem.split /\s+/).join ' '
     @$el.attr 'title', "#{title} Editor: #{model.get('name')}"
     @$el.attr 'id', "#{elem}-dialog-form"
@@ -48,4 +50,9 @@ class window.sirius.EditorView extends Backbone.View
             @$el.remove()
           
         })
+    
+  save: (e) ->
+    id = e.currentTarget.id
+    @model.set(id, $("##{id}").val())
+    console.log @model.get(id)
     
