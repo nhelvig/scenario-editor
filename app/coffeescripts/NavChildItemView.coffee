@@ -15,7 +15,7 @@ class window.sirius.NavChildItemView extends Backbone.View
     $a.broker.on('app:nav-menu', @render, @)
     @render()
 
-  render: =>
+  render: ->
     $("##{@parent} ul").append(@el)
     @
 

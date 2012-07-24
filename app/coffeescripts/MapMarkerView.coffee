@@ -18,7 +18,7 @@ class window.sirius.MapMarkerView extends Backbone.View
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:clear_map', @removeElement, @)
     
-  render: =>
+  render: ->
     @marker.setMap($a.map)
     @
 
@@ -48,7 +48,7 @@ class window.sirius.MapMarkerView extends Backbone.View
   
   # in order to remove an element you need to unpublish the events, hide the marker
   # and set it to null
-  removeElement: =>
+  removeElement: ->
     $a.broker.off('map:init')
     $a.broker.off('map:clear_selected')
     $a.broker.off("map:select_item:#{@model.cid}")
@@ -82,15 +82,15 @@ class window.sirius.MapMarkerView extends Backbone.View
     $( "##{elem}-dialog-form" ).dialog('open') 
     
   # events used to move the marker and update its position
-  dragMarker: =>
+  dragMarker: ->
     @latLng = @marker.getPosition();
     $a.map.panTo(@latLng);
   
   ################# The following handles the show and hide of node layers
-  hideMarker: =>
+  hideMarker: ->
     @marker.setMap(null)
 
-  showMarker: =>
+  showMarker: ->
     @marker.setMap($a.map)
 
   # Used by subclasses to get name of image in order to swap between selected and not selected

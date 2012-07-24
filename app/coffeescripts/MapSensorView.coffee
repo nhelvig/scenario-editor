@@ -22,7 +22,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
 
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
-  removeElement: =>
+  removeElement: ->
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off('map:hide_sensor_layer')
