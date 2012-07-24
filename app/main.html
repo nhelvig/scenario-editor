@@ -49,7 +49,7 @@
     <script type="text/template" id="message-panel-template">
       {{message}} 
     </script>
-    <script type="text/template" id="editor-dialog-template">
+    <script type="text/template" id="node-editor-dialog-template">
         <ul>
           <li><a href="#tabs-1">Node</a></li>
           <li><a href="#tabs-2">Geo</a></li>
@@ -60,14 +60,20 @@
           <form>
             <fieldset>
               <label for="name">Name</label>
-              <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+              <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
               <label for="type">Type</label>
               <select id="type" name ="type" class="ui-widget-content ui-corner-all">
                 <option value="freeway">Freeway</option>
+                <option value="highway">Highway</option>
+                <option value="signalized_intersection">Signalized Intersection</option>
+                <option value="simple">Simple</option>
+                <option value="stop_intersection">Stop Intersection</option>
+                <option value="terminal">Terminal</option>
+                <option value="other">Other</option>
               </select><br/>
               <button id="edit-signal" class="text ui-widget-content ui-corner-all" >Edit Signal</button>
               <label for="description">Description</label>
-              <input type="textarea" name="description" id="description" class="text ui-widget-content ui-corner-all" />
+              <textarea rows="2" name="description" id="description" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
             </fieldset>
           </form>
         </div>
@@ -75,12 +81,12 @@
           <form>
             <fieldset>
               <label for="latitude">Latitude</label>
-              <input type="text" name="latitude" id="latitude" class="text ui-widget-content ui-corner-all" />
+              <input type="text" name="latitude" id="latitude" class="text ui-widget-content ui-corner-all" value="{{lat}}"/>
               <label for="longitude">Longitude</label>
-              <input type="text" name="longitude" id="longitude" class="text ui-widget-content ui-corner-all" />
+              <input type="text" name="longitude" id="longitude" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
               <label for="elevation">Elevation</label>
-              <input type="text" name="elevation" id="elevation" class="text ui-widget-content ui-corner-all" /><br/>
-              <input type="checkbox" name="lock-node" id="lock-node" class="text ui-widget-content ui-corner-all" />
+              <input type="text" name="elevation" id="elevation" class="text ui-widget-content ui-corner-all" value="{{elevation}}"/><br/>
+              <input type="checkbox" name="lock-node" id="lock-node" class="text ui-widget-content ui-corner-all" {{lock}} />
               <span>Lock node position</span>
             </fieldset>
           </form>

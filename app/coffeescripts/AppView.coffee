@@ -79,9 +79,9 @@ class window.sirius.AppView extends Backbone.View
      else
         $a.broker.trigger("app:show_message:info", "No scenario loaded")
 
-  openScenario: =>  
+  openScenario: =>
     $("#uploadField").click()
-    e.preventDefault()
+
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
   _displayMap: (fileText) =>
@@ -104,13 +104,16 @@ class window.sirius.AppView extends Backbone.View
     
   _setKeyDownEvents: (e) =>
     # Open Local Network ALT-A
+    # We set ALT_DOWN to false here because
+    # the click event is preventing key up from being called
     if $a.ALT_DOWN and e.keyCode == 65
-      #@clearMap()
-      $("#uploadField").click() 
+      $("#uploadField").click()
+      $a.ALT_DOWN = false
     
     # Save Local Network
     if $a.ALT_DOWN and e.keyCode == 83
       $("#save-local-network").click()
+      $a.ALT_DOWN = false
       
     # Set multi-select of map elements with the shift key
     $a.SHIFT_DOWN = true if e.keyCode == 16
@@ -118,7 +121,7 @@ class window.sirius.AppView extends Backbone.View
     # Set alt key down in order to set up quick key for opening files
     $a.ALT_DOWN = true if e.keyCode == 18
     
-  _setKeyUpEvents: (e) => 
+  _setKeyUpEvents: (e) =>    
     # Turn off shift and alt down flags where appropriate
     $a.SHIFT_DOWN = false if e.keyCode == 16
     $a.ALT_DOWN = false  if e.keyCode == 18

@@ -75,10 +75,11 @@ class window.sirius.MapMarkerView extends Backbone.View
     google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) => @contextMenu.show mouseEvent.latLng )
     @model.set('contextMenu', @contextMenu)
   
-  _editor: ->
-    new $a.EditorView()
-    $( "#dialog-form" ).tabs();
-    $( "#dialog-form" ).dialog( "open" ) 
+  _editor: (elem, templateData)->
+    console.log @model
+    new $a.EditorView(elem, @model, templateData)
+    $( "##{elem}-dialog-form" ).tabs()
+    $( "##{elem}-dialog-form" ).dialog('open') 
     
   # events used to move the marker and update its position
   dragMarker: =>

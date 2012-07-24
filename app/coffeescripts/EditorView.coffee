@@ -1,20 +1,21 @@
 # This creates the editor dialogs for all elements
 class window.sirius.EditorView extends Backbone.View
   $a = window.sirius
-  id: 'dialog-form'
           
-  initialize: () ->
-    @$el.attr 'title', 'Editor'
-    @template = _.template($('#editor-dialog-template').html())
-    @$el.html(@template())
+  initialize: (@elem, model, templateData) ->
+    title = (word[0].toUpperCase() + word[1..].toLowerCase() for word in elem.split /\s+/).join ' '
+    @$el.attr 'title', "#{title} Editor: #{model.get('name')}"
+    @$el.attr 'id', "#{elem}-dialog-form"
+    @template = _.template($("##{elem}-editor-dialog-template").html())
+    @$el.html(@template(templateData))
     @render()
   
   render: ->
     $('body').append(@$el)
-    $( "#dialog-form" ).dialog({
+    $( "##{@elem}-dialog-form" ).dialog({
           autoOpen: false,
-          height: 300,
-          width: 350,
+          height: 360,
+          width: 275,
           modal: false,
           # buttons: {
           #                                 "Create an account": ->
