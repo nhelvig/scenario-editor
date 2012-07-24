@@ -1,4 +1,4 @@
-Ï# AppView is main organizing view for the application
+# AppView is main organizing view for the application
 # It handles all the application level elements as well as
 # instantiating and triggering the Network to be drawn
 class window.sirius.AppView extends Backbone.View
