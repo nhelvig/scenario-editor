@@ -47,7 +47,7 @@ class window.sirius.EditorView extends Backbone.View
           #               $( this ).dialog( "close" );
           #             
           #           },
-          close: ->
+          close: =>
             @$el.remove()
           
         })
