@@ -5,7 +5,8 @@ class window.sirius.EditorView extends Backbone.View
     'blur #name, #description, #type, #latitude, #longitude, #elevation' : 'save'
   }    
   initialize: (@elem, @model, templateData) ->
-    title = (word[0].toUpperCase() + word[1..].toLowerCase() for word in elem.split /\s+/).join ' '
+    console.log @elem
+    title = (word[0].toUpperCase() + word[1..].toLowerCase() for word in @elem.split /\s+/).join ' '
     @$el.attr 'title', "#{title} Editor: #{model.get('name')}"
     @$el.attr 'id', "#{elem}-dialog-form"
     @template = _.template($("##{elem}-editor-dialog-template").html())
