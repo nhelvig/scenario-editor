@@ -23,7 +23,7 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
 
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
-  manageMarkerSelect: () =>
+  manageMarkerSelect: () ->
     iconName = MapSignalView.__super__._getIconName.apply(@, []) 
     if iconName == "#{MapSignalView.ICON}.png"
       @_triggerClearSelectEvents()
@@ -51,5 +51,5 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
     super MapSignalView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
-  clearSelected: () =>
+  clearSelected: () ->
     super MapSignalView.ICON

@@ -26,7 +26,7 @@ class window.sirius.MapControllerView extends window.sirius.MapMarkerView
   ################# select events for marker
   # Callback for the markers click event
   # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
-  manageMarkerSelect: () =>
+  manageMarkerSelect: () ->
     iconName = MapControllerView.__super__._getIconName.apply(@, []) 
     if iconName == "#{MapControllerView.ICON}.png"
       @_triggerClearSelectEvents()
@@ -43,18 +43,18 @@ class window.sirius.MapControllerView extends window.sirius.MapMarkerView
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->
-    _.each(@model.links, (link) => 
+    _.each(@model.links, (link) -> 
           $a.broker.trigger("map:select_item:#{link.cid}")
           $a.broker.trigger("app:tree_highlight:#{link.cid}")
         )
     super MapControllerView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
-  clearSelected: () =>
+  clearSelected: () ->
     super MapControllerView.ICON
 
   # Iterate over the list to find name associated with the id
   _getLinks: ->
     links = []
-    _.each(@model.scenElements, (elem) => links.push $a.Util.getElement(elem.id,$a.MapNetworkModel.LINKS))
+    _.each(@model.scenElements, (elem) -> links.push $a.Util.getElement(elem.id,$a.MapNetworkModel.LINKS))
     links
