@@ -16,7 +16,7 @@ class window.sirius.MapNetworkView extends Backbone.View
     @_drawScenarioItems()
     
     # This class creates the tree view of all the elements of the scenario
-    new window.sirius.TreeView({ scenario: @scenario, attach: "#right_tree"})
+    new $a.TreeView({ scenario: @scenario, attach: "#right_tree"})
     @render()
   
   render: ->
@@ -88,7 +88,6 @@ class window.sirius.MapNetworkView extends Backbone.View
     new $a.MapLinkView(linkModel, network, legs)
 
   _drawNodes: (nodes, network) ->
-    nc = new $a.NodesCollection(nodes)
     _.each(nodes, (i) ->  new $a.MapNodeView(i, network))
 
   _drawSensors: (sensors) ->
