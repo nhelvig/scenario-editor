@@ -11,7 +11,7 @@ body { height: 100%; margin: 5px; padding: 0 }
 }
 
 .alert-bottom {position:absolute; bottom:0; right:23%; max-width:200px}
-.container {position:absolute; z-index:1; width: 278px; margin-top:5px;margin-left:80px; background-color: #444444;}
+.container {position:absolute; z-index:1; width: 278px; margin-top:5px;margin-left:80px; background-color: #444444; display:none}
 .ui-dialog {
   background-color: #fff;
   border-color: #ccc;
@@ -79,8 +79,8 @@ hr {
   padding:0 0 2px 0;
 }
 
-#lh{position:fixed; left:20px; bottom:25px; z-index: 2}
-#mh{position:fixed; left:75px; bottom:25px; z-index: 2}
+#lh{position:fixed; left:20px; bottom:25px; z-index: 2; display:none}
+#mh{position:fixed; left:75px; bottom:25px; z-index: 2; display:none}
 .bottom-up{bottom:100%; max-width:80px}
 /* message panel */
 .open {
@@ -131,7 +131,7 @@ hr {
 #collapseTree
 {
   position:fixed;
-  right:22%;
+  right:0%;
   z-index: 2
 }
 
@@ -235,6 +235,7 @@ hr {
   width:22%;
   right:0;
   overflow: scroll;
-  z-index: 2
+  z-index: 2;
+  display: none
 }
 

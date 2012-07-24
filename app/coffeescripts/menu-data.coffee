@@ -12,8 +12,7 @@ $a.nav_bar_menu_items = {
               'New' : (() -> alert('Not Configured'))
               'Open Local Network' : ((e) ->
                                         $("#uploadField").click()
-                                        e.preventDefault())
-              
+                                        e.preventDefault())              
               'Save Local Network' : (() ->  if $a.models?
                                                 doc = document.implementation.createDocument(null, null, null)
                                                 $a.Util.writeAndDownloadXML $a.models.to_xml(doc), "../scenario.php", "../scenario-download.php"
