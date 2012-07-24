@@ -5,6 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     
     <link href="../libs/js/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../libs/js/jquery-ui-1.8.21/css/ui-darkness/jquery-ui-1.8.21.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     
     <script src="../libs/js/head.js"></script>
@@ -48,6 +49,51 @@
     <script type="text/template" id="message-panel-template">
       {{message}} 
     </script>
+    <script type="text/template" id="editor-dialog-template">
+        <ul>
+          <li><a href="#tabs-1">Node</a></li>
+          <li><a href="#tabs-2">Geo</a></li>
+          <li><a href="#tabs-3">Tools</a></li>
+        </ul>
+        
+        <div id="tabs-1">
+          <form>
+            <fieldset>
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+              <label for="type">Type</label>
+              <select id="type" name ="type" class="ui-widget-content ui-corner-all">
+                <option value="freeway">Freeway</option>
+              </select><br/>
+              <button id="edit-signal" class="text ui-widget-content ui-corner-all" >Edit Signal</button>
+              <label for="description">Description</label>
+              <input type="textarea" name="description" id="description" class="text ui-widget-content ui-corner-all" />
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-2">
+          <form>
+            <fieldset>
+              <label for="latitude">Latitude</label>
+              <input type="text" name="latitude" id="latitude" class="text ui-widget-content ui-corner-all" />
+              <label for="longitude">Longitude</label>
+              <input type="text" name="longitude" id="longitude" class="text ui-widget-content ui-corner-all" />
+              <label for="elevation">Elevation</label>
+              <input type="text" name="elevation" id="elevation" class="text ui-widget-content ui-corner-all" /><br/>
+              <input type="checkbox" name="lock-node" id="lock-node" class="text ui-widget-content ui-corner-all" />
+              <span>Lock node position</span>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-3">
+          <form>
+            <fieldset>
+              <button id="remove-join-links" class="text ui-widget-content ui-corner-all" >Remove and join links</button>
+              <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
+            </fieldset>
+          </form>
+        </div>
+        
     </script>
   </body>
 </html>

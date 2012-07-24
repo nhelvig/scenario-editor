@@ -12,17 +12,22 @@ body { height: 100%; margin: 5px; padding: 0 }
 
 .alert-bottom {position:absolute; bottom:0; right:23%; max-width:200px}
 .container {position:absolute; z-index:1; width: 278px; margin-top:5px;margin-left:80px; background-color: #444444; display:none}
-.ui-dialog {
-  background-color: #fff;
-  border-color: #ccc;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: solid;
-  border-width: 1px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+.ui-dialog .ui-dialog-content
+{
+  padding: 1px 0;
 }
-
+.ui-widget .ui-widget {
+  font-size:0.8em;
+}
+form label {
+  color:#fff;
+}
+fieldset span {
+  font-size:13px;
+}
+fieldset button {
+  display:block;
+}
 .context_menu {
   display:none; 
   position:absolute;

@@ -32,7 +32,7 @@ sirius_classes_without_extensions = [
 ]
 
 sirius_map_view_classes = [
-  'AppView', 'ContextMenuItemView','ContextMenuView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
+  'AppView', 'ContextMenuItemView','ContextMenuView', 'EditorView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
   'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView', 
   'MapSignalView', 'Util', 'MessagePanelView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView', 
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView', 
@@ -43,16 +43,12 @@ sirius_model_view_classes = [
   'MapNetworkModel'
 ]
 
-sirius_collection_classes = [
-  'NodesCollection'
-]
 
 load_sirius_classes = (after) ->
   head.js "js/Sirius.js", ->
     class_paths = _.map(sirius_classes_without_extensions, (cname) -> "js/#{cname}.js")
     class_paths = class_paths.concat _.flatten(_.map(sirius_map_view_classes, (cname) -> "js/#{cname}.js"))
     class_paths = class_paths.concat _.flatten(_.map(sirius_model_view_classes, (cname) -> "js/#{cname}.js"))
-    class_paths = class_paths.concat _.flatten(_.map(sirius_collection_classes, (cname) -> "js/#{cname}.js"))
     class_paths = class_paths.concat _.flatten(_.map(
       sirius_classes_with_extensions,
       (cname) -> ["js/#{cname}.js","js/extensions/#{cname}.js"]
@@ -70,10 +66,9 @@ window.load_sirius = ->
 
 head.js('https://www.google.com/jsapi',
         '../libs/js/jquery-1.7.1.js',
-        '../libs/js/jquery-ui-1.8.18.min.js',
+        '../libs/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
         '../libs/js/underscore.js',
         '../libs/js/backbone.js',
-        '../libs/js/modernizr.custom.localstorage.js',
         '../libs/js/bootstrap/js/bootstrap.min.js', ->
                google.load("maps", "3", {
                   callback: "window.load_sirius()",
