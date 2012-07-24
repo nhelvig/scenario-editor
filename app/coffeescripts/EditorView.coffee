@@ -54,5 +54,4 @@ class window.sirius.EditorView extends Backbone.View
   save: (e) ->
     id = e.currentTarget.id
     @model.set(id, $("##{id}").val())
-    console.log @model.get(id)
     
