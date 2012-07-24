@@ -10,15 +10,8 @@ $a.main_tree_elements = [
 $a.nav_bar_menu_items = {
     'File': {
               'New' : (() -> alert('Not Configured'))
-              'Open Local Network' : ((e) ->
-                                        $("#uploadField").click()
-                                        e.preventDefault())              
-              'Save Local Network' : (() ->  if $a.models?
-                                                doc = document.implementation.createDocument(null, null, null)
-                                                $a.Util.writeAndDownloadXML $a.models.to_xml(doc), "../scenario.php", "../scenario-download.php"
-                                             else
-                                                $a.broker.trigger("app:show_message:info", "No scenario loaded - nothing to save")
-                                    )
+              'Open Local Network' : (() -> $a.broker.trigger("app:open_scenario"))              
+              'Save Local Network' : (() ->  $a.broker.trigger("app:save_scenario"))
               'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
             }

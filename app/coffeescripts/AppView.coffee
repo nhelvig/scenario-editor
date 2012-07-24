@@ -3,7 +3,6 @@
 # instantiating and triggering the Network to be drawn
 class window.sirius.AppView extends Backbone.View
   $a = window.sirius
-  $a.SHIFT_DOWN = false
   
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
@@ -23,6 +22,8 @@ class window.sirius.AppView extends Backbone.View
     google.maps.event.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
     $a.broker.on('map:upload_complete', @_displayMap, @)
     $a.broker.on("map:clear_map", @clearMap, @)
+    $a.broker.on('app:open_scenario', @openScenario, @)
+    $a.broker.on("app:save_scenario", @saveScenario, @)
     $a.broker.on("map:alert", @showAlert, @)
     $a.broker.on("map:toggle_tree", @toggleTree, @)
     @
@@ -64,15 +65,23 @@ class window.sirius.AppView extends Backbone.View
     lmenu = new $a.LayersMenuView({className: 'dropdown-menu bottom-up', id : 'l_list', parentId: 'lh', menuItems: $a.layers_menu})
     # we'll need to get rid of this call -- it is doing things that it shouldn't do to the modals, clear map, etc
     lmenu.attachEvents()
-  
-  _treeMenuToggle: () ->
-    toggleTree = document.createElement "button"
-    toggleTree.innerHTML = " < "
-    toggleTree.id = "collapseTree"
-    document.getElementById("map_canvas").appendChild toggleTree
-    toggleTree.onclick = ->
-      $a.broker.trigger('map:toggle_tree', 0)
       
+  # creates a DOM document for the models xml to written to.
+  # if no scenario has been loaded show a message indicating this.
+  # The two files passed to the writeAndDownloadXML method are scenario.php and scenario-download-php.
+  # This will change when we know what we are running on the backend. The first file taks the xml string 
+  # generated from the models and saves it to a file. The second parameter creates the correct headers to download
+  # this file to the client
+  saveScenario: =>
+    if $a.models?
+        doc = document.implementation.createDocument(null, null, null)
+        $a.Util.writeAndDownloadXML $a.models.to_xml(doc), "../scenario.php", "../scenario-download.php"
+     else
+        $a.broker.trigger("app:show_message:info", "No scenario loaded")
+
+  openScenario: =>  
+    $("#uploadField").click()
+    e.preventDefault()
     
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
   _displayMap: (fileText) =>
@@ -84,6 +93,15 @@ class window.sirius.AppView extends Backbone.View
     new $a.MapNetworkModel()
     @mapView = new $a.MapNetworkView $a.models
 
+
+  clearMap: =>
+    $a.broker.trigger('map:toggle_tree', false)
+    $a.broker.trigger('app:tree_clear')
+    $a.broker.trigger('app:show_message:success', 'Cleared map')
+
+  _messagePanel: ->
+    new $a.MessagePanelView()
+    
   _setKeyDownEvents: (e) =>
     # Open Local Network ALT-A
     if $a.ALT_DOWN and e.keyCode == 65
@@ -100,7 +118,6 @@ class window.sirius.AppView extends Backbone.View
     # Set alt key down in order to set up quick key for opening files
     $a.ALT_DOWN = true if e.keyCode == 18
     
-  
   _setKeyUpEvents: (e) => 
     # Turn off shift and alt down flags where appropriate
     $a.SHIFT_DOWN = false if e.keyCode == 16
@@ -111,14 +128,14 @@ class window.sirius.AppView extends Backbone.View
     $('#lh').fadeIn(200)
     $('#mh').fadeIn(200)
     
-  clearMap: =>
-    $a.broker.trigger('map:toggle_tree', false)
-    $a.broker.trigger('app:tree_clear')
-    $a.broker.trigger('app:show_message:success', 'Cleared map')
-    
-  _messagePanel: ->
-    new $a.MessagePanelView()
-
+  _treeMenuToggle: () ->
+    toggleTree = document.createElement "button"
+    toggleTree.innerHTML = " < "
+    toggleTree.id = "collapseTree"
+    document.getElementById("map_canvas").appendChild toggleTree
+    toggleTree.onclick = ->
+      $a.broker.trigger('map:toggle_tree', 0)
+  
   toggleTree: (display) =>
     button = document.getElementById 'collapseTree'
     if button.innerHTML == ' &gt; ' and (display == 0 or display == false)
