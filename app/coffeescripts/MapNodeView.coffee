@@ -34,7 +34,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
 
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
-  removeElement: =>
+  removeElement: ->
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:select_neighbors_outgoing:#{@model.cid}")
     $a.broker.off("map:select_neighbors_incoming:#{@model.cid}")

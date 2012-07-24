@@ -16,7 +16,7 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
   
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
-  removeElement: =>
+  removeElement: ->
     $a.broker.off('map:hide_signal_layer')
     $a.broker.off('map:show_signal_layer')
     super

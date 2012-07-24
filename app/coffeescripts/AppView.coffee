@@ -72,14 +72,14 @@ class window.sirius.AppView extends Backbone.View
   # This will change when we know what we are running on the backend. The first file taks the xml string 
   # generated from the models and saves it to a file. The second parameter creates the correct headers to download
   # this file to the client
-  saveScenario: =>
+  saveScenario: ->
     if $a.models?
         doc = document.implementation.createDocument(null, null, null)
         $a.Util.writeAndDownloadXML $a.models.to_xml(doc), "../scenario.php", "../scenario-download.php"
      else
         $a.broker.trigger("app:show_message:info", "No scenario loaded")
 
-  openScenario: =>  
+  openScenario: ->  
     $("#uploadField").click()
     e.preventDefault()
     
@@ -94,7 +94,7 @@ class window.sirius.AppView extends Backbone.View
     @mapView = new $a.MapNetworkView $a.models
 
 
-  clearMap: =>
+  clearMap: ->
     $a.broker.trigger('map:toggle_tree', false)
     $a.broker.trigger('app:tree_clear')
     $a.broker.trigger('app:show_message:success', 'Cleared map')
@@ -123,7 +123,7 @@ class window.sirius.AppView extends Backbone.View
     $a.SHIFT_DOWN = false if e.keyCode == 16
     $a.ALT_DOWN = false  if e.keyCode == 18
   
-  fadeIn: =>
+  fadeIn: ->
     $('.container').fadeIn(200)
     $('#lh').fadeIn(200)
     $('#mh').fadeIn(200)

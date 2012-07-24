@@ -25,7 +25,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
     @$el.html(@template({text: displayName}))
     @setUpEvents()
 
-  render: =>
+  render: ->
     $("#tree-parent-#{@element}").append(@el)
     @
 
@@ -55,11 +55,11 @@ class window.sirius.TreeChildItemView extends Backbone.View
   highlight: () =>
     $(@el).addClass "highlight"
 
-  removeHighlight: =>
+  removeHighlight: ->
     $(@el).removeClass "highlight"
 
   # in order to remove an element you need to unpublish the events, and remove it from the DOM
-  removeItem: =>
+  removeItem: ->
     $(@el).remove()
     $a.broker.off('app:child_trees')
     _.each(@targets, (target) =>
@@ -69,10 +69,10 @@ class window.sirius.TreeChildItemView extends Backbone.View
     $a.broker.off('app:tree_remove_highlight')
     $a.broker.off('app:tree_clear')
 
-  hideItem: =>
+  hideItem: ->
     @$el.addClass('hide').removeClass('show')
 
-  showItem: =>
+  showItem: ->
     @$el.addClass('show').removeClass('hide')
 
   # This method adds either the node or links context menu to the tree item.

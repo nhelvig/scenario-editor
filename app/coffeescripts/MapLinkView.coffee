@@ -30,7 +30,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
 
   
-  render: =>
+  render: ->
     @link.setMap($a.map)
     #@arrow.setMap($a.map) if @arrow?
     @
