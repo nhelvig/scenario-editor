@@ -34,22 +34,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
 
   # creates the editor for this marker
   _editor: ->
-    templateData = {
-          name: @model.get('name'), 
-          description: @model.get('description'),
-          lat: @model.get('position').get('point')[0].get('lat')
-          lng: @model.get('position').get('point')[0].get('lng')
-          elevation: @model.get('position').get('point')[0].get('elevation')
-          lock: if @model.get('lock')? and model.get('lock') is true then 'checked' else ''
-        }
-    super 'node', templateData
-    #set selected type element
-    elem = _.filter($("#node-dialog-form select option"), (item) => $(item).val() is @model.get('type'))
-    $(elem[0]).attr('selected', true)
-    #generate tabs
-    $('#dialog-form').tabs();
-    $('#dialog-form').dialog('open')
-
+    new $a.EditorNodeView('node', @model)
+  
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
   removeElement: ->
