@@ -12,7 +12,7 @@ $a.nav_bar_menu_items = {
               'New' : (() -> alert('Not Configured'))
               'Open Local Network' : (() -> $a.broker.trigger("app:open_scenario"))              
               'Save Local Network' : (() ->  $a.broker.trigger("app:save_scenario"))
-              'Close Local Network' : (() -> $a.broker.trigger('app:clear_map'))
+              'Close Local Network' : (() -> $a.broker.trigger('map:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
             }
     'Windows': {
