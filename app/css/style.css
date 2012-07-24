@@ -27,6 +27,7 @@ fieldset span {
 }
 fieldset button {
   display:block;
+  margin-bottom:9px;
 }
 .context_menu {
   display:none; 
