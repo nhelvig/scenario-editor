@@ -5,6 +5,9 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     'blur #name, #description, #type' : 'save'
     'blur #lat, #lng, #elevation' : 'saveGeo'
     'click #lock' : 'saveLocked'
+    'click #edit-signal' : 'signalEditor'
+    'click #choose-name' : 'chooseName'
+    'click #remove-join-links' : 'removeJoinLinks'
   }    
   
   initialize: (elem, model) ->
@@ -44,5 +47,16 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
   saveLocked: (e) ->
     id = e.currentTarget.id
     @model.set(id, $("##{id}").prop('checked'))
-    
+  
+  signalEditor: (e) ->
+    alert('Not configured')
+    e.preventDefault()
+  
+  chooseName: (e) ->
+    alert('Not configured')
+    e.preventDefault()
+  
+  removeJoinLinks: (e) ->
+    alert('Not configured')
+    e.preventDefault()
     
