@@ -23,7 +23,7 @@
   };
 
   load_jasmine_specs = function(after){
-    return head.js('lib/jasmine-1.2.0/jasmine.js','lib/jasmine-1.2.0/jasmine-html.js',"spec/SpecHelper.js", function() {
+    return head.js('lib/jasmine-1.2.0/jasmine.js','lib/jasmine-1.2.0/jasmine-html.js', 'lib/jasmine-jquery.js', "spec/SpecHelper.js", function() {
       var class_paths;
       class_paths = _.map(sirius_jasmine_specs, function(cname) {
             return "spec/" + cname + ".js";
