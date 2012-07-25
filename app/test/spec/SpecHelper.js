@@ -1,5 +1,5 @@
 beforeEach(function() {
     runDeferred = function(fList) {
-	_.each(fList, function(f) { f(); });
+      _.each(fList, function(f) { f(); });
     };
 });

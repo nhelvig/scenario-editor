@@ -10,16 +10,16 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     'click #remove-join-links' : 'removeJoinLinks'
   }    
   
-  initialize: (elem, model) ->
-    super elem, model, @_getTemplateData(model)
+  initialize: (options) ->
+    options.templateData = @_getTemplateData(options.model)
+    super options 
 
     #set selected type element
-    elem = _.filter($("#node-dialog-form-#{model.cid} select option"), (item) => $(item).val() is model.get('type'))
+    elem = _.filter($("#node-dialog-form-#{options.model.cid} select option"), (item) => $(item).val() is options.model.get('type'))
     $(elem[0]).attr('selected', true)
 
-    #generate tabs
-    $("#node-dialog-form-#{model.cid}").tabs();
-    $("#node-dialog-form-#{model.cid}").dialog('open')
+    $("#node-dialog-form-#{@model.cid}").tabs();
+    $("#node-dialog-form-#{@model.cid}").dialog('open')
     
   
   render: ->
