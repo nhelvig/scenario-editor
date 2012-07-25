@@ -14,12 +14,12 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     super elem, model, @_getTemplateData(model)
 
     #set selected type element
-    elem = _.filter($("#node-dialog-form select option"), (item) => $(item).val() is model.get('type'))
+    elem = _.filter($("#node-dialog-form-#{model.cid} select option"), (item) => $(item).val() is model.get('type'))
     $(elem[0]).attr('selected', true)
 
     #generate tabs
-    $('#node-dialog-form').tabs();
-    $('#node-dialog-form').dialog('open')
+    $("#node-dialog-form-#{model.cid}").tabs();
+    $("#node-dialog-form-#{model.cid}").dialog('open')
     
   
   render: ->

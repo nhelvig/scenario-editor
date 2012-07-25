@@ -5,14 +5,14 @@ class window.sirius.EditorView extends Backbone.View
   initialize: (@elem, @model, templateData) ->
     title = (word[0].toUpperCase() + word[1..].toLowerCase() for word in @elem.split /\s+/).join ' '
     @$el.attr 'title', "#{title} Editor: #{@model.get('name')}"
-    @$el.attr 'id', "#{@elem}-dialog-form"
+    @$el.attr 'id', "#{@elem}-dialog-form-#{@model.cid}"
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(templateData))
     @render()
   
   render: ->
     $('body').append(@$el)
-    $( "##{@elem}-dialog-form" ).dialog({
+    $( "##{@elem}-dialog-form-#{@model.cid}" ).dialog({
           autoOpen: false,
           height: 360,
           width: 275,
