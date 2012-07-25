@@ -233,10 +233,10 @@ hr {
 
 #tree  li input:checked ~ ol > li.hide {display: none}
 #tree  li input:checked ~ ol > li.show {display: block}
-#expand-all, #collapse-all {
-  margin-left: 15px;
-  margin-bottom: 15px;
-  font-size: 12px;
+#expand-all {
+  position: float;
+  margin-left: 85%;
+  padding: 0em .3em;
 }
 #right_tree {
   position: absolute;
