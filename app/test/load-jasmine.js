@@ -44,8 +44,7 @@
           return load_jasmine_specs_templates(function() {
             xml = $.parseXML($a.fileText);
             $a.scenario = $a.Scenario.from_xml($(xml).children());
-            // $a.map = new google.maps.Map(document.getElementById("map_canvas"), {});
-            // $a.broker = _.clone(Backbone.Events)
+ 
             _.templateSettings = {interpolate : /\{\{(.+?)\}\}/g }
             var jasmineEnv = jasmine.getEnv();
             jasmineEnv.updateInterval = 1000;
