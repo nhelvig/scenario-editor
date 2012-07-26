@@ -9,7 +9,7 @@ describe("Begin", function() {
     });
 
     it("should not blow up on to_xml", function() {
-	var doc = document.implementation.createDocument("document:xml", "begin");
+	var doc = document.implementation.createDocument("document:xml", "begin", null);
 	var out = testBegin.to_xml(doc); 
 	expect(out).not.toBeNull();
     });
