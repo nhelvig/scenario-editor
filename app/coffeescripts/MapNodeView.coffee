@@ -35,6 +35,11 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   # creates the editor for this marker
   _editor: ->
     env = new $a.EditorNodeView({elem: 'node', model: @model})
+    $('body').append(env.el)
+    env.render()
+    $(env.el).tabs()
+    $(env.el).dialog('open')
+    
     
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
