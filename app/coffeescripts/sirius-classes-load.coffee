@@ -29,7 +29,7 @@ $a.sirius_classes_without_extensions = [
 ]
 
 $a.sirius_map_view_classes = [
-  'AppView', 'ContextMenuItemView','ContextMenuView', 'EditorView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
+  'AppView', 'ContextMenuItemView','ContextMenuView', 'EditorView',  'EditorNodeView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
   'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView', 
   'MapSignalView', 'Util', 'MessagePanelView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView', 
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView', 

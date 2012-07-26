@@ -10,7 +10,7 @@ class window.sirius.FileUploadView extends Backbone.View
     $(@el).attr 'name', args.name
     $(@el).attr 'id', args.id
     @parent = args.attach
-    @events = {'change' : "handleFiles"}
+    @events = {'change' : 'handleFiles'}
     @render()
   
   render: ->
