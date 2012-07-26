@@ -26,8 +26,8 @@ window.sirius.Event::display_point = ->
 window.sirius.Event::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set('targetreferences',[]);
-    _.each(@get('targetelements').get('scenarioElement'), (e) -> 
-      switch e.type
+    _.each(@get('targetelements').get('scenarioElement'), (e) =>
+      switch e.get('type')
         when 'link' then @get('targetreferences').push object_with_id.link[e.id]
         when 'node' then @get('targetreferences').push object_with_id.node[e.id]
         when 'controller' then @get('targetreferences').push object_with_id.controller[e.id]
@@ -35,7 +35,7 @@ window.sirius.Event::resolve_references = (deferred, object_with_id) ->
         when 'event' then @get('targetreferences').push object_with_id.event[e.id]
         when 'signal' then @get('targetreferences').push object_with_id.signal[e.id]
     )
-    # 
+    #
     # if @get('targetreferences').length == 0
     #    throw "Event must have target elements defined"
 
