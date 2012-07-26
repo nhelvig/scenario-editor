@@ -45,14 +45,11 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     @model.set(id, $("##{id}").prop('checked'))
   
   signalEditor: (e) ->
-    alert('Not configured')
     e.preventDefault()
   
   chooseName: (e) ->
-    alert('Not configured')
     e.preventDefault()
   
   removeJoinLinks: (e) ->
-    alert('Not configured')
     e.preventDefault()
     
