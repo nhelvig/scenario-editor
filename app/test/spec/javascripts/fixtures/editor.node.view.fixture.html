@@ -1,0 +1,50 @@
+<script type="text/template" id="node-editor-dialog-template">
+<ul>
+  <li><a href="#tabs-1">Node</a></li>
+  <li><a href="#tabs-2">Geo</a></li>
+  <li><a href="#tabs-3">Tools</a></li>
+</ul>
+<div id="tabs-1">
+  <form>
+    <fieldset>
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+      <label for="type">Type</label>
+      <select id="type" name ="type" class="ui-widget-content ui-corner-all">
+        <option value="freeway">Freeway</option>
+        <option value="highway">Highway</option>
+        <option value="signalized_intersection">Signalized Intersection</option>
+        <option value="simple">Simple</option>
+        <option value="stop_intersection">Stop Intersection</option>
+        <option value="terminal">Terminal</option>
+        <option value="other">Other</option>
+      </select><br/>
+      <button id="edit-signal" class="text ui-widget-content ui-corner-all" >Edit Signal</button>
+      <label for="description">Description</label>
+      <textarea rows="2" name="description" id="description" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
+    </fieldset>
+  </form>
+</div>
+<div id="tabs-2">
+  <form>
+    <fieldset>
+      <label for="latitude">Latitude</label>
+      <input type="text" name="latitude" id="lat" class="text ui-widget-content ui-corner-all" value="{{lat}}"/>
+      <label for="longitude">Longitude</label>
+      <input type="text" name="longitude" id="lng" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
+      <label for="elevation">Elevation</label>
+      <input type="text" name="elevation" id="elevation" class="text ui-widget-content ui-corner-all" value="{{elevation}}"/><br/>
+      <input type="checkbox" name="lock" id="lock" class="text ui-widget-content ui-corner-all" {{lock}} />
+      <span>Lock node position</span>
+    </fieldset>
+  </form>
+</div>
+<div id="tabs-3">
+  <form>
+    <fieldset>
+      <button id="remove-join-links" class="text ui-widget-content ui-corner-all" >Remove and join links</button>
+      <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
+    </fieldset>
+  </form>
+</div>
+</script>
