@@ -2,7 +2,6 @@
 (function() {
 
   sirius_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'EditorNodeViewSpec'];
-  sirius_jasmine_templates = ['EditorNodeViewTemplate'];
   
   load_sirius_classes = function(after) {
     return head.js("../js/Sirius.js",'../js/sirius-classes-load.js', function() {
@@ -30,9 +29,6 @@
       class_paths = _.map(sirius_jasmine_specs, function(cname) {
           return "spec/" + cname + ".js";
       });
-      class_paths = class_paths.concat(_.flatten(_.map(sirius_jasmine_templates, function(cname) {
-          return "spec/templates/" + cname + ".js";
-      })));
       class_paths.push(after);
       return head.js.apply(this, class_paths);
     });

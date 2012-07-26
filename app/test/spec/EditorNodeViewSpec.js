@@ -1,12 +1,13 @@
 describe("EditorNodeView", function() {
-  $a = window.sirius
+  $a = window.sirius;
+  
   beforeEach(function() {
+    loadFixtures('editor.node.view.fixture.html');
     network = $a.scenario.get('networklist').get('network')[0];
     model = network.get('nodelist').get('node')[0];
     this.view = new $a.EditorNodeView({
       elem: 'node', 
-      model: model,
-      template: this.templates.nodeEditor});
+      model: model});
   });
   
   describe("Instantiation", function() {
