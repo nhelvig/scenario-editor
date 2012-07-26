@@ -34,7 +34,7 @@ describe("Controller", function() {
     });
 
     it("should not blow up on to_xml", function() {
-	var doc = document.implementation.createDocument("document:xml", "begin");
+	var doc = document.implementation.createDocument("document:xml", "begin", null);
 	var out = testController.to_xml(doc); 
 	expect(out).not.toBeNull();
     });
@@ -50,7 +50,6 @@ describe("Controller", function() {
 	    object_with_id.sensor[testSensorId] = testSensor;
 	    object_with_id.event[testEventId] = testEvent;
 	    object_with_id.signal[testSignalId] = testSignal;
-	    console.log(object_with_id);
 	    testController.set('targetelements', new window.sirius.TargetElements());
 	    testController.get('targetelements').set('scenarioElement', loadTargetReferences());
 	    testController.resolve_references(deferred, object_with_id);
