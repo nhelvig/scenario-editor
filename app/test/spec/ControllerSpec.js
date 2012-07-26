@@ -7,21 +7,30 @@ describe("Controller", function() {
     var testSignalId = 7;
     var testNode;
     var testController;
+    var testSensor;
+    var testOtherController;
+    var testEvent;
+    var testSignal;
     
     var loadTargetReferences = function() {
 	var targetRefs = [];
-	targetRefs.push({type: 'node', id: testNodeId})
-	targetRefs.push({type: 'link', id: testLinkId});
-	targetRefs.push({type: 'controller', id: testOtherControllerId});
-	targetRefs.push({type: 'sensor', id: testSensorId});
-	targetRefs.push({type: 'event', id: testEventId});
-	targetRefs.push({type: 'signal', id: testSignalId});
+	targetRefs.push(new window.sirius.ScenarioElement({type: 'node', id: testNodeId}));
+	targetRefs.push(new window.sirius.ScenarioElement({type: 'link', id: testLinkId}));
+	targetRefs.push(new window.sirius.ScenarioElement({type: 'controller', id: testOtherControllerId}));
+	targetRefs.push(new window.sirius.ScenarioElement({type: 'sensor', id: testSensorId}));
+	targetRefs.push(new window.sirius.ScenarioElement({type: 'event', id: testEventId}));
+	targetRefs.push(new window.sirius.ScenarioElement({type: 'signal', id: testSignalId}));
 	return targetRefs;
     };
 
     beforeEach(function() {
 	testNode = new window.sirius.Node({id: testNodeId});
+	testLink = new window.sirius.Link({id: testLinkId});
 	testController = new window.sirius.Controller({node: testNode});
+	testOtherController = new window.sirius.Controller({id: testOtherControllerId, node: testNode});
+	testSensor = new window.sirius.Sensor({id: testSensorId});
+	testEvent = new window.sirius.Event({id: testEventId});
+	testSignal = new window.sirius.Signal({id: testSignalId});
     });
 
     it("should not blow up on to_xml", function() {
@@ -30,16 +39,40 @@ describe("Controller", function() {
 	expect(out).not.toBeNull();
     });
 
-    describe("reference resolution", function() {
+    describe("should resolve references", function() {
 	beforeEach(function() {
-	    testController.set('targetelements', new Backbone.Model());
+	    var deferred = [], 
+	        object_with_id = {node: [], link: [], controller: [], 
+				  sensor: [], event: [], signal: []};
+	    object_with_id.node[testNodeId] = testNode;
+	    object_with_id.link[testLinkId] = testLink;
+	    object_with_id.controller[testOtherControllerId] = testOtherController;
+	    object_with_id.sensor[testSensorId] = testSensor;
+	    object_with_id.event[testEventId] = testEvent;
+	    object_with_id.signal[testSignalId] = testSignal;
+	    console.log(object_with_id);
+	    testController.set('targetelements', new window.sirius.TargetElements());
 	    testController.get('targetelements').set('scenarioElement', loadTargetReferences());
+	    testController.resolve_references(deferred, object_with_id);
+	    runDeferred(deferred);
 	})
-	it("for nodes", function() {});
-	it("for links", function() {});
-	it("for controllers", function() {});
-	it("for sensors", function() {});
-	it("for events", function() {});
-	it("for signals", function() {});
+	it("to nodes", function() {
+	    expect(testController.get('targetreferences')).toContain(testNode);
+	});
+	it("to links", function() {
+	    expect(testController.get('targetreferences')).toContain(testLink);
+	});
+	it("to controllers", function() {
+	    expect(testController.get('targetreferences')).toContain(testOtherController);
+	});
+	it("to sensors", function() {
+	    expect(testController.get('targetreferences')).toContain(testSensor);
+	});
+	it("to events", function() {
+	    expect(testController.get('targetreferences')).toContain(testEvent);
+	});
+	it("to signals", function() {
+	    expect(testController.get('targetreferences')).toContain(testSignal);
+	});
     });
 });

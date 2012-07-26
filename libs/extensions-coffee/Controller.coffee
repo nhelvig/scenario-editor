@@ -35,8 +35,8 @@ window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set 'id', @get('id')
     @set('targetreferences',[]);
-    _.each(@get('targetelements').get('scenarioElement'), (e) -> 
-      switch e.type
+    _.each(@get('targetelements').get('scenarioElement'), (e) =>
+      switch e.get('type')
         when 'link' then @get('targetreferences').push object_with_id.link[e.id]
         when 'node' then @get('targetreferences').push object_with_id.node[e.id]
         when 'controller' then @get('targetreferences').push object_with_id.controller[e.id]
@@ -47,7 +47,7 @@ window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
 
     # if @get('targetreferences').length == 0
     #    throw "Event must have target elements defined"
-    
+
 
 window.sirius.Controller::encode_references = ->
   # TODO : do we to encode references? All the data will be written back via scenarioElements
