@@ -141,11 +141,14 @@ class window.sirius.AppView extends Backbone.View
   _attachEvents: ->
     
     $('#expand-all').click( ->
-      checkBox.checked = true for checkBox in $('.expand-tree')
-      )
-      
-    $('#collapse-all').click( ->
-      checkBox.checked = false for checkBox in $('.expand-tree')
+      all_checks = $('.expand-tree')
+      btn = document.getElementById('expand-all')
+      if btn.innerHTML == '+' and all_checks.length > 0
+        checkBox.checked = true for checkBox in all_checks
+        btn.innerHTML = '-'
+      else if btn.innerHTML == '-' and all_checks.length > 0
+        checkBox.checked = false for checkBox in all_checks
+        btn.innerHTML = '+'
       )
       
   toggleTree: (display) =>
