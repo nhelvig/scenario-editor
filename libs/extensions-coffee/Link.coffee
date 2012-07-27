@@ -8,11 +8,11 @@ window.sirius.Link::initialize = ->
   @set('dynamics', new window.sirius.Dynamics())
 
 window.sirius.Link::parallel_links = ->
-  begin_node = @get('begin').node
-  end_node = @get('end').node
+  begin_node = @get('begin').get('node')
+  end_node = @get('end').get('node')
 
-  _.filter(begin_node.get('outputs').get('output'),
-    (output) ->
+  _.map(_.filter(begin_node.get('outputs').get('output'),
+    (output) =>
       link2 = output.get('link')
       link2 isnt this and link2.get('end').get('node') is end_node
-  )
+  ), (output) -> output.get('link'))
