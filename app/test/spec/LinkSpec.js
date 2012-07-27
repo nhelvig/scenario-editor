@@ -26,6 +26,7 @@ describe("Link", function() {
     describe("parallel_links", function() {
 	it("should return parallel links", function() {
 	    expect(testLink2.parallel_links()).toContain(testLink3);
+	    expect(testLink3.parallel_links()).toContain(testLink2);
 	});
 	it("should not return non-parallel links", function() {
 	    expect(testLink1.parallel_links()).not.toContain(testLink2);
