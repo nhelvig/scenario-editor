@@ -9,7 +9,7 @@ describe("Output", function() {
     });
 
     it("should not blow up on to_xml", function() {
-	var doc = document.implementation.createDocument("document:xml", "begin", null);
+	var doc = document.implementation.createDocument("document:xml", "output", null);
 	var out = testOutput.to_xml(doc); 
 	expect(out).not.toBeNull();
     });
@@ -19,14 +19,14 @@ describe("Output", function() {
     });
 
     it("should resolve link_id as link", function() {
-	var b = new window.sirius.Output({link_id: testLinkId});
+	var o = new window.sirius.Output({link_id: testLinkId});
 	var deferred = [];
 	var object_with_id = { 'link': [] };
 	object_with_id.link[testLinkId] = testLink;
-	expect(b.get('link')).toBeUndefined();
-	b.resolve_references(deferred, object_with_id);
+	expect(o.get('link')).toBeUndefined();
+	o.resolve_references(deferred, object_with_id);
 	runDeferred(deferred);
-	expect(b.get('link')).toEqual(testLink);
+	expect(o.get('link')).toEqual(testLink);
     });
 
     it("should encode link reference as link_id", function() {
