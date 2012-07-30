@@ -1,5 +1,5 @@
 window.sirius.Od::initialize = ->
-  @set('pathlist', new window.sirius.PathList)
+  #@set('pathlist', new window.sirius.PathList)
 
 window.sirius.Od::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
