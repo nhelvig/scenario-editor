@@ -26,8 +26,33 @@ describe("Scenario", function() {
 		    expect(network.get('id')).toEqual('-1');
 		});
 
+		describe("nodelist", function() {
+		    var nl = network.get('nodelist').get('node');
+
+		    it("should have 8 nodes", function() {
+			expect(nl.length).toEqual(8);
+		    });
+
+		    describe("arbitrary known node", function() {
+			var targetNode = _.find(nl, function(node) { 
+			    return (node.id ==  "-4");
+			});
+			expect(targetNode).not.toBeNull();
+
+			it("should have type simple", function() {
+			    expect(targetNode.get('type')).toEqual('simple');
+			});
+
+			it("should have split ratio profile correctly applied", function() {
+			    var splitratios = targetNode.get('splitratios');
+			    expect(splitratios).not.toBeNull();
+			    expect(splitratios.get('dt')).toEqual(300);
+			});
+		    });
+		});
+
 		describe("linklist", function() {
-		    var ll = network.get('linklist').get('link')
+		    var ll = network.get('linklist').get('link');
 		    it("should have 7 links", function() { 
 			expect(ll.length).toEqual(7); 
 		    });

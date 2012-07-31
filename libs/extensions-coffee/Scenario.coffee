@@ -31,7 +31,7 @@ window.sirius.Scenario.from_xml = (xml) ->
     sc.get('initialdensityprofile').set('density', [])
 
   if sc.has('splitratioprofileset')
-    _.each(sc.get('splitratioprofileset').get('splitratios'),
+    _.each(sc.get('splitratioprofileset').get('splitratioprofile'),
            (splitratios) ->
               splitratios.get('node').set('splitratios', splitratios)
     )

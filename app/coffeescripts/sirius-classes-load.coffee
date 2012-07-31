@@ -9,7 +9,8 @@ $a.sirius_classes_with_extensions = [
   'Network', 'NetworkList', 'Node', 'NodeList',
   'Od', 'ODList', 'Output',
   'Phase', 'Plan', 'PlanList', 'PlanSequence', 'Point', 'Position',
-  'Scenario', 'Sensor', 'SensorList', 'Settings', 'Signal', 'SignalList'
+  'Scenario', 'Sensor', 'SensorList', 'Settings', 'Signal', 'SignalList',
+  'SplitratioProfile'
 ]
 
 $a.sirius_classes_without_extensions = [
@@ -24,7 +25,7 @@ $a.sirius_classes_without_extensions = [
   'On_off_switch', 'Outputs', 'Parameter',
   'Parameters', 'Plan_reference', 'Points', 'Postmile',
   'Qcontroller', 'Route_segment', 'Route_segments', 'RouteSegments',
-  'ScenarioElement', 'Splitratio',  'SplitratioEvent',  'SplitratioProfile','SplitRatioProfileSet', 'Stage',
+  'ScenarioElement', 'Splitratio',  'SplitratioEvent', 'SplitRatioProfileSet', 'Stage',
   'TargetElements', 'To', 'Units', 'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder', 'Weavingfactors', 'WeavingfactorSet'
 ]
 
