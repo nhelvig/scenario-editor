@@ -2,25 +2,25 @@ $a = window.sirius
 $a.sirius_classes_with_extensions = [
   'Begin',
   'Controller', 'ControllerSet',
-  'Data_sources', 'Density', 'Display_position', 'Dynamics', 
+  'Data_sources', 'DemandProfile', 'Density', 'Display_position', 'Dynamics',
   'End', 'Event', 'EventSet',
-  'Input', 'Intersection', 
+  'Input', 'Intersection',
   'Link', 'LinkList',
-  'Network', 'NetworkList', 'Node', 'NodeList', 
-  'Od', 'ODList', 'Output', 
-  'Phase', 'Plan', 'PlanList', 'PlanSequence', 'Point', 'Position', 
+  'Network', 'NetworkList', 'Node', 'NodeList',
+  'Od', 'ODList', 'Output',
+  'Phase', 'Plan', 'PlanList', 'PlanSequence', 'Point', 'Position',
   'Scenario', 'Sensor', 'SensorList', 'Settings', 'Signal', 'SignalList'
 ]
 
 $a.sirius_classes_without_extensions = [
   'ArrayText', 'ALatLng', 'CapacityProfile', 'Data_source', 'Decision_point', 'Decision_point_split',
-  'Decision_points', 'DecisionPoints', 'DemandProfile', 'DemandProfileSet', 'Description',
+  'Decision_points', 'DecisionPoints', 'DemandProfileSet', 'Description',
   'DirectionsCacheEntry', 'DirectionsCache', 'DownstreamBoundaryCapacityProfileSet', 'EncodedPolyline',
-  'FeedbackElements', 'From', 'FundamentalDiagram', 'FundamentalDiagramProfile', 'FundamentalDiagramProfileSet', 
+  'FeedbackElements', 'From', 'FundamentalDiagram', 'FundamentalDiagramProfile', 'FundamentalDiagramProfileSet',
   'InitialDensitySet', 'Inputs', 'IntersectionCacheEntry',
-  'IntersectionCache', 'Knob', 'Lane_count_change', 'Levels', 
-  'LinkGeometry', 'Link_reference', 'Linkpair', 'Links', 
-  'NetworkConnections', 'Networkpair', 'Od_demandProfile', 'ODDemandProfileSet', 'Outputs', 
+  'IntersectionCache', 'Knob', 'Lane_count_change', 'Levels',
+  'LinkGeometry', 'Link_reference', 'Linkpair', 'Links',
+  'NetworkConnections', 'Networkpair', 'Od_demandProfile', 'ODDemandProfileSet', 'Outputs',
   'On_off_switch', 'Outputs', 'Parameter',
   'Parameters', 'Plan_reference', 'Points', 'Postmile',
   'Qcontroller', 'Route_segment', 'Route_segments', 'RouteSegments',
@@ -30,9 +30,9 @@ $a.sirius_classes_without_extensions = [
 
 $a.sirius_map_view_classes = [
   'AppView', 'ContextMenuItemView','ContextMenuView', 'EditorView',  'EditorNodeView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
-  'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView', 
-  'MapSignalView', 'Util', 'MessagePanelView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView', 
-  'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView', 
+  'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView',
+  'MapSignalView', 'Util', 'MessagePanelView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
+  'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 

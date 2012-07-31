@@ -26,8 +26,34 @@ describe("Scenario", function() {
 		it("should have ID -1",function() {
 		    expect(network.get('id')).toEqual('-1');
 		});
-		it("should have a link list with 7 links", function() {
-		    expect(network.get('linklist').get('link').length).toEqual(7);
+
+		describe("linklist", function() {
+		    var ll = network.get('linklist').get('link')
+		    it("should have 7 links", function() { 
+			expect(ll.length).toEqual(7); 
+		    });
+
+		    describe("arbitrary known link", function() {
+			var targetLink = _.find(ll, function(link) { 
+			    return (link.id ==  "-1");
+			});
+			expect(targetLink).not.toBeNull();
+
+			it("should have 1 lane", function() {
+			    expect(targetLink.get('lanes')).toEqual(1);
+			});
+
+			it("should have road_name I-80 E", function() {
+			    expect(targetLink.get('road_name')).toEqual("I-80 E");
+			});
+
+			it("should have demand profile correctly applied", function() {
+			    var demand = targetLink.get('demand');
+			    expect(demand).not.toBeNull();
+			    expect(demand.get('dt')).toEqual(300);
+			    expect(demand.get('knob')).toEqual(1);
+			});
+		    });
 		});
 	    });
 	});

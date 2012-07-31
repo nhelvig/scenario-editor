@@ -10,7 +10,7 @@ window.sirius.Scenario.from_xml = (xml) ->
   sc.object_with_id = object_with_id
 
   if sc.has('demandprofileset')
-    _.each(sc.get('demandprofileset').get('demand'),
+    _.each(sc.get('demandprofileset').get('demandprofile'),
            (demand) ->
               demand.get('link').set('demand', demand)
     )
