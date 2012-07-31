@@ -12,6 +12,23 @@ describe("Scenario", function() {
 	    expect(sc.get('schemaVersion')).toEqual('1.0.19');
 	});
 
+	describe("sensorlist", function() {
+	    var sl = sc.get('sensorlist').get('sensor');
+	    
+	    it("should have 1 sensor", function() {
+		expect(sl.length).toEqual(1);
+	    });
+	    
+	    describe("sensor", function() {
+		it("should be populated correctly", function() {
+		    var sensor = sl[0];
+		    expect(sensor.get('link_type')).toEqual('freeway');
+		    expect(sensor.get('type')).toEqual('static_point');
+		    var parameters = sensor.get('parameters').get('parameter');
+		});
+	    });
+	});
+	
 	describe("network list", function() {
 	    var networks = sc.get('networklist'), network = networks.get('network')[0];
 	    expect(networks).toBeDefined();
