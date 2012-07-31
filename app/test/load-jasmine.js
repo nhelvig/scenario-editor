@@ -4,7 +4,7 @@
     sirius_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'DensitySpec', 
 			    'EditorNodeViewSpec', 'EndSpec', 'EventSpec', 
 			    'InputSpec', 'IntersectionSpec', 'LinkSpec',
-			    'NodeSpec', 'OutputSpec', 'OdSpec'];
+			    'NodeSpec', 'OutputSpec', 'OdSpec', 'ScenarioSpec'];
   
   load_sirius_classes = function(after) {
     return head.js("../js/Sirius.js",'../js/sirius-classes-load.js', function() {
