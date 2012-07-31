@@ -24,12 +24,21 @@ describe("Scenario", function() {
 		    var sensor = sl[0];
 		    expect(sensor.get('link_type')).toEqual('freeway');
 		    expect(sensor.get('type')).toEqual('static_point');
-		    var parameters = sensor.get('parameters').get('parameter');
+		    var parameters = sensor.get('parameters');
+		    expect(parameters['lanes']).toEqual('5');
+		    expect(parameters['postmile']).toEqual('10.4');
+		    expect(parameters['length']).toEqual('0.38');
+		    expect(parameters['hwy_dir']).toEqual('E');
+		    expect(parameters['vds']).toEqual('400679');
+		    expect(parameters['start_time']).toEqual('0');
+		    expect(parameters['hwy_name']).toEqual('80');
+		    expect(parameters['offset_in_link']).toEqual('0');
+		    expect(parameters['data_id']).toEqual('400679');
 		});
 	    });
 	});
 	
-	describe("network list", function() {
+	describe("networklist", function() {
 	    var networks = sc.get('networklist'), network = networks.get('network')[0];
 	    expect(networks).toBeDefined();
 	    expect(networks).not.toBeNull();
