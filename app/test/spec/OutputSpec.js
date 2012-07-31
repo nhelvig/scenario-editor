@@ -10,7 +10,7 @@ describe("Output", function() {
 
     it("should not blow up on to_xml", function() {
 	var doc = document.implementation.createDocument("document:xml", "output", null);
-	var out = testOutput.to_xml(doc); 
+	var out = testOutput.to_xml(doc);
 	expect(out).not.toBeNull();
     });
 
@@ -35,5 +35,4 @@ describe("Output", function() {
 	testOutput.encode_references();
 	expect(testOutput.get('link_id')).toEqual(testLinkId);
     })
-
 });

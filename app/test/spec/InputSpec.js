@@ -35,5 +35,4 @@ describe("Input", function() {
 	testInput.encode_references();
 	expect(testInput.get('link_id')).toEqual(testLinkId);
     })
-
 });
