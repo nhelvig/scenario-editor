@@ -35,5 +35,4 @@ describe("Begin", function() {
 	testBegin.encode_references();
 	expect(testBegin.get('node_id')).toEqual(testNodeId);
     })
-
 });

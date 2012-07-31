@@ -35,5 +35,4 @@ describe("Density", function() {
 	testDensity.encode_references();
 	expect(testDensity.get('link_id')).toEqual(testLinkId);
     })
-
 });
