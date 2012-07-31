@@ -31,7 +31,7 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
       description: model.get('description'),
       lat: model.get('position').get('point')[0].get('lat')
       lng: model.get('position').get('point')[0].get('lng')
-      elevation: model.get('position').get('point')[0].get('elevation')
+      elevation: model.get('position').get('point')[0].get('elevation') || 0
       lock: if model.get('lock')? and model.get('lock') is true then 'checked' else ''
     }
   

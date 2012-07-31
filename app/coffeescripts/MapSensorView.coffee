@@ -19,6 +19,14 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
 
   getIcon: ->
     super MapSensorView.ICON
+    
+  # creates the editor for this marker
+  _editor: ->
+    env = new $a.EditorSensorView({elem: 'sensor', model: @model})
+    $('body').append(env.el)
+    env.render()
+    $(env.el).tabs()
+    $(env.el).dialog('open')
 
   # This method overrides MapMarkerView to unpublish specific events to this type
   # and then calls super to set itself to null, unpublish the general events, and hide itself
