@@ -27,5 +27,5 @@ beforeEach(function() {
 	}
 	
 	return link;
-    }
+    };
 });
