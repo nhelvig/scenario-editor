@@ -3,7 +3,6 @@ describe("Scenario", function() {
     describe("from scenario-xml.js", function() {
 	var sc = $a.Scenario.from_xml($($.parseXML(scenarioXmlString)).children());
 	expect(sc).not.toBeNull();
-	console.log(sc);
 
 	it("should load US units", function() { 
 	    expect(sc.get('settings').get('units').get('text')).toEqual('US');
