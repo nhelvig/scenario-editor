@@ -34,5 +34,5 @@ describe("SplitratioProfile", function() {
 	expect(testSplitratioProfile.get('node_id')).toBeUndefined();
 	testSplitratioProfile.encode_references();
 	expect(testSplitratioProfile.get('node_id')).toEqual(testNodeId);
-    })
+    });
 });

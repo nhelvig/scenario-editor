@@ -125,6 +125,7 @@ describe("Scenario", function() {
 		toContain(sAndFriends.dp);
 
 	});
+
 	it("handles split ratio profile", function() {
 	    var scenario = sAndFriends.scenario;
 	    var node1 = sAndFriends.node1;
