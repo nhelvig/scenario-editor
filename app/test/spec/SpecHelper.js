@@ -2,6 +2,17 @@ beforeEach(function() {
     runDeferred = function(fList) {
       _.each(fList, function(f) { f(); });
     };
+
+    expectResolution = function(obj, resolveType, resolveOut) {
+	var object_with_id = {};
+	object_with_id[resolveType] = {};
+	var deferred = [];
+	object_with_id[resolveType][resolveOut.id] = resolveOut;
+	expect(obj.get(resolveType)).toBeUndefined();
+	obj.resolve_references(deferred, object_with_id);
+	runDeferred(deferred);
+	expect(obj.get(resolveType)).toEqual(resolveOut);
+    }
     
     simpleLink = function(node1, node2) {
 	var begin = new window.sirius.Begin({node: node1});

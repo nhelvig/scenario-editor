@@ -20,13 +20,7 @@ describe("Signal", function() {
 
     it("should resolve node_id as node", function() {
 	var s = new window.sirius.Signal({node_id: testNodeId});
-	var deferred = [];
-	var object_with_id = { 'node': [] };
-	object_with_id.node[testNodeId] = testNode;
-	expect(s.get('node')).toBeUndefined();
-	s.resolve_references(deferred, object_with_id);
-	runDeferred(deferred);
-	expect(s.get('node')).toEqual(testNode);
+	expectResolution(s, 'node', testNode);
     });
 
     it("should encode node reference as node_id", function() {

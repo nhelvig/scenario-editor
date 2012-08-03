@@ -19,14 +19,8 @@ describe("Density", function() {
     });
 
     it("should resolve link_id as link", function() {
-	var b = new window.sirius.Density({link_id: testLinkId});
-	var deferred = [];
-	var object_with_id = { 'link': [] };
-	object_with_id.link[testLinkId] = testLink;
-	expect(b.get('link')).toBeUndefined();
-	b.resolve_references(deferred, object_with_id);
-	runDeferred(deferred);
-	expect(b.get('link')).toEqual(testLink);
+	var d = new window.sirius.Density({link_id: testLinkId});
+	expectResolution(d, 'link', testLink);
     });
 
     it("should encode link reference as link_id", function() {

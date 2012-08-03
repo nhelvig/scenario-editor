@@ -19,14 +19,8 @@ describe("SplitratioProfile", function() {
     });
 
     it("should resolve node_id as node", function() {
-	var b = new window.sirius.SplitratioProfile({node_id: testNodeId});
-	var deferred = [];
-	var object_with_id = { 'node': [] };
-	object_with_id.node[testNodeId] = testNode;
-	expect(b.get('node')).toBeUndefined();
-	b.resolve_references(deferred, object_with_id);
-	runDeferred(deferred);
-	expect(b.get('node')).toEqual(testNode);
+	var s = new window.sirius.SplitratioProfile({node_id: testNodeId});
+	expectResolution(s, 'node', testNode);
     });
 
     it("should encode node reference as node_id", function() {

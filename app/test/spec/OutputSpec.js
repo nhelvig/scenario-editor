@@ -20,13 +20,7 @@ describe("Output", function() {
 
     it("should resolve link_id as link", function() {
 	var o = new window.sirius.Output({link_id: testLinkId});
-	var deferred = [];
-	var object_with_id = { 'link': [] };
-	object_with_id.link[testLinkId] = testLink;
-	expect(o.get('link')).toBeUndefined();
-	o.resolve_references(deferred, object_with_id);
-	runDeferred(deferred);
-	expect(o.get('link')).toEqual(testLink);
+	expectResolution(o, 'link', testLink);
     });
 
     it("should encode link reference as link_id", function() {

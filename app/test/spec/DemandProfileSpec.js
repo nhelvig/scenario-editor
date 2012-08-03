@@ -20,13 +20,7 @@ describe("DemandProfile", function() {
 
     it("should resolve link_id_origin as link", function() {
 	var d = new window.sirius.DemandProfile({link_id_origin: testLinkId});
-	var deferred = [];
-	var object_with_id = { 'link': [] };
-	object_with_id.link[testLinkId] = testLink;
-	expect(d.get('link')).toBeUndefined();
-	d.resolve_references(deferred, object_with_id);
-	runDeferred(deferred);
-	expect(d.get('link')).toEqual(testLink);
+	expectResolution(d, 'link', testLink);
 	expect(testLink.get('demand')).toEqual(d);
     });
 
