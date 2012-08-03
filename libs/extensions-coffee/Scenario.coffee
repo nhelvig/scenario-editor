@@ -77,7 +77,7 @@ window.sirius.Scenario::stampSchemaVersion = ->
 
 window.sirius.Scenario::encode_references = ->
   demandprofileset = @get('demandprofileset')
-  capacityprofileset = @get('capacityprofileset')
+  capacityprofileset = @get('downstreamboundarycapacityprofileset')
   initialdensityprofile = @get('initialdensityprofile')
   splitratioprofileset = @get('splitratioprofileset')
   network = @get('network')
@@ -98,20 +98,20 @@ window.sirius.Scenario::encode_references = ->
 
   if linklist and linklist.has('link')
     _.each(linklist.get('link'),
-          (link) ->
+          (link) =>
             if link.has('demand')
               if(!demandprofileset)
                 @set('demandprofileset', new window.sirius.DemandProfileSet())
-              if(!demandprofileset.has('demand'))
-                demandprofileset.set('demand', [])
-              demandprofileset.get('demand').push(link.get('demand'))
+              if(!demandprofileset.has('demandprofile'))
+                demandprofileset.set('demandprofile', [])
+              demandprofileset.get('demandprofile').push(link.get('demand'))
 
             if link.has('capacity')
               if(!capacityprofileset)
-                @set('capacityprofileset', new window.sirius.CapacityProfileSet())
-              if(!capacityprofileset.has('capacity'))
-                capacityprofileset.set('capacity',[])
-              capacityprofileset.get('capacity').push(link.get('capacity'))
+                @set('downstreamboundarycapacityprofileset', new window.sirius.DownstreamBoundaryCapacityProfileSet())
+              if(!capacityprofileset.has('capacityprofile'))
+                capacityprofileset.set('capacityprofile',[])
+              capacityprofileset.get('capacityprofile').push(link.get('capacity'))
 
             if link.has('density')
               if(!initialdensityprofile)
@@ -123,7 +123,7 @@ window.sirius.Scenario::encode_references = ->
 
     if nodelist and nodelist.has('node')
       _.each(nodelist.get('node'),
-        (node) ->
+        (node) =>
           if (node.has('splitratios'))
             if(!splitratioprofileset)
               @set('splitratioprofileset', new SplitRatioProfileSet())

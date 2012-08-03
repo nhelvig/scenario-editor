@@ -108,4 +108,54 @@ describe("Scenario", function() {
 	    });
 	});
     });
+    describe("reference encoding", function() {
+	var sAndFriends;
+	beforeEach(function() {
+	    sAndFriends = scenarioAndFriends();
+	});
+
+	it("handles demand profile", function() {
+	    var scenario = sAndFriends.scenario;
+	    var link1 = sAndFriends.link1;
+
+	    scenario.get('demandprofileset').set('demandprofile', []);
+	    link1.set('demand', sAndFriends.dp);
+	    scenario.encode_references();
+	    expect(scenario.get('demandprofileset').get('demandprofile')).
+		toContain(sAndFriends.dp);
+
+	});
+	it("handles split ratio profile", function() {
+	    var scenario = sAndFriends.scenario;
+	    var node1 = sAndFriends.node1;
+
+	    scenario.get('splitratioprofileset').set('splitratios', []);
+	    node1.set('splitratios', sAndFriends.srp);
+	    scenario.encode_references();
+	    expect(scenario.get('splitratioprofileset').get('splitratios')).
+		toContain(sAndFriends.srp);
+	});
+
+	it("handles density", function() {
+	    var scenario = sAndFriends.scenario;
+	    var link1 = sAndFriends.link1;
+
+	    scenario.get('initialdensityprofile').set('density',[]);
+	    link1.set('density', sAndFriends.density);
+	    scenario.encode_references();
+	    expect(scenario.get('initialdensityprofile').get('density')).
+		toContain(sAndFriends.density);
+	});
+	
+	it("handles capacity profile", function() {
+	    var scenario = sAndFriends.scenario;
+	    var link1 = sAndFriends.link1;
+	    
+	    scenario.get('downstreamboundarycapacityprofileset').set('capacityprofile',[]);
+	    link1.set('capacity', sAndFriends.cp);
+	    scenario.encode_references();
+	    expect(scenario.get('downstreamboundarycapacityprofileset').get('capacityprofile')).
+		toContain(sAndFriends.cp);
+	});
+    });
 });

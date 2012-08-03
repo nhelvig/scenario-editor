@@ -28,4 +28,59 @@ beforeEach(function() {
 	
 	return link;
     };
+    
+    // "Factory" for scenario objects
+    scenarioAndFriends = function() {
+	var nodeList, linkList, network, networkList;
+	var scenario, srp, idp, density;
+	var node1, node2, node3, link1, link2, link3;
+	var srps, cp, cps, dps, dp;
+	node1 = new window.sirius.Node({id: 1});
+	node2 = new window.sirius.Node({id: 2});
+	node3 = new window.sirius.Node({id: 3});
+	link1 = simpleLink(node1, node2);
+	link2 = simpleLink(node2, node3);
+	link3 = simpleLink(node3, node1);
+	density = new window.sirius.Density({id: 1});
+	idp = new window.sirius.InitialDensitySet({density: [density]});
+	cp = new window.sirius.CapacityProfile({id: 1});
+	cps = new window.sirius.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
+	dp = new window.sirius.DemandProfile({id: 1});
+	dps = new window.sirius.DemandProfileSet({demandprofile: [dp]});
+	srp = new window.sirius.SplitratioProfile({id: 1});
+	srps = new window.sirius.SplitRatioProfileSet({splitratioprofile: [srp]});
+	linkList = new window.sirius.LinkList({link: [link1, link2, link3]});
+	nodeList = new window.sirius.NodeList({node: [node1, node2, node3]});
+	network = new window.sirius.Network({id: 1});
+	// These must be called after initialize, initialize clears lists
+	network.set('nodelist', nodeList);
+	network.set('linklist', linkList);
+	networkList = new window.sirius.NetworkList({network: [network]});
+	scenario = new window.sirius.Scenario({
+	    id: 1,
+	    networklist: networkList,
+	    initialdensityprofile: idp,
+	    downstreamboundarycapacityprofileset: cps,
+	    demandprofileset: dps,
+	    splitratioprofileset: srps
+	});
+	scenario.set('network', network);
+
+	return {
+	    scenario: scenario,
+	    node1: node1,
+	    node2: node2,
+	    node3: node3,
+	    link1: link1,
+	    link2: link2,
+	    link3: link3,
+	    srp: srp,
+	    srps: srps,
+	    cps: cps,
+	    cp: cp,
+	    dps: dps,
+	    dp: dp,
+	    density: density
+	};
+    };
 });
