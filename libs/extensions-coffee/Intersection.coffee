@@ -1,12 +1,8 @@
 window.sirius.Intersection::defaults =
   stage: []
 
-window.sirius.Intersection::resolve_references = (deferred, object_with_id) ->
-  deferred.push =>
-    node_id = @get('node_id')
-    node = object_with_id.node[node_id]
-    @set('node',node)
-    throw "Intersection instance can't find node obj id == #{node_id}" unless node
+window.sirius.Intersection::resolve_references =
+  window.sirius.ReferenceHelper.resolver('node_id', 'node', 'node', 'intersection', 'Intersection', false)
 
 window.sirius.Intersection::encode_references = ->
   @set('node_id', @get('node').id)

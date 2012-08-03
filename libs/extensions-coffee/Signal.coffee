@@ -1,13 +1,16 @@
 window.sirius.Signal::defaults =
   phase: []
 
-window.sirius.Signal::resolve_references = (deferred, object_with_id) ->
-  deferred.push =>
-    node_id = @get('node_id')
-    node = object_with_id.node[node_id]
-    @set 'node', node
-    throw "Signal instance can't find node for obj id == #{node_id}" unless node
-    node.set('signal', @)
+# window.sirius.Signal::resolve_references = (deferred, object_with_id) ->
+#   deferred.push =>
+#     node_id = @get('node_id')
+#     node = object_with_id.node[node_id]
+#     @set 'node', node
+#     throw "Signal instance can't find node for obj id == #{node_id}" unless node
+#     node.set('signal', @)
+
+window.sirius.Signal::resolve_references =
+  window.sirius.ReferenceHelper.resolver('node_id', 'node', 'node', 'signal', 'Signal', true)
 
 window.sirius.Signal::encode_references = ->
   @set 'node_id', @get('node').id

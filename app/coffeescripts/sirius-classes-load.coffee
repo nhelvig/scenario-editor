@@ -24,7 +24,7 @@ $a.sirius_classes_without_extensions = [
   'NetworkConnections', 'Networkpair', 'Od_demandProfile', 'ODDemandProfileSet', 'Outputs',
   'On_off_switch', 'Outputs', 'Parameter',
   'Parameters', 'Plan_reference', 'Points', 'Postmile',
-  'Qcontroller', 'Route_segment', 'Route_segments', 'RouteSegments',
+  'Qcontroller', 'ReferenceHelper', 'Route_segment', 'Route_segments', 'RouteSegments',
   'ScenarioElement', 'Splitratio',  'SplitratioEvent', 'SplitRatioProfileSet', 'Stage',
   'TargetElements', 'To', 'Units', 'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder', 'Weavingfactors', 'WeavingfactorSet'
 ]
