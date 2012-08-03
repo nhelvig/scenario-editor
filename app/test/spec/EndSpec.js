@@ -34,6 +34,5 @@ describe("End", function() {
 	expect(testEnd.get('node_id')).toBeUndefined();
 	testEnd.encode_references();
 	expect(testEnd.get('node_id')).toEqual(testNodeId);
-    })
-
+    });
 });
