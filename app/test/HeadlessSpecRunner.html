@@ -15,6 +15,9 @@
         jasmineEnv.updateInterval = 1000;
             
         var consoleReporter = new jasmine.ConsoleReporter();
+
+        // Set global for run_jasmine_test.coffee
+        console_reporter = consoleReporter;
             
         jasmineEnv.addReporter(consoleReporter);
             
