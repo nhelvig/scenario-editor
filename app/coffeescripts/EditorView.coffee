@@ -1,10 +1,10 @@
 # This is the super class for the editor dialogs for all elements
 class window.sirius.EditorView extends Backbone.View
   $a = window.sirius
-  
+
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData
-  # used to inject into the html template 
+  # used to inject into the html template
   initialize: (options) ->
     @elem = options.elem
     @model = options.model
@@ -16,7 +16,7 @@ class window.sirius.EditorView extends Backbone.View
     @$el.attr 'id', "#{@elem}-dialog-form-#{@model.cid}"
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(options.templateData))
-  
+
   # render the dialog box. The calling function has responsability for appending it as well as
   # calling el.tabs and el.diaload('open')
   render: ->
@@ -27,7 +27,6 @@ class window.sirius.EditorView extends Backbone.View
           modal: false,
           close: =>
             @$el.remove()
-          
+
         })
     @
-    
