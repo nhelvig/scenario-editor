@@ -162,4 +162,3 @@ class window.sirius.AppView extends Backbone.View
       $('#right_tree').show(200)
       align = right: '22%'
       $('#collapseTree').animate(align, 200)
-

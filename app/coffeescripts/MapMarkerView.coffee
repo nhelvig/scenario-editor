@@ -27,13 +27,12 @@ class window.sirius.MapMarkerView extends Backbone.View
   # our standard dot.png. Each subclasses overrides get_icon
   # to pass the correct icon
   draw: ->
-    @marker = new google.maps.Marker({
+    @marker = new google.maps.Marker
         map: null
         position: @latLng
         draggable: true
         icon: @getIcon()
         title: "Name: #{@model.get('name')}\nLatitude: #{@latLng.lat()}\nLongitude: #{@latLng.lng()}"
-      });
 
 
   getIcon: (img) ->
@@ -106,5 +105,3 @@ class window.sirius.MapMarkerView extends Backbone.View
   # This method swaps the icon for the de-selected icon
   clearSelected: (img) ->
     @_setSelected img
-
-

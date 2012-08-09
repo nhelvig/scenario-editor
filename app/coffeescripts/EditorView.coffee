@@ -20,13 +20,11 @@ class window.sirius.EditorView extends Backbone.View
   # render the dialog box. The calling function has responsability for appending it as well as
   # calling el.tabs and el.diaload('open')
   render: ->
-    @$el.dialog({
-          autoOpen: false,
-          height: 360,
-          width: 275,
-          modal: false,
-          close: =>
-            @$el.remove()
-
-        })
+    @$el.dialog
+      autoOpen: false,
+      height: 360,
+      width: 275,
+      modal: false,
+      close: =>
+        @$el.remove()
     @
