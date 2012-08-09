@@ -10,7 +10,7 @@ $a.main_tree_elements = [
 $a.nav_bar_menu_items = {
     'File': {
               'New' : (() -> alert('Not Configured'))
-              'Open Local Network' : (() -> $a.broker.trigger("app:open_scenario"))              
+              'Open Local Network' : (() -> $a.broker.trigger("app:open_scenario"))
               'Save Local Network' : (() ->  $a.broker.trigger("app:save_scenario"))
               'Close Local Network' : (() -> $a.broker.trigger('map:clear_map'))
               'Import Local Network' : (() -> alert('Not Configured'))
@@ -69,27 +69,27 @@ $a.node_context_menu = [
 
 # Layers Menu
 $a.layers_node_type_list = [
-       { label: 'Freeway', event: 'toggleVisabilty', triggerShow: "map:nodes:show_freeway", triggerHide: "map:nodes:hide_freeway" }
-       { label: 'Highway',   event: 'toggleVisabilty', triggerShow: "map:nodes:show_highway", triggerHide: "map:nodes:hide_higway"  }
-       { label: 'Signalized Intersections', event: 'toggleVisabilty', triggerShow: "map:nodes:show_signalized_intersection", triggerHide: "map:nodes:hide_signalized_intersection"  }
-       { label: 'Simple', event: 'toggleVisabilty', triggerShow: "map:nodes:show_simple", triggerHide: "map:nodes:hide_simple" }
-       { label: 'Stop Intersections',   event: 'toggleVisabilty', triggerShow: "map:nodes:show_stop_intersection", triggerHide: "map:nodes:hide_stop_intersection"  }
-       { label: 'Terminals', event: 'toggleVisabilty', triggerShow: "map:nodes:show_terminal", triggerHide: "map:nodes:hide_terminal"  }
-       { label: 'Other', event: 'toggleVisabilty', triggerShow: "map:nodes:show_other", triggerHide: "map:nodes:hide_other"  }  
+       { label: 'Freeway', event: 'toggleVisible', triggerShow: "map:nodes:show_freeway", triggerHide: "map:nodes:hide_freeway" }
+       { label: 'Highway',   event: 'toggleVisible', triggerShow: "map:nodes:show_highway", triggerHide: "map:nodes:hide_higway"  }
+       { label: 'Signalized Intersections', event: 'toggleVisible', triggerShow: "map:nodes:show_signalized_intersection", triggerHide: "map:nodes:hide_signalized_intersection"  }
+       { label: 'Simple', event: 'toggleVisible', triggerShow: "map:nodes:show_simple", triggerHide: "map:nodes:hide_simple" }
+       { label: 'Stop Intersections',   event: 'toggleVisible', triggerShow: "map:nodes:show_stop_intersection", triggerHide: "map:nodes:hide_stop_intersection"  }
+       { label: 'Terminals', event: 'toggleVisible', triggerShow: "map:nodes:show_terminal", triggerHide: "map:nodes:hide_terminal"  }
+       { label: 'Other', event: 'toggleVisible', triggerShow: "map:nodes:show_other", triggerHide: "map:nodes:hide_other"  }
      ]
 
 $a.layers_link_type_list = [
-      { label: 'Elec. toll coll. lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_electric_toll", triggerHide: "map:links:hide_electric_toll" }
-      { label: 'Freeway mainlines', event: 'toggleVisabilty', triggerShow: "map:links:show_freeway", triggerHide: "map:links:hide_freeway"  }
-      { label: 'Highway mainlines', event: 'toggleVisabilty', triggerShow: "map:links:show_highway", triggerHide: "map:links:hide_highway"  }
-      { label: 'Heavy vehicle lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_heavy_vehicle", triggerHide: "map:links:hide_heavy_vehicle" }
-      { label: 'HOV lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_hov", triggerHide: "map:links:hide_hov"  }
-      { label: 'HOT lanes', event: 'toggleVisabilty', triggerShow: "map:links:show_hot", triggerHide: "map:links:hide_hot"  }
-      { label: 'Interconnects', event: 'toggleVisabilty', triggerShow: "map:links:show_freeway_connector", triggerHide: "map:links:hide_freeway_connector" }
-      { label: 'Intersection Approach', event: 'toggleVisabilty', triggerShow: "map:links:show_intersection_approach", triggerHide: "map:links:hide_intersection_approach" }
-      { label: 'On-ramps', event: 'toggleVisabilty', triggerShow: "map:links:show_onramp", triggerHide: "map:links:hide_onramp"  }
-      { label: 'Off-ramps', event: 'toggleVisabilty', triggerShow: "map:links:show_offramp", triggerHide: "map:links:hide_offramp"  }
-      { label: 'Streets', event: 'toggleVisabilty', triggerShow: "map:links:show_street", triggerHide: "map:links:hide_street"  }
+      { label: 'Elec. toll coll. lanes', event: 'toggleVisible', triggerShow: "map:links:show_electric_toll", triggerHide: "map:links:hide_electric_toll" }
+      { label: 'Freeway mainlines', event: 'toggleVisible', triggerShow: "map:links:show_freeway", triggerHide: "map:links:hide_freeway"  }
+      { label: 'Highway mainlines', event: 'toggleVisible', triggerShow: "map:links:show_highway", triggerHide: "map:links:hide_highway"  }
+      { label: 'Heavy vehicle lanes', event: 'toggleVisible', triggerShow: "map:links:show_heavy_vehicle", triggerHide: "map:links:hide_heavy_vehicle" }
+      { label: 'HOV lanes', event: 'toggleVisible', triggerShow: "map:links:show_hov", triggerHide: "map:links:hide_hov"  }
+      { label: 'HOT lanes', event: 'toggleVisible', triggerShow: "map:links:show_hot", triggerHide: "map:links:hide_hot"  }
+      { label: 'Interconnects', event: 'toggleVisible', triggerShow: "map:links:show_freeway_connector", triggerHide: "map:links:hide_freeway_connector" }
+      { label: 'Intersection Approach', event: 'toggleVisible', triggerShow: "map:links:show_intersection_approach", triggerHide: "map:links:hide_intersection_approach" }
+      { label: 'On-ramps', event: 'toggleVisible', triggerShow: "map:links:show_onramp", triggerHide: "map:links:hide_onramp"  }
+      { label: 'Off-ramps', event: 'toggleVisible', triggerShow: "map:links:show_offramp", triggerHide: "map:links:hide_offramp"  }
+      { label: 'Streets', event: 'toggleVisible', triggerShow: "map:links:show_street", triggerHide: "map:links:hide_street"  }
     ]
 
 $a.layers_menu = [
@@ -101,8 +101,9 @@ $a.layers_menu = [
   { label: 'Hide all links', event: ((e) -> $a.broker.trigger('map:hide_link_layer')) }
   { label: 'Links', className: 'dropdown submenu', href: '#linkTypeList', link: 'linkTypeList', items: $a.layers_link_type_list }
   { className: 'divider' }
-  { label: 'Events', event: 'toggleVisabilty', triggerShow: "map:show_event_layer", triggerHide: "map:hide_event_layer" }
-  { label: 'Controllers',  event: 'toggleVisabilty', triggerShow: "map:show_controller_layer", triggerHide: "map:hide_controller_layer" }
-  { label: 'Sensors', event: 'toggleVisabilty', triggerShow: "map:show_sensor_layer", triggerHide: "map:hide_sensor_layer" }
+  { label: 'Events', event: 'toggleVisible', triggerShow: "map:show_event_layer", triggerHide: "map:hide_event_layer" }
+  { label: 'Controllers',  event: 'toggleVisible', triggerShow: "map:show_controller_layer", triggerHide: "map:hide_controller_layer" }
+  { label: 'Sensors', event: 'toggleVisible', triggerShow: "map:show_sensor_layer", triggerHide: "map:hide_sensor_layer" }
+  { label: 'Demands', event: 'toggleVisible', triggerShow: "map:show_demand_layer", triggerHide: "map:hide_demand_layer" }
 ]
 
