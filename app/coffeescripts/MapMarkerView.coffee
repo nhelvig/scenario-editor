@@ -27,13 +27,12 @@ class window.sirius.MapMarkerView extends Backbone.View
   # our standard dot.png. Each subclasses overrides get_icon
   # to pass the correct icon
   draw: ->
-    @marker = new google.maps.Marker({
+    @marker = new google.maps.Marker
         map: null
         position: @latLng
         draggable: true
         icon: @getIcon()
         title: "Name: #{@model.get('name')}\nLatitude: #{@latLng.lat()}\nLongitude: #{@latLng.lng()}"
-      });
 
 
   getIcon: (img) ->
@@ -57,11 +56,15 @@ class window.sirius.MapMarkerView extends Backbone.View
     @marker = null
 
   # Context Menu
-  # Create the Marker Context Menu. This class is always called by it overridden subclass method.
-  # The menu items are stored with their events in an array and
-  # can be configired in the menu-data.coffee file. We create a dependency with the ContextMenuView
-  # here. There may a better way to do this. I also add the contextMenu itself to the model so the
-  # same menu can be added to the tree items for this node
+  #
+  # Create the Marker Context Menu.
+  #
+  # This class is always called by it overridden subclass method. The
+  # menu items are stored with their events in an array and can be
+  # configired in the menu-data.coffee file. We create a dependency
+  # with the ContextMenuView here. There may a better way to do
+  # this. I also add the contextMenu itself to the model so the same
+  # menu can be added to the tree items for this node
   _contextMenu: (type, menuItems) ->
     @contextMenuOptions = {}
     @contextMenuOptions.class = 'context_menu'
@@ -97,4 +100,8 @@ class window.sirius.MapMarkerView extends Backbone.View
 
   # This method swaps the icon for the selected icon
   makeSelected: (img) ->
+    @_setSelected img
+
+  # This method swaps the icon for the de-selected icon
+  clearSelected: (img) ->
     @_setSelected img
