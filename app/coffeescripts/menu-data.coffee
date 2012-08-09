@@ -102,8 +102,7 @@ $a.layers_menu = [
   { label: 'Links', className: 'dropdown submenu', href: '#linkTypeList', link: 'linkTypeList', items: $a.layers_link_type_list }
   { className: 'divider' }
   { label: 'Events', event: 'toggleVisible', triggerShow: "map:show_event_layer", triggerHide: "map:hide_event_layer" }
-  { label: 'Controllers',  event: 'toggleVisible', triggerShow: "map:show_controller_layer", triggerHide: "map:hide_controller_layer" }
+  { label: 'Controllers', event: 'toggleVisible', triggerShow: "map:show_controller_layer", triggerHide: "map:hide_controller_layer" }
   { label: 'Sensors', event: 'toggleVisible', triggerShow: "map:show_sensor_layer", triggerHide: "map:hide_sensor_layer" }
   { label: 'Demands', event: 'toggleVisible', triggerShow: "map:show_demand_layer", triggerHide: "map:hide_demand_layer" }
 ]
-
