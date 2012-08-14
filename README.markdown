@@ -16,7 +16,8 @@ application do the following:
 2) In the app directory, run "make" at the command-line.
 3) "make" will compile the following to javascript: *
      - all files in the app/coffeescripts folder
-     - all files in the libs/aurora-coffee folder ** - 
+     - all files in the lib
+/aurora-coffee folder ** - 
 4) Open app/main.html in your browser and load an appropriate xml file to see it displayed on the map.
 5) Debugging and generally viewing the what is in the browser memory can be done in Chrome *** by:
    a) View -> Developer -> Javascript console. The console will open and display any javascript errors/messages the browser encounters.
@@ -30,7 +31,9 @@ application do the following:
 ** - currently the scenario-editor is displaying information in line with aurora schema definition. This will change 
      to the sirius schema definition in the near future. In order to
      compile the correct coffeescripts(aurora or sirius or whatever in the future) you need to:
-     1) open app/Makefile in your text editor and change the path from libs/aurora-coffee to libs/sirius-coffee
+     1) open app/Makefile in your text editor and change the path from lib
+/aurora-coffee to lib
+/sirius-coffee
 
 *** - Debugging can be done in firefox as well. I would recommend installing the Firebug plugin. A similar process for opening the javascript 
       console is available.
