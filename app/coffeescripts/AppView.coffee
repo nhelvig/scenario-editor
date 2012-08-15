@@ -3,7 +3,7 @@
 # instantiating and triggering the Network to be drawn
 class window.sirius.AppView extends Backbone.View
   $a = window.sirius
-  
+
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
     _.templateSettings = {interpolate : /\{\{(.+?)\}\}/g }
@@ -38,16 +38,15 @@ class window.sirius.AppView extends Backbone.View
       mapTypeId: google.maps.MapTypeId.ROADMAP
       mapTypeControl: false
       zoomControl: true
-      zoomControlOptions: {
+      zoomControlOptions:
         style: google.maps.ZoomControlStyle.DEFAULT,
         position: google.maps.ControlPosition.TOP_LEFT
-      }
     }
     #attach the map to the namespace
     $a.map = new google.maps.Map document.getElementById("map_canvas"), mapOptions
 
   # This creates the context menu as well as adds the listeners for map area of the application.
-  # Currently we have zoom in and zoom out as well as center the map. 
+  # Currently we have zoom in and zoom out as well as center the map.
   _contextMenu: () ->
     contextMenuOptions = {}
     contextMenuOptions.menuItems= $a.main_context_menu
@@ -64,11 +63,11 @@ class window.sirius.AppView extends Backbone.View
   # This creates the layers menu bar
   _layersMenu: () ->
     lmenu = new $a.LayersMenuView({className: 'dropdown-menu bottom-up', id : 'l_list', parentId: 'lh', menuItems: $a.layers_menu})
-      
+
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
   # The two files passed to the writeAndDownloadXML method are scenario.php and scenario-download-php.
-  # This will change when we know what we are running on the backend. The first file taks the xml string 
+  # This will change when we know what we are running on the backend. The first file taks the xml string
   # generated from the models and saves it to a file. The second parameter creates the correct headers to download
   # this file to the client
   saveScenario: ->
@@ -78,9 +77,9 @@ class window.sirius.AppView extends Backbone.View
      else
         $a.broker.trigger("app:show_message:info", "No scenario loaded")
 
-  openScenario: ->  
+  openScenario: ->
     $("#uploadField").click()
-    
+
   # displayMap takes the uploaded file data parses the xml into the model objects, and creates the MapNetworkView
   _displayMap: (fileText) ->
     try
@@ -99,7 +98,7 @@ class window.sirius.AppView extends Backbone.View
 
   _messagePanel: ->
     new $a.MessagePanelView()
-    
+
   _setKeyDownEvents: (e) ->
     # Open Local Network ALT-A
     # We set ALT_DOWN to false here because
@@ -107,29 +106,29 @@ class window.sirius.AppView extends Backbone.View
     if $a.ALT_DOWN and e.keyCode == 65
       $("#uploadField").click()
       $a.ALT_DOWN = false
-    
+
     # Save Local Network
     if $a.ALT_DOWN and e.keyCode == 83
       $("#save-local-network").click()
       $a.ALT_DOWN = false
-      
+
     # Set multi-select of map elements with the shift key
     $a.SHIFT_DOWN = true if e.keyCode == 16
-    
+
     # Set alt key down in order to set up quick key for opening files
     $a.ALT_DOWN = true if e.keyCode == 18
-    
 
-  _setKeyUpEvents: (e) -> 
+
+  _setKeyUpEvents: (e) ->
     # Turn off shift and alt down flags where appropriate
     $a.SHIFT_DOWN = false if e.keyCode == 16
     $a.ALT_DOWN = false  if e.keyCode == 18
-  
+
   fadeIn: ->
     $('.container').fadeIn(200)
     $('#lh').fadeIn(200)
     $('#mh').fadeIn(200)
-    
+
   _treeMenuToggle: () ->
     toggleTree = document.createElement "button"
     toggleTree.innerHTML = " < "
@@ -139,7 +138,7 @@ class window.sirius.AppView extends Backbone.View
       $a.broker.trigger('map:toggle_tree', 0)
 
   _attachEvents: ->
-    
+
     $('#expand-all').click( ->
       all_checks = $('.expand-tree')
       btn = document.getElementById('expand-all')
@@ -150,7 +149,7 @@ class window.sirius.AppView extends Backbone.View
         checkBox.checked = false for checkBox in all_checks
         btn.innerHTML = '+'
       )
-      
+
   toggleTree: (display) =>
     button = document.getElementById 'collapseTree'
     if button.innerHTML == ' &gt; ' and (display == 0 or display == false)
@@ -163,4 +162,3 @@ class window.sirius.AppView extends Backbone.View
       $('#right_tree').show(200)
       align = right: '22%'
       $('#collapseTree').animate(align, 200)
-    

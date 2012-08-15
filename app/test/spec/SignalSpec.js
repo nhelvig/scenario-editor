@@ -1,32 +1,32 @@
-describe("Begin", function() {
+describe("Signal", function() {
     var testNodeId = 2;
     var testNode;
-    var testBegin;
+    var testSignal;
 
     beforeEach(function() {
 	testNode = new window.sirius.Node({id: testNodeId});
-	testBegin = new window.sirius.Begin({node: testNode});
+	testSignal = new window.sirius.Signal({node: testNode});
     });
 
     it("should not blow up on to_xml", function() {
 	var doc = document.implementation.createDocument("document:xml", "begin", null);
-	var out = testBegin.to_xml(doc); 
+	var out = testSignal.to_xml(doc); 
 	expect(out).not.toBeNull();
     });
 
     it("should contain test node", function() {
-	expect(testBegin.get('node')).toEqual(testNode);
+	expect(testSignal.get('node')).toEqual(testNode);
     });
 
     it("should resolve node_id as node", function() {
-	var b = new window.sirius.Begin({node_id: testNodeId});
-	expectResolution(b, 'node', testNode);
+	var s = new window.sirius.Signal({node_id: testNodeId});
+	expectResolution(s, 'node', testNode);
     });
 
     it("should encode node reference as node_id", function() {
 	// should not contain node_id at first
-	expect(testBegin.get('node_id')).toBeUndefined();
-	testBegin.encode_references();
-	expect(testBegin.get('node_id')).toEqual(testNodeId);
+	expect(testSignal.get('node_id')).toBeUndefined();
+	testSignal.encode_references();
+	expect(testSignal.get('node_id')).toEqual(testNodeId);
     })
 });

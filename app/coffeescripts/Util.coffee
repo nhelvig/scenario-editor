@@ -27,7 +27,7 @@ class window.sirius.Util
   # This method is used to grab the model elements from object model by id.
   # The list is the list you want to iterate over and the id is what you want to find
   @getElement: (id, list) ->
-    _.find(list, (elem) ->  elem.get('id') == id)  
+    _.find(list, (elem) ->  elem.get('id') == id)
   
   # creates a copy of of item array. The items array is a list menu items for context menus.
   @copy: (items) ->

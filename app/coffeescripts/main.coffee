@@ -23,11 +23,11 @@ window.load_sirius = ->
                   new window.sirius.AppView()
 
 head.js('https://www.google.com/jsapi',
-        '../libs/js/jquery-1.7.1.js',
-        '../libs/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
-        '../libs/js/underscore.js',
-        '../libs/js/backbone.js',
-        '../libs/js/bootstrap/js/bootstrap.min.js', ->
+        '../lib/js/jquery-1.7.1.js',
+        '../lib/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
+        '../lib/js/underscore.js',
+        '../lib/js/backbone.js',
+        '../lib/js/bootstrap/js/bootstrap.min.js', ->
                google.load("maps", "3", {
                   callback: "window.load_sirius()",
                   other_params: "libraries=geometry,drawing&sensor=false"
