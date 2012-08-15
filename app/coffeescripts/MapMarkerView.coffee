@@ -5,13 +5,15 @@ class window.sirius.MapMarkerView extends Backbone.View
   $a = window.sirius
 
   initialize: (@model) ->
+
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
     @latLng = $a.Util.getLatLng(model)
     @draw()
-    google.maps.event.addListener(@marker, 'dragend', @dragMarker())
-    google.maps.event.addListener(@marker, 'click', (event) => @manageMarkerSelect())
-    google.maps.event.addListener(@marker, 'dblclick', (mouseEvent) => @_editor() )
+    gevent = google.maps.event
+    gevent.addListener(@marker, 'dragend', @dragMarker())
+    gevent.addListener(@marker, 'click', (event) => @manageMarkerSelect())
+    gevent.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
     $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
@@ -32,8 +34,9 @@ class window.sirius.MapMarkerView extends Backbone.View
         position: @latLng
         draggable: true
         icon: @getIcon()
-        title: "Name: #{@model.get('name')}\nLatitude: #{@latLng.lat()}\nLongitude: #{@latLng.lng()}"
-
+        title: "Name: #{@model.get('name')}\n
+                Latitude: #{@latLng.lat()}\n
+                Longitude: #{@latLng.lng()}"
 
   getIcon: (img) ->
     @getMarkerImage img
@@ -45,8 +48,8 @@ class window.sirius.MapMarkerView extends Backbone.View
       new google.maps.Point(16, 16)
     );
 
-  # in order to remove an element you need to unpublish the events, hide the marker
-  # and set it to null
+  # in order to remove an element you need to unpublish the events, 
+  # hide the marker and set it to null
   removeElement: ->
     $a.broker.off('map:init')
     $a.broker.off('map:clear_selected')
@@ -74,7 +77,8 @@ class window.sirius.MapMarkerView extends Backbone.View
     _.each(@contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
 
     @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
-    google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) => @contextMenu.show mouseEvent.latLng )
+    showContextMenu = (mouseEvent) => @contextMenu.show mouseEvent.latLng 
+    google.maps.event.addListener(@marker, 'rightclick', showContextMenu)
     @model.set('contextMenu', @contextMenu)
 
   # events used to move the marker and update its position
@@ -89,7 +93,8 @@ class window.sirius.MapMarkerView extends Backbone.View
   showMarker: ->
     @marker.setMap($a.map)
 
-  # Used by subclasses to get name of image in order to swap between selected and not selected
+  # Used by subclasses to get name of image in order to swap between selected 
+  # and not selected
   _getIconName: () ->
     tokens = @marker.get('icon').url.split '/'
     lastIndex =  tokens.length - 1
