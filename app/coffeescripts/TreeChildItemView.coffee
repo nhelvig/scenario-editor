@@ -5,10 +5,9 @@ class window.sirius.TreeChildItemView extends Backbone.View
   $a = window.sirius
   tagName: "li"
   className: "file"
-  events : {
-            'click': 'manageHighlight',
-            'contextmenu' : 'showContext'
-          }
+  events:
+    click: 'manageHighlight',
+    contextmenu : 'showContext'
 
   # The model attribute is the model for this class, the element
   # attribute is the name of the parent tree element this model should

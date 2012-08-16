@@ -11,68 +11,18 @@ class window.sirius.TreeView extends Backbone.View
       scenario = args.scenario
       @parent = args.attach
       @_createParentNodes $a.main_tree_elements
-      @_createNetworkChildren({
-        parentList: scenario.get('networklist')
-        modelListName: 'network'
-        attachId: 'network-list'
-        nameList: null
-      })
-      @_createChildren({
-        parentList: scenario.get('networkconnections')
-        modelListName: 'network'
-        attachId:  'network-connections'
-        nameList: null
-      })
-      @_createLinkChildren({
-        parentList: scenario.get('initialdensityset')
-        modelListName: 'density'
-        attachId: 'initial-density-profiles'
-      })
-      @_createLinkChildren({
-        parentList: scenario.get('controllerset')
-        modelListName: 'controller'
-        attachId: 'controllers'
-      })
-      @_createDemandLinkChildren({
-        parentList: scenario.get('demandprofileset')
-        modelListName: 'demandprofile'
-        attachId: 'demand-profiles'
-      })
-      @_createLinkChildren({
-        parentList: scenario.get('eventset')
-        modelListName: 'event'
-        attachId: 'events'
-      })
-      @_createLinkChildren({
-        parentList: scenario.get('fundamentaldiagramprofileset')
-        modelListName: 'fundamentaldiagramprofile'
-        attachId: 'fundamental-diagram-profiles'
-      })
-      @_createLinkChildren({
-        parentList: scenario.get('oddemandprofileset')
-        modelListName: 'oddemandprofile'
-        attachId: 'od-demand-profiles'
-      })
-      @_createLinkChildren({
-        parentList: scenario.get('downstreamboundarycapacityprofileset')
-        modelListName: 'downstreamboundarycapacityprofile'
-        attachId: 'downstream-boundary-profiles'
-      })
-      @_createNodeChildren({
-        parentList: scenario.get('splitratioprofileset')
-        modelListName: 'splitratioprofile'
-        attachId: 'split-ratio-profiles'
-      })
-      @_createLinkChildren({
-        parentList: scenario.get('sensorlist')
-        modelListName: 'sensor'
-        attachId: 'sensors'
-      })
-      @_createNodeChildren({
-        parentList: scenario.get('signallist')
-        modelListName: 'signal'
-        attachId: 'signals'
-      })
+      @_createNetworkChildren(scenario.get('networklist'), 'network', "network-list")
+      @_createChildren(scenario.get('networkconnections'), 'network', "network-connections", null)
+      @_createLinkChildren(scenario.get('initialdensityset'), 'density', "initial-density-profiles",links)
+      @_createLinkChildren(scenario.get('controllerset'), 'controller', "controllers", links)
+      @_createChildren(scenario.get('demandprofileset'), 'demandprofile', "demand-profiles", @scenario.get('demandprofileset').get('demandprofile'))
+      @_createLinkChildren(scenario.get('eventset'), 'event', "events", links)
+      @_createLinkChildren(scenario.get('fundamentaldiagramprofileset'), 'fundamentaldiagramprofile', "fundamental-diagram-profiles", links)
+      @_createLinkChildren(scenario.get('oddemandprofileset'), 'oddemandprofile', "od-demand-profiles", links)
+      @_createLinkChildren(scenario.get('downstreamboundarycapacityprofileset'), 'downstreamboundarycapacityprofile', "downstream-boundary-profiles", links)
+      @_createNodeChildren(scenario.get('splitratioprofileset'), 'splitratioprofile', "split-ratio-profiles",  nodes)
+      @_createLinkChildren(scenario.get('sensorlist'), 'sensor', "sensors", links)
+      @_createNodeChildren(scenario.get('signallist'), 'signal', "signals", nodes)
       $a.broker.on('app:main_tree', @render, @)
 
   # Attach itself as well as trigger events for the parent and child 

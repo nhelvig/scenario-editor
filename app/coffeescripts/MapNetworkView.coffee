@@ -2,9 +2,9 @@
 # A network consists of all the links, nodes, sensors, controllers
 # events, and signals along a route. It uses the google api Directions
 # Service to determine the route by passing the service
-# a set of latitude and longitudes along the route(waypoints). 
+# a set of latitude and longitudes along the route(waypoints).
 #
-# The class also creates and then triggers the rendering of the treeView 
+# The class also creates and then triggers the rendering of the treeView
 # of the scenario elements.
 class window.sirius.MapNetworkView extends Backbone.View
   $a = window.sirius
@@ -14,13 +14,13 @@ class window.sirius.MapNetworkView extends Backbone.View
   initialize: (@scenario) ->
     @networks =  @scenario.get('networklist').get('network')
     _.each(@networks, (network) => @_drawNetwork(network))
-    
+
     @_drawScenarioItems()
-    
+
     # This class creates the tree view of all the elements of the scenario
     new $a.TreeView({ scenario: @scenario, attach: "#right_tree"})
     @render()
-  
+
   render: ->
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
@@ -41,8 +41,7 @@ class window.sirius.MapNetworkView extends Backbone.View
   _drawNetwork: (network)->
     $a.map.setCenter($a.Util.getLatLng(network))
     @_drawRoute(network)
-    if network.get('nodelist')?
-      @_drawNodes network.get('nodelist').get('node'), network
+    @_drawNodes network.get('nodelist').get('node'), network if network.get('nodelist')?
 
   # _drawRoute uses the Google Direction's api to get the data used to render 
   # the route. The network reference is the network you are drawing now
@@ -78,41 +77,32 @@ class window.sirius.MapNetworkView extends Backbone.View
       @_requestLink(indexOfLink - 1, network)
     else
       $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
-    
-  
-  # _directionsRequest makes the actual route request to google. if we 
-  # recieve OVER_QUERY_LIMIT error, this method will wait 3 seconds and then 
-  # call itself again with the same request object but montior the number of 
-  # attempts. We attempt to get the route for the link 3 times and then give 
-  # up. If get a route, this method calls _drawLink to render the link on the 
-  # page
-  _directionsRequest: (params) ->
-    @directionsService.route(params.request, (response, status) =>
+
+
+  # _directionsRequest makes the actual route request to google. if we recieve OVER_QUERY_LIMIT error, this method
+  # will wait 3 seconds and then call itself again with the same request object but montior the number of attempts.
+  # We attempt to get the route for the link 3 times and then give up. If get a route, this method calls _drawLink
+  # to render the link on the page
+  _directionsRequest: (request, linkModel, network, attempts) ->
+    @directionsService.route(request, (response, status) =>
       if (status == google.maps.DirectionsStatus.OK)
-        rte = response.routes[0]
-        if rte.warnings.length > 0
-          msg = "#{WARNING_MSG} #{rte.warnings}"
-          $a.broker.trigger('app:show_message:info', msg)  
-        @_drawLink params, rte.legs
-      else if @_isOverQuery(status) and params.attempts < 3
-        setTimeout (() => @_directionsRequest(params)), 3000
+        $a.broker.trigger('app:show_message:info', "Directions API Warning(s): #{response.routes[0].warnings}") if response.routes[0].warnings.length >
+        @_drawLink linkModel, network, response.routes[0].legs
+      else if status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT and attempts < 3
+        setTimeout (() => @_directionsRequest(request, linkModel, network, attempts + 1)), 3000
       else #TODO configure into html
-        $a.broker.trigger('app:show_message:error', "#{ERROR_MSG} #{status}")
+        $a.broker.trigger('app:show_message:error', "Directions API Error: Could not render link : #{status}")
     )
 
-  #checks to see if we are over the google query limit
-  _isOverQuery: () ->
-    status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT
-  
   # These methods instantiate each elements view instance in the map
-  _drawLink: (params, legs) ->
-    new $a.MapLinkView(params.linkModel, params.network, legs)
+  _drawLink: (linkModel, network, legs) ->
+    new $a.MapLinkView(linkModel, network, legs)
 
   _drawNodes: (nodes, network) ->
     _.each(nodes, (i) ->  new $a.MapNodeView(i, network))
 
   _drawSensors: (sensors) ->
-    _.each(sensors, (i) ->  new $a.MapSensorView(i))
+    _.each(sensors, (i) ->  new $a.MapSensorView(i, $a.MapNetworkModel.LINKS))
 
   _drawEvents: (events) ->
     _.each(events, (i) ->  new $a.MapEventView(i))
