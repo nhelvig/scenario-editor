@@ -37,11 +37,6 @@ $a.nav_bar_menu_items =
     Contact: noconfig
     Legal: noconfig
 
-context_menu_item(label, event) ->
-  className: 'context_menu_item',
-  label: label,
-  event: event
-
 # Main window context menu
 $a.main_context_menu = [
    {className:'context_menu_item', event: (-> $a.map.setZoom $a.map.getZoom()+1), label:'Zoom in'}
