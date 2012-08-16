@@ -17,7 +17,7 @@ class window.sirius.TreeView extends Backbone.View
       @_createChildren(scenario.get('networkconnections'), 'network', "network-connections", null)
       @_createLinkChildren(scenario.get('initialdensityset'), 'density', "initial-density-profiles",links)
       @_createLinkChildren(scenario.get('controllerset'), 'controller', "controllers", links)
-      @_createLinkChildren(scenario.get('demandprofileset'), 'demandprofile', "demand-profiles", links)
+      @_createDemandLinkChildren(scenario.get('demandprofileset'), 'demandprofile', "demand-profiles", links)
       @_createLinkChildren(scenario.get('eventset'), 'event', "events", links)
       @_createLinkChildren(scenario.get('fundamentaldiagramprofileset'), 'fundamentaldiagramprofile', "fundamental-diagram-profiles", links)
       @_createLinkChildren(scenario.get('oddemandprofileset'), 'oddemandprofile', "od-demand-profiles", links)
@@ -49,6 +49,10 @@ class window.sirius.TreeView extends Backbone.View
   _createLinkChildren : (parentList, modelListName, attach_id, nameList) ->
     @_createChildren(parentList, modelListName, attach_id, nameList,'link')
 
+  # This function creates link tree items by pass the 'link' argument to _createChildren
+  _createDemandLinkChildren : (parentList, modelListName, attach_id, nameList) ->
+    @_createChildren(parentList, modelListName, attach_id, nameList,'demandlink')
+
   # This function creates node tree items by pass the 'node' argument to _createChildren
   _createNodeChildren : (parentList, modelListName, attach_id, nameList) ->
     @_createChildren(parentList, modelListName, attach_id, nameList,'node')
@@ -73,6 +77,7 @@ class window.sirius.TreeView extends Backbone.View
       # We create create link and node tree items by calling their respective tree view classes
       # All others are just tree items
       switch type
+        when 'demandlink' then new $a.TreeChildItemDemandLinkView(e, targets, name, attach)
         when 'link' then new $a.TreeChildItemLinkView(e, targets, name, attach)
         when 'node' then new $a.TreeChildItemNodeView(e, targets, name, attach)
         when 'network' then new $a.TreeChildItemNetworkView(e, targets, name, attach)
