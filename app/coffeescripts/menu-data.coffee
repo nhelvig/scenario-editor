@@ -94,6 +94,10 @@ $a.signal_context_menu = [
     event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
 ]
 
+$a.demand_context_menu = [
+  { label: 'Visualize demand', className: 'context_menu_item', event: ((e) -> $a.broker.trigger("demand:show_dialog:#{e.currentTarget.id}")) }
+]
+
 # Node Context Menu
 $a.node_context_menu = [
   { 
