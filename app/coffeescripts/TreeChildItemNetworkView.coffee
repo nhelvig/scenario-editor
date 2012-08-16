@@ -2,7 +2,7 @@
 # is <li> tag with an anchor surrounding the name.
 class window.sirius.TreeChildItemNetworkView extends window.sirius.TreeChildItemView
   $a = window.sirius
-  
+
   # Overridden method that trigger the select/clear netowrk event as well
   # as highlights itself
   manageHighlight:  ->
@@ -17,5 +17,3 @@ class window.sirius.TreeChildItemNetworkView extends window.sirius.TreeChildItem
       @highlighted = false
       $a.broker.trigger("map:clear_network:#{@model.cid}")
       @removeHighlight()
-
-

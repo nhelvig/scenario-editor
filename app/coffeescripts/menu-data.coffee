@@ -5,46 +5,49 @@ $a.main_tree_elements = [
   'Network Connections','Downstream Boundary Profiles','Split Ratio Profiles','Sensors','Signals'
   ]
 
+ETHAN_VIZ_MEASURE_URI = "http://via.path.berkeley.edu/~ethan/vis_chart.html"
+noconfig = -> alert('Not Configured')
 
 # The menu items and their events for the main navigation bar
-$a.nav_bar_menu_items = {
-    'File': {
-              'New' : (() -> alert('Not Configured'))
-              'Open Local Network' : (() -> $a.broker.trigger("app:open_scenario"))
-              'Save Local Network' : (() ->  $a.broker.trigger("app:save_scenario"))
-              'Close Local Network' : (() -> $a.broker.trigger('map:clear_map'))
-              'Import Local Network' : (() -> alert('Not Configured'))
-            }
-    'Windows': {
-                'Node Browser' : (() -> alert('Not Configured'))
-                'Link Browser' : (() -> alert('Not Configured'))
-                'Path Browser' : (() -> alert('Not Configured'))
-                'Event Browser' : (() -> alert('Not Configured'))
-                'Controller Browser' : (() -> alert('Not Configured'))
-                'Sensor Browser' : (() -> alert('Not Configured'))
-                'Network Properties' : (() -> alert('Not Configured'))
-              }
-    'Tools': {
-              'Import PeMS data' : (() -> alert('Not Configured'))
-              'Calibrate' : (() -> alert('Not Configured'))
-              'Simulate' : (() -> alert('Not Configured'))
-            }
-    'Help': {
-              'About' : (() -> alert('Not Configured'))
-              'Help' : (() -> alert('Not Configured'))
-              'Version' : (() -> alert('Not Configured'))
-              'Identity' : (() -> alert('Not Configured'))
-              'Contact' : (() -> alert('Not Configured'))
-              'Legal' : (() -> alert('Not Configured'))
-            }
-}
+$a.nav_bar_menu_items =
+  File:
+    New: noconfig
+    'Open Local Network': (-> $a.broker.trigger("app:open_scenario"))
+    'Save Local Network': (->  $a.broker.trigger("app:save_scenario"))
+    'Close Local Network': (-> $a.broker.trigger('map:clear_map'))
+    'Import Local Network': noconfig
+  Windows:
+    'Node Browser': noconfig
+    'Link Browser': noconfig
+    'Path Browser': noconfig
+    'Event Browser': noconfig
+    'Controller Browser': noconfig
+    'Sensor Browser': noconfig
+    'Network Properties': noconfig
+  Tools:
+    'Import PeMS data': noconfig
+    Calibrate: noconfig
+    Simulate: noconfig
+    'Visualize Measurements': (-> window.open(ETHAN_VIZ_MEASURE_URI))
+  Help:
+    About: noconfig
+    Help: noconfig
+    Version: noconfig
+    Identity: noconfig
+    Contact: noconfig
+    Legal: noconfig
+
+context_menu_item(label, event) ->
+  className: 'context_menu_item',
+  label: label,
+  event: event
 
 # Main window context menu
 $a.main_context_menu = [
-   {className:'context_menu_item', event: (() -> $a.map.setZoom $a.map.getZoom()+1), label:'Zoom in'}
-   {className:'context_menu_item', event: (() -> $a.map.setZoom $a.map.getZoom()-1), label:'Zoom out'}
+   {className:'context_menu_item', event: (-> $a.map.setZoom $a.map.getZoom()+1), label:'Zoom in'}
+   {className:'context_menu_item', event: (-> $a.map.setZoom $a.map.getZoom()-1), label:'Zoom out'}
    {className:'context_menu_separator'}
-   {className:'context_menu_item', event: (() -> $a.map.panTo $a.contextMenu.position), label:'Center map here'}
+   {className:'context_menu_item', event: (-> $a.map.panTo $a.contextMenu.position), label:'Center map here'}
 ]
 
 # Link Context Menu
