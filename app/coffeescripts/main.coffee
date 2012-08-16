@@ -27,6 +27,7 @@ head.js 'https://www.google.com/jsapi',
         '../lib/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
         '../lib/js/underscore.js',
         '../lib/js/backbone.js',
+        '../lib/js/d3.v2.js',
         '../lib/js/bootstrap/js/bootstrap.min.js', ->
                google.load "maps", "3",
                   callback: "window.load_sirius()",
