@@ -23,7 +23,7 @@ window.load_sirius = ->
                # classes use to register their own listeners on
                new window.sirius.AppView()
 
-head.js 'https://www.google.com/jsapi',
+  head.js 'https://www.google.com/jsapi',
         '../libs/js/jquery-1.7.1.js',
         '../libs/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
         '../libs/js/underscore.js',
