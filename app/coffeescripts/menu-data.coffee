@@ -3,7 +3,7 @@ $a = window.sirius
 $a.main_tree_elements = [
   'Initial Density Profiles', 'Network List', 'Controllers', 'Demand Profiles', 'Events', 'Fundamental Diagram Profiles', 'OD Demand Profiles',
   'Network Connections','Downstream Boundary Profiles','Split Ratio Profiles','Sensors','Signals'
-  ]
+]
 
 ETHAN_VIZ_MEASURE_URI = "http://via.path.berkeley.edu/~ethan/vis_chart.html"
 noconfig = -> alert('Not Configured')
