@@ -32,5 +32,4 @@ class window.sirius.FileUploadView extends Backbone.View
     # if you don't reset the value to '' on the input file tag it won't register
     # a change event if you pick the same file two times in a row
     @$el.attr('value', '')
-  
  

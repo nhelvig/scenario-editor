@@ -28,4 +28,3 @@ class window.sirius.TreeParentItemView extends Backbone.View
     $(@el).remove()
     $a.broker.off('app:parent_tree')
     $a.broker.off('app:tree_clear')
-    
