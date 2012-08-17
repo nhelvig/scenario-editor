@@ -139,7 +139,6 @@ class window.sirius.AppView extends Backbone.View
     # Set alt key down in order to set up quick key for opening files
     $a.ALT_DOWN = true if e.keyCode == 18
 
-
   _setKeyUpEvents: (e) ->
     # Turn off shift and alt down flags where appropriate
     $a.SHIFT_DOWN = false if e.keyCode == 16
