@@ -15,4 +15,3 @@ class window.sirius.ContextMenuItemView extends Backbone.View
   render: () ->
     $("##{@parentId}").append(@el)
     @
-

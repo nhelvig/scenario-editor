@@ -15,5 +15,4 @@ class window.sirius.NavParentItemView extends Backbone.View
   render: ->
     $(@parent).append(@el)
     @
-
         

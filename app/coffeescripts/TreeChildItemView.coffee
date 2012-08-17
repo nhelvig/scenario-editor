@@ -1,6 +1,6 @@
 # The view class for each child item in the tree view. Each child item
-# is <li> tag with an anchor surrounding the name. It is the super of Link and Node Tree Items but
-# can also render non-link/node tree items
+# is <li> tag with an anchor surrounding the name. It is the super of 
+# Link and Node Tree Items but can also render non-link/node tree items
 class window.sirius.TreeChildItemView extends Backbone.View
   $a = window.sirius
   tagName: "li"
@@ -13,7 +13,12 @@ class window.sirius.TreeChildItemView extends Backbone.View
   # The model attribute is the model for this class, the element
   # attribute is the name of the parent tree element this model should
   # be attached too
-  initialize: (@model, @targets, name, @element) ->
+  initialize: (params) ->
+    @model= params.e
+    @targets = params.targets
+    name = params.name
+    @element = params.attach
+    
     # used to toggle highlight for this element
     @highlighted = false
 

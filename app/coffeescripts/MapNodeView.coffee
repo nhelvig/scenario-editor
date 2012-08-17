@@ -1,6 +1,6 @@
 # Creates nodes by overriding getIcon from MapMarkerView and registering
-# show/hide events from the node layer. It also adds itself to and holds a static 
-# array of nodes
+# show/hide events from the node layer. It also adds itself to and holds a 
+# static array of nodes
 class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   @ICON: 'dot'
   @SELECTED_ICON: 'reddot'
@@ -13,8 +13,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     super model
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
-    $a.broker.on("map:select_neighbors_outgoing:#{@model.cid}", @selectMyLinks, @)
-    $a.broker.on("map:select_neighbors_incoming:#{@model.cid}", @selectMyLinks, @)
+    $a.broker.on("map:select_neighbors_out:#{@model.cid}", @selectMyLinks, @)
+    $a.broker.on("map:select_neighbors_in:#{@model.cid}", @selectMyLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:show_node_layer', @showMarker, @)
     $a.broker.on('map:hide_node_layer', @hideMarker, @)
@@ -28,7 +28,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     super @_getTypeIcon false
 
   # Context Menu
-  # Create the Node Context Menu. Call the super class method to create the context menu
+  # Create the Node Context Menu. Call the super class method to create the 
+  # context menu
   _contextMenu: () ->
     super 'node', $a.node_context_menu
 
@@ -41,12 +42,13 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $(env.el).dialog('open')
     
     
-  # This method overrides MapMarkerView to unpublish specific events to this type
-  # and then calls super to set itself to null, unpublish the general events, and hide itself
+  # This method overrides MapMarkerView to unpublish specific events to this 
+  # type and then calls super to set itself to null, unpublish the general
+  # events, and hide itself
   removeElement: ->
     $a.broker.off("map:select_neighbors:#{@model.cid}")
-    $a.broker.off("map:select_neighbors_outgoing:#{@model.cid}")
-    $a.broker.off("map:select_neighbors_incoming:#{@model.cid}")
+    $a.broker.off("map:select_neighbors_out:#{@model.cid}")
+    $a.broker.off("map:select_neighbors_in:#{@model.cid}")
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off('map:show_node_layer')
     $a.broker.off('map:hide_node_layer')
@@ -57,7 +59,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     super
 
   ################# select events for marker
-  # Callback for the markers click event. It decided whether we are selecting or de-selecting and triggers appropriately 
+  # Callback for the markers click event. It decided whether we are selecting 
+  # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapNodeView.__super__._getIconName.apply(@, []) 
     if iconName == "#{@_getTypeIcon(false)}.png"
@@ -66,15 +69,17 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
       @makeSelected()
     else
       @_triggerClearSelectEvents()
-      @clearSelected() # you call clearSelected in case the Shift key is down and you are deselecting yourself
+      @clearSelected() # Shift key is down and you are deselecting yourself
   
-  # This function triggers the events that make the selected tree and map items to de-selected
+  # This function triggers the events that make the selected tree and map
+  # items to de-selected
   _triggerClearSelectEvents: () ->
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
   
-  # This method is called from the context menu and selects itself and all the nodes links.
-  # Note: The links references are from the output and input attributes on the node. 
+  # This method is called from the context menu and selects itself and all the
+  # nodes links. Note: The links references are from the output and input
+  # attributes on the node. 
   selectSelfandMyLinks: () ->
     # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
@@ -87,20 +92,22 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
         )
     )
 
-  # This method is called from the context menu and clears itself and all the nodes links.
-  # Note: The links references are from the output and input attributes on the node. 
+  # This method is called from the context menu and clears itself and all the
+  # nodes links. Note: The links references are from the output and input
+  # attributes on the node. 
   clearSelfandMyLinks: () ->
     @clearSelected()
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
     _.each(['input','output'], (type) => 
         _.each(@_getInputOrOutputLinks(type), (link) -> 
-              $a.broker.trigger("map:clear_item:#{link.get('link').cid}")
-              $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}")
+          $a.broker.trigger("map:clear_item:#{link.get('link').cid}")
+          $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}")
         )
       )
   
-  # This method is called from the context menu to select this nodes output or input links.
-  # The type parameter determins whether we are grabbing output or input attributes on the node. 
+  # This method is called from the context menu to select this nodes output 
+  # or input links. The type parameter determins whether we are grabbing output
+  # or input attributes on the node. 
   selectMyLinks: (type) ->
     # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
@@ -134,5 +141,3 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
           MapNodeView.SELECTED_ICON
         else
           MapNodeView.ICON
-  
-      
