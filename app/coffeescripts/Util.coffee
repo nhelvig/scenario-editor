@@ -23,6 +23,15 @@ class window.sirius.Util
   # dashes for spaces
   @toLowerCaseAndDashed: (text) ->
     text.toLowerCase().replace(/\ /g,"-")
+
+  # takes elem (eg. 'node','signal', 'link') and capitalizes
+  # the first letter, lower cases the rest and will handle multiple words 
+  # if needed. It is used to create the title for dialog box  
+  @toStandardCasing: (elem) ->
+    formattedWord = []
+    for word in elem.split /\s+/
+      formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase() 
+    formattedWord.join ' '
   
   # This method is used to grab the model elements from object model by id.
   # The list is the list you want to iterate over and the id is what you want to find
