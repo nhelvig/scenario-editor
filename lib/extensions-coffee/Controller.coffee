@@ -35,7 +35,7 @@ window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set 'id', @get('id')
     @set('targetreferences',[]);
-    _.each(@get('targetelements').get('scenarioElement'), (e) =>
+    _.each(@get('targetelements').get('scenarioelement'), (e) =>
       switch e.get('type')
         when 'link' then @get('targetreferences').push object_with_id.link[e.id]
         when 'node' then @get('targetreferences').push object_with_id.node[e.id]
@@ -50,7 +50,8 @@ window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
 
 
 window.sirius.Controller::encode_references = ->
-  # TODO : do we to encode references? All the data will be written back via scenarioElements
+  # TODO : do we to encode references? All the data will be written back via 
+  # scenarioElements
   # @set('node_id', @get('node').id) if @has('node')
   # @set('link_id', @get('link').id) if @has('link')
   # @set('network_id', @get('network').id) if @has('network')

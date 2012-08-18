@@ -26,7 +26,7 @@ window.sirius.Event::display_point = ->
 window.sirius.Event::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set('targetreferences',[]);
-    _.each(@get('targetelements').get('scenarioElement'), (e) =>
+    _.each(@get('targetelements').get('scenarioelement'), (e) =>
       switch e.get('type')
         when 'link' then @get('targetreferences').push object_with_id.link[e.id]
         when 'node' then @get('targetreferences').push object_with_id.node[e.id]

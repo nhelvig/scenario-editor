@@ -1,3 +1,8 @@
+window.sirius.Sensor::resolve_references = (deferred, object_with_id) ->
+  deferred.push =>
+    link = object_with_id.link[@get('link_reference').get('id')]
+    @set('link', link)
+
 window.sirius.Sensor::point = ->
   p = @get('position').get('point')
   p.push(new Point) unless p[0]
