@@ -5,18 +5,33 @@ class window.sirius.Util
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
 
   @_getLat: (elem) ->
-    if elem.get('position')?
-      lat = elem.get('position').get('point')[0].get('lat')
-    if elem.get('display_position')
-      lat = elem.get('display_position').get('point')[0].get('lat')
-    lat 
+    @_getElementLatOrLng(elem, 'lat')
 
   @_getLng: (elem) ->
+    @_getElementLatOrLng(elem, 'lng')
+  
+  # called by getLat, getLng to first get the position and point attribute
+  # (this can be complicated depending on the type of element, some store
+  # as display_position and some store as position). In some cases, there
+  # is no position specified in this case we get the position of the node
+  # or the links begin node that it is associated with.
+  @_getElementLatOrLng: (elem, type) ->
     if elem.get('position')?
-      lng = elem.get('position').get('point')[0].get('lng')
-    if elem.get('display_position')
-      lng = elem.get('display_position').get('point')[0].get('lng')
-    lng
+      pos = elem.get('position')
+    else if elem.get('display_position')?
+      pos = elem.get('display_position')
+    else if elem.get('node')?
+      pos = elem.get('node').get('position')
+      @_offsetPosition(pos) # offset just to left of the node
+    else if elem.get('link')?
+      pos = elem.get('link').get('begin').get('node').get('position')
+      @_offsetPosition(pos) # offset just to left of the link's begin node
+       
+    pos.get('point')[0].get(type)
+  
+  # used to move the symbol just off to the left of the node
+  @_offsetPosition: (pos) ->
+    pos.get('point')[0].set({'lng' : pos.get('point')[0].get('lng') - .0002})
 
   # returns a google LatLng obect by retrieving the latitude and longitude 
   # from the elements object. In some cases it is stored in position and
