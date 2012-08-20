@@ -82,21 +82,15 @@ class window.sirius.TreeView extends Backbone.View
       name = targets[0].get('name')
       # for OD Profiles
       name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
-      
-      attrs = {
-        e : e
-        targets: targets
-        name: name
-        attach: params.attachId
-      }
-      # We create create link and node tree items by calling their respective
-      # tree view classes All others are just tree items
-      switch params.type
-        when 'demandlink' then new $a.TreeChildItemDemandLinkView(attrs)
-        when 'link' then new $a.TreeChildItemLinkView(attrs)
-        when 'node' then new $a.TreeChildItemNodeView(attrs)
-        when 'network' then new $a.TreeChildItemNetworkView(attrs)
-        else new $a.TreeChildItemView(attrs)
+
+      # We create create link and node tree items by calling their
+      # respective tree view classes All others are just tree items
+      switch type
+        when 'demandlink' then new $a.TreeChildItemDemandLinkView(e, targets, name, attach)
+        when 'link' then new $a.TreeChildItemLinkView(e, targets, name, attach)
+        when 'node' then new $a.TreeChildItemNodeView(e, targets, name, attach)
+        when 'network' then new $a.TreeChildItemNetworkView(e, targets, name, attach)
+        else new $a.TreeChildItemView(e, targets, name, attach, type)
     )
  
   # we case the type in order to appropriately access the node or link
