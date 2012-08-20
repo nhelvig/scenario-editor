@@ -42,15 +42,11 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
 
   # This method is called from the context menu and selects itself and all
-  # the nodes links. Note we filter the Network links for all links with this
-  # node attached. The inputs and output can be used in the future but test
+  # the nodes links. The inputs and output can be used in the future but test
   # data was not configured correctly
   selectSelfandMyLinks: () ->
     @makeSelected()
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) => 
-      link.get('id') == @model.get('link_reference').get('id')
-    )
-    _.each(links, (link) -> $a.broker.trigger("map:select_item:#{link.cid}"))
+    $a.broker.trigger("map:select_item:#{@model.get('link').cid}")
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->
