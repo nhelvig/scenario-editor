@@ -10,8 +10,6 @@ class window.sirius.TreeView extends Backbone.View
   initialize: (args) ->
       scenario = args.scenario
       @parent = args.attach
-      links = $a.MapNetworkModel.LINKS
-      nodes = $a.MapNetworkModel.NODES
       @_createParentNodes $a.main_tree_elements
       @_createNetworkChildren({
         parentList: scenario.get('networklist')
@@ -29,61 +27,51 @@ class window.sirius.TreeView extends Backbone.View
         parentList: scenario.get('initialdensityset')
         modelListName: 'density'
         attachId: 'initial-density-profiles'
-        nameList: links
       })
       @_createLinkChildren({
         parentList: scenario.get('controllerset')
         modelListName: 'controller'
         attachId: 'controllers'
-        nameList: links
       })
       @_createDemandLinkChildren({
         parentList: scenario.get('demandprofileset')
         modelListName: 'demandprofile'
         attachId: 'demand-profiles'
-        nameList: links
       })
       @_createLinkChildren({
         parentList: scenario.get('eventset')
         modelListName: 'event'
         attachId: 'events'
-        nameList: links
       })
       @_createLinkChildren({
         parentList: scenario.get('fundamentaldiagramprofileset')
         modelListName: 'fundamentaldiagramprofile'
         attachId: 'fundamental-diagram-profiles'
-        nameList: links
       })
       @_createLinkChildren({
         parentList: scenario.get('oddemandprofileset')
         modelListName: 'oddemandprofile'
         attachId: 'od-demand-profiles'
-        nameList: links
       })
       @_createLinkChildren({
         parentList: scenario.get('downstreamboundarycapacityprofileset')
         modelListName: 'downstreamboundarycapacityprofile'
         attachId: 'downstream-boundary-profiles'
-        nameList: links
       })
       @_createNodeChildren({
         parentList: scenario.get('splitratioprofileset')
         modelListName: 'splitratioprofile'
         attachId: 'split-ratio-profiles'
-        nameList: nodes
       })
       @_createLinkChildren({
         parentList: scenario.get('sensorlist')
         modelListName: 'sensor'
         attachId: 'sensors'
-        nameList: links
       })
       @_createNodeChildren({
         parentList: scenario.get('signallist')
         modelListName: 'signal'
         attachId: 'signals'
-        nameList: nodes
       })
       $a.broker.on('app:main_tree', @render, @)
 
@@ -140,7 +128,7 @@ class window.sirius.TreeView extends Backbone.View
   # of storing what node or link they are attached to
   _createChildNodes: (params) ->
     _.each(params.parentList.get(params.modelListName), (e) =>
-      targets = @_findTargetElements(e, params.attachId, params.nameList)
+      targets = @_findTargetElements(e, params.attachId)
       name = targets[0].get('name')
       # for OD Profiles
       name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
@@ -160,28 +148,25 @@ class window.sirius.TreeView extends Backbone.View
         when 'network' then new $a.TreeChildItemNetworkView(attrs)
         else new $a.TreeChildItemView(attrs)
     )
-
-  # We are trying to figure out the target objects for these elements. Again, 
-  # we case the type in order to appropriate access the node or link id and
-  # then get its name from the node or link list
-  _findTargetElements: (element, type, list) ->
+ 
+  # we case the type in order to appropriately access the node or link
+  _findTargetElements: (element, type) ->
     switch type
       when 'network-list', 'network-connections' then [element]
       when 'demand-profiles'
-        [$a.Util.getElement(element.get('link_id_origin'), list)]
-      when 'od-demand-profiles' 
+        [element.get('link')]
+      when 'od-demand-profiles'
         [
-          $a.Util.getElement(element.get('link_id_origin'), list), 
-          $a.Util.getElement(element.get('link_id_destination'), list)
+          element.get('begin_node'),
+          element.get('end_node')
         ]
       when 'controllers', 'events'
-        elem = element.get('targetelements').get('scenarioelement')[0]
-        [$a.Util.getElement(elem.get('id'), list)]
+        element.get('targetreferences')
       when 'fundamental-diagram-profiles' or 
       'downstream-boundary-profiles' or
       'initial-density-profiles'
-        [$a.Util.getElement(element.get('link_id'), list)]
+        [element.get('link')]
       when 'split-ratio-profiles', 'signals'
-        [$a.Util.getElement(element.get('node_id'), list)]
+        [element.get('node')]
       when 'sensors'
-        [$a.Util.getElement(element.get('link_reference').get('id'), list)]
+        [element.get('link')]

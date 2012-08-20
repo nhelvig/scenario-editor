@@ -40,7 +40,3 @@ $a.sirius_map_view_classes = [
   'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
-
-$a.sirius_model_view_classes = [
-  'MapNetworkModel'
-]

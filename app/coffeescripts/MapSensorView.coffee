@@ -6,11 +6,8 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   @SELECTED_ICON: 'camera-selected'
   $a = window.sirius
   
-  # we pass in the network links so the sensors can figure out which link they 
-  # belong too 
-  initialize: (model, links) ->
+  initialize: (model) ->
     super model
-    @model.links = links
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
@@ -42,9 +39,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
     if iconName == "#{MapSensorView.ICON}.png"
       @_triggerClearSelectEvents()
-      linkRefId = @model.get('link_reference').get('id')
-      target = $a.Util.getElement(linkRefId, @model.links)
-      $a.broker.trigger("app:tree_highlight:#{target.cid}")
+      $a.broker.trigger("app:tree_highlight:#{@model.get('link').cid}")
       @makeSelected()
     else
       @_triggerClearSelectEvents()
@@ -62,27 +57,17 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
   selectSelfandMyLinks: () ->
     @_triggerClearSelectEvents()
     @makeSelected()
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) => 
-      link.get('id') == @model.get('link_reference').get('id')
-    )
-    _.each(links, (link) -> 
-        $a.broker.trigger("app:tree_highlight:#{link.cid}")
-        $a.broker.trigger("map:select_item:#{link.cid}")
-      )
-
+    $a.broker.trigger("app:tree_highlight:#{@model.get('link').cid}")
+    $a.broker.trigger("map:select_item:#{@model.get('link').cid}")
+   
   # This method is called from the context menu and de-selects itself and all
   # the sensor links. Note we filter the Network links for all links with this
   # node attached.
   clearSelfandMyLinks: () ->
     @clearSelected()
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) => 
-      link.get('id') == @model.get('link_reference').get('id')
-    )
-    _.each(links, (link) -> 
-        $a.broker.trigger("map:clear_item:#{link.cid}")
-        $a.broker.trigger("app:tree_remove_highlight:#{link.cid}")
-      )
-      
+    $a.broker.trigger("map:clear_item:#{@model.get('link').cid}")
+    $a.broker.trigger("app:tree_remove_highlight:#{@model.get('link').cid}")
+ 
   # This method swaps the icon for the selected icon
   makeSelected: () ->
     super MapSensorView.SELECTED_ICON
