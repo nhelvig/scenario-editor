@@ -8,7 +8,7 @@ class window.sirius.TreeChildItemDemandLinkView extends window.sirius.TreeChildI
         label: 'Visualize Demand'
         className: 'context_menu_item'
         event: =>
-          dviz = new $a.DemandVisualizer(@targets[0].get('demand'), @targets[0])
+          dviz = new $a.DemandVisualizer(@targets[0].get('demand'))
           $('body').append(dviz.el)
           dviz.render()
           $(dviz.el).dialog('open')
