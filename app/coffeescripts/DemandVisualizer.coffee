@@ -13,8 +13,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
       attr("height", height + padding).
       attr("fill", 'white')
 
-    dText = @demand.get('text')
-    vals = window.sirius.ArrayText.parse dText, [",",":"], "Number"
+    vals = @demand.demands_by_vehicle_type()
 
     if vals.length > 0
       startTime = @demand.get('start_time') or 0
@@ -32,8 +31,10 @@ class window.sirius.DemandVisualizer extends Backbone.View
       axisGroup = @graph.append("svg:g").
       	attr("transform", "translate(#{padding}, #{padding})")
 
-      xAxisSampleInterval = 1
+      xAxisSampleInterval = Math.ceil(3000 * Math.log(vals[0].length/Math.E) / width)
       yAxisSampleInterval = maxVal*height/10000
+      console.log(vals)
+      console.log(vals[0])
       axisGroup.selectAll("lines.xAxis").
       	data(vals[0]).
         enter().
@@ -46,8 +47,8 @@ class window.sirius.DemandVisualizer extends Backbone.View
     	    if i % xAxisSampleInterval == 0 then "darkGray" else "lightGray"
         )
 
-
-  initialize: (@demand, @link) ->
+  initialize: (@demand) ->
+    @link = @demand.get('link')
     @template = _.template($("#demand-visualizer-template").html())
     @$el.html @template(elemId: @link.id)
     @$el.attr 'title', "Demand Visualizer - Link #{@link.get('name')}"

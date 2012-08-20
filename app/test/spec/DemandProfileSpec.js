@@ -30,4 +30,23 @@ describe("DemandProfile", function() {
     testDemandProfile.encode_references();
     expect(testDemandProfile.get('link_id')).toEqual(testLinkId);
   });
+
+  describe("profile parsing", function() {
+    it("should return '3' as [[3]]", function() {
+      testDemandProfile.set('text', '3');
+      expect(testDemandProfile.demands_by_vehicle_type()).toEqual([[3]]);
+    });
+
+    it("should separate vehicle types in output array", function() {
+      testDemandProfile.set('text', '3:4,5:6,7:8');
+      expect(testDemandProfile.demands_by_vehicle_type()).
+	toEqual([[3,5,7],[4,6,8]]);
+    });
+
+    it("should handle 1 vehicle type, multiple values", function() {
+      testDemandProfile.set('text', '1,2,3,4');
+      expect(testDemandProfile.demands_by_vehicle_type()).
+	toEqual([[1,2,3,4]]);
+    });
+  });
 });
