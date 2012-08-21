@@ -109,7 +109,6 @@ class window.sirius.AppView extends Backbone.View
     catch error
       $a.broker.trigger("app:show_message:error", error)
     $a.models = $a.Scenario.from_xml($(xml).children())
-    new $a.MapNetworkModel()
     @mapView = new $a.MapNetworkView $a.models
 
   clearMap: ->

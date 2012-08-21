@@ -8,6 +8,9 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
 
   initialize: (model) ->
     super  model
+    @_contextMenu()
+    $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
+    $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
     $a.broker.on('map:hide_signal_layer', @hideMarker, @)
     $a.broker.on('map:show_signal_layer', @showMarker, @)
 
@@ -18,10 +21,18 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
   # type and then calls super to set itself to null, unpublish the general 
   # events, and hide itself
   removeElement: ->
+    $a.broker.off("map:select_neighbors:#{@model.cid}")
+    $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off('map:hide_signal_layer')
     $a.broker.off('map:show_signal_layer')
     super
 
+  # Context Menu
+  # Create the Signal Context Menu. Call the super class method to create the
+  # context menu
+  _contextMenu: () ->
+    super 'signal', $a.signal_context_menu
+  
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting 
   # or de-selecting and triggers appropriately 
@@ -42,15 +53,19 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
 
   # This method is called from the context menu and selects itself and all
-  # the nodes links. Note we filter the Network links for all links with this
-  # node attached. The inputs and output can be used in the future but test
+  # the nodes. The inputs and output can be used in the future but test
   # data was not configured correctly
-  selectSelfandMyLinks: () ->
+  selectSelfandMyNodes: () ->
     @makeSelected()
-    links =  _.filter($a.MapNetworkModel.LINKS, (link) => 
-      link.get('id') == @model.get('link_reference').get('id')
-    )
-    _.each(links, (link) -> $a.broker.trigger("map:select_item:#{link.cid}"))
+    $a.broker.trigger("map:select_item:#{@model.get('node').cid}")
+    $a.broker.trigger("app:tree_highlight:#{@model.get('node').cid}")
+
+  # This method is called from the context menu and de-selects itself and all
+  # the signal's nodes.
+  clearSelfandMyNodes: () ->
+    @clearSelected()
+    $a.broker.trigger("map:clear_item:#{@model.get('node').cid}")
+    $a.broker.trigger("app:tree_remove_highlight:#{@model.get('node').cid}")
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->

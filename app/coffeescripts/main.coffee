@@ -16,12 +16,6 @@ load_sirius_classes = (after) ->
     )
     class_paths = class_paths.concat _.flatten(
       _.map(
-        window.sirius.sirius_model_view_classes, (cname) -> 
-          "js/#{cname}.js"
-        )
-    )
-    class_paths = class_paths.concat _.flatten(
-      _.map(
         window.sirius.sirius_classes_with_extensions, (cname) -> 
           ["js/#{cname}.js","js/extensions/#{cname}.js"]
         )
