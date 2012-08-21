@@ -10,7 +10,7 @@ class window.sirius.Util
   @_getLng: (elem) ->
     @_getElementLatOrLng(elem, 'lng')
   
-  # called by getLat, getLng to first get the position and point attribute
+  # called by getLat and getLng to first get the position and point attribute
   # (this can be complicated depending on the type of element, some store
   # as display_position and some store as position). In some cases, there
   # is no position specified in this case we get the position of the node

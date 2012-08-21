@@ -33,9 +33,13 @@ class window.sirius.MapMarkerView extends Backbone.View
         position: @latLng
         draggable: true
         icon: @getIcon()
-        title: "Name: #{@model.get('name')}\n
-                Latitude: #{@latLng.lat()}\n
-                Longitude: #{@latLng.lng()}"
+        title: @_getTitle()
+
+  _getTitle: ->
+    title = "Name: #{@model.get('name')}\n"
+    title += "Latitude: #{@latLng.lat()}\n"
+    title += "Longitude: #{@latLng.lng()}"
+    title
 
   getIcon: (img) ->
     @getMarkerImage img

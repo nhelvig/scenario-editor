@@ -61,8 +61,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
     $a.broker.trigger("map:select_item:#{@model.get('link').cid}")
    
   # This method is called from the context menu and de-selects itself and all
-  # the sensor links. Note we filter the Network links for all links with this
-  # node attached.
+  # the sensor links.
   clearSelfandMyLinks: () ->
     @clearSelected()
     $a.broker.trigger("map:clear_item:#{@model.get('link').cid}")
