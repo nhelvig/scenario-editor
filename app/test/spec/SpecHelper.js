@@ -1,5 +1,7 @@
 beforeEach(function() {
-    runDeferred = function(fList) {
+  window.sirius.broker = _.clone(Backbone.Events);
+  
+  runDeferred = function(fList) {
       _.each(fList, function(f) { f(); });
     };
 

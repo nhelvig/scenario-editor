@@ -2,7 +2,7 @@
 (function() {
   sirius_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'DemandProfileSpec', 'DensitySpec',
         'EditorNodeViewSpec', 'EndSpec', 'EventSpec',
-        'InputSpec', 'IntersectionSpec', 'LinkSpec',
+        'InputSpec', 'IntersectionSpec', 'LinkSpec', 'MapLinkViewSpec',
         'NodeSpec', 'OutputSpec', 'OdSpec', 'ScenarioSpec',
         'SignalSpec', 'SplitRatioProfileSpec'];
     
