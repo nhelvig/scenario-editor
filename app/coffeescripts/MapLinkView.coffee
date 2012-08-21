@@ -12,7 +12,6 @@ class window.sirius.MapLinkView extends Backbone.View
     @_createEncodedPath @legs
     @_saveEncodedPath()
     @drawLink()
-    #@drawArrow @leg
     @_contextMenu()
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
@@ -32,7 +31,6 @@ class window.sirius.MapLinkView extends Backbone.View
 
   render: ->
     @link.setMap($a.map)
-    #@arrow.setMap($a.map) if @arrow?
     @
 
   # in order to remove an element you need to unpublish the events, hide the 

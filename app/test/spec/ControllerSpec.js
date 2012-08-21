@@ -51,7 +51,7 @@ describe("Controller", function() {
 	    object_with_id.event[testEventId] = testEvent;
 	    object_with_id.signal[testSignalId] = testSignal;
 	    testController.set('targetelements', new window.sirius.TargetElements());
-	    testController.get('targetelements').set('scenarioElement', loadTargetReferences());
+	    testController.get('targetelements').set('scenarioelement', loadTargetReferences());
 	    testController.resolve_references(deferred, object_with_id);
 	    runDeferred(deferred);
 	})

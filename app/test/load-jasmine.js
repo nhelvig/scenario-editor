@@ -58,7 +58,10 @@
 	      '../../lib/js/backbone.js', 
 	      '../../lib/js/bootstrap/js/bootstrap.min.js', 
 	      function() {
-		  window.loadSirius(runner);
+	        google.load("maps", "3",{
+                  callback: "window.loadSirius(runner)",
+                  other_params: "libraries=geometry,drawing&sensor=false"
+                });
 	      });
   };
 }).call(this);
