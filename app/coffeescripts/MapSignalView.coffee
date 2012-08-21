@@ -56,6 +56,7 @@ class window.sirius.MapSignalView extends window.sirius.MapMarkerView
   # the nodes. The inputs and output can be used in the future but test
   # data was not configured correctly
   selectSelfandMyNodes: () ->
+    @_triggerClearSelectEvents()
     @makeSelected()
     $a.broker.trigger("map:select_item:#{@model.get('node').cid}")
     $a.broker.trigger("app:tree_highlight:#{@model.get('node').cid}")
