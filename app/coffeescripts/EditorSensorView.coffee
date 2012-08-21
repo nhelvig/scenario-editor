@@ -3,8 +3,8 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   $a = window.sirius
   
   # Displayed in the editor to describe how to format urls
-  URL_DESC = 'Enter a full url or shorthand like \n pems: d4, Jan 1, 2011 \n'
-  URL_DESC += 'For ranges, use this date format: \n Jan 1-4, 2011'
+  URL_DESC = '* Note:<br/>Enter a full url or shorthand like:<br/>pems: d4, Jan 1, 2011<br/>'
+  URL_DESC += 'For ranges, use this date format:<br/>Jan 1-4, 2011'
   
   events : {
     'blur #name, #description, #type' : 'save'

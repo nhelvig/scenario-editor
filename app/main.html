@@ -94,27 +94,24 @@
         <form>
           <fieldset>
             <label>Time step</label>
-              <label for="hour">h</label>
-              <label for="minute">m</label>
-              <label for="second">s</label>
-              <input type="text" id="hour" value="{{hour}}" />
-                <button id="add-h" class="btn">+</button>
-                <button id="subtract-h" class="btn">-</button>
-              <input type="text" id="minute" value="{{minute}}" />
-                <button id="add-m" class="btn">+</button>
-                <button id="subtract-m" class="btn">-</button>
-              <input type="text" id="second" value="{{second}}" />
-                <button id="add-s" class="btn">+</button>
-                <button id="subtract-s" class="btn">-</button>
+            <label for="hour" class="time">h</label>              
+            <input type="number"  id="hour" min="0" value="{{hour}}" />
+             
+            <label for="minute" class="time">: m</label>
+            <input type="number" id="minute" min="0" max="59" value="{{minute}}" />
+              
+            <label for="second" class="time">:: s</label>
+            <input type="number" id="second" min="0" max="59" value="{{second}}" />
+              
             <label>Format</label>
               <select id="sensor-format" name ="sensor-format" class="ui-widget-content ui-corner-all">
                 <option value="PeMS Data Clearinghouse">PeMS Data Clearing</option>
                 <option value="Caltrans DBX">Caltrans DBX</option>
                 <option value="BHL">BHL</option>
               </select><br/>
-            <label>URL</label>
+            <label>URL *</label>
               <input type="text" name="sensor-links" id="sensor-links" class="text ui-widget-content ui-corner-all" value="{{url}}"/>
-              <textarea rows="2" name="sensor-url-desc" id="sensor-url-desc" class="text ui-widget-content ui-corner-all" readonly>{{url_desc}}</textarea>
+              <label>{{url_desc}}</label>
           </fieldset>
         </form>      
       </div>

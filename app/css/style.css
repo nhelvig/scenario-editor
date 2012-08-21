@@ -31,7 +31,10 @@ fieldset button {
 }
 #hour, #minute, #second {
   display:inline;
-  width: 20px;
+  width: 29px;
+}
+.time {
+  display:inline;
 }
 
 .context_menu {
