@@ -82,6 +82,18 @@ $a.sensor_context_menu = [
     event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
 ]
 
+# Signal Context Menu
+$a.signal_context_menu = [
+  { 
+    label: 'Select signal node'
+    className: 'context_menu_item'
+    event: ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")) }
+  { 
+    label: 'Clear Selection'
+    className: 'context_menu_item'
+    event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
+]
+
 # Node Context Menu
 $a.node_context_menu = [
   { 
