@@ -31,9 +31,16 @@ class window.sirius.LayersMenuViewItem extends Backbone.View
     $("##{@parent}").append(@el)
     @
 
-  # if a submenu is needed this call the LayersMenuView again to generate a whole menu and attach it to this item
+  # if a submenu is needed this call the LayersMenuView again to generate a 
+  # whole menu and attach it to this item
   _createSubMenu: (items, id) ->
-    new $a.LayersMenuView({className: 'dropdown-menu submenu-hide', id: "sub-#{id}", parentId: id, menuItems: items })
+    attrs = {
+      className: 'dropdown-menu submenu-hide'
+      id: "sub-#{id}"
+      parentId: id
+      menuItems: items
+    }
+    new $a.LayersMenuView(attrs)
 
   # adds the checkmark to the item or takes it aways
   check: (show) ->
@@ -42,9 +49,9 @@ class window.sirius.LayersMenuViewItem extends Backbone.View
     else
       @$el.removeClass "icon-ok"
 
-  # This function is called on the click if we are toggling the checkmark to show/hide
-  # Not every item operates like this. You can see in menu-data.coffee which items call
-  # this method and which do not
+  # This function is called on the click if we are toggling the checkmark to 
+  # show/hide. Not every item operates like this. You can see in 
+  # menu-data.coffee which items call this method and which do not
   toggleVisible: ->
     if @isShowing
       $a.broker.trigger(@triggerHide)

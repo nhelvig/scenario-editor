@@ -18,8 +18,8 @@ class window.sirius.FileUploadView extends Backbone.View
     @
 
   # This function is File upload handler. It will load
-  # the xml file, parse it into objects, assign it to window.textarea_scenario, and trigger
-  # an event indicating the upload is complete
+  # the xml file, parse it into objects, assign it to window.textarea_scenario, 
+  # and trigger an event indicating the upload is complete
   handleFiles : ->
     $a.broker.trigger('map:clear_map')
     $a.broker.trigger('map:toggle_tree', true)
@@ -32,5 +32,4 @@ class window.sirius.FileUploadView extends Backbone.View
     # if you don't reset the value to '' on the input file tag it won't register
     # a change event if you pick the same file two times in a row
     @$el.attr('value', '')
-  
  

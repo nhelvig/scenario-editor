@@ -1,6 +1,6 @@
 # The view class for each child item in the tree view. Each child item
-# is <li> tag with an anchor surrounding the name. It is the super of Link and Node Tree Items but
-# can also render non-link/node tree items
+# is <li> tag with an anchor surrounding the name. It is the super of 
+# Link and Node Tree Items but can also render non-link/node tree items
 class window.sirius.TreeChildItemView extends Backbone.View
   $a = window.sirius
   tagName: "li"
@@ -10,13 +10,20 @@ class window.sirius.TreeChildItemView extends Backbone.View
             'contextmenu' : 'showContext'
           }
 
-  # The model attribute is the model for this class, the element attribute is
-  # the name of the parent tree element this model should be attached too
-  initialize: (@model, @targets, name, @element) ->
+  # The model attribute is the model for this class, the element
+  # attribute is the name of the parent tree element this model should
+  # be attached too
+  initialize: (params) ->
+    @model= params.e
+    @targets = params.targets
+    name = params.name
+    @element = params.attach
+    
     # used to toggle highlight for this element
     @highlighted = false
 
-    # We add an empty node that says None Defined if no children are defined
+    # We add an empty node that says None Defined if no children are
+    # defined
     if @model?
       @id = "tree-item-#{@targets[0].cid}"
       $(@el).attr 'id', @id
@@ -29,8 +36,9 @@ class window.sirius.TreeChildItemView extends Backbone.View
     $("#tree-parent-#{@element}").append(@el)
     @
 
-  # This method overridden in the subclasses to register events for specific types of
-  # tree items -- node or link.  All tree items register for the links here
+  # This method overridden in the subclasses to register events for
+  # specific types of tree items -- node or link.  All tree items
+  # register for the links here
   setUpEvents: ->
     $a.broker.on('app:child_trees', @render, @)
     $a.broker.on('app:tree_remove_highlight', @removeHighlight, @)
@@ -58,7 +66,8 @@ class window.sirius.TreeChildItemView extends Backbone.View
   removeHighlight: ->
     $(@el).removeClass "highlight"
 
-  # in order to remove an element you need to unpublish the events, and remove it from the DOM
+  # in order to remove an element you need to unpublish the events,
+  # and remove it from the DOM
   removeItem: ->
     $(@el).remove()
     $a.broker.off('app:child_trees')
@@ -75,22 +84,24 @@ class window.sirius.TreeChildItemView extends Backbone.View
   showItem: ->
     @$el.addClass('show').removeClass('hide')
 
-  # This method adds either the node or links context menu to the tree item.
-  # We offset the x and y by 5 in order to make sure the window stays open
-  # once the button is released in FF and we return false to turn off the browsers default
-  # context menu
+  # This method adds either the node or links context menu to the tree
+  # item.  We offset the x and y by 5 in order to make sure the window
+  # stays open once the button is released in FF and we return false
+  # to turn off the browsers default context menu
   showContext: (e) ->
     position = {}
     position.x = e.clientX - 5
     position.y = e.clientY - 5
-    # some types have targetElements and other store the element in the model itself.
-    # We check to see if there targets -- if empty then we know to use the model
+    # some types have targetElements and other store the element in
+    # the model itself.  We check to see if there targets -- if empty
+    # then we know to use the model
     item = null
     if @targets?
       item = @targets[0]
     else
       item = @model
 
-    # Events and controller do not have context menus yet and may never
+    # Events and controller do not have context menus yet and may
+    # never
     item.get('contextMenu').show position if item.get('contextMenu')?
     false

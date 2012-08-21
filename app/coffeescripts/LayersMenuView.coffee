@@ -34,7 +34,9 @@ class window.sirius.LayersMenuView extends Backbone.View
   
   # hover events that open and close submenus
   hoverSubOn: (e) ->
-    $("##{e.currentTarget.id}").children("ul").removeClass("submenu-hide").addClass "submenu-show"
+    ul = $("##{e.currentTarget.id}").children("ul")
+    ul.removeClass("submenu-hide").addClass "submenu-show"
 
   hoverSubOff: (e) =>
-    $("##{e.currentTarget.id}").children("ul").removeClass("submenu-show").addClass "submenu-hide"
+    ul = $("##{e.currentTarget.id}").children("ul")
+    ul.removeClass("submenu-show").addClass "submenu-hide"

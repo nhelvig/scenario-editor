@@ -34,9 +34,13 @@ class window.sirius.MapMarkerView extends Backbone.View
         position: @latLng
         draggable: true
         icon: @getIcon()
-        title: "Name: #{@model.get('name')}\n
-                Latitude: #{@latLng.lat()}\n
-                Longitude: #{@latLng.lng()}"
+        title: @_getTitle()
+
+  _getTitle: ->
+    title = "Name: #{@model.get('name')}\n"
+    title += "Latitude: #{@latLng.lat()}\n"
+    title += "Longitude: #{@latLng.lng()}"
+    title
 
   getIcon: (img) ->
     @getMarkerImage img
@@ -77,8 +81,9 @@ class window.sirius.MapMarkerView extends Backbone.View
     _.each(@contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
 
     @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
-    showContextMenu = (mouseEvent) => @contextMenu.show mouseEvent.latLng 
-    google.maps.event.addListener(@marker, 'rightclick', showContextMenu)
+    google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) => 
+      @contextMenu.show mouseEvent.latLng 
+    )
     @model.set('contextMenu', @contextMenu)
 
   # events used to move the marker and update its position
