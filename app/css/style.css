@@ -29,6 +29,14 @@ fieldset button {
   display:block;
   margin-bottom:9px;
 }
+#hour, #minute, #second {
+  display:inline;
+  width: 29px;
+}
+.time {
+  display:inline;
+}
+
 .context_menu {
   display:none; 
   position:absolute;

@@ -22,8 +22,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $a.broker.on("map:nodes:hide_#{@model.get('type')}", @hideMarker, @)
     $a.broker.on("map:select_network:#{@network.cid}", @makeSelected, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-    
-    
+
   getIcon: ->
     super @_getTypeIcon false
 
@@ -40,7 +39,6 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     env.render()
     $(env.el).tabs()
     $(env.el).dialog('open')
-    
     
   # This method overrides MapMarkerView to unpublish specific events to this 
   # type and then calls super to set itself to null, unpublish the general

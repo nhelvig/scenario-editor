@@ -5,6 +5,7 @@ class window.sirius.MapMarkerView extends Backbone.View
   $a = window.sirius
 
   initialize: (@model) ->
+
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
     @latLng = $a.Util.getLatLng(model)
