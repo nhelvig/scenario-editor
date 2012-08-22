@@ -13,6 +13,10 @@ topYVal = (height, yScale, demand, demandProfile) ->
 padValueArray = (arr) -> arr.push(_.last(arr))
 
 class window.sirius.DemandVisualizer extends Backbone.View
+  vehicleTypeColors = [
+    '#cc0000', '#cccc00', '#3300ff', '#33cc00', '#ccff00'
+    '#333300', '#00ffff', '#66ccff', '#996600', '#9933ff'
+  ]
   initGraphSvg: (sel) ->
     textSizeImprecisionOffset = 2
     labelFontSize = 10
@@ -106,7 +110,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
       	y((d) -> height + padding - yScale(d)).
       	interpolate('step-after')
 
-      _.each vals, (vehicleTypeVals) =>
+      _.each vals, (vehicleTypeVals, i) =>
         padValueArray(vehicleTypeVals)
         @graph.append("svg:path").
           attr("d", wrapSteps(vehicleTypeVals)).
@@ -120,9 +124,12 @@ class window.sirius.DemandVisualizer extends Backbone.View
         	attr("x", (d, idx) -> xScale(idx) + padding).
         	attr("y", (d) => topYVal(height, yScale, d, @demand) + padding).
         	attr("width", xScale(1)).
-          attr("fill", "yellow").
+          attr("fill", vehicleTypeColors[i]).
         	attr("opacity", "0.4").
-        	attr("height", (d) -> yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d - d)))
+        	attr("height", (d) ->
+            # Enforce coloring even if stddev. not present to distinguish
+            # vehicle types
+            Math.max(yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d - d)),3))
 
   initialize: (@demand) ->
     @link = @demand.get('link')
