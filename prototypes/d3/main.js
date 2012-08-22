@@ -124,7 +124,7 @@ function makeGraph(data, graphId) {
 
     var axisGroup = graph.append("svg:g").
 	attr("transform", "translate(" + padding + "," +padding + ")");
-
+    
     var xAxisSampleInterval = Math.ceil(3000 * Math.log(data.steps.length/Math.E) / width);
     var yAxisSampleInterval = yMax*height/10000;
 
@@ -137,11 +137,11 @@ function makeGraph(data, graphId) {
 	attr("y1", -padding).
 	attr("y2", height-10).
 	attr("stroke", function(d,i) {
-	    if(i % xAxisSampleInterval == 0) { 
-		return "darkGray"; 
-	    } else { 
-		return "lightGray"; 
-	    } 
+	    if(i % xAxisSampleInterval == 0) {
+		return "darkGray";
+	    } else {
+		return "lightGray";
+	    }
 	});
 
     axisGroup.selectAll("lines.yAxis").
