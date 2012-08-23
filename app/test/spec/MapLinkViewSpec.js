@@ -21,7 +21,7 @@ describe("MapLinkView", function() {
         ]
       }
     ]
-    this.view = new $a.MapLinkView(model,network,legs);
+    this.view = new $a.MapLinkView(model, network, legs);
   });
   
   afterEach(function() {
@@ -30,11 +30,53 @@ describe("MapLinkView", function() {
   
   describe("Instantiation", function() {
     it("should encode the path", function() {
-      expect(this.view.encodedPath == expetedEncodedPath);
+      expect(this.view.encodedPath).toEqual(expetedEncodedPath);
     });
     
     it("should save encoded the path to linkgeometry", function() {
-      expect(this.view.encodedPath == "");
+      lg = this.view.model.get('linkgeometry');
+      encodedPath = lg.get('encodedpolyline').get('points').get('text');
+      expect(encodedPath).toEqual(expetedEncodedPath);
+    });
+    
+    it("should have made polyline object", function() {
+      link = this.view.link
+      expect(link).not.toBe(null);
+    });
+    
+    it("should have made context menu for itself", function() {
+      cm = model.get('contextMenu');
+      expect(cm).not.toBe(null);
+      menuItemLabels = _.pluck(cm.options.menuItems, 'label');
+      expect(menuItemLabels).toEqual(_.pluck($a.link_context_menu,'label'));
     });
   });
+  
+  describe("Rendering", function() {
+    it("should return the view object", function() {
+      expect(this.view.render()).toEqual(this.view);
+    });
+    
+    it("should set its links map", function() {
+      this.view.render();
+      expect(this.view.link.getMap()).toEqual($a.map)
+    });
+  });
+  
+  describe("Events", function() {
+      describe("When map:init fired -> render is called", function() {  
+        it("should set the links map", function() {  
+          $a.broker.trigger("map:init");
+          googleMap();
+          expect(this.view.link.getMap()).toEqual($a.map);
+        });
+      });
+      describe("When map:hide_link_layer fired -> hideLink is called", function() { 
+        it("should set the links map to null", function() {
+          $a.broker.trigger("map:hide_link_layer");
+          googleMap();
+          expect(this.view.link.getMap()).toEqual(null);
+        });
+      });
+  });  
 });
