@@ -49,4 +49,11 @@ describe("DemandProfile", function() {
 	toEqual([[1,2,3,4]]);
     });
   });
+
+  it("should distinguish between constant and non-constant demands", function() {
+    testDemandProfile.set('text','1');
+    expect(testDemandProfile.is_constant()).toEqual(true);
+    testDemandProfile.set('text','1,2');
+    expect(testDemandProfile.is_constant()).toEqual(false);
+  });
 });

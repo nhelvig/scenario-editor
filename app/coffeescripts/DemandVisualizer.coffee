@@ -5,9 +5,8 @@ topYVal = (height, yScale, demand, demandProfile) ->
   stdDevAdd = demandProfile.get('std_dev_add') or 0
   stdDevMult = demandProfile.get('std_dev_mult') or 0
   knob = demandProfile.get('knob') or 1
-
   boxMax = knob * Math.max(demand + stdDevAdd, demand + (demand * stdDevMult))
-  console.log(demand, boxMax)
+
   return height - yScale(boxMax)
 
 padValueArray = (arr) -> arr.push(_.last(arr))
@@ -17,7 +16,19 @@ class window.sirius.DemandVisualizer extends Backbone.View
     '#cc0000', '#cccc00', '#3300ff', '#33cc00', '#ccff00'
     '#333300', '#00ffff', '#66ccff', '#996600', '#9933ff'
   ]
-  initGraphSvg: (sel) ->
+
+  renderConstDemands: (sel) ->
+    content = _.map @demand.demands_by_vehicle_type(), (demand, idx) =>
+      vehicleType = @typeOrder.get('vehicle_type')[idx].get('name')
+      @constDemand
+        elemId: @link.id
+        demandVehicleIndex: idx
+        demandVehicleType: vehicleType
+        demandVehicleCount: demand[0]
+
+    @$el.html @vizWindow(elemId: @link.id, content: content)
+
+  renderGraph: (sel) ->
     textSizeImprecisionOffset = 2
     labelFontSize = 10
     width = 450
@@ -57,8 +68,6 @@ class window.sirius.DemandVisualizer extends Backbone.View
 
       xAxisSampleInterval = 20
       yAxisSampleInterval = yMaxGlobal/20;
-      console.log("xAxisSampleInterval",xAxisSampleInterval)
-      console.log("yAxisSampleInterval",yAxisSampleInterval)
 
       axisGroup.selectAll("lines.xAxis").
       	data(vals[0]).
@@ -73,7 +82,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
         )
 
       axisGroup.selectAll("lines.yAxis").
-        data(d3.range(yAxisSampleInterval, yMaxGlobal + yAxisSampleInterval, yAxisSampleInterval)).
+        data(d3.range(yAxisSampleInterval,yMaxGlobal + yAxisSampleInterval,yAxisSampleInterval)).
       	enter().
       	append("svg:line").
       	attr("x1", 0).
@@ -106,12 +115,14 @@ class window.sirius.DemandVisualizer extends Backbone.View
       	text((d) -> Math.round(d*10)/10)
 
       wrapSteps = d3.svg.line().
-        	x((d, idx) -> xScale(idx) + padding).
+        x((d, idx) -> xScale(idx) + padding).
       	y((d) -> height + padding - yScale(d)).
       	interpolate('step-after')
 
       _.each vals, (vehicleTypeVals, i) =>
+        vehicleType = @typeOrder.get('vehicle_type')[i].get('name')
         padValueArray(vehicleTypeVals)
+
         @graph.append("svg:path").
           attr("d", wrapSteps(vehicleTypeVals)).
         	attr("fill", 'none').
@@ -132,9 +143,16 @@ class window.sirius.DemandVisualizer extends Backbone.View
             Math.max(yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d - d)),3))
 
   initialize: (@demand) ->
+    @profileSet = window.sirius.models.get("demandprofileset")
+    @typeOrder = @profileSet.get('vehicletypeorder')
     @link = @demand.get('link')
-    @template = _.template($("#demand-visualizer-template").html())
-    @$el.html @template(elemId: @link.id)
+    @vizWindow = _.template($("#demand-visualizer-window-template").html())
+    if @demand.is_constant()
+      @constDemand = _.template($("#constant-demand-template").html())
+    else
+      @dataDisplay = _.template($("#demand-graph-template").html())
+      @$el.html @vizWindow(elemId: @link.id, content: @dataDisplay(elemId: @link.id))
+
     @$el.attr 'title', "Demand Visualizer - Link #{@link.get('name')}"
 
   # render the dialog box. The calling function has responsability for
@@ -147,5 +165,8 @@ class window.sirius.DemandVisualizer extends Backbone.View
       modal: false,
       close: =>
         @$el.remove()
-    @initGraphSvg("#demand-graph-#{@link.id}")
+    if @demand.is_constant()
+      @renderConstDemands()
+    else
+      @renderGraph("#demand-graph-#{@link.id}")
     @

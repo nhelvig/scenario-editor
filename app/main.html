@@ -43,17 +43,36 @@
           <ol id='tree-parent-{{textLower}}' ></ol>
         </script>
     </div>
+    
     <script type="text/template" id="context-menu-template">
       <div id="{{elemId}}" class="{{elemClass}}">
       </div>
     </script>
+      
     <script type="text/template" id="message-panel-template">
       {{message}} 
     </script>
-    <script type="text/template" id="demand-visualizer-template">
+      
+    <script type="text/template" id="demand-visualizer-window-template">
+      <div id="demand-visualizer-{{elemId}}">
+	{{content}}
+      </div>	
+    </script>
+      
+    <script type="text/template" id="demand-graph-template">
       <div id="demand-graph-{{elemId}}" class="demand-graph" style="padding: 10px;">
       </div>
     </script>
+      
+    <script type="text/template" id="constant-demand-template">
+      <div id="demand-display-{{elemId}}-{{demandVehicleIndex}}" class="demand-display">
+	<span class="demand-vehicle-type">{{demandVehicleType}}</span>
+	-
+	<span class="demand-count">{{demandVehicleCount}}</span>
+	vehicles/hour
+      </div>
+    </script>
+
     <script type="text/template" id="node-editor-dialog-template">
         <ul>
           <li><a href="#tabs-1">Node</a></li>

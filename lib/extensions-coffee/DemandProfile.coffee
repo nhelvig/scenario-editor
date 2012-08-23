@@ -9,3 +9,6 @@ window.sirius.DemandProfile::demands_by_vehicle_type = ->
     vehTypeTimeSepDemands = _.map(timeSepDemands, (d) ->
        _.map(d.split(":"), Number))
     vals = _.zip.apply(null, vehTypeTimeSepDemands)
+
+window.sirius.DemandProfile::is_constant = ->
+   @demands_by_vehicle_type()[0].length == 1
