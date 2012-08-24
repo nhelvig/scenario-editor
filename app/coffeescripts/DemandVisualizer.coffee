@@ -32,9 +32,13 @@ class window.sirius.DemandVisualizer extends Backbone.View
     @$el.html @vizWindow(elemId: @link.id, content: windowContent)
 
   renderLegend: (graphEl) ->
+    textY = 30
+    legendTitleWidth = 100
+    legendLabelWidth = 75
+
     graphEl.append('svg:text').
       attr('x', 10).
-      attr('y', 30).
+      attr('y', textY).
       style('font-size', '20px').
       text('Legend')
 
@@ -42,17 +46,17 @@ class window.sirius.DemandVisualizer extends Backbone.View
       name = vtype.get('name')
 
       graphEl.append('svg:text').
-        attr('x', 100 + 50*idx).
-        attr('y', 30).
+        attr('x', legendTitleWidth + legendLabelWidth*idx).
+        attr('y', textY).
         style('font-size', '14px').
         style('background-color', vehicleTypeColors[idx]).
         text(name)
 
       graphEl.append('svg:rect').
         attr('id', "legend-#{idx}").
-        attr('x', 100 + 50*idx).
+        attr('x', 100 + legendLabelWidth*idx).
         attr('y', 10).
-        attr('width', 50).
+        attr('width', legendLabelWidth).
         attr('height', 30).
         attr('opacity', '0.4').
         attr('enabled', true).
