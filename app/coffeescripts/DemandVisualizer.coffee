@@ -38,14 +38,47 @@ class window.sirius.DemandVisualizer extends Backbone.View
     height = 400
     padding = 50
 
-    @graph = d3.select(sel).append("svg:svg").
-      attr("width", width + padding).
-      attr("height", height + padding)
+    @graph = d3.select(sel).append('svg:svg').
+      attr('width', width + padding).
+      attr('height', height + padding)
 
     @graph.append("svg:rect").
       attr("width", width + padding).
       attr("height", height + padding).
       attr("fill", 'white')
+
+    @graph.append("svg:rect").
+      attr('id', 'legend').
+      attr('x', 5).
+      attr('y', 5).
+      attr('width', width + padding - 10).
+      attr('height', padding - 12).
+      attr('fill', 'white').
+      attr('stroke', 'lightGray')
+
+    @graph.append('svg:text').
+      attr('x', 10).
+      attr('y', 30).
+      style('font-size', '20px').
+      text('Legend')
+
+    _.each @typeOrder.get('vehicle_type'), (vtype, idx) =>
+      name = vtype.get('name')
+
+      @graph.append('svg:text').
+        attr('x', 100 + 50*idx).
+        attr('y', 30).
+        style('font-size', '14px').
+        style('background-color', vehicleTypeColors[idx]).
+        text(name)
+
+      @graph.append('svg:rect').
+        attr('x', 100 + 50*idx).
+        attr('y', 10).
+        attr('width', 50).
+        attr('height', 30).
+        attr('opacity', '0.4').
+        attr('fill', vehicleTypeColors[idx])
 
     vals = @demand.demands_by_vehicle_type()
 
