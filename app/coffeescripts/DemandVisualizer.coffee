@@ -192,7 +192,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
           attr("fill", vehicleTypeColors[i]).
         	attr("opacity", "0.4").
           attr('class', "vehicle-graph-#{i}").
-        	attr "height", (d) =>
+          attr "height", (d) =>
             maxHeight = yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d))
             topY = topYVal(height, yScale, d, @demand) + padding - 2
             if maxHeight > height - topY + padding - 10
