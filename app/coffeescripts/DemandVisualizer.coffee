@@ -109,7 +109,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
       stdDevMult = @demand.get('std_dev_mult') or 0
       knob = @demand.get('knob') or 1
 
-      yMaxGlobal = knob * Math.max(valMax + stdDevAdd, valMax * stdDevMult)
+      yMaxGlobal = knob * Math.max(valMax + stdDevAdd, valMax + valMax * stdDevMult)
 
       xScale = d3.scale.linear().
         domain([0, timeSteps]).range([0, width])
@@ -192,10 +192,15 @@ class window.sirius.DemandVisualizer extends Backbone.View
           attr("fill", vehicleTypeColors[i]).
         	attr("opacity", "0.4").
           attr('class', "vehicle-graph-#{i}").
-        	attr("height", (d) ->
-            # Enforce coloring even if stddev. not present to distinguish
-            # vehicle types
-            Math.max(yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d - d)),3))
+        	attr "height", (d) =>
+            maxHeight = yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d))
+            topY = topYVal(height, yScale, d, @demand) + padding - 2
+            if maxHeight > height - topY + padding - 10
+              height - topY + padding - 10
+            else
+              # Enforce coloring even if stddev. not present to distinguish
+              # vehicle types
+              Math.max(maxHeight,3)
 
   initialize: (@demand) ->
     @profileSet = window.sirius.models.get("demandprofileset")
