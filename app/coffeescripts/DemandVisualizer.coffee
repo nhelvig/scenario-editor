@@ -26,7 +26,10 @@ class window.sirius.DemandVisualizer extends Backbone.View
         demandVehicleType: vehicleType
         demandVehicleCount: demand[0]
 
-    @$el.html @vizWindow(elemId: @link.id, content: content)
+    constSpan = "<div class='const-notice'>Demands Constant Over Time</div>"
+    table = "<table>#{content.join("\n")}</table>"
+    windowContent = constSpan + table
+    @$el.html @vizWindow(elemId: @link.id, content: windowContent)
 
   renderGraph: (sel) ->
     textSizeImprecisionOffset = 2
