@@ -73,12 +73,24 @@ class window.sirius.DemandVisualizer extends Backbone.View
         text(name)
 
       @graph.append('svg:rect').
+        attr('id', "legend-#{idx}").
         attr('x', 100 + 50*idx).
         attr('y', 10).
         attr('width', 50).
         attr('height', 30).
         attr('opacity', '0.4').
-        attr('fill', vehicleTypeColors[idx])
+        attr('enabled', true).
+        attr('fill', vehicleTypeColors[idx]).
+        on 'click', ->
+          el = $(@)
+          if el.attr('enabled') == 'true'
+            el.attr('opacity', '0.0')
+            el.attr('enabled', false)
+            d3.selectAll(".vehicle-graph-#{idx}").style('visibility','hidden')
+          else
+            el.attr('opacity', '0.4')
+            el.attr('enabled', true)
+            d3.selectAll(".vehicle-graph-#{idx}").style('visibility','visible')
 
     vals = @demand.demands_by_vehicle_type()
 
@@ -162,6 +174,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
         @graph.append("svg:path").
           attr("d", wrapSteps(vehicleTypeVals)).
         	attr("fill", 'none').
+          attr('class', "vehicle-graph-#{i}").
         	attr("stroke", 'black')
 
         @graph.selectAll("stdDevBoxes").
@@ -173,6 +186,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
         	attr("width", xScale(1)).
           attr("fill", vehicleTypeColors[i]).
         	attr("opacity", "0.4").
+          attr('class', "vehicle-graph-#{i}").
         	attr("height", (d) ->
             # Enforce coloring even if stddev. not present to distinguish
             # vehicle types
