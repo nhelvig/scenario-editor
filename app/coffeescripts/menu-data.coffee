@@ -9,7 +9,7 @@ $a.main_tree_elements = [
   'Sensors','Signals'
 ]
 
-ETHAN_VIZ_MEASURE_URI = "http://via.path.berkeley.edu/~ethan/vis_chart.html"
+ETHAN_VIZ_MEASURE_URI = "http://via.path.berkeley.edu/~ethan/vis_chart.php"
 noconfig = -> alert('Not Configured')
 
 # The menu items and their events for the main navigation bar
