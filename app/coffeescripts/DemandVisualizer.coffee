@@ -85,12 +85,12 @@ class window.sirius.DemandVisualizer extends Backbone.View
       attr('width', width + padding).
       attr('height', height + padding)
 
-    @graph.append("svg:rect").
-      attr("width", width + padding).
-      attr("height", height + padding).
-      attr("fill", 'white')
+    @graph.append('svg:rect').
+      attr('width', width + padding).
+      attr('height', height + padding).
+      attr('fill', 'white')
 
-    @graph.append("svg:rect").
+    @graph.append('svg:rect').
       attr('id', 'legend').
       attr('x', 5).
       attr('y', 5).
@@ -120,55 +120,55 @@ class window.sirius.DemandVisualizer extends Backbone.View
       yScale = d3.scale.linear().
         domain([0, yMaxGlobal]).range([0, height])
 
-      axisGroup = @graph.append("svg:g").
-      	attr("transform", "translate(#{padding}, #{padding})")
+      axisGroup = @graph.append('svg:g').
+      	attr('transform', "translate(#{padding}, #{padding})")
 
       xAxisSampleInterval = 20
       yAxisSampleInterval = yMaxGlobal/20;
 
-      axisGroup.selectAll("lines.xAxis").
+      axisGroup.selectAll('lines.xAxis').
       	data(vals[0]).
         enter().
-      	append("svg:line").
-      	attr("x1", (d,i) -> xScale(i)).
-      	attr("x2", (d,i) -> xScale(i)).
-      	attr("y1", 0).
-      	attr("y2", height - labelFontSize - textSizeImprecisionOffset).
-      	attr("stroke", (d,i) ->
-    	    if i % xAxisSampleInterval == 0 then "darkGray" else "lightGray"
+      	append('svg:line').
+      	attr('x1', (d,i) -> xScale(i)).
+      	attr('x2', (d,i) -> xScale(i)).
+      	attr('y1', 0).
+      	attr('y2', height - labelFontSize - textSizeImprecisionOffset).
+      	attr('stroke', (d,i) ->
+    	    if i % xAxisSampleInterval == 0 then 'darkGray' else 'lightGray'
         )
 
-      axisGroup.selectAll("lines.yAxis").
+      axisGroup.selectAll('lines.yAxis').
         data(d3.range(yAxisSampleInterval,yMaxGlobal + yAxisSampleInterval,yAxisSampleInterval)).
       	enter().
-      	append("svg:line").
-      	attr("x1", 0).
-      	attr("x2", width).
-      	attr("y1", (d) -> yScale(d)).
-      	attr("y2", (d) -> yScale(d)).
-      	attr "stroke", (d,i) ->
-          if(i % 3 == 0) then "darkGray" else "lightGray"
+      	append('svg:line').
+      	attr('x1', 0).
+      	attr('x2', width).
+      	attr('y1', (d) -> yScale(d)).
+      	attr('y2', (d) -> yScale(d)).
+      	attr 'stroke', (d,i) ->
+          if(i % 3 == 0) then 'darkGray' else 'lightGray'
 
-      xAxisText = axisGroup.selectAll("text.xAxis").
+      xAxisText = axisGroup.selectAll('text.xAxis').
       	data(every(xAxisSampleInterval,vals[0])).
       	enter().
-      	append("svg:text").
-      	attr("x", (d,i) -> xScale(xAxisSampleInterval*i)).
-      	attr("y", height-2).
-      	attr("text-anchor","middle").
-      	style("font-size", "#{labelFontSize}px").
+      	append('svg:text').
+      	attr('x', (d,i) -> xScale(xAxisSampleInterval*i)).
+      	attr('y', height-2).
+      	attr('text-anchor','middle').
+      	style('font-size', "#{labelFontSize}px").
       	text (d,i) ->
           s = startTime + xAxisSampleInterval * i * dt
           h = s/3600
-          Math.round(h*10)/10 + "h"
+          Math.round(h*10)/10 + 'h'
 
-      axisGroup.selectAll("text.yAxis").
+      axisGroup.selectAll('text.yAxis').
       	data(d3.range(yAxisSampleInterval, yMaxGlobal + yAxisSampleInterval, yAxisSampleInterval)).
       	enter().
-      	append("svg:text").
-      	attr("x", -padding + textSizeImprecisionOffset).
-      	attr("y", (d) -> yScale(yMaxGlobal-d) + textSizeImprecisionOffset).
-      	style("font-size", "#{labelFontSize}px").
+      	append('svg:text').
+      	attr('x', -padding + textSizeImprecisionOffset).
+      	attr('y', (d) -> yScale(yMaxGlobal-d) + textSizeImprecisionOffset).
+      	style('font-size', "#{labelFontSize}px").
       	text((d) -> Math.round(d*10)/10)
 
       wrapSteps = d3.svg.line().
@@ -180,23 +180,23 @@ class window.sirius.DemandVisualizer extends Backbone.View
         vehicleType = @typeOrder.get('vehicle_type')[i].get('name')
         padValueArray(vehicleTypeVals)
 
-        @graph.append("svg:path").
-          attr("d", wrapSteps(vehicleTypeVals)).
-        	attr("fill", 'none').
+        @graph.append('svg:path').
+          attr('d', wrapSteps(vehicleTypeVals)).
+        	attr('fill', 'none').
           attr('class', "vehicle-graph-#{i}").
-        	attr("stroke", 'black')
+        	attr('stroke', 'black')
 
-        @graph.selectAll("stdDevBoxes").
+        @graph.selectAll('stdDevBoxes').
         	data(vehicleTypeVals).
         	enter().
-        	append("svg:rect").
-        	attr("x", (d, idx) -> xScale(idx) + padding).
-        	attr("y", (d) => topYVal(height, yScale, d, @demand) + padding - 2).
-        	attr("width", xScale(1)).
-          attr("fill", vehicleTypeColors[i]).
-        	attr("opacity", "0.4").
+        	append('svg:rect').
+        	attr('x', (d, idx) -> xScale(idx) + padding).
+        	attr('y', (d) => topYVal(height, yScale, d, @demand) + padding - 2).
+        	attr('width', xScale(1)).
+          attr('fill', vehicleTypeColors[i]).
+        	attr('opacity', '0.4').
           attr('class', "vehicle-graph-#{i}").
-          attr "height", (d) =>
+          attr 'height', (d) =>
             maxHeight = yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d))
             topY = topYVal(height, yScale, d, @demand) + padding - 2
             if maxHeight > height - topY + padding - 10
@@ -207,14 +207,14 @@ class window.sirius.DemandVisualizer extends Backbone.View
               Math.max(maxHeight,3)
 
   initialize: (@demand) ->
-    @profileSet = window.sirius.models.get("demandprofileset")
+    @profileSet = window.sirius.models.get('demandprofileset')
     @typeOrder = @profileSet.get('vehicletypeorder')
     @link = @demand.get('link')
-    @vizWindow = _.template($("#demand-visualizer-window-template").html())
+    @vizWindow = _.template($('#demand-visualizer-window-template').html())
     if @demand.is_constant()
-      @constDemand = _.template($("#constant-demand-template").html())
+      @constDemand = _.template($('#constant-demand-template').html())
     else
-      @dataDisplay = _.template($("#demand-graph-template").html())
+      @dataDisplay = _.template($('#demand-graph-template').html())
       @$el.html @vizWindow(elemId: @link.id, content: @dataDisplay(elemId: @link.id))
     @$el.attr 'title', "Demand - Link #{@link.get('name')}"
 
