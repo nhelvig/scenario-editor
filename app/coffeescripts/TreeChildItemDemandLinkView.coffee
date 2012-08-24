@@ -5,7 +5,7 @@ class window.sirius.TreeChildItemDemandLinkView extends window.sirius.TreeChildI
   showContext: (e) =>
     if !@added_menu_item
       @targets[0].get('contextMenu').options.menuItems.push
-        label: 'Visualize Demand'
+        label: 'View Demands'
         className: 'context_menu_item'
         event: =>
           dviz = new $a.DemandVisualizer(@targets[0].get('demand'))

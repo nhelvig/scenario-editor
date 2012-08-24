@@ -26,9 +26,9 @@ class window.sirius.DemandVisualizer extends Backbone.View
         demandVehicleType: vehicleType
         demandVehicleCount: demand[0]
 
-    constSpan = "<div class='const-notice'>Demands Constant Over Time</div>"
+    constNotice = "<div class='const-notice'>Demands Constant Over Time</div>"
     table = "<table>#{content.join("\n")}</table>"
-    windowContent = constSpan + table
+    windowContent = constNotice + table
     @$el.html @vizWindow(elemId: @link.id, content: windowContent)
 
   renderLegend: (graphEl) ->
@@ -74,6 +74,8 @@ class window.sirius.DemandVisualizer extends Backbone.View
     width = 450
     height = 400
     padding = 50
+    @$el.dialog 'option', 'width', 510
+    @$el.dialog 'option', 'height', 510
 
     @graph = d3.select(sel).append('svg:svg').
       attr('width', width + padding).
@@ -167,7 +169,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
 
       wrapSteps = d3.svg.line().
         x((d, idx) -> xScale(idx) + padding).
-      	y((d) -> height + padding - yScale(d)).
+      	y((d) -> height + padding - yScale(d) - 2).
       	interpolate('step-after')
 
       _.each vals, (vehicleTypeVals, i) =>
@@ -185,7 +187,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
         	enter().
         	append("svg:rect").
         	attr("x", (d, idx) -> xScale(idx) + padding).
-        	attr("y", (d) => topYVal(height, yScale, d, @demand) + padding).
+        	attr("y", (d) => topYVal(height, yScale, d, @demand) + padding - 2).
         	attr("width", xScale(1)).
           attr("fill", vehicleTypeColors[i]).
         	attr("opacity", "0.4").
@@ -205,16 +207,13 @@ class window.sirius.DemandVisualizer extends Backbone.View
     else
       @dataDisplay = _.template($("#demand-graph-template").html())
       @$el.html @vizWindow(elemId: @link.id, content: @dataDisplay(elemId: @link.id))
-
-    @$el.attr 'title', "Demand Visualizer - Link #{@link.get('name')}"
+    @$el.attr 'title', "Demand - Link #{@link.get('name')}"
 
   # render the dialog box. The calling function has responsability for
   # appending it as well as calling el.tabs and el.diaload('open')
   render: ->
     @$el.dialog
       autoOpen: false,
-      width: 500,
-      height: 500,
       modal: false,
       close: =>
         @$el.remove()
