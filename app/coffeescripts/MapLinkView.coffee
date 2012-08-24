@@ -7,7 +7,7 @@ class window.sirius.MapLinkView extends Backbone.View
   @SELECTED_LINK_COLOR: 'red'
 
   $a = window.sirius
-
+  
   initialize: (@model, @network, @legs) ->
     @_createEncodedPath @legs
     @_saveEncodedPath()
@@ -22,12 +22,11 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
-    google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:clear_map", @removeLink, @)
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-
+    google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
 
   render: ->
     @link.setMap($a.map)

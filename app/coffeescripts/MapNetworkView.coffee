@@ -93,7 +93,6 @@ class window.sirius.MapNetworkView extends Backbone.View
         if rte.warnings.length > 0
           msg = "#{WARNING_MSG} #{rte.warnings}"
           $a.broker.trigger('app:show_message:info', msg)
-        console.log rte.legs
         @_drawLink params, rte.legs
       else if @_isOverQuery(status) and params.attempts < 3
         setTimeout (() => @_directionsRequest(params)), 3000

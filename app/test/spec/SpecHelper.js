@@ -18,6 +18,7 @@ beforeEach(function() {
     }
     
   googleMap = function() {
+    loadFixtures('main.canvas.view.fixture.html');
     mapOpts = {
       center: new google.maps.LatLng(37.85794730789898, -122.29954719543457),
       zoom: 14,
@@ -29,7 +30,7 @@ beforeEach(function() {
         position: google.maps.ControlPosition.TOP_LEFT
       }
     }
-    window.sirius.map = new google.maps.Map("<div></div>", mapOpts);
+    window.sirius.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
   }
 
     simpleLink = function(node1, node2) {

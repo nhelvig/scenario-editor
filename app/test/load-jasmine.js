@@ -55,7 +55,7 @@
 	      '../../lib/js/jquery-1.7.1.js', 
 	      '../../lib/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js', 
 	      '../../lib/js/underscore.js', 
-	      '../../lib/js/backbone.js', 
+	      '../../lib/js/backbone.js',
 	      '../../lib/js/bootstrap/js/bootstrap.min.js', 
 	      function() {
 	        google.load("maps", "3",{
