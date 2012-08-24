@@ -31,6 +31,43 @@ class window.sirius.DemandVisualizer extends Backbone.View
     windowContent = constSpan + table
     @$el.html @vizWindow(elemId: @link.id, content: windowContent)
 
+  renderLegend: (graphEl) ->
+    graphEl.append('svg:text').
+      attr('x', 10).
+      attr('y', 30).
+      style('font-size', '20px').
+      text('Legend')
+
+    _.each @typeOrder.get('vehicle_type'), (vtype, idx) =>
+      name = vtype.get('name')
+
+      graphEl.append('svg:text').
+        attr('x', 100 + 50*idx).
+        attr('y', 30).
+        style('font-size', '14px').
+        style('background-color', vehicleTypeColors[idx]).
+        text(name)
+
+      graphEl.append('svg:rect').
+        attr('id', "legend-#{idx}").
+        attr('x', 100 + 50*idx).
+        attr('y', 10).
+        attr('width', 50).
+        attr('height', 30).
+        attr('opacity', '0.4').
+        attr('enabled', true).
+        attr('fill', vehicleTypeColors[idx]).
+        on 'click', ->
+          el = $(@)
+          if el.attr('enabled') == 'true'
+            el.attr('opacity', '0.0')
+            el.attr('enabled', false)
+            d3.selectAll(".vehicle-graph-#{idx}").style('visibility','hidden')
+          else
+            el.attr('opacity', '0.4')
+            el.attr('enabled', true)
+            d3.selectAll(".vehicle-graph-#{idx}").style('visibility','visible')
+
   renderGraph: (sel) ->
     textSizeImprecisionOffset = 2
     labelFontSize = 10
@@ -56,41 +93,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
       attr('fill', 'white').
       attr('stroke', 'lightGray')
 
-    @graph.append('svg:text').
-      attr('x', 10).
-      attr('y', 30).
-      style('font-size', '20px').
-      text('Legend')
-
-    _.each @typeOrder.get('vehicle_type'), (vtype, idx) =>
-      name = vtype.get('name')
-
-      @graph.append('svg:text').
-        attr('x', 100 + 50*idx).
-        attr('y', 30).
-        style('font-size', '14px').
-        style('background-color', vehicleTypeColors[idx]).
-        text(name)
-
-      @graph.append('svg:rect').
-        attr('id', "legend-#{idx}").
-        attr('x', 100 + 50*idx).
-        attr('y', 10).
-        attr('width', 50).
-        attr('height', 30).
-        attr('opacity', '0.4').
-        attr('enabled', true).
-        attr('fill', vehicleTypeColors[idx]).
-        on 'click', ->
-          el = $(@)
-          if el.attr('enabled') == 'true'
-            el.attr('opacity', '0.0')
-            el.attr('enabled', false)
-            d3.selectAll(".vehicle-graph-#{idx}").style('visibility','hidden')
-          else
-            el.attr('opacity', '0.4')
-            el.attr('enabled', true)
-            d3.selectAll(".vehicle-graph-#{idx}").style('visibility','visible')
+    @renderLegend(@graph)
 
     vals = @demand.demands_by_vehicle_type()
 
