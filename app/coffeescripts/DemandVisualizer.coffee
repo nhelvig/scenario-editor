@@ -40,14 +40,17 @@ class window.sirius.DemandVisualizer extends Backbone.View
     @$el.html @vizWindow(elemId: @link.id, content: windowContent)
 
   renderLegend: (graphEl) ->
-    textY = 30
+    titleFontSize = 20
+    titleWidth = titleFontSize * 5
+    textY = titleFontSize + 10
+    labelFontSize = titleFontSize * 7 / 10
     legendTitleWidth = 100
     legendLabelWidth = 75
 
     graphEl.append('svg:text').
       attr('x', 10).
       attr('y', textY).
-      style('font-size', '20px').
+      style('font-size', "#{titleFontSize}px").
       text('Legend')
 
     _.each @typeOrder.get('vehicle_type'), (vtype, idx) =>
@@ -56,16 +59,16 @@ class window.sirius.DemandVisualizer extends Backbone.View
       graphEl.append('svg:text').
         attr('x', legendTitleWidth + legendLabelWidth*idx).
         attr('y', textY).
-        style('font-size', '14px').
+        style('font-size', "#{labelFontSize}px").
         style('background-color', vehicleTypeColors[idx]).
         text(name)
 
       graphEl.append('svg:rect').
         attr('id', "legend-#{idx}").
-        attr('x', 100 + legendLabelWidth*idx).
+        attr('x', titleWidth + legendLabelWidth*idx).
         attr('y', 10).
         attr('width', legendLabelWidth).
-        attr('height', 30).
+        attr('height', textY).
         attr('opacity', '0.4').
         attr('enabled', true).
         attr('fill', vehicleTypeColors[idx]).
@@ -81,8 +84,8 @@ class window.sirius.DemandVisualizer extends Backbone.View
             d3.selectAll(".vehicle-graph-#{idx}").style('visibility','visible')
 
   renderGraph: (sel) ->
-    textSizeImprecisionOffset = 2
     labelFontSize = 10
+    textSizeImprecisionOffset = Math.ceil(.2 * labelFontSize)
     width = 450
     height = 400
     padding = 50
@@ -102,8 +105,8 @@ class window.sirius.DemandVisualizer extends Backbone.View
       attr('id', 'legend').
       attr('x', 5).
       attr('y', 5).
-      attr('width', width + padding - 10).
-      attr('height', padding - 12).
+      attr('width', width + padding - labelFontSize).
+      attr('height', padding - labelFontSize - textSizeImprecisionOffset).
       attr('fill', 'white').
       attr('stroke', 'lightGray')
 
@@ -206,9 +209,10 @@ class window.sirius.DemandVisualizer extends Backbone.View
           attr('class', "vehicle-graph-#{i}").
           attr 'height', (d) =>
             maxHeight = yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d))
-            topY = topYVal(height, yScale, d, @demand) + padding - 2
-            if maxHeight > height - topY + padding - 10
-              height - topY + padding - 10
+            topY = topYVal(height, yScale, d, @demand) +
+              padding - textSizeImprecisionOffset
+            if maxHeight > height - topY + padding - labelFontSize
+              height - topY + padding - labelFontSize
             else
               # Enforce coloring even if stddev. not present to distinguish
               # vehicle types
