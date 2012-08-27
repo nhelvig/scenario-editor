@@ -20,11 +20,19 @@ class window.sirius.DemandVisualizer extends Backbone.View
   renderConstDemands: (sel) ->
     content = _.map @demand.demands_by_vehicle_type(), (demand, idx) =>
       vehicleType = @typeOrder.get('vehicle_type')[idx].get('name')
-      @constDemand
+      args =
         elemId: @link.id
         demandVehicleIndex: idx
         demandVehicleType: vehicleType
         demandVehicleCount: demand[0]
+        deviates: false
+        demandDeviation: 0
+
+      if maxDev(demand, @demand) > 0
+        args['deviates'] = true
+        args['demandDeviation'] = maxDev(demand, @demand)
+
+      @constDemand args
 
     constNotice = "<div class='const-notice'>Demands Constant Over Time</div>"
     table = "<table>#{content.join("\n")}</table>"

@@ -66,8 +66,12 @@
       
     <script type="text/template" id="constant-demand-template">
       <tr id="demand-display-{{elemId}}-{{demandVehicleIndex}}" class="demand-display">
-	<td class="demand-vehicle-type">{{demandVehicleType}}</span>
-	<td class="demand-count">{{demandVehicleCount}}</span>
+	<td class="demand-vehicle-type">{{demandVehicleType}}</td>
+	<td class="demand-count">{{demandVehicleCount}}
+	   {% if(deviates) { %}
+	       &plusmn; {{demandDeviation}}
+	   {% } %}
+	</td>
 	<td>per<br/>hour</td>
       </tr>
     </script>
