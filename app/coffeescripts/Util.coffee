@@ -51,19 +51,14 @@ window.sirius.Util =
     _.find(list, (elem) ->  elem.get('id') == id)
 
   offsetPosition: (pos) ->
-    pos.get('point')[0].set({'lng' : pos.get('point')[0].get('lng') - .0002})
+    pos.get('point')[0].set(lng: pos.get('point')[0].get('lng') - .0002)
 
   # creates a copy of of item array. The items array is a list menu items for context menus.
   copy: (items) ->
-    temp = []
-    _.each(items, (item) =>
-      temp.push {
-        label: item.label
-        className: item.className
-        event: item.event
-      }
-    )
-    temp
+    _.map items, (item) =>
+      label: item.label
+      className: item.className
+      event: item.event
 
   # This makes an ajax call to the server in order to write the model's xml file and
   # download it back to the user. Call From "Save Local Network" menu item
@@ -71,11 +66,10 @@ window.sirius.Util =
     xhReq = new XMLHttpRequest()
     xhReq.open("post", attrs.serverWrite, false)
     xhReq.setRequestHeader('Content-Type',"text/xml")
-    xhReq.onload = (() ->
+    xhReq.onload = ->
       elemIF = document.createElement("iframe")
       elemIF.id = "download-iframe"
       elemIF.src = attrs.serverDownload
       elemIF.style.display = "none"
       $('body').append(elemIF)
-      )
     xhReq.send(new XMLSerializer().serializeToString(xml))
