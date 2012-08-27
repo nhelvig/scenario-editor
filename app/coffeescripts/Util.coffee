@@ -5,29 +5,53 @@ window.sirius.Util =
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
 
   _getLat: (elem) ->
-    lat = elem.get('position').get('point')[0].get('lat') if elem.get('position')?
-    lat = elem.get('display_position').get('point')[0].get('lat') if elem.get('display_position')
-    lat
+    @_getElementLatOrLng(elem, 'lat')
 
   _getLng: (elem) ->
-    lng = elem.get('position').get('point')[0].get('lng') if elem.get('position')?
-    lng = elem.get('display_position').get('point')[0].get('lng') if elem.get('display_position')
-    lng
+    @_getElementLatOrLng(elem, 'lng')
+
+  _getElementLatOrLng: (elem, type) ->
+    if elem.get('position')?
+      pos = elem.get('position')
+    else if elem.get('display_position')?
+      pos = elem.get('display_position')
+    else if elem.get('node')?
+      pos = elem.get('node').get('position')
+      @_offsetPosition(pos) # offset just to left of the node
+    else if elem.get('link')?
+      pos = elem.get('link').get('begin').get('node').get('position')
+      @_offsetPosition(pos) # offset just to left of the link's begin node
+
+    pos.get('point')[0].get(type)
 
   # returns a google LatLng obect by retrieving the latitude and longitude from the elements object.
   # In some cases it is stored in position and in others in display_position.
   getLatLng: (elem) ->
-    if @_getLng(elem)? && @_getLat(elem)? then new google.maps.LatLng(@_round_dec(@_getLat(elem),4), @_round_dec(@_getLng(elem),4)) else null
+    if @_getLng(elem)? && @_getLat(elem)?
+      roundLat = @_round_dec(@_getLat(elem),4)
+      roundLng = @_round_dec(@_getLng(elem),4)
+      new google.maps.LatLng(roundLat, roundLng)
+    else
+      null
 
   # This method is used by View classes to create id names that are all lowercased and have
   # dashes for spaces
   toLowerCaseAndDashed: (text) ->
     text.toLowerCase().replace(/\ /g,"-")
 
+  toStandardCasing: (elem) ->
+    formattedWord = []
+    for word in elem.split /\s+/
+      formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase()
+    formattedWord.join ' '
+
   # This method is used to grab the model elements from object model by id.
   # The list is the list you want to iterate over and the id is what you want to find
   getElement: (id, list) ->
     _.find(list, (elem) ->  elem.get('id') == id)
+
+  offsetPosition: (pos) ->
+    pos.get('point')[0].set({'lng' : pos.get('point')[0].get('lng') - .0002})
 
   # creates a copy of of item array. The items array is a list menu items for context menus.
   copy: (items) ->
