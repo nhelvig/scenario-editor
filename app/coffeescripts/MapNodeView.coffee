@@ -43,8 +43,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   # and then calls super to set itself to null, unpublish the general events, and hide itself
   removeElement: ->
     $a.broker.off("map:select_neighbors:#{@model.cid}")
-    $a.broker.off("map:select_neighbors_outgoing:#{@model.cid}")
-    $a.broker.off("map:select_neighbors_incoming:#{@model.cid}")
+    $a.broker.off("map:select_neighbors_out:#{@model.cid}")
+    $a.broker.off("map:select_neighbors_in:#{@model.cid}")
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off('map:show_node_layer')
     $a.broker.off('map:hide_node_layer')
@@ -55,8 +55,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     super
 
   ################# select events for marker
-  # Callback for the markers click event. It decided whether we are selecting 
-  # or de-selecting and triggers appropriately 
+  # Callback for the markers click event. It decided whether we are selecting
+  # or de-selecting and triggers appropriately
   manageMarkerSelect: () ->
     iconName = MapNodeView.__super__._getIconName.apply(@, [])
     if iconName == "#{@_getTypeIcon(false)}.png"
