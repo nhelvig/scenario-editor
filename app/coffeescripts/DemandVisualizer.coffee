@@ -198,14 +198,15 @@ class window.sirius.DemandVisualizer extends Backbone.View
         	attr('stroke', 'black')
 
         @graph.selectAll('stdDevBoxes').
-        	data(vehicleTypeVals).
-        	enter().
-        	append('svg:rect').
-        	attr('x', (d, idx) -> xScale(idx) + padding).
-        	attr('y', (d) => topYVal(height, yScale, d, @demand) + padding - 2).
-        	attr('width', xScale(1)).
+          data(vehicleTypeVals).
+          enter().
+          append('svg:rect').
+          attr('x', (d, idx) -> xScale(idx) + padding).
+          attr('y', (d) => topYVal(height, yScale, d, @demand) +
+            padding - textSizeImprecisionOffset).
+          attr('width', xScale(1)).
           attr('fill', vehicleTypeColors[i]).
-        	attr('opacity', '0.4').
+          attr('opacity', '0.4').
           attr('class', "vehicle-graph-#{i}").
           attr 'height', (d) =>
             maxHeight = yScale(Math.max(2*stdDevAdd, 2*stdDevMult*d))
