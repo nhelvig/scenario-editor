@@ -89,6 +89,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
     width = 450
     height = 400
     padding = 50
+    minHighlight = 3
     @$el.dialog 'option', 'width', 510
     @$el.dialog 'option', 'height', 510
 
@@ -217,7 +218,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
             else
               # Enforce coloring even if stddev. not present to distinguish
               # vehicle types
-              Math.max(maxHeight,3)
+              Math.max(maxHeight,minHighlight)
 
   initialize: (@demand) ->
     @profileSet = window.sirius.models.get('demandprofileset')
