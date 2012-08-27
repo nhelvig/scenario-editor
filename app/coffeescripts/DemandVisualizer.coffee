@@ -1,6 +1,13 @@
 every = (count, arr) ->
   _.filter(arr, (e,i) -> i % count == 0)
 
+maxDev = (demand, demandProfile) ->
+  stdDevAdd = demandProfile.get('std_dev_add') or 0
+  stdDevMult = demandProfile.get('std_dev_mult') or 0
+  knob = demandProfile.get('knob') or 1
+
+  knob * Math.max(stdDevAdd, (demand * stdDevMult))
+
 topYVal = (height, yScale, demand, demandProfile) ->
   stdDevAdd = demandProfile.get('std_dev_add') or 0
   stdDevMult = demandProfile.get('std_dev_mult') or 0

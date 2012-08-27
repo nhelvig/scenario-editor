@@ -90,7 +90,8 @@ class window.sirius.TreeView extends Backbone.View
 
   # Called by initialize to create the child nodes. If no nodes are defined
   # we add an empty child
-  _createChildren: (params) ->
+  _createChildren: (params, type) ->
+    params.type = type
     pList = params.parentList
     mList = params.modelListName
     if pList? and pList.get(mList)? and pList.get(mList).length != 0
@@ -127,7 +128,7 @@ class window.sirius.TreeView extends Backbone.View
   # Creates the child nodes and prepares the for rendering. It is slightly
   # more complex in that the different types of elements have different ways
   # of storing what node or link they are attached to
-  _createChildNodes: (params) ->
+  _createChildNodes: (params, type) ->
     _.each(params.parentList.get(params.modelListName), (e) =>
       targets = @_findTargetElements(e, params.attachId)
       name = targets[0].get('name')
