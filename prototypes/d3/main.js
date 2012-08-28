@@ -94,7 +94,6 @@ function addLines(data, graphObj, xScale, yScale, padding, height, name, boxColo
 	attr("height", function (d) {
 	    var maxHeight = yScale(2*data.meta.stdDevAdd);
 	    var topY = boxYVal(yScale, height, d, data.meta.stdDevAdd) + padding;
-	    console.log(height, topY, padding, maxHeight, topY - padding);
 	    if(maxHeight > height - topY + padding - 10) {
 	    	return (height - topY) + padding - 10;
 	    } else {
@@ -125,7 +124,7 @@ function makeGraph(data, graphId) {
 
     var axisGroup = graph.append("svg:g").
 	attr("transform", "translate(" + padding + "," +padding + ")");
-
+    
     var xAxisSampleInterval = Math.ceil(3000 * Math.log(data.steps.length/Math.E) / width);
     var yAxisSampleInterval = yMax*height/10000;
 
@@ -138,15 +137,17 @@ function makeGraph(data, graphId) {
 	attr("y1", -padding).
 	attr("y2", height-10).
 	attr("stroke", function(d,i) {
-	    if(i % xAxisSampleInterval == 0) { 
-		return "darkGray"; 
-	    } else { 
-		return "lightGray"; 
-	    } 
+	    if(i % xAxisSampleInterval == 0) {
+		return "darkGray";
+	    } else {
+		return "lightGray";
+	    }
 	});
 
     axisGroup.selectAll("lines.yAxis").
-	data(d3.range(yAxisSampleInterval, yMax + yAxisSampleInterval, yAxisSampleInterval)).
+	data(d3.range(yAxisSampleInterval, 
+		      yMax + yAxisSampleInterval, 
+		      yAxisSampleInterval)).
 	enter().
 	append("svg:line").
 	attr("x1", 0).
@@ -154,11 +155,11 @@ function makeGraph(data, graphId) {
 	attr("y1", function(d) { return yScale(d) - padding; }).
 	attr("y2", function(d) { return yScale(d) - padding; }).
 	attr("stroke", function(d,i) {
-	    if(i % 3 == 0) { 
-		return "darkGray"; 
-	    } else { 
-		return "lightGray"; 
-	    } 
+	    if(i % 3 == 0) {
+		return "darkGray";
+	    } else {
+		return "lightGray";
+	    }
 	});
 
     var xAxisText = axisGroup.selectAll("text.xAxis").
@@ -185,5 +186,5 @@ function makeGraph(data, graphId) {
 	text(function(d) { return Math.round(d*10)/10; });
 
     addLines(data,graph,xScale,yScale,padding,height,'steps', "yellow");
-//    addLines(data,graph,xScale,yScale,padding,height,'steps1', "cyan");
+    addLines(data,graph,xScale,yScale,padding,height,'steps1', "cyan");
 }

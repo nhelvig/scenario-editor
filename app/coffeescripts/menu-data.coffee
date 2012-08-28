@@ -9,7 +9,7 @@ $a.main_tree_elements = [
   'Sensors','Signals'
 ]
 
-ETHAN_VIZ_MEASURE_URI = "http://via.path.berkeley.edu/~ethan/vis_chart.html"
+ETHAN_VIZ_MEASURE_URI = "http://via.path.berkeley.edu/~ethan/vis_chart.php"
 noconfig = -> alert('Not Configured')
 
 # The menu items and their events for the main navigation bar
@@ -40,6 +40,11 @@ $a.nav_bar_menu_items =
     Identity: noconfig
     Contact: noconfig
     Legal: noconfig
+
+context_menu_item = (label, event) ->
+  className: 'context_menu_item',
+  label: label,
+  event: event
 
 # Main window context menu
 $a.main_context_menu = [
@@ -92,6 +97,10 @@ $a.signal_context_menu = [
     label: 'Clear Selection'
     className: 'context_menu_item'
     event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
+]
+
+$a.demand_context_menu = [
+  { label: 'Visualize demand', className: 'context_menu_item', event: ((e) -> $a.broker.trigger("demand:show_dialog:#{e.currentTarget.id}")) }
 ]
 
 # Node Context Menu

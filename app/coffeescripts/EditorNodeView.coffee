@@ -28,19 +28,13 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
 
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (model) ->
-    {
       name: model.get('name'),
       description: model.get('description'),
       lat: model.get('position').get('point')[0].get('lat')
       lng: model.get('position').get('point')[0].get('lng')
       elevation: model.get('position').get('point')[0].get('elevation')
-      lock: @_isLocked(model)
-    }
+      lock: if model.has('lock') and model.get('lock') then 'checked' else ''
 
-  # check if lock attribute set
-  _isLocked: (model) ->
-    if model.get('lock')? and model.get('lock') is true then 'checked' else ''
-    
   # these are callback events for various elements in the interface
   # This is used to save the name, type and description when focus is 
   # lost from the element

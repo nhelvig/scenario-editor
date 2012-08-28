@@ -7,7 +7,9 @@ class window.sirius.AppView extends Backbone.View
   
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
-    _.templateSettings = {interpolate : /\{\{(.+?)\}\}/g }
+    _.templateSettings =
+      evaluate    : /{%([\s\S]+?)%}/g,
+      interpolate : /\{\{(.+?)\}\}/g
     $a.broker = _.clone(Backbone.Events)
     @render()
 
