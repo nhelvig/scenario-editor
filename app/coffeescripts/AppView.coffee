@@ -46,7 +46,7 @@ class window.sirius.AppView extends Backbone.View
         position: google.maps.ControlPosition.TOP_LEFT
     }
     #attach the map to the namespace
-    $a.map = new google.maps.Map document.getElementById("map_canvas"), mapOpts
+    $a.map = new google.maps.Map $("#map_canvas")[0], mapOpts
 
   # This creates the context menu as well as adds the listeners for map area
   # of the application.Currently we have zoom in and zoom out as well as center

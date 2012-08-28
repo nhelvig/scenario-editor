@@ -43,7 +43,7 @@ describe("Controller", function() {
     beforeEach(function() {
       var deferred = [], 
       object_with_id = {node: [], link: [], controller: [], 
-			sensor: [], event: [], signal: []};
+      sensor: [], event: [], signal: []};
       object_with_id.node[testNodeId] = testNode;
       object_with_id.link[testLinkId] = testLink;
       object_with_id.controller[testOtherControllerId] = testOtherController;
@@ -51,7 +51,7 @@ describe("Controller", function() {
       object_with_id.event[testEventId] = testEvent;
       object_with_id.signal[testSignalId] = testSignal;
       testController.set('targetelements', new window.sirius.TargetElements());
-      testController.get('targetelements').set('scenarioElement', loadTargetReferences());
+      testController.get('targetelements').set('scenarioelement', loadTargetReferences());
       testController.resolve_references(deferred, object_with_id);
       runDeferred(deferred);
     })

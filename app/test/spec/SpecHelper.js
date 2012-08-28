@@ -1,5 +1,8 @@
 beforeEach(function() {
-    runDeferred = function(fList) {
+  window.sirius.broker = _.clone(Backbone.Events);
+  
+  
+  runDeferred = function(fList) {
       _.each(fList, function(f) { f(); });
     };
 
@@ -14,6 +17,22 @@ beforeEach(function() {
 	expect(obj.get(resolveType)).toEqual(resolveOut);
     }
     
+  googleMap = function() {
+    loadFixtures('main.canvas.view.fixture.html');
+    mapOpts = {
+      center: new google.maps.LatLng(37.85794730789898, -122.29954719543457),
+      zoom: 14,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      zoomControl: true,
+      zoomControlOptions: {
+        style: google.maps.ZoomControlStyle.DEFAULT,
+        position: google.maps.ControlPosition.TOP_LEFT
+      }
+    }
+    window.sirius.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
+  }
+
     simpleLink = function(node1, node2) {
 	var begin = new window.sirius.Begin({node: node1});
 	var end = new window.sirius.End({node: node2});
