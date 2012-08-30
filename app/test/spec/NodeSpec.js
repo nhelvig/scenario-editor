@@ -37,4 +37,13 @@ describe("Node", function() {
       expect(ii).toContain([testLink3, 0]);
     });
   });
+
+  describe("ios", function() {
+    it("should return every link", function() {
+      var links = _.map(testNode1.ios(), function (io) { return io.get('link'); });
+      expect(links).toContain(testLink1);
+      expect(links).toContain(testLink2);
+      expect(links).toContain(testLink3);
+    });
+  });
 });

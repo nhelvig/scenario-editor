@@ -13,8 +13,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     super model
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
-    $a.broker.on("map:select_neighbors_outgoing:#{@model.cid}", @selectMyLinks, @)
-    $a.broker.on("map:select_neighbors_incoming:#{@model.cid}", @selectMyLinks, @)
+    $a.broker.on("map:select_neighbors_out:#{@model.cid}", @selectMyOutLinks, @)
+    $a.broker.on("map:select_neighbors_in:#{@model.cid}", @selectMyInLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:show_node_layer', @showMarker, @)
     $a.broker.on('map:hide_node_layer', @hideMarker, @)
@@ -79,38 +79,34 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     @_triggerClearSelectEvents()
     @makeSelected()
     $a.broker.trigger("app:tree_highlight:#{@model.cid}")
-    _.each(['input','output'], (type) =>
-        _.each(@_getInputOrOutputLinks(type), (link) ->
-          $a.broker.trigger("map:select_item:#{link.get('link').cid}")
-          $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}")
-        )
-    )
+    _.each(@model.ios(),  (link) ->
+      $a.broker.trigger("map:select_item:#{link.get('link').cid}")
+      $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}"))
 
   # This method is called from the context menu and clears itself and all the nodes links.
   # Note: The links references are from the output and input attributes on the node.
   clearSelfandMyLinks: () ->
     @clearSelected()
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
-    _.each(['input','output'], (type) =>
-        _.each(@_getInputOrOutputLinks(type), (link) ->
-              $a.broker.trigger("map:clear_item:#{link.get('link').cid}")
-              $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}")
-        )
-      )
+    _.each(@model.ios(), (link) ->
+      $a.broker.trigger("map:clear_item:#{link.get('link').cid}")
+      $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}"))
 
   # This method is called from the context menu to select this nodes output or input links.
   # The type parameter determins whether we are grabbing output or input attributes on the node.
-  selectMyLinks: (type) ->
+  selectMyOutLinks: ->
     # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
-    _.each(@_getInputOrOutputLinks(type), (link) =>
-        $a.broker.trigger("map:select_item:#{link.get('link').cid}")
-        $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}")
-        $a.broker.trigger("app:tree_show_item:#{link.get('link').cid}")
-      )
+    _.each(@model.outputs(), @selectLink)
 
-  _getInputOrOutputLinks: (type) ->
-    @model.get("#{type}s").get("#{type}")
+  selectMyInLinks: ->
+    @_triggerClearSelectEvents()
+    _.each(@model.inputs(), @selectLink)
+
+  selectLink: (io) ->
+    $a.broker.trigger("map:select_item:#{io.get('link').cid}")
+    $a.broker.trigger("app:tree_highlight:#{io.get('link').cid}")
+    $a.broker.trigger("app:tree_show_item:#{io.get('link').cid}")
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->
