@@ -78,10 +78,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
     @makeSelected()
-    $a.broker.trigger("app:tree_highlight:#{@model.cid}")
-    _.each(@model.ios(),  (link) ->
-      $a.broker.trigger("map:select_item:#{link.get('link').cid}")
-      $a.broker.trigger("app:tree_highlight:#{link.get('link').cid}"))
+    _.each(@model.ios(), selectLink)
 
   # This method is called from the context menu and clears itself and all the nodes links.
   # Note: The links references are from the output and input attributes on the node.
@@ -94,8 +91,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
 
   # This method is called from the context menu to select this nodes output or input links.
   # The type parameter determins whether we are grabbing output or input attributes on the node.
+  # de-select everything unless SHIFT is down
   selectMyOutLinks: ->
-    # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
     _.each(@model.outputs(), @selectLink)
 
