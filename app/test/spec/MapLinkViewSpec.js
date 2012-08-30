@@ -1,5 +1,6 @@
 describe("MapLinkView", function() {
-  $a = window.sirius;
+  var $a = window.sirius;
+  var network, model, legs;
   
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
@@ -11,7 +12,7 @@ describe("MapLinkView", function() {
       {
         steps: [
           {
-            path : [
+            path: [
               new google.maps.LatLng(37.83999, -122.29681000000001),
               new google.maps.LatLng(37.84138, -122.29705000000001),
               new google.maps.LatLng(37.84156, -122.29708000000001),
@@ -42,12 +43,12 @@ describe("MapLinkView", function() {
       encodedPath = lg.get('encodedpolyline').get('points').get('text');
       expect(encodedPath).toEqual(expectedEncodedPath);
     });
-    
+
     it("should have made polyline object", function() {
       link = this.view.link
       expect(link).not.toBe(null);
     });
-    
+
     it("should have made context menu for itself", function() {
       cm = model.get('contextMenu');
       expect(cm).not.toBe(null);
