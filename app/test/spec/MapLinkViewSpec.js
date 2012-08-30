@@ -6,7 +6,7 @@ describe("MapLinkView", function() {
     network = $a.scenario.get('networklist').get('network')[0];
     model = network.get('linklist').get('link')[0];
 
-    expetedEncodedPath = "}r}eF`bmiVuGn@c@DwIhAiBT";
+    expectedEncodedPath = "}r}eF`bmiVuGn@c@DwIhAiBT";
     legs = [
       {
         steps: [
@@ -34,13 +34,13 @@ describe("MapLinkView", function() {
   
   describe("Instantiation", function() {
     it("should encode the path", function() {
-      expect(this.view.encodedPath).toEqual(expetedEncodedPath);
+      expect(this.view.encodedPath).toEqual(expectedEncodedPath);
     });
     
     it("should save encoded the path to linkgeometry", function() {
       lg = this.view.model.get('linkgeometry');
       encodedPath = lg.get('encodedpolyline').get('points').get('text');
-      expect(encodedPath).toEqual(expetedEncodedPath);
+      expect(encodedPath).toEqual(expectedEncodedPath);
     });
     
     it("should have made polyline object", function() {
