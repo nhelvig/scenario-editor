@@ -78,7 +78,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     # de-select everything unless SHIFT is down
     @_triggerClearSelectEvents()
     @makeSelected()
-    _.each(@model.ios(), selectLink)
+    _.each(@model.ios(), @selectLink)
 
   # This method is called from the context menu and clears itself and all the nodes links.
   # Note: The links references are from the output and input attributes on the node.
