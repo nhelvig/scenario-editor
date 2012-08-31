@@ -9,29 +9,29 @@ class window.sirius.LayersMenuViewItem extends Backbone.View
   isShowing: true
 
   initialize: (@parent, values) ->
-      @triggerShow = values.triggerShow if values.triggerShow
-      @triggerHide = values.triggerHide if values.triggerHide
-      @template = _.template($('#child-item-menu-template').html())
-      displayText = values.label
-      # values.link indicates a submenu and we display '>>' in the view
-      # to indicate a menu
-      displayText = "#{values.label} &raquo; " if values.link
-      @$el.html @template({text: displayText}) if values.label
-      @$el.attr 'class', values.className if values.className
-      @$el.attr 'href', values.href if values.href
-      @$el.attr 'id', values.link if values.link
-      @events = {'click': values.event } if values.event
-      @render()
-      # again we'll create a submenu if values.link is set
-      @_createSubMenu values.items, values.link if values.link
-      # puts a check mark if this item needs checkmarks
-      @check(true) if values.triggerShow
+    @triggerShow = values.triggerShow if values.triggerShow
+    @triggerHide = values.triggerHide if values.triggerHide
+    @template = _.template($('#child-item-menu-template').html())
+    displayText = values.label
+    # values.link indicates a submenu and we display '>>' in the view
+    # to indicate a menu
+    displayText = "#{values.label} &raquo; " if values.link
+    @$el.html @template({text: displayText}) if values.label
+    @$el.attr 'class', values.className if values.className
+    @$el.attr 'href', values.href if values.href
+    @$el.attr 'id', values.link if values.link
+    @events = {'click': values.event } if values.event
+    @render()
+    # again we'll create a submenu if values.link is set
+    @_createSubMenu values.items, values.link if values.link
+    # puts a check mark if this item needs checkmarks
+    @check(true) if values.triggerShow
 
   render: ->
     $("##{@parent}").append(@el)
     @
 
-  # if a submenu is needed this call the LayersMenuView again to generate a 
+  # if a submenu is needed this call the LayersMenuView again to generate a
   # whole menu and attach it to this item
   _createSubMenu: (items, id) ->
     attrs = {
@@ -49,8 +49,8 @@ class window.sirius.LayersMenuViewItem extends Backbone.View
     else
       @$el.removeClass "icon-ok"
 
-  # This function is called on the click if we are toggling the checkmark to 
-  # show/hide. Not every item operates like this. You can see in 
+  # This function is called on the click if we are toggling the checkmark to
+  # show/hide. Not every item operates like this. You can see in
   # menu-data.coffee which items call this method and which do not
   toggleVisible: ->
     if @isShowing
