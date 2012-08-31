@@ -135,7 +135,7 @@ class window.sirius.TreeView extends Backbone.View
       # for OD Profiles
       name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
       attrs =
-        e : e
+        e: e
         targets: targets
         name: name
         attach: params.attachId
@@ -157,10 +157,8 @@ class window.sirius.TreeView extends Backbone.View
       when 'demand-profiles'
         [element.get('link')]
       when 'od-demand-profiles'
-        [
-          element.get('begin_node'),
-          element.get('end_node')
-        ]
+        [ element.get('begin_node'),
+          element.get('end_node') ]
       when 'controllers', 'events'
         element.get('targetreferences')
       when 'fundamental-diagram-profiles' or
