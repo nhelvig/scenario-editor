@@ -7,7 +7,7 @@ class window.sirius.MapLinkView extends Backbone.View
   @SELECTED_LINK_COLOR: 'red'
 
   $a = window.sirius
-  
+
   initialize: (@model, @network, @legs) ->
     @_createEncodedPath @legs
     @_saveEncodedPath()
@@ -32,8 +32,8 @@ class window.sirius.MapLinkView extends Backbone.View
     @link.setMap($a.map)
     @
 
-  # this method reads the path of points contained in the legs, joins them 
-  # into one array with no duplicates and then encodes the using googles 
+  # this method reads the path of points contained in the legs, joins them
+  # into one array with no duplicates and then encodes the using googles
   # geomtry package in order to save the path to models linkgeometry field
   _createEncodedPath: (legs) ->
     smPath = []
@@ -49,10 +49,10 @@ class window.sirius.MapLinkView extends Backbone.View
     lg = new $a.LinkGeometry()
     ep = new $a.EncodedPolyline()
     pts = new $a.Points()
-    pts.set({text:@encodedPath})
-    ep.set({points: pts})
-    lg.set({encodedpolyline:ep})
-    @model.set({linkgeometry: lg})
+    pts.set(text:@encodedPath)
+    ep.set(points: pts)
+    lg.set(encodedpolyline:ep)
+    @model.set(linkgeometry: lg)
 
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
@@ -87,9 +87,9 @@ class window.sirius.MapLinkView extends Backbone.View
     contextMenuOptions.class = 'context_menu'
     contextMenuOptions.id = "context-menu-link-#{@model.cid}"
     contextMenu = new $a.ContextMenuView(contextMenuOptions)
-    
-    google.maps.event.addListener(@link, 'rightclick', (mouseEvent) => 
-      contextMenu.show mouseEvent.latLng 
+
+    google.maps.event.addListener(@link, 'rightclick', (mouseEvent) =>
+      contextMenu.show mouseEvent.latLng
     )
     @model.set('contextMenu', contextMenu)
 
@@ -100,7 +100,7 @@ class window.sirius.MapLinkView extends Backbone.View
   showLink: () ->
     @link.setMap($a.map)
 
-  # in order to remove an element you need to unpublish the events, hide the 
+  # in order to remove an element you need to unpublish the events, hide the
   # marker and set it to null
   removeLink: ->
     $a.broker.off('map:init')
@@ -146,7 +146,7 @@ class window.sirius.MapLinkView extends Backbone.View
   clearSelected: () ->
     @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
 
-  # This method is called from the context menu and selects itself and all 
+  # This method is called from the context menu and selects itself and all
   # the links nodes as the higlighted tree items
   selectSelfandMyNodes: () ->
     # First see if everthing should be de-selected; if shift down will not occur
@@ -160,7 +160,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.trigger("map:select_item:#{beginNode.cid}")
     $a.broker.trigger("map:select_item:#{endNode.cid}")
 
-  # called from the context menu as well. It clears itself and its nodes as 
+  # called from the context menu as well. It clears itself and its nodes as
   # well as the higlighted tree items
   clearSelfandMyNodes: () ->
     @clearSelected()
