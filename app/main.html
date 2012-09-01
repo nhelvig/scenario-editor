@@ -140,7 +140,7 @@
           <form>
             <fieldset>
               <label for="link-name">Link Name</label>
-              <input type="text" name="link-name" id="link-name" class="text ui-widget-content ui-corner-all" value="{{linkName}}"/>
+              <input type="text" name="link-name" id="link-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
               <label for="type">Type</label>
               <select id="type" name ="type" class="ui-widget-content ui-corner-all">
                 <option value="highway">Dummy Link</option>
@@ -152,7 +152,7 @@
                 <option value="other">Other</option>
               </select><br/>
               <label for="road-name">Road Name</label>
-              <input type="text" name="road-name" id="road-name" class="text ui-widget-content ui-corner-all" value="{{roadName}}"/>
+              <input type="text" name="road-name" id="road-name" class="text ui-widget-content ui-corner-all" value="{{road_name}}"/>
               <label for="record">Record</label>
               <input type="checkbox" name="record" id="record" class="text ui-widget-content ui-corner-all" {{record}} />
               <label for="description">Description</label>
@@ -163,26 +163,52 @@
         <div id="tabs-2">
           <form>
             <fieldset>
-              <label for="num-lanes">Number Lanes</label>
-              <input type="text" name="num-lanes" id="num-lanes" class="text ui-widget-content ui-corner-all" value="{{numlanes}}"/>
-              <label for="longitude">Longitude</label>
-              <input type="text" name="longitude" id="lng" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
-              <label for="elevation">Elevation</label>
-              <input type="text" name="elevation" id="elevation" class="text ui-widget-content ui-corner-all" value="{{elevation}}"/><br/>
-              <input type="checkbox" name="lock" id="lock" class="text ui-widget-content ui-corner-all" {{lock}} />
-              <span>Lock node position</span>
+              <label for="num-lanes">Number of Lanes</label>
+              <input type="text" name="num-lanes" id="num-lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
+              <label for="lane-offset">Lane Offset</label>
+              <input type="text" name="lane-offset" id="lane-offset" class="text ui-widget-content ui-corner-all" value="{{lane_offset}}"/>
+              <label for="length">Length (miles)</label>
+              <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
+              <label for="queue-limit">Queue Limit</label>
+              <input type="text" name="queue-limit" id="queue-limit" class="text ui-widget-content ui-corner-all" value=""/>
             </fieldset>
           </form>
         </div>
         <div id="tabs-3">
           <form>
             <fieldset>
-              <button id="remove-join-links" class="text ui-widget-content ui-corner-all" >Remove and join links</button>
-              <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
+              <label for="critical-density">Critical Density</label>
+              <input type="text" name="critical-density" id="critical-density" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/><span> vpmpl</span>
+              <label for="max-flow">Maximum Flow</label>
+              <input type="text" name="max-flow" id="max-flow" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
+              <label for="jam-density">Jam Density</label>
+              <input type="text" name="jam-density" id="jam-density" class="text ui-widget-content ui-corner-all" value="{{jam_density}}"/><br/><span> vpmpl</span>
+              <label for="capacity-drop">Capacity Drop</label>
+              <input type="text" name="capacity-drop" id="capacity-drop" class="text ui-widget-content ui-corner-all" value="{{capacity_drop}}"/><span> vphpl</span>
             </fieldset>
           </form>
         </div>
-        
+        <div id="tabs-4">
+          <form>
+            <fieldset>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-4">
+          <form>
+            <fieldset>
+              <label for="critical-density">Critical Density</label>
+              <input type="text" name="critical-density" id="critical-density" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/><span> vpmpl</span>
+              <label for="max-flow">Maximum Flow</label>
+              <input type="text" name="max-flow" id="max-flow" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
+              <label for="jam-density">Jam Density</label>
+              <input type="text" name="jam-density" id="jam-density" class="text ui-widget-content ui-corner-all" value="{{jam_density}}"/><br/><span> vpmpl</span>
+              <label for="capacity-drop">Capacity Drop</label>
+              <input type="text" name="capacity-drop" id="capacity-drop" class="text ui-widget-content ui-corner-all" value="{{capacity_drop}}"/><span> vphpl</span>
+            </fieldset>
+          </form>
+        </div>
+
     </script>
   </body>
 </html>
