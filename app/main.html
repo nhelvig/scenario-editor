@@ -34,8 +34,8 @@
     <div id="map_canvas" class="map_canvas_narrow"></div>
 
     <div id="right_tree">
-      <label for="right tree heading">Scenario</label>
-        <button class="btn" id="expand-all">+</button>
+      <label for="right tree heading">Scenario<button class="btn" id="expand-all">+</button></label>
+        
         <script type="text/template" id="parent-item-tree-template">
           <label for='{{textLower}}'>{{text}}</label>
           <input type='checkbox' id='check-{{textLower}}' class="expand-tree" />
@@ -43,45 +43,100 @@
           <ol id='tree-parent-{{textLower}}' ></ol>
         </script>
     </div>
-    
     <script type="text/template" id="context-menu-template">
       <div id="{{elemId}}" class="{{elemClass}}">
       </div>
     </script>
-      
     <script type="text/template" id="message-panel-template">
       {{message}} 
     </script>
+    
+    <script type="text/template" id="sensor-editor-dialog-template">
+      <ul>
+        <li><a href="#tabs-sensor1">Sensor</a></li>
+        <li><a href="#tabs-sensor2">Data</a></li>
+        <li><a href="#tabs-sensor3">Geo</a></li>
+      </ul>
       
-    <script type="text/template" id="demand-visualizer-window-template">
-      <div id="demand-visualizer-{{elemId}}">
-	{{content}}
-      </div>	
-    </script>
+      <div id="tabs-sensor1">
+        <form>
+          <fieldset>
+            <label for="sensor-desc">Description</label>
+              <textarea rows="2" name="sensor-desc" id="sensor-desc" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
+            <label for="sensor-type">Type</label>
+              <select id="sensor-type" name ="sensor-type" class="ui-widget-content ui-corner-all">
+                <option value="camera">Camera</option>
+                <option value="loop">Loop</option>
+                <option value="radar">Radar</option>
+                <option value="sensys">Sensys</option>
+              </select><br/>
+            <label for="sensor-link-type">Link Type</label>
+              <select id="sensor-link-type" name ="sensor-link-type" class="ui-widget-content ui-corner-all">
+                <option value="freeway">Freeway mainline</option>
+                <option value="highway">Highway mainline</option>
+                <option value="hov_lane">HOV lanes</option>
+                <option value="hot_lane">HOT lanes</option>
+                <option value="heavy_vehicle">Heavy vehicle lanes</option>
+                <option value="elec_toll">Elec. toll coll. lanes</option>
+                <option value="on_ramp">On-ramps</option>
+                <option value="off_ramp">Off-ramps</option>
+                <option value="interconnect">Interconnects</option>
+                <option value="intersection">Intersection Approach</option>
+                <option value="street">Streets</option>
+              </select><br/>
+            <label for="sensor-links">Links</label>
+              <input type="text" name="sensor-links" id="sensor-links" class="text ui-widget-content ui-corner-all" value="{{links}}" readonly/>
+          </fieldset>
+        </form>
+      </div>
       
-    <script type="text/template" id="demand-graph-template">
-      <div id="demand-graph-{{elemId}}" class="demand-graph" style="padding: 10px;">
+      <div id="tabs-sensor2">
+        <form>
+          <fieldset>
+            <label>Time step</label>
+            <label for="hour" class="time">h</label>              
+            <input type="number"  id="hour" min="0" value="{{hour}}" />
+             
+            <label for="minute" class="time">: m</label>
+            <input type="number" id="minute" min="0" max="59" value="{{minute}}" />
+              
+            <label for="second" class="time">:: s</label>
+            <input type="number" id="second" min="0" max="59" value="{{second}}" />
+              
+            <label>Format</label>
+              <select id="sensor-format" name ="sensor-format" class="ui-widget-content ui-corner-all">
+                <option value="PeMS Data Clearinghouse">PeMS Data Clearing</option>
+                <option value="Caltrans DBX">Caltrans DBX</option>
+                <option value="BHL">BHL</option>
+              </select><br/>
+            <label>URL *</label>
+              <input type="text" name="sensor-links" id="sensor-links" class="text ui-widget-content ui-corner-all" value="{{url}}"/>
+              <label>{{url_desc}}</label>
+          </fieldset>
+        </form>      
+      </div>
+      <div id="tabs-sensor3">
+        <form>
+          <fieldset>
+            <label>Latitude</label>
+              <input type="text" name="sensor-lat" id="sensor-lat" class="text ui-widget-content ui-corner-all" value="{{lat}}"/>
+            <label>Longitude</label>
+              <input type="text" name="sensor-long" id="sensor-long" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
+            <label>Elevation</label>
+              <input type="text" name="sensor-elev" id="sensor-elev" class="text ui-widget-content ui-corner-all" value="{{elev}}"/>
+            <button class="btn" id="display-at-pos">Display at this position</button>
+        </fieldset>
+      </form>
       </div>
     </script>
-      
-    <script type="text/template" id="constant-demand-template">
-      <tr id="demand-display-{{elemId}}-{{demandVehicleIndex}}" class="demand-display">
-      <td class="demand-vehicle-type">{{demandVehicleType}}</td>
-      <td class="demand-count">{{demandVehicleCount}}
-      {% if(deviates) { %}
-        &plusmn; {{demandDeviation}}
-      {% } %}
-      </td>
-      <td>per<br/>hour</td>
-      </tr>
-    </script>
-
+    
     <script type="text/template" id="node-editor-dialog-template">
         <ul>
           <li><a href="#tabs-1">Node</a></li>
           <li><a href="#tabs-2">Geo</a></li>
           <li><a href="#tabs-3">Tools</a></li>
         </ul>
+        
         <div id="tabs-1">
           <form>
             <fieldset>
@@ -126,89 +181,6 @@
           </form>
         </div>
         
-    </script>
-    <script type="text/template" id="link-editor-dialog-template">
-        <ul>
-          <li><a href="#tabs-1">Link</a></li>
-          <li><a href="#tabs-2">Geo</a></li>
-          <li><a href="#tabs-3">FD</a></li>
-          <li><a href="#tabs-4">Demand</a></li>
-          <li><a href="#tabs-5">Capacity</a></li>
-          <li><a href="#tabs-6">Tools</a></li>
-        </ul>
-        <div id="tabs-1">
-          <form>
-            <fieldset>
-              <label for="link-name">Link Name</label>
-              <input type="text" name="link-name" id="link-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
-              <label for="type">Type</label>
-              <select id="type" name ="type" class="ui-widget-content ui-corner-all">
-                <option value="highway">Dummy Link</option>
-                <option value="signalized_intersection">Electric Toll Coll. Lane</option>
-                <option value="freeway">Freeway Mainline</option>
-                <option value="simple">HOT lane</option>
-                <option value="stop_intersection">HOV lane</option>
-                <option value="terminal">Heavy Vehicle Lane</option>
-                <option value="other">Other</option>
-              </select><br/>
-              <label for="road-name">Road Name</label>
-              <input type="text" name="road-name" id="road-name" class="text ui-widget-content ui-corner-all" value="{{road_name}}"/>
-              <label for="record">Record</label>
-              <input type="checkbox" name="record" id="record" class="text ui-widget-content ui-corner-all" {{record}} />
-              <label for="description">Description</label>
-              <textarea rows="2" name="description" id="description" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
-            </fieldset>
-          </form>
-        </div>
-        <div id="tabs-2">
-          <form>
-            <fieldset>
-              <label for="num-lanes">Number of Lanes</label>
-              <input type="text" name="num-lanes" id="num-lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
-              <label for="lane-offset">Lane Offset</label>
-              <input type="text" name="lane-offset" id="lane-offset" class="text ui-widget-content ui-corner-all" value="{{lane_offset}}"/>
-              <label for="length">Length (miles)</label>
-              <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
-              <label for="queue-limit">Queue Limit</label>
-              <input type="text" name="queue-limit" id="queue-limit" class="text ui-widget-content ui-corner-all" value=""/>
-            </fieldset>
-          </form>
-        </div>
-        <div id="tabs-3">
-          <form>
-            <fieldset>
-              <label for="critical-density">Critical Density</label>
-              <input type="text" name="critical-density" id="critical-density" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/><span> vpmpl</span>
-              <label for="max-flow">Maximum Flow</label>
-              <input type="text" name="max-flow" id="max-flow" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
-              <label for="jam-density">Jam Density</label>
-              <input type="text" name="jam-density" id="jam-density" class="text ui-widget-content ui-corner-all" value="{{jam_density}}"/><br/><span> vpmpl</span>
-              <label for="capacity-drop">Capacity Drop</label>
-              <input type="text" name="capacity-drop" id="capacity-drop" class="text ui-widget-content ui-corner-all" value="{{capacity_drop}}"/><span> vphpl</span>
-            </fieldset>
-          </form>
-        </div>
-        <div id="tabs-4">
-          <form>
-            <fieldset>
-            </fieldset>
-          </form>
-        </div>
-        <div id="tabs-4">
-          <form>
-            <fieldset>
-              <label for="critical-density">Critical Density</label>
-              <input type="text" name="critical-density" id="critical-density" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/><span> vpmpl</span>
-              <label for="max-flow">Maximum Flow</label>
-              <input type="text" name="max-flow" id="max-flow" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
-              <label for="jam-density">Jam Density</label>
-              <input type="text" name="jam-density" id="jam-density" class="text ui-widget-content ui-corner-all" value="{{jam_density}}"/><br/><span> vpmpl</span>
-              <label for="capacity-drop">Capacity Drop</label>
-              <input type="text" name="capacity-drop" id="capacity-drop" class="text ui-widget-content ui-corner-all" value="{{capacity_drop}}"/><span> vphpl</span>
-            </fieldset>
-          </form>
-        </div>
-
     </script>
   </body>
 </html>
