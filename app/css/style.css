@@ -258,3 +258,21 @@ hr {
   display: none
 }
 
+.demand-display, .const-notice {
+  padding: 20px;
+  line-spacing: 1.5;
+}
+
+.demand-vehicle-type, .demand-count {
+  padding: 20px;
+  font-size: 2.5em;
+}
+
+.demand-count {
+  font-face: serif;
+}
+
+.const-notice {
+  font-size: 1.5em;
+  font-style: italic;
+}

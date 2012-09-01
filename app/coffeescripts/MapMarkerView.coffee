@@ -5,7 +5,6 @@ class window.sirius.MapMarkerView extends Backbone.View
   $a = window.sirius
 
   initialize: (@model) ->
-
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
     @latLng = $a.Util.getLatLng(model)
@@ -50,9 +49,9 @@ class window.sirius.MapMarkerView extends Backbone.View
       new google.maps.Size(32, 32),
       new google.maps.Point(0,0),
       new google.maps.Point(16, 16)
-    );
+    )
 
-  # in order to remove an element you need to unpublish the events, 
+  # in order to remove an element you need to unpublish the events,
   # hide the marker and set it to null
   removeElement: ->
     $a.broker.off('map:init')
@@ -73,23 +72,24 @@ class window.sirius.MapMarkerView extends Backbone.View
   # this. I also add the contextMenu itself to the model so the same
   # menu can be added to the tree items for this node
   _contextMenu: (type, menuItems) ->
-    @contextMenuOptions = {}
-    @contextMenuOptions.class = 'context_menu'
-    @contextMenuOptions.id = "context-menu-#{type}-#{@model.id}"
-    @contextMenuOptions.menuItems = $a.Util.copy(menuItems)
+    @contextMenuOptions =
+      class: 'context_menu'
+      id: "context-menu-#{type}-#{@model.id}"
+      menuItems: $a.Util.copy(menuItems)
+
     #set this id for the select item so we know what event to call
     _.each(@contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
 
     @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
-    google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) => 
-      @contextMenu.show mouseEvent.latLng 
+    google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) =>
+      @contextMenu.show mouseEvent.latLng
     )
     @model.set('contextMenu', @contextMenu)
 
   # events used to move the marker and update its position
   dragMarker: ->
-    @latLng = @marker.getPosition();
-    $a.map.panTo(@latLng);
+    @latLng = @marker.getPosition()
+    $a.map.panTo(@latLng)
 
   ################# The following handles the show and hide of node layers
   hideMarker: ->
@@ -98,7 +98,7 @@ class window.sirius.MapMarkerView extends Backbone.View
   showMarker: ->
     @marker.setMap($a.map)
 
-  # Used by subclasses to get name of image in order to swap between selected 
+  # Used by subclasses to get name of image in order to swap between selected
   # and not selected
   _getIconName: () ->
     tokens = @marker.get('icon').url.split '/'

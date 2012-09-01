@@ -9,18 +9,19 @@ class window.sirius.NavBarView extends Backbone.View
     @render()
     for key, values of args.menuItems
       keyLower = $a.Util.toLowerCaseAndDashed(key)
-      attrs = {
+      attrs =
         text: key
         textLower: keyLower
         attach: ".#{@className}"
-      }
+
       new $a.NavParentItemView(attrs)
       for subkey, event of values
-        attrs = {
+        attrs =
           text: subkey
           textLower: $a.Util.toLowerCaseAndDashed(subkey)
-          event: event, attach: keyLower
-        }
+          event: event
+          attach: keyLower
+
         new $a.NavChildItemView(attrs)
 
   render: ->

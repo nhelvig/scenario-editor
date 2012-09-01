@@ -4,10 +4,12 @@
 class window.sirius.AppView extends Backbone.View
   $a = window.sirius
   $evt = google.maps.event
-  
+
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
-    _.templateSettings = {interpolate : /\{\{(.+?)\}\}/g }
+    _.templateSettings =
+      evaluate: /{%([\s\S]+?)%}/g,
+      interpolate: /\{\{(.+?)\}\}/g
     $a.broker = _.clone(Backbone.Events)
     @render()
 
@@ -44,7 +46,7 @@ class window.sirius.AppView extends Backbone.View
         position: google.maps.ControlPosition.TOP_LEFT
     }
     #attach the map to the namespace
-    $a.map = new google.maps.Map document.getElementById("map_canvas"), mapOpts
+    $a.map = new google.maps.Map $("#map_canvas")[0], mapOpts
 
   # This creates the context menu as well as adds the listeners for map area
   # of the application.Currently we have zoom in and zoom out as well as center
@@ -56,8 +58,8 @@ class window.sirius.AppView extends Backbone.View
     contextMenuOptions.class='context_menu'
     $a.contextMenu = new $a.ContextMenuView(contextMenuOptions)
     $evt.addListener(
-                      $a.map, 
-                      'rightclick', 
+                      $a.map,
+                      'rightclick',
                       (mouseEvent) -> $a.contextMenu.show mouseEvent.latLng
                     )
 
@@ -65,13 +67,13 @@ class window.sirius.AppView extends Backbone.View
   _navBar: () ->
     attrs = { name: 'localNetwork', id: 'uploadField', attach: '#main-nav div' }
     new $a.FileUploadView(attrs)
-    
+
     attrs = { menuItems: $a.nav_bar_menu_items, attach: '#main-nav div' }
     new $a.NavBarView(attrs)
 
   # This creates the layers menu bar
   _layersMenu: () ->
-    attrs = { 
+    attrs = {
               className: 'dropdown-menu bottom-up'
               id: 'l_list'
               parentId: 'lh'
@@ -81,19 +83,18 @@ class window.sirius.AppView extends Backbone.View
 
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
-  # The two files passed to the writeAndDownloadXML method are scenario.php 
-  # and scenario-download-php. This will change when we know what we are 
+  # The two files passed to the writeAndDownloadXML method are scenario.php
+  # and scenario-download-php. This will change when we know what we are
   # running on the backend. The first file taks the xml string
-  # generated from the models and saves it to a file. The second parameter 
+  # generated from the models and saves it to a file. The second parameter
   # creates the correct headers to download this file to the client
   saveScenario: ->
     if $a.models?
         doc = document.implementation.createDocument(null, null, null)
-        attrs = {
-                  xml: $a.models.to_xml(doc)
-                  serverWrite: "../scenario.php"
-                  serverDownload: "../scenario-download.php"
-                }
+        attrs =
+          xml: $a.models.to_xml(doc)
+          serverWrite: "../scenario.php"
+          serverDownload: "../scenario-download.php"
         $a.Util.writeAndDownloadXML(attrs)
      else
         $a.broker.trigger("app:show_message:info", "No scenario loaded")
@@ -101,7 +102,7 @@ class window.sirius.AppView extends Backbone.View
   openScenario: ->
     $("#uploadField").click()
 
-  # displayMap takes the uploaded file data parses the xml into the model 
+  # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView
   _displayMap: (fileText) ->
     try

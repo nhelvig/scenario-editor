@@ -2,7 +2,7 @@
 (function() {
   sirius_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'DemandProfileSpec', 'DensitySpec',
         'EditorNodeViewSpec', 'EndSpec', 'EventSpec',
-        'InputSpec', 'IntersectionSpec', 'LinkSpec',
+        'InputSpec', 'IntersectionSpec', 'LinkSpec', 'MapLinkViewSpec', 'MapNodeViewSpec',
         'NodeSpec', 'OutputSpec', 'OdSpec', 'ScenarioSpec',
         'SignalSpec', 'SplitRatioProfileSpec'];
     
@@ -55,10 +55,13 @@
 	      '../../lib/js/jquery-1.7.1.js', 
 	      '../../lib/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js', 
 	      '../../lib/js/underscore.js', 
-	      '../../lib/js/backbone.js', 
+	      '../../lib/js/backbone.js',
 	      '../../lib/js/bootstrap/js/bootstrap.min.js', 
 	      function() {
-		  window.loadSirius(runner);
+	        google.load("maps", "3",{
+                  callback: "window.loadSirius(runner)",
+                  other_params: "libraries=geometry,drawing&sensor=false"
+                });
 	      });
   };
 }).call(this);

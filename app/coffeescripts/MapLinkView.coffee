@@ -11,8 +11,7 @@ class window.sirius.MapLinkView extends Backbone.View
   initialize: (@model, @network, @legs) ->
     @_createEncodedPath @legs
     @_saveEncodedPath()
-    @drawLink()
-    #@drawArrow @leg
+    @_drawLink()
     @_contextMenu()
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
@@ -23,37 +22,18 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
-    google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:clear_map", @removeLink, @)
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-
+    google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
 
   render: ->
     @link.setMap($a.map)
-    #@arrow.setMap($a.map) if @arrow?
     @
 
-  # in order to remove an element you need to unpublish the events, hide the 
-  # marker and set it to null
-  removeLink: ->
-    $a.broker.off('map:init')
-    $a.broker.off('map:hide_link_layer')
-    $a.broker.off('map:show_link_layer')
-    $a.broker.off("map:links:show_#{@model.get('type')}",)
-    $a.broker.off("map:links:hide_#{@model.get('type')}")
-    $a.broker.off("map:select_item:#{@model.cid}")
-    $a.broker.off("map:clear_item:#{@model.cid}")
-    $a.broker.off("map:select_neighbors:#{@model.cid}")
-    $a.broker.off("map:clear_neighbors:#{@model.cid}")
-    $a.broker.off("map:select_network:#{@network.cid}")
-    $a.broker.off("map:clear_network:#{@network.cid}")
-    @hideLink() if @link
-    @link = null
-
-  # this method reads the path of points contained in the legs, joins them 
-  # into one array with no duplicates and then encodes the using googles 
+  # this method reads the path of points contained in the legs, joins them
+  # into one array with no duplicates and then encodes the using googles
   # geomtry package in order to save the path to models linkgeometry field
   _createEncodedPath: (legs) ->
     smPath = []
@@ -69,14 +49,14 @@ class window.sirius.MapLinkView extends Backbone.View
     lg = new $a.LinkGeometry()
     ep = new $a.EncodedPolyline()
     pts = new $a.Points()
-    pts.set({text:@encodedPath})
-    ep.set({points: pts})
-    lg.set({encodedpolyline:ep})
-    @model.set({linkgeometry: lg})
+    pts.set(text:@encodedPath)
+    ep.set(points: pts)
+    lg.set(encodedpolyline:ep)
+    @model.set(linkgeometry: lg)
 
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
-  drawLink: ->
+  _drawLink: ->
     linkGeom = @model.get('linkgeometry')
     polyPath = linkGeom.get('encodedpolyline').get('points').get('text')
     @link = new google.maps.Polyline({
@@ -98,26 +78,44 @@ class window.sirius.MapLinkView extends Backbone.View
   # a dependency with the ContextMenuView here. There may a better way to do
   # this. I also add the contextMenu itself to the model so the same menu can
   # be added to the tree items for this link
-  _contextMenu: () ->
-    @contextMenuOptions = {}
-    @contextMenuOptions.menuItems = []
-    @contextMenuOptions.menuItems = $a.Util.copy($a.link_context_menu)
+  _contextMenu: ->
+    contextMenuOptions = {}
+    contextMenuOptions.menuItems = []
+    contextMenuOptions.menuItems = $a.Util.copy($a.link_context_menu)
     #set this id for the select item so we know what event to call
-    _.each(@contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
-    @contextMenuOptions.class = 'context_menu'
-    @contextMenuOptions.id = "context-menu-link-#{@model.cid}"
-    @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
-    google.maps.event.addListener(@link, 'rightclick', (mouseEvent) => 
-      @contextMenu.show mouseEvent.latLng 
+    _.each(contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
+    contextMenuOptions.class = 'context_menu'
+    contextMenuOptions.id = "context-menu-link-#{@model.cid}"
+    contextMenu = new $a.ContextMenuView(contextMenuOptions)
+
+    google.maps.event.addListener(@link, 'rightclick', (mouseEvent) =>
+      contextMenu.show mouseEvent.latLng
     )
-    @model.set('contextMenu', @contextMenu)
+    @model.set('contextMenu', contextMenu)
 
   # The following handles the show/hide of links and arrow heads
-  hideLink: () ->
+  hideLink: ->
     @link.setMap(null)
 
-  showLink: () ->
+  showLink: ->
     @link.setMap($a.map)
+
+  # in order to remove an element you need to unpublish the events, hide the
+  # marker and set it to null
+  removeLink: ->
+    $a.broker.off('map:init')
+    $a.broker.off('map:hide_link_layer')
+    $a.broker.off('map:show_link_layer')
+    $a.broker.off("map:links:show_#{@model.get('type')}",)
+    $a.broker.off("map:links:hide_#{@model.get('type')}")
+    $a.broker.off("map:select_item:#{@model.cid}")
+    $a.broker.off("map:clear_item:#{@model.cid}")
+    $a.broker.off("map:select_neighbors:#{@model.cid}")
+    $a.broker.off("map:clear_neighbors:#{@model.cid}")
+    $a.broker.off("map:select_network:#{@network.cid}")
+    $a.broker.off("map:clear_network:#{@network.cid}")
+    @hideLink() if @link
+    @link = null
 
   # Select events for link
   # Unless the Shift key is held down, this function clears any other selected
@@ -125,7 +123,7 @@ class window.sirius.MapLinkView extends Backbone.View
   # be selected or deselected. You need to call @_triggerClearSelectEvents
   # from within the conditional so that you appropriately select or de-select
   # the current link and corresponding tree item
-  manageLinkSelect: () ->
+  manageLinkSelect: ->
     if @link.get('strokeColor') == MapLinkView.LINK_COLOR
       @_triggerClearSelectEvents()
       $a.broker.trigger("app:tree_highlight:#{@model.cid}")
@@ -135,22 +133,22 @@ class window.sirius.MapLinkView extends Backbone.View
       @clearSelected()
 
   # This function triggers the events that make the selected tree and map items
-  # to de-selected
-  _triggerClearSelectEvents: () ->
+  # to de-selected. Called by other events to help
+  _triggerClearSelectEvents: ->
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
 
   # This method swaps the icon for the selected color
-  linkSelect: () ->
+  linkSelect: ->
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
   # This method swaps the icon for the de-selected color
-  clearSelected: () ->
+  clearSelected: ->
     @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
 
-  # This method is called from the context menu and selects itself and all 
+  # This method is called from the context menu and selects itself and all
   # the links nodes as the higlighted tree items
-  selectSelfandMyNodes: () ->
+  selectSelfandMyNodes: ->
     # First see if everthing should be de-selected; if shift down will not occur
     @_triggerClearSelectEvents()
     @linkSelect()
@@ -162,9 +160,9 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.trigger("map:select_item:#{beginNode.cid}")
     $a.broker.trigger("map:select_item:#{endNode.cid}")
 
-  # called from the context menu as well. It clears itself and its nodes as 
+  # called from the context menu as well. It clears itself and its nodes as
   # well as the higlighted tree items
-  clearSelfandMyNodes: () ->
+  clearSelfandMyNodes: ->
     @clearSelected()
     beginNode = @model.get("begin").get("node")
     endNode = @model.get("end").get("node")

@@ -16,7 +16,7 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     super options
 
     #set selected type element
-    elem = _.filter($(@$el[0]).find("select option"), (item) => 
+    elem = _.filter($(@$el[0]).find("select option"), (item) =>
               $(item).val() is options.model.get('type')
             )
     $(elem[0]).attr('selected', true)
@@ -28,27 +28,21 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
 
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (model) ->
-    {
-      name: model.get('name'),
-      description: model.get('description'),
-      lat: model.get('position').get('point')[0].get('lat')
-      lng: model.get('position').get('point')[0].get('lng')
-      elevation: model.get('position').get('point')[0].get('elevation')
-      lock: @_isLocked(model)
-    }
+    name: model.get('name')
+    description: model.get('description')
+    lat: model.get('position').get('point')[0].get('lat')
+    lng: model.get('position').get('point')[0].get('lng')
+    elevation: model.get('position').get('point')[0].get('elevation')
+    lock: if model.has('lock') and model.get('lock') then 'checked' else ''
 
-  # check if lock attribute set
-  _isLocked: (model) ->
-    if model.get('lock')? and model.get('lock') is true then 'checked' else ''
-    
   # these are callback events for various elements in the interface
-  # This is used to save the name, type and description when focus is 
+  # This is used to save the name, type and description when focus is
   # lost from the element
   save: (e) ->
     id = e.currentTarget.id
     @model.set(id, $("##{id}").val())
 
-  # This is used to save the latitude, longitude and elevation when focus is 
+  # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element
   saveGeo: (e) ->
     id = e.currentTarget.id
@@ -59,7 +53,7 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     id = e.currentTarget.id
     @model.set(id, $("##{id}").prop('checked'))
 
-  # These three methods below will be configured to launch various 
+  # These three methods below will be configured to launch various
   # editors in future phases
   signalEditor: (e) ->
     e.preventDefault()

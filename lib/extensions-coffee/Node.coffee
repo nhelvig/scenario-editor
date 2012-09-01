@@ -17,3 +17,12 @@ window.sirius.Node::terminal = ->
 
 window.sirius.Node::signalized = ->
   @get('type') is 'S'
+
+window.sirius.Node::inputs = ->
+  @get('inputs').get('input')
+
+window.sirius.Node::outputs = ->
+  @get('outputs').get('output')
+
+window.sirius.Node::ios = ->
+  _.union(@outputs(), @inputs())

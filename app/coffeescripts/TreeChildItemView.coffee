@@ -1,14 +1,13 @@
 # The view class for each child item in the tree view. Each child item
-# is <li> tag with an anchor surrounding the name. It is the super of 
+# is <li> tag with an anchor surrounding the name. It is the super of
 # Link and Node Tree Items but can also render non-link/node tree items
 class window.sirius.TreeChildItemView extends Backbone.View
   $a = window.sirius
   tagName: "li"
   className: "file"
-  events : {
-            'click': 'manageHighlight',
-            'contextmenu' : 'showContext'
-          }
+  events:
+    click: 'manageHighlight'
+    contextmenu: 'showContext'
 
   # The model attribute is the model for this class, the element
   # attribute is the name of the parent tree element this model should
@@ -18,7 +17,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
     @targets = params.targets
     name = params.name
     @element = params.attach
-    
+
     # used to toggle highlight for this element
     @highlighted = false
 
@@ -29,7 +28,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
       $(@el).attr 'id', @id
     displayName =  name
     @template = _.template($('#child-item-menu-template').html())
-    @$el.html(@template({text: displayName}))
+    @$el.html(@template(text: displayName))
     @setUpEvents()
 
   render: ->
@@ -60,7 +59,7 @@ class window.sirius.TreeChildItemView extends Backbone.View
       @highlighted = false
       @removeHighlight()
 
-  highlight: () ->
+  highlight: ->
     $(@el).addClass "highlight"
 
   removeHighlight: ->
