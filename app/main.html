@@ -3,11 +3,9 @@
   <head>
     <title>Scenario Editor</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    
     <link href="../lib/js/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="../lib/js/jquery-ui-1.8.21/css/ui-darkness/jquery-ui-1.8.21.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    
     <script src="../lib/js/head.js"></script>
     <script type="text/javascript">
       head.js("js/main.js");
@@ -32,7 +30,6 @@
       </div>
     </div>
     <div id="map_canvas" class="map_canvas_narrow"></div>
-
     <div id="right_tree">
       <label for="right tree heading">Scenario<button class="btn" id="expand-all">+</button></label>
         
@@ -50,15 +47,13 @@
     <script type="text/template" id="message-panel-template">
       {{message}} 
     </script>
-    
     <script type="text/template" id="sensor-editor-dialog-template">
       <ul>
-        <li><a href="#tabs-sensor1">Sensor</a></li>
-        <li><a href="#tabs-sensor2">Data</a></li>
-        <li><a href="#tabs-sensor3">Geo</a></li>
+        <li><a href="#tabs-sensor-1">Sensor</a></li>
+        <li><a href="#tabs-sensor-2">Data</a></li>
+        <li><a href="#tabs-sensor-3">Geo</a></li>
       </ul>
-      
-      <div id="tabs-sensor1">
+      <div id="tabs-sensor-1">
         <form>
           <fieldset>
             <label for="sensor-desc">Description</label>
@@ -89,19 +84,18 @@
           </fieldset>
         </form>
       </div>
-      
-      <div id="tabs-sensor2">
+      <div id="tabs-sensor-2">
         <form>
           <fieldset>
             <label>Time step</label>
-            <label for="hour" class="time">h</label>              
-            <input type="number"  id="hour" min="0" value="{{hour}}" />
+            <label for="sensor-hour" class="time">h</label>              
+            <input type="number"  id="sensor-hour" class="time-input" min="0" value="{{hour}}" />
              
-            <label for="minute" class="time">: m</label>
-            <input type="number" id="minute" min="0" max="59" value="{{minute}}" />
+            <label for="sensor-minute" class="time">: m</label>
+            <input type="number" id="sensor-minute" class="time-input" min="0" max="59" value="{{minute}}" />
               
-            <label for="second" class="time">:: s</label>
-            <input type="number" id="second" min="0" max="59" value="{{second}}" />
+            <label for="sensor-second" class="time">:: s</label>
+            <input type="number" id="sensor-second" class="time-input" min="0" max="59" value="{{second}}" />
               
             <label>Format</label>
               <select id="sensor-format" name ="sensor-format" class="ui-widget-content ui-corner-all">
@@ -115,7 +109,7 @@
           </fieldset>
         </form>      
       </div>
-      <div id="tabs-sensor3">
+      <div id="tabs-sensor-3">
         <form>
           <fieldset>
             <label>Latitude</label>
@@ -129,15 +123,13 @@
       </form>
       </div>
     </script>
-    
     <script type="text/template" id="node-editor-dialog-template">
         <ul>
-          <li><a href="#tabs-1">Node</a></li>
-          <li><a href="#tabs-2">Geo</a></li>
-          <li><a href="#tabs-3">Tools</a></li>
+          <li><a href="#tabs-node-1">Node</a></li>
+          <li><a href="#tabs-node-2">Geo</a></li>
+          <li><a href="#tabs-node-3">Tools</a></li>
         </ul>
-        
-        <div id="tabs-1">
+        <div id="tabs-node-1">
           <form>
             <fieldset>
               <label for="name">Name</label>
@@ -158,7 +150,7 @@
             </fieldset>
           </form>
         </div>
-        <div id="tabs-2">
+        <div id="tabs-node-2">
           <form>
             <fieldset>
               <label for="latitude">Latitude</label>
@@ -172,7 +164,7 @@
             </fieldset>
           </form>
         </div>
-        <div id="tabs-3">
+        <div id="tabs-node-3">
           <form>
             <fieldset>
               <button id="remove-join-links" class="text ui-widget-content ui-corner-all" >Remove and join links</button>
@@ -180,7 +172,128 @@
             </fieldset>
           </form>
         </div>
-        
+    </script>
+    <script type="text/template" id="link-editor-dialog-template">
+        <ul>
+          <li><a href="#tabs-link-1">Link</a></li>
+          <li><a href="#tabs-link-2">Geo</a></li>
+          <li><a href="#tabs-link-3">FD</a></li>
+          <li><a href="#tabs-link-4">Demand</a></li>
+          <li><a href="#tabs-link-5">Capacity</a></li>
+          <li><a href="#tabs-link-6">Tools</a></li>
+        </ul>
+        <div id="tabs-link-1">
+          <form>
+            <fieldset>
+              <label for="link-name">Link Name</label>
+              <input type="text" name="link-name" id="link-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+              <label for="type">Type</label>
+              <select id="type" name ="type" class="ui-widget-content ui-corner-all">
+                <option value="highway">Dummy Link</option>
+                <option value="signalized_intersection">Electric Toll Coll. Lane</option>
+                <option value="freeway">Freeway Mainline</option>
+                <option value="simple">HOT lane</option>
+                <option value="stop_intersection">HOV lane</option>
+                <option value="terminal">Heavy Vehicle Lane</option>
+                <option value="other">Other</option>
+              </select><br/>
+              <label for="road-name">Road Name</label>
+              <input type="text" name="road-name" id="road-name" class="text ui-widget-content ui-corner-all" value="{{road_name}}"/>
+              <label for="record">Record</label>
+              <input type="checkbox" name="record" id="record" class="text ui-widget-content ui-corner-all" {{record}} />
+              <label for="description">Description</label>
+              <textarea rows="2" name="description" id="description" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-link-2">
+          <form>
+            <fieldset>
+              <label for="num-lanes">Number of Lanes</label>
+              <input type="text" name="num-lanes" id="num-lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
+              <label for="lane-offset">Lane Offset</label>
+              <input type="text" name="lane-offset" id="lane-offset" class="text ui-widget-content ui-corner-all" value="{{lane_offset}}"/>
+              <label for="length">Length (miles)</label>
+              <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
+              <label for="queue-limit">Queue Limit</label>
+              <input type="text" name="queue-limit" id="queue-limit" class="text ui-widget-content ui-corner-all" value=""/>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-link-3">
+          <form>
+            <fieldset>
+              <label for="critical-density">Critical Density</label>
+              <input type="text" name="critical-density" id="critical-density" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/><span> vpmpl</span>
+              <label for="max-flow">Maximum Flow</label>
+              <input type="text" name="max-flow" id="max-flow" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
+              <label for="jam-density">Jam Density</label>
+              <input type="text" name="jam-density" id="jam-density" class="text ui-widget-content ui-corner-all" value="{{jam_density}}"/><br/><span> vpmpl</span>
+              <label for="capacity-drop">Capacity Drop</label>
+              <input type="text" name="capacity-drop" id="capacity-drop" class="text ui-widget-content ui-corner-all" value="{{capacity_drop}}"/><span> vphpl</span>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-link-4">
+          <form>
+            <fieldset>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-link-5">
+          <form>
+            <fieldset>
+              <label>Start Time</label>
+              <label for="link-start-hour" class="time">h</label>              
+              <input type="number"  id="link-start-hour" class="time-input" min="0" value="{{hour}}" />
+             
+              <label for="link-start-minute" class="time">: m</label>
+              <input type="number" id="link-start-minute" class="time-input" min="0" max="59" value="{{minute}}" />
+              
+              <label for="link-start-second" class="time">:: s</label>
+              <input type="number" id="link-start-second" class="time-input" min="0" max="59" value="{{second}}" />
+              
+              <label>Sampling Period</label>
+              <label for="link-sample-hour" class="time">h</label>              
+              <input type="number"  id="link-sample-hour" class="time-input" min="0" value="{{hour}}" />
+             
+              <label for="link-sample-minute" class="time">: m</label>
+              <input type="number" id="link-sample-minute" class="time-input" min="0" max="59" value="{{minute}}" />
+              
+              <label for="link-sample-second" class="time">:: s</label>
+              <input type="number" id="link-sample-second" class="time-input" min="0" max="59" value="{{second}}" />
+              
+              <label for="capacity-profile">Capacity Profile (vph)</label>
+              <textarea name="capacity-profile" id="capacity-profile" rows="10" />
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-link-6">
+          <form>
+            <fieldset>
+              <label>Sub-divide</label>
+              <label for="subdivide">Custom</label>
+              <input type="text" name="subdivide" id="subdivide" class="text ui-widget-content ui-corner-all" value=""/>
+              <span> miles</span>
+              <button id="do-subdivide" class="text ui-widget-content ui-corner-all" >Do It!</button>
+              <label>OR</label>
+              <button id="choose-name" class="text ui-widget-content ui-corner-all" >At Intersections</button>
+              
+              <label for="split">Split</label>
+              <input type="text" name="split" id="split" class="text ui-widget-content ui-corner-all" value=""/>
+              <button id="do-split" class="text ui-widget-content ui-corner-all" >Do It!</button>
+              
+              <label for="turn-pockets">Turn Pockets</label>
+              <button id="add-lt" class="text ui-widget-content ui-corner-all" >Add Left Turn</button>
+              <button id="add-rt" class="text ui-widget-content ui-corner-all" >Add Right Turn</button>
+              
+              <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
+              <button id="geom-line" class="text ui-widget-content ui-corner-all" >Set geometry to line</button>
+              <button id="geom-road" class="text ui-widget-content ui-corner-all" >Set geometry to roads</button>
+              <button id="reverse-link" class="text ui-widget-content ui-corner-all" >Create reverse link</button>
+            </fieldset>
+          </form>
+        </div>
     </script>
   </body>
 </html>

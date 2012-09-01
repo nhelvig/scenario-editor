@@ -29,7 +29,7 @@ fieldset button {
   display:block;
   margin-bottom:9px;
 }
-#hour, #minute, #second {
+.time-input {
   display:inline;
   width: 29px;
 }
