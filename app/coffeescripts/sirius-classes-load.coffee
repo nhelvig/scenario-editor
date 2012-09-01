@@ -31,7 +31,7 @@ $a.sirius_classes_without_extensions = [ 'ArrayText', 'ALatLng',
 
 $a.sirius_map_view_classes = [
   'AppView', 'ContextMenuItemView','ContextMenuView', 'DemandVisualizer'
-  'EditorView', 'EditorSensorView', 'EditorNodeView',
+  'EditorView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView',
   'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
   'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView',
   'MapSensorView', 'MapControllerView', 'MapEventView',

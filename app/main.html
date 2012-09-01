@@ -89,13 +89,13 @@
           <fieldset>
             <label>Time step</label>
             <label for="sensor-hour" class="time">h</label>              
-            <input type="number"  id="sensor-hour" class="time-input" min="0" value="{{hour}}" />
+            <input type="number"  id="sensor-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{hour}}" />
              
             <label for="sensor-minute" class="time">: m</label>
-            <input type="number" id="sensor-minute" class="time-input" min="0" max="59" value="{{minute}}" />
+            <input type="number" id="sensor-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{minute}}" />
               
             <label for="sensor-second" class="time">:: s</label>
-            <input type="number" id="sensor-second" class="time-input" min="0" max="59" value="{{second}}" />
+            <input type="number" id="sensor-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{second}}" />
               
             <label>Format</label>
               <select id="sensor-format" name ="sensor-format" class="ui-widget-content ui-corner-all">
@@ -118,7 +118,7 @@
               <input type="text" name="sensor-long" id="sensor-long" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
             <label>Elevation</label>
               <input type="text" name="sensor-elev" id="sensor-elev" class="text ui-widget-content ui-corner-all" value="{{elev}}"/>
-            <button class="btn" id="display-at-pos">Display at this position</button>
+            <button class="text ui-widget-content ui-corner-all" id="display-at-pos">Display at this position</button>
         </fieldset>
       </form>
       </div>
@@ -189,17 +189,23 @@
               <input type="text" name="link-name" id="link-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
               <label for="type">Type</label>
               <select id="type" name ="type" class="ui-widget-content ui-corner-all">
-                <option value="highway">Dummy Link</option>
-                <option value="signalized_intersection">Electric Toll Coll. Lane</option>
+                <option value="">Dummy Link</option>
+                <option value="electric_toll">Electric Toll Coll. Lane</option>
                 <option value="freeway">Freeway Mainline</option>
-                <option value="simple">HOT lane</option>
-                <option value="stop_intersection">HOV lane</option>
-                <option value="terminal">Heavy Vehicle Lane</option>
-                <option value="other">Other</option>
+                <option value="HOT">HOT lane</option>
+                <option value="HOV">HOV lane</option>
+                <option value="heavy_vehicle">Heavy Vehicle Lane</option>
+                <option value="">Highway Mainline</option>
+                <option value="freeway_connector">Interconnect</option>
+                <option value="">Left Turn Pocket</option>
+                <option value="offramp">Off-ramp</option>
+                <option value="onramp">On-ramp</option>
+                <option value="">Right Turn Pocket</option>
+                <option value="street">Street</option>
               </select><br/>
               <label for="road-name">Road Name</label>
-              <input type="text" name="road-name" id="road-name" class="text ui-widget-content ui-corner-all" value="{{road_name}}"/>
-              <label for="record">Record</label>
+              <input type="text" name="road-name" id="road-name" class="text ui-widget-content ui-corner-all" value="{{roadName}}"/>
+              <br/><span>Record&nbsp;&nbsp;</span>
               <input type="checkbox" name="record" id="record" class="text ui-widget-content ui-corner-all" {{record}} />
               <label for="description">Description</label>
               <textarea rows="2" name="description" id="description" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
@@ -212,11 +218,11 @@
               <label for="num-lanes">Number of Lanes</label>
               <input type="text" name="num-lanes" id="num-lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
               <label for="lane-offset">Lane Offset</label>
-              <input type="text" name="lane-offset" id="lane-offset" class="text ui-widget-content ui-corner-all" value="{{lane_offset}}"/>
+              <input type="text" name="lane-offset" id="lane-offset" class="text ui-widget-content ui-corner-all" value="{{laneOffset}}"/>
               <label for="length">Length (miles)</label>
               <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
               <label for="queue-limit">Queue Limit</label>
-              <input type="text" name="queue-limit" id="queue-limit" class="text ui-widget-content ui-corner-all" value=""/>
+              <input type="text" name="queue-limit" id="queue-limit" class="text ui-widget-content ui-corner-all" value="{{queue}}"/>
             </fieldset>
           </form>
         </div>
@@ -224,19 +230,44 @@
           <form>
             <fieldset>
               <label for="critical-density">Critical Density</label>
-              <input type="text" name="critical-density" id="critical-density" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/><span> vpmpl</span>
+              <input type="text" name="critical-density" id="critical-density" class="text ui-widget-content ui-corner-all" value="{{criticalDensity}}"/><span> vpmpl</span>
               <label for="max-flow">Maximum Flow</label>
               <input type="text" name="max-flow" id="max-flow" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
               <label for="jam-density">Jam Density</label>
-              <input type="text" name="jam-density" id="jam-density" class="text ui-widget-content ui-corner-all" value="{{jam_density}}"/><br/><span> vpmpl</span>
+              <input type="text" name="jam-density" id="jam-density" class="text ui-widget-content ui-corner-all" value="{{jamDensity}}"/><span> vpmpl</span>
               <label for="capacity-drop">Capacity Drop</label>
-              <input type="text" name="capacity-drop" id="capacity-drop" class="text ui-widget-content ui-corner-all" value="{{capacity_drop}}"/><span> vphpl</span>
+              <input type="text" name="capacity-drop" id="capacity-drop" class="text ui-widget-content ui-corner-all" value="{{capacityDrop}}"/><span> vphpl</span>
             </fieldset>
           </form>
         </div>
         <div id="tabs-link-4">
           <form>
             <fieldset>
+              <label for="coefficient">Coeffcient</label>
+              <input type="text" name="coefficient" id="coefficient" class="text ui-widget-content ui-corner-all" value="{{coefficient}}"/><span> vphpl</span>
+              
+              <label>Start Time</label>
+              <label for="link-demand-start-hour" class="time">h</label>              
+              <input type="number"  id="link-demand-start-hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{demandStartHour}}" />
+             
+              <label for="link-demand-start-minute" class="time">: m</label>
+              <input type="number" id="link-demand-start-minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandStartMinute}}" />
+              
+              <label for="link-demand-start-second" class="time">:: s</label>
+              <input type="number" id="link-demand-start-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandStartSecond}}" />
+              
+              <label>Sampling Period</label>
+              <label for="link-demand-sample-hour" class="time">h</label>              
+              <input type="number"  id="link-demand-sample-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{demandSampleHour}}" />
+             
+              <label for="link-demand-sample-minute" class="time">: m</label>
+              <input type="number" id="link-demand-sample-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandSampleMinute}}" />
+              
+              <label for="link-demand-sample-second" class="time">:: s</label>
+              <input type="number" id="link-demand-sample-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandSampleSecond}}" />
+              
+              <label for="demand-profile">Demand Profile (vph)</label>
+              <textarea name="demand-profile" id="demand-profile" rows="10" class="text ui-widget-content ui-corner-all">{{demandProfile}}</textarea>
             </fieldset>
           </form>
         </div>
@@ -244,53 +275,54 @@
           <form>
             <fieldset>
               <label>Start Time</label>
-              <label for="link-start-hour" class="time">h</label>              
-              <input type="number"  id="link-start-hour" class="time-input" min="0" value="{{hour}}" />
+              <label for="link-capacity-start-hour" class="time">h</label>              
+              <input type="number"  id="link-capacity-start-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{capacityStartHour}}" />
              
-              <label for="link-start-minute" class="time">: m</label>
-              <input type="number" id="link-start-minute" class="time-input" min="0" max="59" value="{{minute}}" />
+              <label for="link-capacity-start-minute" class="time">: m</label>
+              <input type="number" id="link-capacity-start-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacityStartMinute}}" />
               
-              <label for="link-start-second" class="time">:: s</label>
-              <input type="number" id="link-start-second" class="time-input" min="0" max="59" value="{{second}}" />
+              <label for="link-capacity-start-second" class="time">:: s</label>
+              <input type="number" id="link-capacity-start-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacityStartSecond}}" />
               
               <label>Sampling Period</label>
-              <label for="link-sample-hour" class="time">h</label>              
-              <input type="number"  id="link-sample-hour" class="time-input" min="0" value="{{hour}}" />
+              <label for="link-capacity-sample-hour" class="time">h</label>              
+              <input type="number"  id="link-capacity-sample-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{capacitySampleHour}}" />
              
-              <label for="link-sample-minute" class="time">: m</label>
-              <input type="number" id="link-sample-minute" class="time-input" min="0" max="59" value="{{minute}}" />
+              <label for="link-capacity-sample-minute" class="time">: m</label>
+              <input type="number" id="link-capacity-sample-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacitySampleMinute}}" />
               
-              <label for="link-sample-second" class="time">:: s</label>
-              <input type="number" id="link-sample-second" class="time-input" min="0" max="59" value="{{second}}" />
+              <label for="link-capacity-sample-second" class="time">:: s</label>
+              <input type="number" id="link-capacity-sample-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacitySampleSecond}}" />
               
               <label for="capacity-profile">Capacity Profile (vph)</label>
-              <textarea name="capacity-profile" id="capacity-profile" rows="10" />
+              <textarea name="capacity-profile" id="capacity-profile" rows="10" class="text ui-widget-content ui-corner-all">{{capacityProfile}}</textarea>
             </fieldset>
           </form>
         </div>
         <div id="tabs-link-6">
           <form>
             <fieldset>
-              <label>Sub-divide</label>
-              <label for="subdivide">Custom</label>
+              <label>Sub-divide this link every:</label>
               <input type="text" name="subdivide" id="subdivide" class="text ui-widget-content ui-corner-all" value=""/>
-              <span> miles</span>
-              <button id="do-subdivide" class="text ui-widget-content ui-corner-all" >Do It!</button>
-              <label>OR</label>
-              <button id="choose-name" class="text ui-widget-content ui-corner-all" >At Intersections</button>
-              
-              <label for="split">Split</label>
+              <span> miles OR </span>
+              <input type="checkbox" name="intersections" id="intersections" class="text ui-widget-content ui-corner-all" />
+              <span>at intersections</span>
+              <button id="do-subdivide" class="text ui-widget-content ui-corner-all" >Sub-divide Now</button>
+              <hr/>
+              <label for="split">Split this link into:</label>
               <input type="text" name="split" id="split" class="text ui-widget-content ui-corner-all" value=""/>
-              <button id="do-split" class="text ui-widget-content ui-corner-all" >Do It!</button>
-              
+              <span> lanes</span>
+              <button id="do-split" class="text ui-widget-content ui-corner-all" >Split Now</button>
+              <hr/>
               <label for="turn-pockets">Turn Pockets</label>
               <button id="add-lt" class="text ui-widget-content ui-corner-all" >Add Left Turn</button>
               <button id="add-rt" class="text ui-widget-content ui-corner-all" >Add Right Turn</button>
-              
+              <hr/>
+              <label for="buttons">Miscellaneous</label>
               <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
+              <button id="reverse-link" class="text ui-widget-content ui-corner-all" >Create reverse link</button><br/>
               <button id="geom-line" class="text ui-widget-content ui-corner-all" >Set geometry to line</button>
               <button id="geom-road" class="text ui-widget-content ui-corner-all" >Set geometry to roads</button>
-              <button id="reverse-link" class="text ui-widget-content ui-corner-all" >Create reverse link</button>
             </fieldset>
           </form>
         </div>

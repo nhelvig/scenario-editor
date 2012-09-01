@@ -27,6 +27,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
+    google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor())
 
   render: ->
     @link.setMap($a.map)
@@ -92,6 +93,14 @@ class window.sirius.MapLinkView extends Backbone.View
       contextMenu.show mouseEvent.latLng
     )
     @model.set('contextMenu', contextMenu)
+
+  # creates the editor for a kink
+  _editor: ->
+    env = new $a.EditorLinkView(elem: 'link', model: @model, width: 375)
+    $('body').append(env.el)
+    env.render()
+    $(env.el).tabs()
+    $(env.el).dialog('open')
 
   # The following handles the show/hide of links and arrow heads
   hideLink: ->

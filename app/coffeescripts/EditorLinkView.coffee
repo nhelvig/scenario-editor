@@ -12,9 +12,10 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
+    console.log options.model
+
     options.templateData = @_getTemplateData(options.model)
     super options
-
     #set selected type element
     elem = _.filter($(@$el[0]).find("select option"), (item) =>
               $(item).val() is options.model.get('type')
@@ -28,12 +29,38 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
 
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (model) ->
+    fd = model.get('fundamentaldiagramprofile').get('fundamentaldiagram')[0]
+    cp = model.get('capacity')?.get('capacity')[0] || null
+    dp = model.get('demand')?.get('demand')[0] || null
+    
     name: model.get('name')
-    description: model.get('description')
-    lat: model.get('position').get('point')[0].get('lat')
-    lng: model.get('position').get('point')[0].get('lng')
-    elevation: model.get('position').get('point')[0].get('elevation')
-    lock: if model.has('lock') and model.get('lock') then 'checked' else ''
+    description: model.get('description').get('text')
+    roadName: model.get('road_name')
+    record: if model.has('record') and model.get('record') then 'checked' else ''
+    lanes: model.get('lanes')
+    laneOffset: model.get('lane_offset')
+    length: model.get('length')
+    queue: model.get('queue') || ''
+    capacity: fd?.get('capacity') || ''
+    jamDensity: fd?.get('jam_density') || ''
+    capacityDrop: fd?.get('capacity_drop') || ''
+    criticalDensity: fd?.get('critical_density') || ''
+    capacityStartHour: cp?.get('start_hour') || ''
+    capacityStartMinute: cp?.get('start_min') || ''
+    capacityStartSecond: cp?.get('start_sec') || ''
+    capacitySampleHour: cp?.get('sample_hour') || ''
+    capacitySampleMinute: cp?.get('sample_min') || ''
+    capacitySampleSecond: cp?.get('sample_sec') || ''
+    capacityProfile: cp?.get('text') || ''
+    coefficient: dp?.get('coefficient') || ''
+    demandStartHour: dp?.get('start_hour') || ''
+    demandStartMinute: dp?.get('start_min') || ''
+    demandStartSecond: dp?.get('start_sec') || ''
+    demandSampleHour: dp?.get('sample_hour') || ''
+    demandSampleMinute: dp?.get('sample_min') || ''
+    demandSampleSecond: dp?.get('sample_sec') || ''
+    demandProfile: dp?.get('text') || ''
+    
 
   # these are callback events for various elements in the interface
   # This is used to save the name, type and description when focus is
