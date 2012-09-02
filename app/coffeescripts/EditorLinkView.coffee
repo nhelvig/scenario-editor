@@ -5,6 +5,13 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     'blur #link_name, #road_name, #link_type' : 'save'
     'blur #lanes, #lane_offset, #length, #queue_limit' : 'save'
     'blur #capacity, #capacity_drop, #jam_density, #critical_density' : 'saveFD'
+    'blur #coefficient, #demand_profile' : 'saveDP'
+    'blur #link_demand_start_hour, 
+      #link_demand_start_minute, 
+      #link_demand_start_second,
+      #link_demand_sample_hour, 
+      #link_demand_sample_minute, 
+      #link_demand_sample_second' : 'saveDPTime'
     'blur #description' : 'saveDesc'
     'click #record' : 'saveRecord'
     'click #edit-signal' : 'signalEditor'
@@ -92,7 +99,27 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     fdp = @model.get('fundamentaldiagramprofile')
     fd = fdp?.get('fundamentaldiagram')[0]
     fd.set(id, $("##{id}").val())
-    
+  
+  # this saves fields in the demand profiles
+  saveDP: (e) ->
+    id = e.currentTarget.id
+    dp = @model.get('demandprofile')
+    d = fdp?.get('demand')[0]
+    d.set(id, $("##{id}").val())
+  
+  # this saves fields in the demand profiles time
+  saveDPTime: (e) ->
+    dp = @model.get('demandprofile')
+    d = dp?.get('demand')[0]
+    start_hour = $("#link_demand_start_hour").val()
+    start_minute = $("#link_demand_start_minute").val()
+    start_second = $("#link_demand_start_second").val()
+    sample_hour = $("#link_demand_sample_hour").val()
+    sample_minute = $("#link_demand_sample_minute").val()
+    sample_second = $("#link_demand_sample_second").val()
+    d.set('start_time', "#{start_hour}:#{start_minute}:#{start:second}")
+    d.set('sample_period', "#{sample_hour}:#{sample_minute}:#{sample:second}")
+
   # These three methods below will be configured to launch various
   # editors in future phases
   signalEditor: (e) ->
