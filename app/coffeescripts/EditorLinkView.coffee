@@ -2,9 +2,11 @@
 class window.sirius.EditorLinkView extends window.sirius.EditorView
   $a = window.sirius
   events : {
-    'blur #name, #description, #type' : 'save'
-    'blur #lat, #lng, #elevation' : 'saveGeo'
-    'click #lock' : 'saveLocked'
+    'blur #link_name, #road_name, #link_type' : 'save'
+    'blur #lanes, #lane_offset, #length, #queue_limit' : 'save'
+    'blur #capacity, #capacity_drop, #jam_density, #critical_density' : 'saveFD'
+    'blur #description' : 'saveDesc'
+    'click #record' : 'saveRecord'
     'click #edit-signal' : 'signalEditor'
     'click #choose-name' : 'chooseName'
     'click #remove-join-links' : 'removeJoinLinks'
@@ -12,7 +14,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
-    console.log options.model
+    window.test = options.model
 
     options.templateData = @_getTemplateData(options.model)
     super options
@@ -29,7 +31,8 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
 
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (model) ->
-    fd = model.get('fundamentaldiagramprofile').get('fundamentaldiagram')[0]
+    fdp = model.get('fundamentaldiagramprofile')
+    fd = fdp?.get('fundamentaldiagram')[0] || null
     cp = model.get('capacity')?.get('capacity')[0] || null
     dp = model.get('demand')?.get('demand')[0] || null
     
@@ -64,22 +67,32 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
 
   # these are callback events for various elements in the interface
   # This is used to save the name, type and description when focus is
-  # lost from the element
+  # lost from the element. Note: in order to avoid id conflicts with other
+  # editors I append the type some ids -- it needs to be stripped off
+  # in the fieldId
   save: (e) ->
     id = e.currentTarget.id
-    @model.set(id, $("##{id}").val())
+    fieldId = id
+    fieldId = id[5...] if id.indexOf("link") is 0
+    @model.set(fieldId, $("##{id}").val())
 
-  # This is used to save the latitude, longitude and elevation when focus is
-  # lost from the element
-  saveGeo: (e) ->
+  # this method saves the description
+  saveDesc: (e) ->
     id = e.currentTarget.id
-    @model.get('position').get('point')[0].set(id, $("##{id}").val())
+    @model.get('description').set('text', $("##{id}").val())
 
-  # This saves the checkbox indicating the node is locked
-  saveLocked: (e) ->
+  # This saves the checkbox indicating the state of the link's record field
+  saveRecord: (e) ->
     id = e.currentTarget.id
     @model.set(id, $("##{id}").prop('checked'))
 
+  # this saves fields in the fundamental diagram
+  saveFD: (e) ->
+    id = e.currentTarget.id
+    fdp = @model.get('fundamentaldiagramprofile')
+    fd = fdp?.get('fundamentaldiagram')[0]
+    fd.set(id, $("##{id}").val())
+    
   # These three methods below will be configured to launch various
   # editors in future phases
   signalEditor: (e) ->
