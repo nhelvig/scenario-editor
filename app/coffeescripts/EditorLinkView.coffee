@@ -12,6 +12,13 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
       #link_demand_sample_hour, 
       #link_demand_sample_minute, 
       #link_demand_sample_second' : 'saveDPTime'
+    'blur #capacity_profile' : 'saveCP'
+    'blur #link_capacity_start_hour, 
+      #link_capacity_start_minute, 
+      #link_capacity_start_second,
+      #link_capacity_sample_hour, 
+      #link_capacity_sample_minute, 
+      #link_capacity_sample_second' : 'saveCPTime'
     'blur #description' : 'saveDesc'
     'click #record' : 'saveRecord'
     'click #edit-signal' : 'signalEditor'
@@ -40,8 +47,8 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   _getTemplateData: (model) ->
     fdp = model.get('fundamentaldiagramprofile')
     fd = fdp?.get('fundamentaldiagram')[0] || null
-    cp = model.get('capacity')?.get('capacity')[0] || null
-    dp = model.get('demand')?.get('demand')[0] || null
+    cp = model.get('capacityprofile')?.get('capacity')[0] || null
+    dp = model.get('demandprofile')?.get('demand')[0] || null
     
     name: model.get('name')
     description: model.get('description').get('text')
@@ -104,7 +111,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   saveDP: (e) ->
     id = e.currentTarget.id
     dp = @model.get('demandprofile')
-    d = fdp?.get('demand')[0]
+    d = dp?.get('demand')[0]
     d.set(id, $("##{id}").val())
   
   # this saves fields in the demand profiles time
@@ -118,7 +125,27 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     sample_minute = $("#link_demand_sample_minute").val()
     sample_second = $("#link_demand_sample_second").val()
     d.set('start_time', "#{start_hour}:#{start_minute}:#{start:second}")
-    d.set('sample_period', "#{sample_hour}:#{sample_minute}:#{sample:second}")
+    d.set('dt', "#{sample_hour}:#{sample_minute}:#{sample:second}")
+
+  # this saves fields in the capacity profiles
+  saveCP: (e) ->
+    id = e.currentTarget.id
+    cp = @model.get('capacityprofile')
+    c = cp?.get('capacity')[0]
+    c.set(id, $("##{id}").val())
+  
+  # this saves fields in the demand profiles time
+  saveCPTime: (e) ->
+    cp = @model.get('demandprofile')
+    c = cp?.get('demand')[0]
+    start_hour = $("#link_capacity_start_hour").val()
+    start_minute = $("#link_capacity_start_minute").val()
+    start_second = $("#link_capacity_start_second").val()
+    sample_hour = $("#link_capacity_sample_hour").val()
+    sample_minute = $("#link_capacity_sample_minute").val()
+    sample_second = $("#link_capacity_sample_second").val()
+    d.set('start_time', "#{start_hour}:#{start_minute}:#{start:second}")
+    d.set('dt', "#{sample_hour}:#{sample_minute}:#{sample:second}")
 
   # These three methods below will be configured to launch various
   # editors in future phases
