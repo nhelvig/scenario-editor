@@ -50,7 +50,7 @@ window.sirius.Util =
   getElement: (id, list) ->
     _.find(list, (elem) ->  elem.get('id') == id)
 
-  offsetPosition: (pos) ->
+  _offsetPosition: (pos) ->
     pos.get('point')[0].set(lng: pos.get('point')[0].get('lng') - .0002)
 
   # creates a copy of of item array. The items array is a list menu items for context menus.
