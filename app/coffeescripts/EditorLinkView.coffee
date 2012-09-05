@@ -5,20 +5,21 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     'blur #link_name, #road_name, #link_type' : 'save'
     'blur #lanes, #lane_offset, #length, #queue_limit' : 'save'
     'blur #capacity, #capacity_drop, #jam_density, #critical_density' : 'saveFD'
-    'blur #coefficient, #demand_profile' : 'saveDP'
-    'blur #link_demand_start_hour, 
+    'blur #coefficient, 
+      #demand_profile,
+      #link_demand_start_hour, 
       #link_demand_start_minute, 
       #link_demand_start_second,
       #link_demand_sample_hour, 
       #link_demand_sample_minute, 
-      #link_demand_sample_second' : 'saveDPTime'
-    'blur #capacity_profile' : 'saveCP'
-    'blur #link_capacity_start_hour, 
+      #link_demand_sample_second' : 'saveDP'
+    'blur #capacity_profile,
+      #link_capacity_start_hour, 
       #link_capacity_start_minute, 
       #link_capacity_start_second,
       #link_capacity_sample_hour, 
       #link_capacity_sample_minute, 
-      #link_capacity_sample_second' : 'saveCPTime'
+      #link_capacity_sample_second' : 'saveCP'
     'blur #description' : 'saveDesc'
     'click #record' : 'saveRecord'
     'click #edit-signal' : 'signalEditor'
@@ -32,18 +33,36 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
 
     options.templateData = @_getTemplateData(options.model)
     super options
-    #set selected type element
-    elem = _.filter($(@$el[0]).find("select option"), (item) =>
-              $(item).val() is options.model.get('type')
-            )
-    $(elem[0]).attr('selected', true)
+    @_setSelectedType()
+    @_checkDisableTabs()
 
   # call the super class to set up the dialog box
   render: ->
     super @elem
     @
+  
+  #set selected type element
+  _setSelectedType: ->
+    elem = _.filter($(@$el[0]).find("select option"), (item) =>
+              $(item).val() is @model.get('type')
+            )
+    $(elem[0]).attr('selected', true)
+  
+  # if tab doesn't have one of the profiles disable it
+  _checkDisableTabs: ->
+    console.log @model.get('demandprofile')
+    dp = 
+    if (@model.get('demandprofile') === "undefined" || elvis === null)
+    @_disableTab("#tabs-links-fd") if @model.get('fundamentaldiagramprofile')?
+    @_disableTab("#tabs-links-demand") if @model.get('capacityprofile')?
+    @_disableTab("#tabs-links-capacity") if @model.get('demandprofile')?
+
+  _disableTab: (elem) ->
+    $(elem).tabs('option', 'disabled', true)
 
   # creates a hash of values taken from the model for the html template
+  # I could have just passed the model but I did it this way because 
+  # I didn't want the long retrieval lines in the html.
   _getTemplateData: (model) ->
     fdp = model.get('fundamentaldiagramprofile')
     fd = fdp?.get('fundamentaldiagram')[0] || null
@@ -99,54 +118,58 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   saveRecord: (e) ->
     id = e.currentTarget.id
     @model.set(id, $("##{id}").prop('checked'))
-
+    
   # this saves fields in the fundamental diagram
   saveFD: (e) ->
-    id = e.currentTarget.id
-    fdp = @model.get('fundamentaldiagramprofile')
-    fd = fdp?.get('fundamentaldiagram')[0]
-    fd.set(id, $("##{id}").val())
+    @_saveProfileData({
+        id: e.currentTarget.id
+        profileset: 'fundamentaldiagramprofile'
+        profile: 'fundamentaldiagram'
+      })
   
   # this saves fields in the demand profiles
   saveDP: (e) ->
-    id = e.currentTarget.id
-    dp = @model.get('demandprofile')
-    d = dp?.get('demand')[0]
-    d.set(id, $("##{id}").val())
-  
-  # this saves fields in the demand profiles time
-  saveDPTime: (e) ->
-    dp = @model.get('demandprofile')
-    d = dp?.get('demand')[0]
-    start_hour = $("#link_demand_start_hour").val()
-    start_minute = $("#link_demand_start_minute").val()
-    start_second = $("#link_demand_start_second").val()
-    sample_hour = $("#link_demand_sample_hour").val()
-    sample_minute = $("#link_demand_sample_minute").val()
-    sample_second = $("#link_demand_sample_second").val()
-    d.set('start_time', "#{start_hour}:#{start_minute}:#{start:second}")
-    d.set('dt', "#{sample_hour}:#{sample_minute}:#{sample:second}")
+    @_saveProfileData({
+        id: e.currentTarget.id
+        profileset: 'demandprofile'
+        profile: 'demand'
+      })
+    @_saveProfileTimeData({
+        profileset: 'demandprofile'
+        profile: 'demand'
+      })
 
   # this saves fields in the capacity profiles
   saveCP: (e) ->
-    id = e.currentTarget.id
-    cp = @model.get('capacityprofile')
-    c = cp?.get('capacity')[0]
-    c.set(id, $("##{id}").val())
-  
-  # this saves fields in the demand profiles time
-  saveCPTime: (e) ->
-    cp = @model.get('demandprofile')
-    c = cp?.get('demand')[0]
-    start_hour = $("#link_capacity_start_hour").val()
-    start_minute = $("#link_capacity_start_minute").val()
-    start_second = $("#link_capacity_start_second").val()
-    sample_hour = $("#link_capacity_sample_hour").val()
-    sample_minute = $("#link_capacity_sample_minute").val()
-    sample_second = $("#link_capacity_sample_second").val()
-    d.set('start_time', "#{start_hour}:#{start_minute}:#{start:second}")
-    d.set('dt', "#{sample_hour}:#{sample_minute}:#{sample:second}")
+    @_saveProfileData({
+        id: e.currentTarget.id
+        profileset: 'capacityprofile'
+        profile: 'capacity'
+      })
+    @_saveProfileTimeData({
+        profileset: 'capacityprofile'
+        profile: 'capacity'
+      })
 
+  # save profile data
+  _saveProfileData: (args) ->
+    id = args.id
+    ps = @model.get(args.profileset)
+    p = ps?.get(args.profile)[0]
+    p?.set(id, $("##{id}").val())
+
+  _saveProfileTimeData: (args) ->
+    ps = @model.get(args.profileset)
+    p = ps?.get(args.profile)[0]
+    start_hour = $("#link_#{args.profile}_start_hour").val()
+    start_minute = $("#link_#{args.profile}_start_minute").val()
+    start_second = $("#link_#{args.profile}_start_second").val()
+    sample_hour = $("#link_#{args.profile}_sample_hour").val()
+    sample_minute = $("#link_#{args.profile}_sample_minute").val()
+    sample_second = $("#link_#{args.profile}_sample_second").val()
+    p?.set('start_time', "#{start_hour}:#{start_minute}:#{start:second}")
+    p?.set('dt', "#{sample_hour}:#{sample_minute}:#{sample:second}")
+  
   # These three methods below will be configured to launch various
   # editors in future phases
   signalEditor: (e) ->
