@@ -1,5 +1,5 @@
 $a = window.sirius
-bkr = $a.broker
+
 # The names of all the parent tree elements of the scenario. It is used in
 # MapNetworkView's _treeView method
 $a.main_tree_elements = [
@@ -68,11 +68,11 @@ $a.link_context_menu = [
   {
     label: 'Select Link and its Nodes'
     className: 'context_menu_item'
-    event: ((e) -> bkr.trigger("map:select_neighbors:#{e.currentTarget.id}")) }
+    event: ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")) }
   {
     label: 'Clear Selection'
     className: 'context_menu_item'
-    event: ((e) -> bkr.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
+    event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
 ]
 
 # Sensor Context Menu
