@@ -2,7 +2,7 @@ describe("EditorNodeView", function() {
   $a = window.sirius;
   
   beforeEach(function() {
-    loadFixtures('editor.node.view.fixture.html');
+    loadFixtures('editor.link.view.fixture.html');
     network = $a.scenario.get('networklist').get('network')[0];
     model = network.get('nodelist').get('node')[0];
     spyOn($a.EditorNodeView.prototype, 'signalEditor').andCallThrough();

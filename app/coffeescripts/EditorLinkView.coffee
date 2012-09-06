@@ -27,9 +27,14 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
       #link_capacity_sample_second' : 'saveCPTime'
     'blur #description' : 'saveDesc'
     'click #record' : 'saveRecord'
-    'click #edit-signal' : 'signalEditor'
+    'click #do-subdivide' : 'subDivide'
+    'click #do-split': 'doSplit'
+    'click #add-lt' : 'addLeftTurn'
+    'click #add-rt' : 'addRightTurn'
     'click #choose-name' : 'chooseName'
-    'click #remove-join-links' : 'removeJoinLinks'
+    'click #reverse-link' : 'reverseLink'
+    'click #geom-line' : 'geomLine'
+    'click #geom-road' : 'geomRoad'
   }
 
   # the options argument has the Node model and type of dialog to create('node')
@@ -166,13 +171,25 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     p?.set('start_time', $a.Util.convertToSeconds(start))
     p?.set('dt', $a.Util.convertToSeconds(sample))
   
-  # These three methods below will be configured to launch various
-  # editors in future phases
-  signalEditor: (e) ->
+  # These methods below will be configured to launch functions
+  # in future phases
+  doSplit: (e) ->
+    e.preventDefault()
+
+  addLeftTurn: (e) ->
+    e.preventDefault()
+
+  addRightTurn: (e) ->
     e.preventDefault()
 
   chooseName: (e) ->
     e.preventDefault()
 
-  removeJoinLinks: (e) ->
+  reverseLink: (e) ->
+    e.preventDefault()
+
+  geomLine: (e) ->
+    e.preventDefault()
+
+  geomRoad: (e) ->
     e.preventDefault()
