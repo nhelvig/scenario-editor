@@ -37,7 +37,7 @@ class window.sirius.AppView extends Backbone.View
   _initializeMap: ->
     mapOpts = {
       center: new google.maps.LatLng(37.85794730789898, -122.29954719543457)
-      zoom: 18
+      zoom: 14
       mapTypeId: google.maps.MapTypeId.ROADMAP
       mapTypeControl: false
       zoomControl: true

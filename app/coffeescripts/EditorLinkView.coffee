@@ -29,16 +29,16 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
-    window.test = options.model
-
     options.templateData = @_getTemplateData(options.model)
     super options
     @_setSelectedType()
-    @_checkDisableTabs()
 
-  # call the super class to set up the dialog box
+
+  # call the super class to set up the dialog box and tabs
+  # upon initializations of tabs you disable tabs that are not needed
   render: ->
     super @elem
+    @_checkDisableTabs()
     @
   
   #set selected type element
@@ -50,15 +50,11 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # if tab doesn't have one of the profiles disable it
   _checkDisableTabs: ->
-    console.log @model.get('demandprofile')
-    dp = 
-    if (@model.get('demandprofile') === "undefined" || elvis === null)
-    @_disableTab("#tabs-links-fd") if @model.get('fundamentaldiagramprofile')?
-    @_disableTab("#tabs-links-demand") if @model.get('capacityprofile')?
-    @_disableTab("#tabs-links-capacity") if @model.get('demandprofile')?
-
-  _disableTab: (elem) ->
-    $(elem).tabs('option', 'disabled', true)
+    disable = []
+    disable.push(2) if !@model.get('fundamentaldiagramprofile')?
+    disable.push(4) if !@model.get('capacityprofile')?
+    disable.push(3) if !@model.get('demandprofile')?
+    @$el.tabs({ disabled: disable })
 
   # creates a hash of values taken from the model for the html template
   # I could have just passed the model but I did it this way because 
