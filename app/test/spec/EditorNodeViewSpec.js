@@ -2,7 +2,7 @@ describe("EditorNodeView", function() {
   $a = window.sirius;
   
   beforeEach(function() {
-    loadFixtures('editor.link.view.fixture.html');
+    loadFixtures('editor.node.view.fixture.html');
     network = $a.scenario.get('networklist').get('network')[0];
     model = network.get('nodelist').get('node')[0];
     spyOn($a.EditorNodeView.prototype, 'signalEditor').andCallThrough();
@@ -32,11 +32,13 @@ describe("EditorNodeView", function() {
     });
 
     it("should should have title", function() {
-      expect(this.view.el.title).toEqual("Node Editor: " + this.view.model.get('name'));
+      title = "Node Editor: " + this.view.model.get('name');
+      expect(this.view.el.title).toEqual(title);
     });
 
     it("should should have correct type selected", function() {
-      expect($($(this.view.el).find('#type option:selected')).val()).toEqual(this.view.model.get('type'));
+      type = this.view.model.get('type');
+      expect($($(this.view.el).find('#type option:selected')).val()).toEqual(type);
     });
   });
   

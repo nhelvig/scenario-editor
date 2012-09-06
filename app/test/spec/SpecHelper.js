@@ -58,7 +58,11 @@ beforeEach(function() {
     
     return link;
   };
+  
+  expectSave = function() {
     
+  }
+  
   // "Factory" for scenario objects
   scenarioAndFriends = function() {
     var nodeList, linkList, network, networkList;

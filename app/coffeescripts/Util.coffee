@@ -104,11 +104,7 @@ window.sirius.Util =
   
   # this takes an array of hours, minutes, seconds and converts to seconds
   convertToSeconds: (hms) ->
-    console.log hms
     seconds = hms['h'] * 3600
-    console.log seconds
     seconds += hms['m'] * 60
-    console.log seconds
     seconds += hms['s'] * 1
-    console.log seconds
     seconds

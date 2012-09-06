@@ -3,7 +3,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   $a = window.sirius
   events : {
     'blur #link_name, #road_name, #link_type' : 'save'
-    'blur #lanes, #lane_offset, #length, #queue_limit' : 'save'
+    'blur #lanes, #lane_offset, #length' : 'save'
     'blur #capacity, 
       #capacity_drop,
       #jam_density,
@@ -11,14 +11,14 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
       #congestion_speed,
       #std_dev_capacity,
       #std_dev_free_flow_speed': 'saveFD'
-    'blur #knob, #text': 'saveDP'
+    'blur #knob, #dp_text': 'saveDP'
     'blur #link_demand_start_hour, 
       #link_demand_start_minute, 
       #link_demand_start_second,
       #link_demand_sample_hour, 
       #link_demand_sample_minute, 
       #link_demand_sample_second' : 'saveDPTime'
-    'blur #capacity_profile': 'saveCP'
+    'blur #cp_text': 'saveCP'
     'blur #link_capacity_start_hour, 
       #link_capacity_start_minute, 
       #link_capacity_start_second,
@@ -127,8 +127,10 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # this saves fields in the demand profiles
   saveDP: (e) ->
+    eid = e.currentTarget.id 
+    eid = 'text' if (e.currentTarget.id) is 'dp_text'
     args = {
-        id: e.currentTarget.id
+        id: eid
         profile: 'demand'
       }
     @_saveProfileData(args)
@@ -139,12 +141,9 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # this saves fields in the capacity profiles
   saveCP: (e) ->
-    args = {
-        id: e.currentTarget.id
-        profile: 'capacity'
-      }
-    @_saveProfileData(args)
-  
+    p = @model.get('capacity')
+    p?.set('text', $("##{e.currentTarget.id}").val())
+
   saveCPTime: ->
     args = {profile: 'capacity'}
     @_saveProfileTimeData(args)
@@ -174,6 +173,9 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   # These methods below will be configured to launch functions
   # in future phases
   doSplit: (e) ->
+    e.preventDefault()
+
+  subDivide: (e) ->
     e.preventDefault()
 
   addLeftTurn: (e) ->
