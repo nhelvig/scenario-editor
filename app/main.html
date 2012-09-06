@@ -221,53 +221,57 @@
               <input type="text" name="lane-offset" id="lane_offset" class="text ui-widget-content ui-corner-all" value="{{laneOffset}}"/>
               <label for="length">Length (miles)</label>
               <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
-              <label for="queue-limit">Queue Limit</label>
-              <input type="text" name="queue-limit" id="queue_limit" class="text ui-widget-content ui-corner-all" value="{{queue}}"/>
             </fieldset>
           </form>
         </div>
         <div id="tabs-link-fd">
           <form>
             <fieldset>
-              <label for="critical-density">Critical Density</label>
-              <input type="text" name="critical-density" id="critical_density" class="text ui-widget-content ui-corner-all" value="{{criticalDensity}}"/><span> vpmpl</span>
-              <label for="max-flow">Maximum Flow</label>
-              <input type="text" name="max-flow" id="capacity" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
+              <label for="free-flow-speed">Free Flow Speed</label>
+              <input type="text" name="free-flow-speed" id="free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowSpeed}}"/><span> vpmpl</span>
+              <label for="congestion-speed">Congestion Speed</label>
+              <input type="text" name="congestion-speed" id="congestion_speed" class="text ui-widget-content ui-corner-all" value="{{congestionSpeed}}"/><span> vpmpl</span>
+              <label for="capacity">Capacity</label>
+              <input type="text" name="capacity" id="capacity" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
               <label for="jam-density">Jam Density</label>
               <input type="text" name="jam-density" id="jam_density" class="text ui-widget-content ui-corner-all" value="{{jamDensity}}"/><span> vpmpl</span>
               <label for="capacity-drop">Capacity Drop</label>
               <input type="text" name="capacity-drop" id="capacity_drop" class="text ui-widget-content ui-corner-all" value="{{capacityDrop}}"/><span> vphpl</span>
+              <label for="capacity-standard-deviation">Capacity Standard Deviation</label>
+              <input type="text" name="capacity-standard-deviation" id="std_dev_capacity" class="text ui-widget-content ui-corner-all" value="{{capacityStandardDev}}"/><span> vphpl</span>
+              <label for="free-flow-standard-deviation">Free Flow Speed Standard Deviation</label>
+              <input type="text" name="free-flow-standard-deviation" id="std_dev_free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowStandardDev}}"/><span> vphpl</span>
             </fieldset>
           </form>
         </div>
         <div id="tabs-link-demand">
           <form>
             <fieldset>
-              <label for="coefficient">Coeffcient</label>
-              <input type="text" name="coefficient" id="coefficient" class="text ui-widget-content ui-corner-all" value="{{coefficient}}"/><span> vphpl</span>
+              <label for="knob">Knob</label>
+              <input type="text" name="knob" id="knob" class="text ui-widget-content ui-corner-all" value="{{knob}}"/><span> vphpl</span>
               
               <label>Start Time</label>
               <label for="link-demand-start-hour" class="time">h</label>              
-              <input type="number"  id="link_demand_start_hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{demandStartHour}}" />
-             
+              <input type="number"  id="link_demand_start_hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{dpStartTime['h']}}" />
+              
               <label for="link-demand-start-minute" class="time">: m</label>
-              <input type="number" id="link_demand_start_minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandStartMinute}}" />
+              <input type="number" id="link_demand_start_minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['m']}}" />
               
               <label for="link-demand-start-second" class="time">:: s</label>
-              <input type="number" id="link_demand_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandStartSecond}}" />
+              <input type="number" id="link_demand_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['s']}}" />
               
               <label>Sampling Period</label>
               <label for="link-demand-sample-hour" class="time">h</label>              
-              <input type="number"  id="link_demand_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{demandSampleHour}}" />
+              <input type="number"  id="link_demand_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dpSampleTime['h']}}" />
              
               <label for="link-demand-sample-minute" class="time">: m</label>
-              <input type="number" id="link_demand_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandSampleMinute}}" />
+              <input type="number" id="link_demand_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['m']}}" />
               
               <label for="link-demand-sample-second" class="time">:: s</label>
-              <input type="number" id="link_demand_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{demandSampleSecond}}" />
+              <input type="number" id="link_demand_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['s']}}" />
               
               <label for="demand-profile">Demand Profile (vph)</label>
-              <textarea name="demand-profile" id="demand_profile" rows="10" class="text ui-widget-content ui-corner-all">{{demandProfile}}</textarea>
+              <textarea name="demand-profile" id="text" rows="10" class="text ui-widget-content ui-corner-all">{{demandProfile}}</textarea>
             </fieldset>
           </form>
         </div>
@@ -276,26 +280,24 @@
             <fieldset>
               <label>Start Time</label>
               <label for="link-capacity-start-hour" class="time">h</label>              
-              <input type="number"  id="link-capacity-start-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{capacityStartHour}}" />
+              <input type="number"  id="link_capacity_start_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{cpStartTime['h']}}" />
              
               <label for="link-capacity-start-minute" class="time">: m</label>
-              <input type="number" id="link-capacity-start-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacityStartMinute}}" />
+              <input type="number" id="link_capacity_start_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpStartTime['m']}}" />
               
               <label for="link-capacity-start-second" class="time">:: s</label>
-              <input type="number" id="link-capacity-start-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacityStartSecond}}" />
+              <input type="number" id="link_capacity_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpStartTime['s']}}" />
               
               <label>Sampling Period</label>
               <label for="link-capacity-sample-hour" class="time">h</label>              
-              <input type="number"  id="link-capacity-sample-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{capacitySampleHour}}" />
+              <input type="number"  id="link_capacity_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{cpSampleTime['h']}}" />
              
               <label for="link-capacity-sample-minute" class="time">: m</label>
-              <input type="number" id="link-capacity-sample-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacitySampleMinute}}" />
+              <input type="number" id="link_capacity_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpSampleTime['m']}}" />
               
               <label for="link-capacity-sample-second" class="time">:: s</label>
-              <input type="number" id="link-capacity-sample-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{capacitySampleSecond}}" />
+              <input type="number" id="link_capacity_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpSampleTime['s']}}" />
               
-              <label for="capacity-profile">Capacity Profile (vph)</label>
-              <textarea name="capacity-profile" id="capacity-profile" rows="10" class="text ui-widget-content ui-corner-all">{{capacityProfile}}</textarea>
             </fieldset>
           </form>
         </div>

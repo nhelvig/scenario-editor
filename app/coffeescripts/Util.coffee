@@ -80,3 +80,35 @@ window.sirius.Util =
       elemIF.style.display = "none"
       $('body').append(elemIF)
     xhReq.send(new XMLSerializer().serializeToString(xml))
+  
+  # this takes seconds and returns an array hold the extracted hours,
+  # minutes, seconds
+  convertSecondsToHoursMinSec: (secs) ->
+    # extract hours
+    hours = Math.floor(secs / (3600));
+ 
+    # extract minutes
+    divisorMinutes = secs % (3600);
+    minutes = Math.floor(divisorMinutes / 60);
+ 
+    # extract the remaining seconds
+    divisorSeconds = divisorMinutes % 60;
+    seconds = Math.ceil(divisorSeconds);
+ 
+    # return the final array
+    {
+      "h": hours
+      "m": minutes
+      "s": seconds
+    }
+  
+  # this takes an array of hours, minutes, seconds and converts to seconds
+  convertToSeconds: (hms) ->
+    console.log hms
+    seconds = hms['h'] * 3600
+    console.log seconds
+    seconds += hms['m'] * 60
+    console.log seconds
+    seconds += hms['s'] * 1
+    console.log seconds
+    seconds

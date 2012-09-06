@@ -4,35 +4,40 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   events : {
     'blur #link_name, #road_name, #link_type' : 'save'
     'blur #lanes, #lane_offset, #length, #queue_limit' : 'save'
-    'blur #capacity, #capacity_drop, #jam_density, #critical_density' : 'saveFD'
-    'blur #coefficient, 
-      #demand_profile,
-      #link_demand_start_hour, 
+    'blur #capacity, 
+      #capacity_drop,
+      #jam_density,
+      #free_flow_speed,
+      #congestion_speed,
+      #std_dev_capacity,
+      #std_dev_free_flow_speed': 'saveFD'
+    'blur #knob, #text': 'saveDP'
+    'blur #link_demand_start_hour, 
       #link_demand_start_minute, 
       #link_demand_start_second,
       #link_demand_sample_hour, 
       #link_demand_sample_minute, 
-      #link_demand_sample_second' : 'saveDP'
-    'blur #capacity_profile,
-      #link_capacity_start_hour, 
+      #link_demand_sample_second' : 'saveDPTime'
+    'blur #capacity_profile': 'saveCP'
+    'blur #link_capacity_start_hour, 
       #link_capacity_start_minute, 
       #link_capacity_start_second,
       #link_capacity_sample_hour, 
       #link_capacity_sample_minute, 
-      #link_capacity_sample_second' : 'saveCP'
+      #link_capacity_sample_second' : 'saveCPTime'
     'blur #description' : 'saveDesc'
     'click #record' : 'saveRecord'
     'click #edit-signal' : 'signalEditor'
     'click #choose-name' : 'chooseName'
     'click #remove-join-links' : 'removeJoinLinks'
   }
-  
+
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
+    window.test = options.model
     options.templateData = @_getTemplateData(options.model)
     super options
     @_setSelectedType()
-
 
   # call the super class to set up the dialog box and tabs
   # upon initializations of tabs you disable tabs that are not needed
@@ -53,7 +58,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     disable = []
     disable.push(2) if !@model.get('fundamentaldiagramprofile')?
     disable.push(4) if !@model.get('capacityprofile')?
-    disable.push(3) if !@model.get('demandprofile')?
+    disable.push(3) if !@model.get('demand')?
     @$el.tabs({ disabled: disable })
 
   # creates a hash of values taken from the model for the html template
@@ -62,8 +67,8 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   _getTemplateData: (model) ->
     fdp = model.get('fundamentaldiagramprofile')
     fd = fdp?.get('fundamentaldiagram')[0] || null
-    cp = model.get('capacityprofile')?.get('capacity')[0] || null
-    dp = model.get('demandprofile')?.get('demand')[0] || null
+    cp = model.get('capacity') || null
+    dp = model.get('demand') || null
     
     name: model.get('name')
     description: model.get('description').get('text')
@@ -72,27 +77,20 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     lanes: model.get('lanes')
     laneOffset: model.get('lane_offset')
     length: model.get('length')
-    queue: model.get('queue') || ''
+    freeFlowSpeed: fd?.get('free_flow_speed') || ''
     capacity: fd?.get('capacity') || ''
     jamDensity: fd?.get('jam_density') || ''
     capacityDrop: fd?.get('capacity_drop') || ''
-    criticalDensity: fd?.get('critical_density') || ''
-    capacityStartHour: cp?.get('start_hour') || ''
-    capacityStartMinute: cp?.get('start_min') || ''
-    capacityStartSecond: cp?.get('start_sec') || ''
-    capacitySampleHour: cp?.get('sample_hour') || ''
-    capacitySampleMinute: cp?.get('sample_min') || ''
-    capacitySampleSecond: cp?.get('sample_sec') || ''
+    congestionSpeed: fd?.get('congestion_speed') || ''
+    capacityStandardDev: fd?.get('std_dev_capacity') || ''
+    freeFlowStandardDev: fd?.get('std_dev_free_flow') || ''
+    cpStartTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('start_time') || 0)
+    cpSampleTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('dt') || 0)
     capacityProfile: cp?.get('text') || ''
-    coefficient: dp?.get('coefficient') || ''
-    demandStartHour: dp?.get('start_hour') || ''
-    demandStartMinute: dp?.get('start_min') || ''
-    demandStartSecond: dp?.get('start_sec') || ''
-    demandSampleHour: dp?.get('sample_hour') || ''
-    demandSampleMinute: dp?.get('sample_min') || ''
-    demandSampleSecond: dp?.get('sample_sec') || ''
+    knob: dp?.get('knob') || ''
+    dpStartTime: $a.Util.convertSecondsToHoursMinSec(dp?.get('start_time') || 0)
+    dpSampleTime: $a.Util.convertSecondsToHoursMinSec(dp?.get('dt') || 0)
     demandProfile: dp?.get('text') || ''
-    
 
   # these are callback events for various elements in the interface
   # This is used to save the name, type and description when focus is
@@ -117,54 +115,56 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     
   # this saves fields in the fundamental diagram
   saveFD: (e) ->
-    @_saveProfileData({
-        id: e.currentTarget.id
-        profileset: 'fundamentaldiagramprofile'
-        profile: 'fundamentaldiagram'
-      })
+    id = e.currentTarget.id
+    ps = @model.get('fundamentaldiagramprofile')
+    p = ps?.get('fundamentaldiagram')[0]
+    p?.set(id, $("##{id}").val())
   
   # this saves fields in the demand profiles
   saveDP: (e) ->
-    @_saveProfileData({
+    args = {
         id: e.currentTarget.id
-        profileset: 'demandprofile'
         profile: 'demand'
-      })
-    @_saveProfileTimeData({
-        profileset: 'demandprofile'
-        profile: 'demand'
-      })
-
+      }
+    @_saveProfileData(args)
+  
+  saveDPTime: ->
+    args = {profile: 'demand'}
+    @_saveProfileTimeData(args)
+  
   # this saves fields in the capacity profiles
   saveCP: (e) ->
-    @_saveProfileData({
+    args = {
         id: e.currentTarget.id
-        profileset: 'capacityprofile'
         profile: 'capacity'
-      })
-    @_saveProfileTimeData({
-        profileset: 'capacityprofile'
-        profile: 'capacity'
-      })
-
+      }
+    @_saveProfileData(args)
+  
+  saveCPTime: ->
+    args = {profile: 'capacity'}
+    @_saveProfileTimeData(args)
+  
   # save profile data
   _saveProfileData: (args) ->
     id = args.id
-    ps = @model.get(args.profileset)
-    p = ps?.get(args.profile)[0]
+    p = @model.get(args.profile)
     p?.set(id, $("##{id}").val())
-
+    
   _saveProfileTimeData: (args) ->
-    ps = @model.get(args.profileset)
-    p = ps?.get(args.profile)[0]
-    start_hour = $("#link_#{args.profile}_start_hour").val()
-    start_minute = $("#link_#{args.profile}_start_minute").val()
-    start_second = $("#link_#{args.profile}_start_second").val()
-    sample_hour = $("#link_#{args.profile}_sample_hour").val()
-    sample_minute = $("#link_#{args.profile}_sample_minute").val()
-    sample_second = $("#link_#{args.profile}_sample_second").val()
-    p?.set('start_time', "#{start_hour}:#{start_minute}:#{start:second}")
-    p?.set('dt', "#{sample_hour}:#{sample_minute}:#{sample:second}")
+    p = @model.get(args.profile)
+    start = {
+      'h': $("#link_#{args.profile}_start_hour").val()
+      'm': $("#link_#{args.profile}_start_minute").val()
+      's': $("#link_#{args.profile}_start_second").val()
+    }
+    sample = {
+      'h': $("#link_#{args.profile}_sample_hour").val()
+      'm': $("#link_#{args.profile}_sample_minute").val()
+      's': $("#link_#{args.profile}_sample_second").val()
+    }
+
+    p?.set('start_time', $a.Util.convertToSeconds(start))
+    p?.set('dt', $a.Util.convertToSeconds(sample))
   
   # These three methods below will be configured to launch various
   # editors in future phases
