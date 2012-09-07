@@ -130,7 +130,8 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     eid = e.currentTarget.id 
     eid = 'text' if (e.currentTarget.id) is 'dp_text'
     args = {
-        id: eid
+        id : e.currentTarget.id 
+        fieldId: eid
         profile: 'demand'
       }
     @_saveProfileData(args)
@@ -152,7 +153,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   _saveProfileData: (args) ->
     id = args.id
     p = @model.get(args.profile)
-    p?.set(id, $("##{id}").val())
+    p?.set(args.fieldId, $("##{id}").val())
     
   _saveProfileTimeData: (args) ->
     p = @model.get(args.profile)
