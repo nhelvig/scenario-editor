@@ -69,6 +69,7 @@ describe("MapLinkView", function() {
   });
   
   describe("Events", function() {
+
       describe("When map:init fired -> render sets map of link", function() {
         beforeEach(function() {
           googleMap(); 
@@ -85,7 +86,8 @@ describe("MapLinkView", function() {
           expect(this.view.link.getMap()).toEqual(null);
         });
         it("triggered by map:links:hide_{this_type}", function() {
-          $a.broker.trigger("map:links:hide_freeway");
+          selected = this.view.model.get('type');
+          $a.broker.trigger("map:links:hide_" + selected);
           expect(this.view.link.getMap()).toEqual(null);
         });
       });
@@ -99,7 +101,8 @@ describe("MapLinkView", function() {
           expect(this.view.link.getMap()).toEqual($a.map);
         });
         it("triggered by map:links:show_{this_type}", function() {
-          $a.broker.trigger("map:links:show_freeway");
+          selected = this.view.model.get('type');
+          $a.broker.trigger("map:links:show_" + selected);
           expect(this.view.link.getMap()).toEqual($a.map);
         });
       });

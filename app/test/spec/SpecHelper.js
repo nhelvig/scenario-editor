@@ -58,7 +58,7 @@ beforeEach(function() {
     
     return link;
   };
-    
+  
   // "Factory" for scenario objects
   scenarioAndFriends = function() {
     var nodeList, linkList, network, networkList;

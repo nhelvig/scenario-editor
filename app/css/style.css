@@ -29,14 +29,19 @@ fieldset button {
   display:block;
   margin-bottom:9px;
 }
-#hour, #minute, #second {
+.time-input {
   display:inline;
   width: 29px;
 }
 .time {
   display:inline;
 }
-
+#subdivide, #split {
+  width:29px;
+}
+#add-lt, #add-rt, #choose-name, #reverse-link, #geom-line, #geom-road {
+  display:inline;
+}
 .context_menu {
   display:none; 
   position:absolute;

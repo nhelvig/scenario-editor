@@ -32,11 +32,13 @@ describe("EditorNodeView", function() {
     });
 
     it("should should have title", function() {
-      expect(this.view.el.title).toEqual("Node Editor: " + this.view.model.get('name'));
+      title = "Node Editor: " + this.view.model.get('name');
+      expect(this.view.el.title).toEqual(title);
     });
 
     it("should should have correct type selected", function() {
-      expect($($(this.view.el).find('#type option:selected')).val()).toEqual(this.view.model.get('type'));
+      type = this.view.model.get('type');
+      expect($($(this.view.el).find('#type option:selected'))).toHaveValue(type);
     });
   });
   
@@ -53,11 +55,15 @@ describe("EditorNodeView", function() {
     //checks that template was created correctly
     //Note: the elevation check adds '+ ""' to force NaN to a string
     it("has the correct text content", function() {
-      expect(this.view.$('#name')).toHaveValue(this.view.model.get('name'));
-      expect(this.view.$('#descripton')).toHaveValue(this.view.model.get('description'));
-      expect(this.view.$('#lat')).toHaveValue(this.view.model.get('position').get('point')[0].get('lat'));
-      expect(this.view.$('#lng')).toHaveValue(this.view.model.get('position').get('point')[0].get('lng'));
-      expect(this.view.$('#elevation')).toHaveValue(this.view.model.get('position').get('point')[0].get('elevation') + "");
+      model = this.view.model;
+      expect(this.view.$('#name')).toHaveValue(model.get('name'));
+      expect(this.view.$('#descripton')).toHaveValue(model.get('description'));
+      lat = model.get('position').get('point')[0].get('lat');
+      expect(this.view.$('#lat')).toHaveValue(lat);
+      lng = model.get('position').get('point')[0].get('lng');
+      expect(this.view.$('#lng')).toHaveValue(lng);
+      elev = model.get('position').get('point')[0].get('elevation').toString();
+      expect(this.view.$('#elevation')).toHaveValue(elev);
     });
   });
 
@@ -74,9 +80,9 @@ describe("EditorNodeView", function() {
         expect(this.view.model.get('name')).toEqual("Name Changed");
       });
       it("description is saved", function() {
-        $('#description').val("Description Changed");
+        $('#description').val("Changed");
         $("#description").blur();
-        expect(this.view.model.get('description')).toEqual("Description Changed");
+        expect(this.view.model.get('description')).toEqual("Changed");
       });
       it("type is saved", function() {
         selected = $($(this.view.el)).find('#type option:selected')
