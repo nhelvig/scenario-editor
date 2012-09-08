@@ -57,30 +57,23 @@
         <form>
           <fieldset>
             <label for="sensor-desc">Description</label>
-              <textarea rows="2" name="sensor-desc" id="sensor-desc" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
+            <textarea rows="2" name="sensor-desc" id="sensor_desc" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
             <label for="sensor-type">Type</label>
-              <select id="sensor-type" name ="sensor-type" class="ui-widget-content ui-corner-all">
-                <option value="camera">Camera</option>
-                <option value="loop">Loop</option>
-                <option value="radar">Radar</option>
-                <option value="sensys">Sensys</option>
-              </select><br/>
+            <select id="sensor_type" name ="sensor-type" class="ui-widget-content ui-corner-all">
+              <option value="static_point">Static Point</option>
+              <option value="static_area">Static Area</option>
+              <option value="moving_point">Moving Point</option>
+            </select><br/>
             <label for="sensor-link-type">Link Type</label>
-              <select id="sensor-link-type" name ="sensor-link-type" class="ui-widget-content ui-corner-all">
-                <option value="freeway">Freeway mainline</option>
-                <option value="highway">Highway mainline</option>
-                <option value="hov_lane">HOV lanes</option>
-                <option value="hot_lane">HOT lanes</option>
-                <option value="heavy_vehicle">Heavy vehicle lanes</option>
-                <option value="elec_toll">Elec. toll coll. lanes</option>
-                <option value="on_ramp">On-ramps</option>
-                <option value="off_ramp">Off-ramps</option>
-                <option value="interconnect">Interconnects</option>
-                <option value="intersection">Intersection Approach</option>
-                <option value="street">Streets</option>
-              </select><br/>
+            <select id="sensor_link_type" name ="sensor-link-type" class="ui-widget-content ui-corner-all">
+              <option value="freeway">Freeway mainline</option>
+              <option value="hov_lane">HOV lanes</option>
+              <option value="on_ramp">On-ramps</option>
+              <option value="off_ramp">Off-ramps</option>
+              <option value="other">Other</option>
+            </select><br/>
             <label for="sensor-links">Links</label>
-              <input type="text" name="sensor-links" id="sensor-links" class="text ui-widget-content ui-corner-all" value="{{links}}" readonly/>
+            <input type="text" name="sensor_links" id="sensor-links" class="text ui-widget-content ui-corner-all" value="{{links}}" readonly/>
           </fieldset>
         </form>
       </div>
@@ -89,23 +82,23 @@
           <fieldset>
             <label>Time step</label>
             <label for="sensor-hour" class="time">h</label>              
-            <input type="number"  id="sensor-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{hour}}" />
-             
+            <input type="number"  id="sensor_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dt['h']}}" />
+
             <label for="sensor-minute" class="time">: m</label>
-            <input type="number" id="sensor-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{minute}}" />
+            <input type="number" id="sensor_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['m']}}" />
               
             <label for="sensor-second" class="time">:: s</label>
-            <input type="number" id="sensor-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{second}}" />
+            <input type="number" id="sensor_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['s']}}" />
               
             <label>Format</label>
-              <select id="sensor-format" name ="sensor-format" class="ui-widget-content ui-corner-all">
-                <option value="PeMS Data Clearinghouse">PeMS Data Clearing</option>
-                <option value="Caltrans DBX">Caltrans DBX</option>
-                <option value="BHL">BHL</option>
-              </select><br/>
+            <select id="sensor_format" name ="sensor-format" class="ui-widget-content ui-corner-all">
+              <option value="PeMS Data Clearinghouse">PeMS Data Clearing</option>
+              <option value="Caltrans DBX">Caltrans DBX</option>
+              <option value="BHL">BHL</option>
+            </select><br/>
             <label>URL *</label>
-              <input type="text" name="sensor-links" id="sensor-links" class="text ui-widget-content ui-corner-all" value="{{url}}"/>
-              <label>{{url_desc}}</label>
+            <input type="text" name="sensor-url" id="sensor_url" class="text ui-widget-content ui-corner-all" value="{{url}}"/>
+            <label>{{url_desc}}</label>
           </fieldset>
         </form>      
       </div>
@@ -113,13 +106,13 @@
         <form>
           <fieldset>
             <label>Latitude</label>
-              <input type="text" name="sensor-lat" id="sensor-lat" class="text ui-widget-content ui-corner-all" value="{{lat}}"/>
+              <input type="text" name="sensor-lat" id="sensor_lat" class="text ui-widget-content ui-corner-all" value="{{lat}}"/>
             <label>Longitude</label>
-              <input type="text" name="sensor-long" id="sensor-long" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
+              <input type="text" name="sensor-lng" id="sensor_lng" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
             <label>Elevation</label>
-              <input type="text" name="sensor-elev" id="sensor-elev" class="text ui-widget-content ui-corner-all" value="{{elev}}"/>
+              <input type="text" name="sensor-elev" id="sensor_elev" class="text ui-widget-content ui-corner-all" value="{{elev}}"/>
             <button class="text ui-widget-content ui-corner-all" id="display-at-pos">Display at this position</button>
-        </fieldset>
+          </fieldset>
       </form>
       </div>
     </script>

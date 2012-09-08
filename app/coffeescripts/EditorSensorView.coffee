@@ -3,7 +3,8 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   $a = window.sirius
   
   # Displayed in the editor to describe how to format urls
-  URL_DESC = '* Note:<br/>Enter a full url or shorthand like:<br/>pems: d4, Jan 1, 2011<br/>'
+  URL_DESC = '* Note:<br/>Enter a full url or shorthand like:'
+  URL_DESC += '<br/>pems: d4, Jan 1, 2011<br/>'
   URL_DESC += 'For ranges, use this date format:<br/>Jan 1-4, 2011'
   
   events : {
@@ -15,32 +16,28 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   # the options argument has the Sensor model and type of dialog to
   # create('sensor')
   initialize: (options) ->
-    model = options.model
-    time_step = model.get('data_sources').get('data_source')[0].get('dt')
-    @hours = Math.floor(time_step/3600)
-    time_step = time_step % 3600
-    @minutes = Math.floor(time_step/60)
-    time_step = time_step % 60
-    @seconds = time_step
     options.templateData = @_getTemplateData(options.model)
-    @format = options.templateData.format
-    @type = options.templateData.sensor_type
-    @link_type = options.templateData.link_type
     super options
-    
-    #set selected type element
-    select_opts = $(@$el[0]).find("select option")
-    elem = _.filter(select_opts, (item) => $(item).val() is model.get('type'))
-    $(elem[0]).attr('selected', true)
 
-  # call the super class to set up the dialog box
+    # #set selected type element
+    # select_opts = $(@$el[0]).find("#sensor_type option")
+    # elem = _.filter(select_opts, (item) =>
+    #   $(item).val() is model.get('type')
+    # )
+    # $(elem[0]).attr('selected', true)
+
+  # call the super class to set up the dialog box and then set select boxes
   render: ->
     super @elem
-    $("#sensor-format > option[value='#{@format}']").attr('selected','selected')
+    format = @model.get('data_sources').get('data_source')[0].get('format')
+    type = @model.get('type')
+    $("#sensor_type > option[value='#{type}']").attr('selected','selected')
+    $("#sensor_format > option[value='#{format}']").attr('selected','selected')
     @
 
   # set up a hash of values from the model and inserted into the html template
   _getTemplateData: (model) ->
+    dt = model.get('data_sources').get('data_source')[0].get('dt')
     { 
       description: model.get('description').get('text')
       lat: model.get('position').get('point')[0].get('lat')
@@ -50,9 +47,7 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
       url: model.get('data_sources').get('data_source')[0].get('url')
       url_desc: URL_DESC
       format: model.get('data_sources').get('data_source')[0].get('format')
-      hour: @hours || 0
-      minute: @minutes || 0
-      second: @seconds || 0
+      dt: $a.Util.convertSecondsToHoursMinSec(dt || 0)
       links: model.get('link_reference').get('id')
       link_type: model.get('link_type')
       sensor_type: model.get('type')

@@ -152,14 +152,13 @@ describe("EditorLinkView", function() {
         expect(this.view.el.title).toEqual(val);
       });
   
-      it("should should have correct type selected", function() {
-        val = this.view.model.get('type');
-        elem = $($(this.view.el).find('#link_type option:selected'));
-        expect(elem).toHaveValue(val);
-      });
+
   });
   
   describe("Rendering", function() {
+    beforeEach(function() {
+      this.view.render();
+    });
     it("returns the view object", function() {
       expect(this.view.render()).toEqual(this.view);
     });
@@ -168,6 +167,12 @@ describe("EditorLinkView", function() {
       this.view.render();
       var label = '<label for="link-name">Link Name</label>';
       expect(this.view.el.innerHTML).toContain(label);
+    });
+    
+    it("should should have correct type selected", function() {
+      val = this.view.model.get('type');
+      elem = $($(this.view.el).find('#link_type option:selected'));
+      expect(elem).toHaveValue(val);
     });
     
     //checks that template was created correctly
