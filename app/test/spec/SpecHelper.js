@@ -1,7 +1,6 @@
 beforeEach(function() {
   window.sirius.broker = _.clone(Backbone.Events);
   
-  
   runDeferred = function(fList) {
     _.each(fList, function(f) { f(); });
   };
@@ -17,6 +16,22 @@ beforeEach(function() {
     expect(obj.get(resolveType)).toEqual(resolveOut);
   }
 
+  expectSave = function(args){
+    $(args.id).val('changed');
+    $(args.id).blur();
+    expect(args.model.get(args.modelField)).toEqual('changed');
+  }
+  
+  expectSaveSelect = function(args){
+    selected = $($(args.el)).find(args.id + ' option:selected');
+    $(selected).attr('selected', false);
+    options = $(args.el).find(args.id + ' option');
+    $(options[1]).attr('selected', true);
+    newSelectedValue = $(options[1]).val();
+    $(args.id).blur();
+    expect(args.model.get(args.modelField)).toEqual(newSelectedValue);
+  }
+  
   googleMap = function() {
     loadFixtures('main.canvas.view.fixture.html');
     mapOpts = {

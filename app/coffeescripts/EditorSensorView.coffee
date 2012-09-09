@@ -8,8 +8,10 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   URL_DESC += 'For ranges, use this date format:<br/>July 20-21, 2012'
   
   events : {
-    'blur #sensor_desc, #sensor_type, #sensor_link_type, #sensor_links' : 'save'
-    'blur #sensor_format, #sensor_url' : 'save' 
+    'blur #sensor_type, #sensor_link_type': 'save' 
+    'blur #sensor_format, #sensor_url' : 'saveDataSource' 
+    'blur #sensor_links' : 'saveLinks'
+    'blur #sensor_desc' : 'saveDesc'
     'blur #sensor_hour, #sensor_minute, #sensor_second' : 'saveTime'
     'blur #sensor_lat, #sensor_lng, #sensor_elev' : 'saveGeo'
     'click #display-at-pos' : 'displayAtPos'
@@ -25,7 +27,6 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   render: ->
     super @elem
     @_setSelectedType()
-    console.log(@model)
     @
 
   #set selected type element for sensor type and sensor format
@@ -56,27 +57,47 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
     }
   
   # these are callback events for various elements in the interface
-  # This is used to save the name, type and description when focus is lost from
+  # This is used to save the all the fields when focus is lost from
   # the element
   save: (e) ->
     id = e.currentTarget.id
-    @model.set(id, $("##{id}").val())
+    fieldId = id
+    fieldId = id[7...] if id.indexOf("sensor") is 0
+    @model.set(fieldId, $("##{id}").val())
 
+  # description is in its own descripiton object
+  saveDesc: (e) ->
+    id = e.currentTarget.id
+    @model.get('description').set('text', $("##{id}").val())
+  
+  # links are in the link_reference attribute
+  saveLinks: (e) ->
+    id = e.currentTarget.id
+    @model.get('link_reference').set('id', $("##{id}").val())
+  
+  # format and url in the data course attribute
+  saveDataSource: (e) ->
+    id = e.currentTarget.id
+    fieldId = id
+    fieldId = id[7...] if id.indexOf("sensor") is 0
+    p = @model.get('data_sources').get('data_source')[0]
+    p?.set(fieldId, $("##{id}").val())
+  
+  # saves the dt field -- first converts h, m, s to seconds
   saveTime: (e) ->
     p = @model.get('data_sources').get('data_source')[0]
     dt = {
       'h': $("#sensor_hour").val()
       'm': $("#sensor_minute").val()
       's': $("#sensor_second").val()
-    }
-    
+    } 
     p?.set('dt', $a.Util.convertToSeconds(dt))
-    
+  
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element
   saveGeo: (e) ->
     id = e.currentTarget.id
     @model.get('position').get('point')[0].set(id, $("##{id}").val())
   
-  displayAtPos: () ->
-    #do something
+  displayAtPos: (e) ->
+    e.preventDefault()
