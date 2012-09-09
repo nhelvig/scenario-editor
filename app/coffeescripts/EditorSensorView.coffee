@@ -8,8 +8,10 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   URL_DESC += 'For ranges, use this date format:<br/>July 20-21, 2012'
   
   events : {
-    'blur #name, #description, #type' : 'save'
-    'blur #lat, #lng, #elevation' : 'saveGeo'
+    'blur #sensor_desc, #sensor_type, #sensor_link_type, #sensor_links' : 'save'
+    'blur #sensor_format, #sensor_url' : 'save' 
+    'blur #sensor_hour, #sensor_minute, #sensor_second' : 'saveTime'
+    'blur #sensor_lat, #sensor_lng, #sensor_elev' : 'saveGeo'
     'click #display-at-pos' : 'displayAtPos'
   }    
   
@@ -30,8 +32,10 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   _setSelectedType: ->
     format = @model.get('data_sources').get('data_source')[0].get('format')
     type = @model.get('type')
+    lType = @model.get('link_type')
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_format > option[value='#{format}']").attr('selected','selected')
+    $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
   # set up a hash of values from the model and inserted into the html template
   _getTemplateData: (model) ->
@@ -58,6 +62,16 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
     id = e.currentTarget.id
     @model.set(id, $("##{id}").val())
 
+  saveTime: (e) ->
+    p = @model.get('data_sources').get('data_source')[0]
+    dt = {
+      'h': $("#sensor_hour").val()
+      'm': $("#sensor_minute").val()
+      's': $("#sensor_second").val()
+    }
+    
+    p?.set('dt', $a.Util.convertToSeconds(dt))
+    
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element
   saveGeo: (e) ->
