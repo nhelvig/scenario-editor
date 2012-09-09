@@ -152,14 +152,13 @@ describe("EditorLinkView", function() {
         expect(this.view.el.title).toEqual(val);
       });
   
-      it("should should have correct type selected", function() {
-        val = this.view.model.get('type');
-        elem = $($(this.view.el).find('#link_type option:selected'));
-        expect(elem).toHaveValue(val);
-      });
+
   });
   
   describe("Rendering", function() {
+    beforeEach(function() {
+      this.view.render();
+    });
     it("returns the view object", function() {
       expect(this.view.render()).toEqual(this.view);
     });
@@ -168,6 +167,12 @@ describe("EditorLinkView", function() {
       this.view.render();
       var label = '<label for="link-name">Link Name</label>';
       expect(this.view.el.innerHTML).toContain(label);
+    });
+    
+    it("should should have correct type selected", function() {
+      val = this.view.model.get('type');
+      elem = $($(this.view.el).find('#link_type option:selected'));
+      expect(elem).toHaveValue(val);
     });
     
     //checks that template was created correctly
@@ -239,18 +244,10 @@ describe("EditorLinkView", function() {
   });
   
   describe("Events", function() {
-      beforeEach(function() {
-        this.view.render();
-      });
-
-    describe("When the record check box click handler fired", function() {
-      it("record is saved", function() { 
-        $('#record').attr('checked', 'checked'); 
-        $('#record').click();
-        expect(this.view.model.get('record')).toBeTruthy();
-      });
+    beforeEach(function() {
+      this.view.render();
     });
-    
+
     describe("When fields handler fired", function() {
       it("Link Tab: 'Name' field calls save", function() { 
         $('#link_name').blur();
@@ -408,7 +405,15 @@ describe("EditorLinkView", function() {
         expect($a.EditorLinkView.prototype.geomRoad).toHaveBeenCalled();
       });
     });
-      
+    
+    describe("When the record check box click handler fired", function() {
+      it("record is saved", function() { 
+        $('#record').attr('checked', 'checked'); 
+        $('#record').click();
+        expect(this.view.model.get('record')).toBeTruthy();
+      });
+    });
+    
     describe("When fields handlers fired their information is saved", function() {
       _.each(testsLinkGeo, function(test) { 
         it(test.desc, function() {

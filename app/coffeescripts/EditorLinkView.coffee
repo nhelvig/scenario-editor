@@ -42,21 +42,19 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     window.test = options.model
     options.templateData = @_getTemplateData(options.model)
     super options
-    @_setSelectedType()
-
+  
   # call the super class to set up the dialog box and tabs
   # upon initializations of tabs you disable tabs that are not needed
   render: ->
     super @elem
     @_checkDisableTabs()
+    @_setSelectedType()
     @
   
   #set selected type element
   _setSelectedType: ->
-    elem = _.filter($(@$el[0]).find("select option"), (item) =>
-              $(item).val() is @model.get('type')
-            )
-    $(elem[0]).attr('selected', true)
+    type = @model.get('type');
+    $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
   
   # if tab doesn't have one of the profiles disable it
   _checkDisableTabs: ->

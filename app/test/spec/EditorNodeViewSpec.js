@@ -35,14 +35,14 @@ describe("EditorNodeView", function() {
       title = "Node Editor: " + this.view.model.get('name');
       expect(this.view.el.title).toEqual(title);
     });
+    
 
-    it("should should have correct type selected", function() {
-      type = this.view.model.get('type');
-      expect($($(this.view.el).find('#type option:selected'))).toHaveValue(type);
-    });
   });
   
   describe("Rendering", function() {
+    beforeEach(function() {
+      this.view.render();
+    });
     it("returns the view object", function() {
       expect(this.view.render()).toEqual(this.view);
     });
@@ -52,8 +52,13 @@ describe("EditorNodeView", function() {
       expect(this.view.el.innerHTML).toContain('<label for="name">Name</label>');
     });
     
+    it("should should have correct type selected", function() {
+      type = this.view.model.get('type');
+      expect($($(this.view.el).find('#type option:selected'))).toHaveValue(type);
+    });
+    
     //checks that template was created correctly
-    //Note: the elevation check adds '+ ""' to force NaN to a string
+    //Note: the elevation check force NaN to a string
     it("has the correct text content", function() {
       model = this.view.model;
       expect(this.view.$('#name')).toHaveValue(model.get('name'));
