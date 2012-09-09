@@ -244,18 +244,10 @@ describe("EditorLinkView", function() {
   });
   
   describe("Events", function() {
-      beforeEach(function() {
-        this.view.render();
-      });
-
-    describe("When the record check box click handler fired", function() {
-      it("record is saved", function() { 
-        $('#record').attr('checked', 'checked'); 
-        $('#record').click();
-        expect(this.view.model.get('record')).toBeTruthy();
-      });
+    beforeEach(function() {
+      this.view.render();
     });
-    
+
     describe("When fields handler fired", function() {
       it("Link Tab: 'Name' field calls save", function() { 
         $('#link_name').blur();
@@ -413,7 +405,15 @@ describe("EditorLinkView", function() {
         expect($a.EditorLinkView.prototype.geomRoad).toHaveBeenCalled();
       });
     });
-      
+    
+    describe("When the record check box click handler fired", function() {
+      it("record is saved", function() { 
+        $('#record').attr('checked', 'checked'); 
+        $('#record').click();
+        expect(this.view.model.get('record')).toBeTruthy();
+      });
+    });
+    
     describe("When fields handlers fired their information is saved", function() {
       _.each(testsLinkGeo, function(test) { 
         it(test.desc, function() {

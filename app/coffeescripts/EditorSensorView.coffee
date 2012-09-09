@@ -4,8 +4,8 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   
   # Displayed in the editor to describe how to format urls
   URL_DESC = '* Note:<br/>Enter a full url or shorthand like:'
-  URL_DESC += '<br/>pems: d4, Jan 1, 2011<br/>'
-  URL_DESC += 'For ranges, use this date format:<br/>Jan 1-4, 2011'
+  URL_DESC += '<br/>pems: d4, July 20, 2012<br/>'
+  URL_DESC += 'For ranges, use this date format:<br/>July 20-21, 2012'
   
   events : {
     'blur #name, #description, #type' : 'save'
@@ -19,22 +19,20 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
     options.templateData = @_getTemplateData(options.model)
     super options
 
-    # #set selected type element
-    # select_opts = $(@$el[0]).find("#sensor_type option")
-    # elem = _.filter(select_opts, (item) =>
-    #   $(item).val() is model.get('type')
-    # )
-    # $(elem[0]).attr('selected', true)
-
   # call the super class to set up the dialog box and then set select boxes
   render: ->
     super @elem
+    @_setSelectedType()
+    console.log(@model)
+    @
+
+  #set selected type element for sensor type and sensor format
+  _setSelectedType: ->
     format = @model.get('data_sources').get('data_source')[0].get('format')
     type = @model.get('type')
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_format > option[value='#{format}']").attr('selected','selected')
-    @
-
+  
   # set up a hash of values from the model and inserted into the html template
   _getTemplateData: (model) ->
     dt = model.get('data_sources').get('data_source')[0].get('dt')
@@ -42,7 +40,7 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
       description: model.get('description').get('text')
       lat: model.get('position').get('point')[0].get('lat')
       lng: model.get('position').get('point')[0].get('lng')
-      elev: model.get('position').get('point')[0].get('elevation') || 0
+      elev: model.get('position').get('point')[0].get('elevation')
       #TODO: how should I retrieve a point/data_source from the second sensor?
       url: model.get('data_sources').get('data_source')[0].get('url')
       url_desc: URL_DESC

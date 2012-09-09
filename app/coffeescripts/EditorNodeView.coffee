@@ -18,10 +18,14 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
   # call the super class to set up the dialog box and then set the select box
   render: ->
     super @elem
+    @_setSelectedType()
+    @
+  
+  #set selected type element
+  _setSelectedType: ->
     type = @model.get('type');
     $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
-    @
-
+  
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (model) ->
     name: model.get('name')
