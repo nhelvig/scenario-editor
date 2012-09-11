@@ -27,7 +27,7 @@ $a.sirius_classes_without_extensions = [ 'ArrayText', 'ALatLng',
   'RouteSegments', 'ScenarioElement', 'Splitratio', 'SplitratioEvent',
   'SplitRatioProfileSet', 'Stage', 'TargetElements', 'To', 'Units',
   'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
-  'Weavingfactors', 'WeavingfactorSet' ]
+  'Weavingfactors', 'WeavingFactorSet' ]
 
 $a.sirius_map_view_classes = [
   'AppView', 'ContextMenuItemView','ContextMenuView', 'DemandVisualizer'
