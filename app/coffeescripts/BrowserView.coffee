@@ -20,9 +20,8 @@ class window.sirius.BrowserView extends Backbone.View
   # it as well as calling el.tabs and el.diaload('open')
   render: ->
     @$el.dialog
-      autoOpen: true,
+      autoOpen: false,
       width: 600,
-      height:400,
       modal: false,
       close: =>
         @$el.remove()
@@ -51,11 +50,15 @@ class window.sirius.BrowserView extends Backbone.View
     @nev.render()
     $(@nev.el).tabs()
     $('#right').append(@nev.el)
-    @resizer()
+    @$el.dialog('open')
+    @renderResizer()
     @
 
-  resizer: (e) ->
+  renderResizer: (e) ->
     prevPos = 0
+    handleTop = @nev.el.offsetHeight / 2 - 25
+    $("#handle").css('margin-top', "#{handleTop}px")
+    $("#resize").css('height', "#{@nev.el.offsetHeight}px")
     $('#resize').draggable({
       axis : 'x',
       start: (e) ->
