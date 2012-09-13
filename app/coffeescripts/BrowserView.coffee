@@ -1,7 +1,7 @@
 # This creates the browsers window for all element
 class window.sirius.BrowserView extends Backbone.View
   $a = window.sirius
-  
+
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData
   # used to inject into the html template
@@ -21,7 +21,8 @@ class window.sirius.BrowserView extends Backbone.View
   render: ->
     @$el.dialog
       autoOpen: true,
-      width: 700,
+      width: 600,
+      height:400,
       modal: false,
       close: =>
         @$el.remove()
@@ -50,5 +51,25 @@ class window.sirius.BrowserView extends Backbone.View
     @nev.render()
     $(@nev.el).tabs()
     $('#right').append(@nev.el)
-    @$el.layout({ resizable:true });
+    @resizer()
     @
+
+  resizer: (e) ->
+    prevPos = 0
+    $('#resize').draggable({
+      axis : 'x',
+      start: (e) ->
+        prevPos = e.pageX
+      drag: (e) ->
+        delta = (prevPos - e.pageX)
+        prevPos = e.pageX
+        divLeftWidth = $("#left").width() - delta
+        divRightWidth = $("#right").width() + delta
+        if divLeftWidth < 150 or divRightWidth < 150
+          divRightWidth = $("#right").width()
+          divLeftWidth = $("#left").width() 
+
+        $("#left").css('width', divLeftWidth + 'px')
+        $("#right").css('width', divRightWidth + 'px')
+        $("#resize").css('position', '')
+    })

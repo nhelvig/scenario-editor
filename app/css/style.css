@@ -281,3 +281,7 @@ hr {
   font-size: 1.5em;
   font-style: italic;
 }
+#left  { float:left; width:50%;}
+#resize { width:6px; height:311px; float:left;margin: 0px 6px; background:#FFF}
+#right    {overflow:hidden; width:50%;height:100% }
+#wrapper    { width:100%; }
