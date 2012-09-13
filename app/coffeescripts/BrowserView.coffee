@@ -25,27 +25,21 @@ class window.sirius.BrowserView extends Backbone.View
       modal: false,
       close: =>
         @$el.remove()
+    nodes = $a.models.get('networklist').get('network')[0].get('nodelist').get('node')
+    data = _.map(nodes, (node) -> [node.get('name'),node.get('type')] )
     $('#browser_table').dataTable( {
-        "aaData": [
-            [ "Trident", "Internet Explorer 4.0", "Win 95+", 4, "X" ],
-            [ "Trident", "Internet Explorer 5.0", "Win 95+", 5, "C" ],
-            [ "Trident", "Internet Explorer 5.5", "Win 95+", 5.5, "A" ],
-            [ "Trident", "Internet Explorer 6.0", "Win 98+", 6, "A" ],
-            [ "Trident", "Internet Explorer 7.0", "Win XP SP2+", 7, "A" ],
-        ],
+        "aaData": data,
         "aoColumns": [
-            { "sTitle": "Engine" },
-            { "sTitle": "Browser" },
-            { "sTitle": "Platform" },
-            { "sTitle": "Version", "sClass": "center" },
-            {"sTitle": "Grade"}
+            { "sTitle": "Name","sWidth": "50%"},
+            { "sTitle": "Type","sWidth": "50%"},
         ],
         "bPaginate": false,
-        "bLengthChange": false,
+        "bLengthChange": true,
         "bFilter": false,
-        "bSort": false,
+        "bSort": true,
         "bInfo": false,
         "bAutoWidth": false,
+        "bJQueryUI": true,
     })
     @nev.render()
     $(@nev.el).tabs()

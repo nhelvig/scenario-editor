@@ -295,3 +295,18 @@ hr {
         }
 #right    {overflow:hidden; width:50%;height:100% }
 #wrapper    { width:100%; }
+.odd { background-color:#BBB;}
+.even { background-color:#DDD;}
+#browser_table { width:100%; color: #F58400; font-size:1.2em; }
+#browser_table th { color: #F58400 }
+#browser_table thead th.sorting_asc {
+    background: #66A9BD url('images/sort_asc.png') no-repeat right center;
+}
+ 
+#browser_table thead th.sorting_desc {
+    background: #66A9BD url('images/sort_desc.png') no-repeat right center;
+}
+ 
+#browser_table thead th.sorting {
+    background: #66A9BD url('images/sort_both.png') no-repeat right center;
+}
