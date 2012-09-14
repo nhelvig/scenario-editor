@@ -25,11 +25,12 @@ class window.sirius.BrowserView extends Backbone.View
       modal: false,
       close: =>
         @$el.remove()
-    nodes = $a.models.get('networklist').get('network')[0].get('nodelist').get('node')
-    data = _.map(nodes, (node) -> [node.get('name'),node.get('type')] )
-    $('#browser_table').dataTable( {
+    @nodes = $a.models.get('networklist').get('network')[0].get('nodelist').get('node')
+    data = _.map(@nodes, (node) -> [node.get('id'), node.get('name'),node.get('type')] )
+    @dTable = $('#browser_table').dataTable( {
         "aaData": data,
         "aoColumns": [
+            { "sTitle": "Id","bVisible": false},
             { "sTitle": "Name","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
         ],
@@ -46,6 +47,7 @@ class window.sirius.BrowserView extends Backbone.View
     $('#right').append(@nev.el)
     @$el.dialog('open')
     @renderResizer()
+    @attachRowSelection()
     @
 
   renderResizer: (e) ->
@@ -70,3 +72,22 @@ class window.sirius.BrowserView extends Backbone.View
         $("#right").css('width', divRightWidth + 'px')
         $("#resize").css('position', '')
     })
+    
+  attachRowSelection: () ->
+    $('#browser_table tr').click( (event) =>
+        $(event.target.parentNode).toggleClass('row_selected');
+        selectedNodeIds = []
+        $(@dTable.fnSettings().aoData).each( (data) ->  
+          if($(this.nTr).hasClass('row_selected'))
+            selectedNodeIds.push @_aData[0]
+        )
+
+        selectedNodes = _.filter(@nodes, (node) ->
+            node if _.include(selectedNodeIds, node.get('id'))
+        )
+        $('#right [id*="dialog-form"]').remove()
+        @nev = new $a.EditorNodeView(model: selectedNodes[0], elem:'node', width: 300)
+        @nev.render()
+        $(@nev.el).tabs()
+        $('#right').append(@nev.el)
+    )

@@ -27,7 +27,7 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
   
   # creates a hash of values taken from the model for the html template
-  _getTemplateData: (model) ->
+  _getTemplateData: (models) ->
     name: model.get('name')
     description: model.get('description')
     lat: model.get('position').get('point')[0].get('lat')
