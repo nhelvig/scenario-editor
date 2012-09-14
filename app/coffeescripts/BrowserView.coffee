@@ -12,8 +12,7 @@ class window.sirius.BrowserView extends Backbone.View
     @$el.attr 'id', "browser"
     @template = _.template($("#browser-window-template").html())
     @$el.html(@template(options.templateData))
-    node = $a.models.get('networklist').get('network')[0].get('nodelist').get('node')[0]
-    @nev = new $a.EditorNodeView(model: node, elem:'node', width: 300)   
+    @nodes = $a.models.get('networklist').get('network')[0].get('nodelist').get('node')
     @render()
 
   # render the dialog box. The calling function has responsability for appending
@@ -25,7 +24,21 @@ class window.sirius.BrowserView extends Backbone.View
       modal: false,
       close: =>
         @$el.remove()
-    @nodes = $a.models.get('networklist').get('network')[0].get('nodelist').get('node')
+
+    @renderTable()
+    @renderEditor([@nodes[0]])
+    @$el.dialog('open')
+    @renderResizer()
+    @attachRowSelection()
+    @
+
+  renderEditor: (models) ->
+    @nev = new $a.EditorNodeView(models: models, elem:'node', width: 300)   
+    @nev.render()
+    $(@nev.el).tabs()
+    $('#right').append(@nev.el)
+    
+  renderTable: () ->
     data = _.map(@nodes, (node) -> [node.get('id'), node.get('name'),node.get('type')] )
     @dTable = $('#browser_table').dataTable( {
         "aaData": data,
@@ -42,14 +55,7 @@ class window.sirius.BrowserView extends Backbone.View
         "bAutoWidth": false,
         "bJQueryUI": true,
     })
-    @nev.render()
-    $(@nev.el).tabs()
-    $('#right').append(@nev.el)
-    @$el.dialog('open')
-    @renderResizer()
-    @attachRowSelection()
-    @
-
+  
   renderResizer: (e) ->
     prevPos = 0
     handleTop = @nev.el.offsetHeight / 2 - 25
@@ -74,20 +80,16 @@ class window.sirius.BrowserView extends Backbone.View
     })
     
   attachRowSelection: () ->
-    $('#browser_table tr').click( (event) =>
+    $('#browser_table tbody').click( (event) =>
         $(event.target.parentNode).toggleClass('row_selected');
         selectedNodeIds = []
         $(@dTable.fnSettings().aoData).each( (data) ->  
           if($(this.nTr).hasClass('row_selected'))
             selectedNodeIds.push @_aData[0]
         )
-
         selectedNodes = _.filter(@nodes, (node) ->
             node if _.include(selectedNodeIds, node.get('id'))
         )
         $('#right [id*="dialog-form"]').remove()
-        @nev = new $a.EditorNodeView(model: selectedNodes[0], elem:'node', width: 300)
-        @nev.render()
-        $(@nev.el).tabs()
-        $('#right').append(@nev.el)
+        @renderEditor(selectedNodes)
     )

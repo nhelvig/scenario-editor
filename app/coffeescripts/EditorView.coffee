@@ -7,10 +7,10 @@ class window.sirius.EditorView extends Backbone.View
   # used to inject into the html template
   initialize: (@options) ->
     @elem = @options.elem
-    @model = @options.model
+    @models = @options.models
     title  = $a.Util.toStandardCasing(@elem)  # eg. node -> Node
-    @$el.attr 'title', "#{title} Editor: #{@model.get('name')}"
-    @$el.attr 'id', "#{@elem}-dialog-form-#{@model.cid}"
+    @$el.attr 'title', "#{title} Editor: #{@models[0].get('name')}"
+    @$el.attr 'id', "#{@elem}-dialog-form-#{@models[0].cid}"
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(options.templateData))
 
