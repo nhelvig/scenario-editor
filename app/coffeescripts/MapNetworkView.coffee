@@ -14,7 +14,7 @@ class window.sirius.MapNetworkView extends Backbone.View
   initialize: (@scenario) ->
     @networks =  @scenario.get('networklist').get('network')
     _.each(@networks, (network) => @_drawNetwork(network))
-    
+    @_initializeCollections()
     @_drawScenarioItems()
     
     # This class creates the tree view of all the elements of the scenario
@@ -25,6 +25,10 @@ class window.sirius.MapNetworkView extends Backbone.View
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
     @
+  
+  _initializeCollections: () ->
+    list = $a.models.get('networklist').get('network')[0].get('nodelist')
+    $a.nodeList = new $a.NodeCollection(list.get('node'))
   
   _drawScenarioItems: () ->
     if @scenario.get('sensorlist')?

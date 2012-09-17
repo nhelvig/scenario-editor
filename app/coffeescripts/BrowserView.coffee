@@ -11,8 +11,8 @@ class window.sirius.BrowserView extends Backbone.View
     @$el.attr 'title', "#{title} Browser"
     @$el.attr 'id', "browser"
     @template = _.template($("#browser-window-template").html())
-    @$el.html(@template(options.templateData))
-    @nodes = $a.models.get('networklist').get('network')[0].get('nodelist').get('node')
+    @$el.html(@template(options.templateData))  
+    $a.nodeList.forEach((node) => node.on('change', @rePopulateTable, @))
     @render()
 
   # render the dialog box. The calling function has responsability for appending
@@ -22,11 +22,13 @@ class window.sirius.BrowserView extends Backbone.View
       autoOpen: false,
       width: 600,
       modal: false,
+      open: =>
+        $('.ui-state-default').blur() #hack to get ui dialog focus bug
       close: =>
         @$el.remove()
 
     @renderTable()
-    @renderEditor([@nodes[0]])
+    @renderEditor([$a.nodeList.at(0)])
     @$el.dialog('open')
     @renderResizer()
     @attachRowSelection()
@@ -39,7 +41,7 @@ class window.sirius.BrowserView extends Backbone.View
     $('#right').append(@nev.el)
     
   renderTable: () ->
-    data = _.map(@nodes, (node) -> [node.get('id'), node.get('name'),node.get('type')] )
+    data = $a.nodeList.getBrowserData()
     @dTable = $('#browser_table').dataTable( {
         "aaData": data,
         "aoColumns": [
@@ -47,6 +49,7 @@ class window.sirius.BrowserView extends Backbone.View
             { "sTitle": "Name","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
         ],
+        "aaSorting": [[ 0, "desc" ]]
         "bPaginate": false,
         "bLengthChange": true,
         "bFilter": false,
@@ -55,6 +58,8 @@ class window.sirius.BrowserView extends Backbone.View
         "bAutoWidth": false,
         "bJQueryUI": true,
     })
+    nTop = $('#browser_table tbody tr')[0]
+    $(nTop).addClass('row_selected')
   
   renderResizer: (e) ->
     prevPos = 0
@@ -87,9 +92,15 @@ class window.sirius.BrowserView extends Backbone.View
           if($(this.nTr).hasClass('row_selected'))
             selectedNodeIds.push @_aData[0]
         )
-        selectedNodes = _.filter(@nodes, (node) ->
+        selectedNodes = $a.nodeList.filter((node) ->
             node if _.include(selectedNodeIds, node.get('id'))
         )
         $('#right [id*="dialog-form"]').remove()
-        @renderEditor(selectedNodes)
+        @renderEditor(selectedNodes) unless _.isEmpty(selectedNodeIds)
+
     )
+    
+  rePopulateTable: () ->
+    data = $a.nodeList.getBrowserData()
+    @dTable.fnClearTable()
+    @dTable.fnAddData(data)
