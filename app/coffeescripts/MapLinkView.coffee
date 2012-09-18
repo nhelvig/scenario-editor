@@ -96,7 +96,7 @@ class window.sirius.MapLinkView extends Backbone.View
 
   # creates the editor for a link
   _editor: (evt) ->
-    env = new $a.EditorLinkView(elem: 'link', model: @model, width: 375)
+    env = new $a.EditorLinkView(elem: 'link', models: [@model], width: 375)
     $('body').append(env.el)
     env.render()
     $(env.el).tabs()

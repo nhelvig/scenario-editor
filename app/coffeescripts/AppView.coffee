@@ -30,7 +30,6 @@ class window.sirius.AppView extends Backbone.View
     $a.broker.on("app:save_scenario", @saveScenario, @)
     $a.broker.on("map:alert", @showAlert, @)
     $a.broker.on("map:toggle_tree", @toggleTree, @)
-    $a.broker.on("app:open_browser", @openBrowser, @);
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -102,9 +101,6 @@ class window.sirius.AppView extends Backbone.View
 
   openScenario: ->
     $("#uploadField").click()
-
-  openBrowser: ->
-    new $a.BrowserView({elem:'Node'})
   
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView

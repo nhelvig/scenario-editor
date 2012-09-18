@@ -21,8 +21,8 @@ $a.nav_bar_menu_items =
     'Close Local Network': (-> $a.broker.trigger('map:clear_map'))
     'Import Local Network': noconfig
   Windows:
-    'Node Browser': (-> $a.broker.trigger("app:open_browser"))
-    'Link Browser': noconfig
+    'Node Browser': (-> $a.BrowserView.start('node'))
+    'Link Browser': (-> $a.BrowserView.start('link'))
     'Path Browser': noconfig
     'Event Browser': noconfig
     'Controller Browser': noconfig
