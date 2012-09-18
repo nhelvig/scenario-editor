@@ -4,7 +4,7 @@
         'EditorNodeViewSpec', 'EditorLinkViewSpec', 'EditorSensorViewSpec', 'EndSpec', 'EventSpec',
         'InputSpec', 'IntersectionSpec', 'LinkSpec', 'MapLinkViewSpec', 'MapNodeViewSpec',
         'NodeSpec', 'OutputSpec', 'OdSpec', 'ScenarioSpec',
-        'SignalSpec', 'SplitRatioProfileSpec'];
+        'SignalSpec', 'SplitratioProfileSpec'];
     
   load_sirius_classes = function(after) {
     return head.js("../js/Sirius.js",'../js/sirius-classes-load.js', function() {
