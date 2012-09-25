@@ -25,11 +25,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
   ]
 
   renderConstDemands: (sel) ->
-    content = _.map @demand.demands_by_vehicle_type(), (demand, idx) =>
-      console.log @typeOrder
-      console.log @typeOrder.get('vehicle_type')
-      console.log @typeOrder.get('vehicle_type')[idx]
-      
+    content = _.map @demand.demands_by_vehicle_type(), (demand, idx) =>      
       vehicleType = @typeOrder.get('vehicle_type')[idx].get('name')
       args =
         elemId: @link.id
@@ -241,7 +237,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
       @dataDisplay = _.template($('#demand-graph-template').html())
       @$el.html @vizWindow(elemId: @link.id, content: @dataDisplay(elemId: @link.id))
     @$el.attr 'title', "Demand - Link #{@link.get('name')}"
-
+  
   # render the dialog box. The calling function has responsability for
   # appending it as well as calling el.tabs and el.diaload('open')
   render: ->

@@ -40,7 +40,6 @@ $a.sirius_map_view_classes = [
   'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView',
   'MapSignalView', 'Util', 'MessagePanelView', 'TreeView',
   'TreeParentItemView', 'TreeChildItemView',
-  'TreeChildItemLinkView', 'TreeChildItemDemandLinkView',
-  'TreeChildItemNetworkView', 'TreeChildItemNodeView',
+  'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]

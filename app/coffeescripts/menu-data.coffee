@@ -75,6 +75,12 @@ $a.link_context_menu = [
     event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
 ]
 
+$a.link_context_menu_demand_item = [
+  {
+    label: 'View Demands'
+    className: 'context_menu_item'
+    event: ((e) -> $a.broker.trigger("link:view_demands:#{e.currentTarget.id}")) }
+]
 # Sensor Context Menu
 $a.sensor_context_menu = [
   {
@@ -97,10 +103,6 @@ $a.signal_context_menu = [
     label: 'Clear Selection'
     className: 'context_menu_item'
     event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
-]
-
-$a.demand_context_menu = [
-  { label: 'Visualize demand', className: 'context_menu_item', event: ((e) -> $a.broker.trigger("demand:show_dialog:#{e.currentTarget.id}")) }
 ]
 
 # Node Context Menu
