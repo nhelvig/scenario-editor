@@ -4,12 +4,14 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   events : {
     'blur #link_name, #road_name, #link_type' : 'save'
     'blur #lanes, #lane_offset, #length' : 'save'
-    'blur #capacity, 
+    'blur #capacity,
+      #critical_speed, 
       #capacity_drop,
       #jam_density,
       #free_flow_speed,
       #congestion_speed,
       #std_dev_capacity,
+      #std_dev_congestion,
       #std_dev_free_flow_speed': 'saveFD'
     'blur #knob, #dp_text': 'saveDP'
     'blur #link_demand_start_hour, 
@@ -91,8 +93,10 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     capacity:  _.map(fds, (fd) -> fd?.get('capacity') || '').join(", ")
     jamDensity: _.map(fds, (fd) -> fd?.get('jam_density') || '').join(", ")
     capacityDrop: _.map(fds, (fd) -> fd?.get('capacity_drop') || '').join(", ")
+    criticalSpeed: _.map(fds, (fd) -> fd?.get('critical_speed') || '').join(", ")
     congestionSpeed: _.map(fds, (fd) -> fd?.get('congestion_speed') || '').join(", ")
     capacityStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_capacity') || '').join(", ")
+    congestionStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_congestion') || '').join(", ")
     freeFlowStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_free_flow') || '').join(", ")
     cpStartTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('start_time') || 0)
     cpSampleTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('dt') || 0)

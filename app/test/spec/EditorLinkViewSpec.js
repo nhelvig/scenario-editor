@@ -47,6 +47,13 @@ describe("EditorLinkView", function() {
         field:"congestion_speed"
       },
       {
+        desc: "FD Tab: 'Critical Speed' field calls saveFD",
+        id: "#critical_speed",
+        val: "changed",
+        type: "blur",
+        field:"critical_speed"
+      },
+      {
         desc: "FD Tab: 'Capacity' field calls saveFD",
         id: "#capacity",
         val: "changed",
@@ -66,6 +73,13 @@ describe("EditorLinkView", function() {
         val: "changed",
         type: "blur",
         field:"std_dev_capacity"
+      },
+      {
+        desc: "FD Tab: 'Standard Deviation Congestion' field calls saveFD",
+        id: "#std_dev_congestion",
+        val: "changed",
+        type: "blur",
+        field:"std_dev_congestion"
       },
       {
         desc: "FD Tab: 'Standard Deviation Free Flow Speed' field calls saveFD",
@@ -191,11 +205,13 @@ describe("EditorLinkView", function() {
         laneOffset: model.get('lane_offset'),
         length: model.get('length'),
         freeFlowSpeed: fd.get('free_flow_speed'),
+        criticalSpeed: fd.get('critical_speed') || '',
         capacity: fd.get('capacity') || '',
         jamDensity: fd.get('jam_density') || '',
         capacityDrop: fd.get('capacity_drop') || '',
         congestionSpeed: fd.get('congestion_speed') || '',
         capacityStandardDev: fd.get('std_dev_capacity') || '',
+        congestionStandardDev: fd.get('std_dev_congestion') || '',
         freeFlowStdDev: fd.get('std_dev_free_flow') || '',
         cpStart: $a.Util.convertSecondsToHoursMinSec(0),
         cpSample: $a.Util.convertSecondsToHoursMinSec(0),
@@ -215,9 +231,11 @@ describe("EditorLinkView", function() {
       expect(view.$('#capacity')).toHaveValue(v.capacity);
       expect(view.$('#jam_density')).toHaveValue(v.jamDensity);
       expect(view.$('#free_flow_speed')).toHaveValue(v.freeFlowSpeed);
+      expect(view.$('#critical_speed')).toHaveValue(v.criticalSpeed);
       expect(view.$('#capacity_drop')).toHaveValue(v.capacityDrop);
       expect(view.$('#congestion_speed')).toHaveValue(v.congestionSpeed);
       expect(view.$('#std_dev_capacity')).toHaveValue(v.capacityStandardDev);
+      expect(view.$('#std_dev_congestion')).toHaveValue(v.congestionStandardDev);
       expect(view.$('#std_dev_free_flow_speed')).toHaveValue(v.freeFlowStdDev);
       expect(view.$('#cp_text')).toHaveValue(v.capacityProfile);
       expect(view.$('#dp_text')).toHaveValue(v.demandProfile);
@@ -279,6 +297,10 @@ describe("EditorLinkView", function() {
         $('#congestion_speed').blur();
         expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
       });
+      it("FD Tab: 'Critical Speed' field calls saveFD", function() { 
+        $('#critical_speed').blur();
+        expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
+      });
       it("FD Tab: 'Capacity' field calls saveFD", function() { 
         $('#capacity').blur();
         expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
@@ -289,6 +311,10 @@ describe("EditorLinkView", function() {
       });
       it("FD Tab: 'Standard Deviation Capacity' field calls saveFD", function() { 
         $('#std_dev_capacity').blur();
+        expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
+      });
+      it("FD Tab: 'Standard Deviation Congestion' field calls saveFD", function() { 
+        $('#std_dev_congestion').blur();
         expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
       });
       it("FD Tab: 'Standard Deviation Free Flow Speed' field calls saveFD", function() { 
