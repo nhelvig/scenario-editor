@@ -33,7 +33,7 @@ class window.sirius.TreeView extends Backbone.View
       modelListName: 'controller'
       attachId: 'controllers'
     })
-    @_createDemandLinkChildren({
+    @_createLinkChildren({
       parentList: scenario.get('demandprofileset')
       modelListName: 'demandprofile'
       attachId: 'demand-profiles'
@@ -103,10 +103,6 @@ class window.sirius.TreeView extends Backbone.View
   _createLinkChildren: (params) ->
     @_createChildren(params,'link')
 
-  # creates link tree items by passing 'demandlink' argument to _createChildren
-  _createDemandLinkChildren: (params) ->
-    @_createChildren(params,'demandlink')
-
   # creates node tree items by passing 'node' argument to _createChildren
   _createNodeChildren: (params) ->
     @_createChildren(params,'node')
@@ -143,7 +139,6 @@ class window.sirius.TreeView extends Backbone.View
       # We create create link and node tree items by calling their
       # respective tree view classes All others are just tree items
       switch params.type
-        when 'demandlink' then new $a.TreeChildItemDemandLinkView(attrs)
         when 'link' then new $a.TreeChildItemLinkView(attrs)
         when 'node' then new $a.TreeChildItemNodeView(attrs)
         when 'network' then new $a.TreeChildItemNetworkView(attrs)

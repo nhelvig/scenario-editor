@@ -26,7 +26,6 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
       #link_capacity_sample_minute, 
       #link_capacity_sample_second' : 'saveCPTime'
     'blur #description' : 'saveDesc'
-    'click #record' : 'saveRecord'
     'click #do-subdivide' : 'subDivide'
     'click #do-split': 'doSplit'
     'click #add-lt' : 'addLeftTurn'
@@ -39,8 +38,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
 
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
-    window.test = options.model
-    options.templateData = @_getTemplateData(options.model)
+    options.templateData = @_getTemplateData(options.models)
     super options
   
   # call the super class to set up the dialog box and tabs
@@ -48,45 +46,54 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   render: ->
     super @elem
     @_checkDisableTabs()
+    @_checkDisableFields()
     @_setSelectedType()
     @
   
   #set selected type element
   _setSelectedType: ->
-    type = @model.get('type');
+    type = @models[0].get('type');
     $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
   
   # if tab doesn't have one of the profiles disable it
   _checkDisableTabs: ->
     disable = []
-    disable.push(2) if !@model.get('fundamentaldiagramprofile')?
-    disable.push(4) if !@model.get('capacityprofile')?
-    disable.push(3) if !@model.get('demand')?
+    disable.push(2) if !@models[0].get('fundamentaldiagramprofile')?
+    disable.push(3) if !@models[0].get('demand')? or @models.length > 1
+    disable.push(4) if !@models[0].get('capacityprofile')? or @models.length > 1
+    disable.push(5)
     @$el.tabs({ disabled: disable })
 
+  # if in browser we diable some fields from being editted
+  _checkDisableFields: ->
+    if (@models.length > 1)
+      $('#link_name').attr("disabled", true)
+      $('#length').attr("disabled", true)
+  
   # creates a hash of values taken from the model for the html template
   # I could have just passed the model but I did it this way because 
   # I didn't want the long retrieval lines in the html.
-  _getTemplateData: (model) ->
-    fdp = model.get('fundamentaldiagramprofile')
-    fd = fdp?.get('fundamentaldiagram')[0] || null
-    cp = model.get('capacity') || null
-    dp = model.get('demand') || null
+  _getTemplateData: (models) ->
+    cp = models[0].get('capacity') || null if models.length == 1
+    dp = models[0].get('demand') || null if models.length == 1
     
-    name: model.get('name')
-    description: model.get('description').get('text')
-    roadName: model.get('road_name')
-    record: if model.has('record') and model.get('record') then 'checked' else ''
-    lanes: model.get('lanes')
-    laneOffset: model.get('lane_offset')
-    length: model.get('length')
-    freeFlowSpeed: fd?.get('free_flow_speed') || ''
-    capacity: fd?.get('capacity') || ''
-    jamDensity: fd?.get('jam_density') || ''
-    capacityDrop: fd?.get('capacity_drop') || ''
-    congestionSpeed: fd?.get('congestion_speed') || ''
-    capacityStandardDev: fd?.get('std_dev_capacity') || ''
-    freeFlowStandardDev: fd?.get('std_dev_free_flow') || ''
+    fds = _.map(models, (m) ->
+                  fdp = m.get('fundamentaldiagramprofile')
+                  fdp?.get('fundamentaldiagram')[0] || null
+          )
+    name: _.map(models, (m) -> m.get('name')).join(", ")
+    description: _.map(models, (m) -> m.get('description').get('text')).join("; ")
+    roadName: _.map(models, (m) -> m.get('road_name')).join(", ")
+    lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
+    laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  
+    length: _.map(models, (m) -> m.get('length')).join(", ")  
+    freeFlowSpeed: _.map(fds, (fd) -> fd?.get('free_flow_speed') || '').join(", ")
+    capacity:  _.map(fds, (fd) -> fd?.get('capacity') || '').join(", ")
+    jamDensity: _.map(fds, (fd) -> fd?.get('jam_density') || '').join(", ")
+    capacityDrop: _.map(fds, (fd) -> fd?.get('capacity_drop') || '').join(", ")
+    congestionSpeed: _.map(fds, (fd) -> fd?.get('congestion_speed') || '').join(", ")
+    capacityStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_capacity') || '').join(", ")
+    freeFlowStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_free_flow') || '').join(", ")
     cpStartTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('start_time') || 0)
     cpSampleTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('dt') || 0)
     capacityProfile: cp?.get('text') || ''
@@ -104,24 +111,22 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
     id = e.currentTarget.id
     fieldId = id
     fieldId = id[5...] if id.indexOf("link") is 0
-    @model.set(fieldId, $("##{id}").val())
+    _.each(@models, (m) -> m.set(fieldId, $("##{id}").val()))
 
   # this method saves the description
   saveDesc: (e) ->
     id = e.currentTarget.id
-    @model.get('description').set('text', $("##{id}").val())
-
-  # This saves the checkbox indicating the state of the link's record field
-  saveRecord: (e) ->
-    id = e.currentTarget.id
-    @model.set(id, $("##{id}").prop('checked'))
-    
+    _.each(@models, (m) ->
+                      m.get('description').set('text', $("##{id}").val()))
+  
   # this saves fields in the fundamental diagram
   saveFD: (e) ->
     id = e.currentTarget.id
-    ps = @model.get('fundamentaldiagramprofile')
-    p = ps?.get('fundamentaldiagram')[0]
-    p?.set(id, $("##{id}").val())
+    _.each(@models, (m) ->
+      ps = m.get('fundamentaldiagramprofile')
+      p = ps?.get('fundamentaldiagram')[0]
+      p?.set(id, $("##{id}").val())
+    )
   
   # this saves fields in the demand profiles
   saveDP: (e) ->
@@ -140,7 +145,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # this saves fields in the capacity profiles
   saveCP: (e) ->
-    p = @model.get('capacity')
+    p = @models[0].get('capacity')
     p?.set('text', $("##{e.currentTarget.id}").val())
 
   saveCPTime: ->
@@ -150,11 +155,11 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   # save profile data
   _saveProfileData: (args) ->
     id = args.id
-    p = @model.get(args.profile)
+    p = @models[0].get(args.profile)
     p?.set(args.fieldId, $("##{id}").val())
     
   _saveProfileTimeData: (args) ->
-    p = @model.get(args.profile)
+    p = @models[0].get(args.profile)
     start = {
       'h': $("#link_#{args.profile}_start_hour").val()
       'm': $("#link_#{args.profile}_start_minute").val()

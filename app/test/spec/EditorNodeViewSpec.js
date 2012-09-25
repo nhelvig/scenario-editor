@@ -10,7 +10,7 @@ describe("EditorNodeView", function() {
     spyOn($a.EditorNodeView.prototype, 'removeJoinLinks').andCallThrough();
     this.view = new $a.EditorNodeView({
       elem: 'node', 
-      model: model
+      models: [model]
     });
   });
   
@@ -24,15 +24,15 @@ describe("EditorNodeView", function() {
     });
     
     it('Is backed by a model instance', function() {
-      expect(this.view.model).toBeDefined();
+      expect(this.view.models).toBeDefined();
     });
     
     it("should should have id", function() {
-      expect(this.view.el.id).toEqual("node-dialog-form-" + this.view.model.cid);
+      expect(this.view.el.id).toEqual("node-dialog-form-" + this.view.models[0].cid);
     });
 
     it("should should have title", function() {
-      title = "Node Editor: " + this.view.model.get('name');
+      title = "Node Editor: " + this.view.models[0].get('name');
       expect(this.view.el.title).toEqual(title);
     });
     
@@ -53,14 +53,14 @@ describe("EditorNodeView", function() {
     });
     
     it("should should have correct type selected", function() {
-      type = this.view.model.get('type');
+      type = this.view.models[0].get('type');
       expect($($(this.view.el).find('#type option:selected'))).toHaveValue(type);
     });
     
     //checks that template was created correctly
     //Note: the elevation check force NaN to a string
     it("has the correct text content", function() {
-      model = this.view.model;
+      model = this.view.models[0];
       expect(this.view.$('#name')).toHaveValue(model.get('name'));
       expect(this.view.$('#descripton')).toHaveValue(model.get('description'));
       lat = model.get('position').get('point')[0].get('lat');
@@ -75,19 +75,19 @@ describe("EditorNodeView", function() {
   describe("Events", function() {
     beforeEach(function() {
       this.view.render();
-      this.point = this.view.model.get('position').get('point')[0]
+      this.point = this.view.models[0].get('position').get('point')[0]
     });
 
     describe("When name, description, and type blur handler fired", function() {
       it("name is saved", function() {     
         $('#name').val("Name Changed");
         $("#name").blur();
-        expect(this.view.model.get('name')).toEqual("Name Changed");
+        expect(this.view.models[0].get('name')).toEqual("Name Changed");
       });
       it("description is saved", function() {
         $('#description').val("Changed");
         $("#description").blur();
-        expect(this.view.model.get('description')).toEqual("Changed");
+        expect(this.view.models[0].get('description').get('text')).toEqual("Changed");
       });
       it("type is saved", function() {
         selected = $($(this.view.el)).find('#type option:selected')
@@ -96,7 +96,7 @@ describe("EditorNodeView", function() {
         $(options[1]).attr('selected', true);
         newSelectedValue = $(options[1]).val();
         $("#type").blur();            
-        expect(this.view.model.get('type')).toEqual(newSelectedValue); 
+        expect(this.view.models[0].get('type')).toEqual(newSelectedValue); 
       });
     });
 
@@ -122,14 +122,16 @@ describe("EditorNodeView", function() {
       it("lock is saved", function() { 
         $('#lock').attr('checked', 'checked'); 
         $('#lock').click();
-        expect(this.view.model.get('lock')).toBeTruthy();
+        expect(this.view.models[0].get('lock')).toBeTruthy();
       });
     });
 
     describe("When buttons clicked handler fired", function() {
-      it("edit-signal button calls editSignal", function() { 
-        $('#edit-signal').click();
-        expect($a.EditorNodeView.prototype.signalEditor).toHaveBeenCalled();
+      it("edit-signal button calls signalEditor unless disabled", function() {
+        if(!($('#edit-signal').is(':disabled'))) {
+          $('#edit-signal').click();
+          expect($a.EditorNodeView.prototype.signalEditor).toHaveBeenCalled();
+        }
       });
       it("choose-name button calls chooseName", function() { 
         $('#choose-name').click();

@@ -26,6 +26,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:clear_map", @removeLink, @)
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
+    $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
 
@@ -81,8 +82,11 @@ class window.sirius.MapLinkView extends Backbone.View
   # be added to the tree items for this link
   _contextMenu: ->
     contextMenuOptions = {}
-    contextMenuOptions.menuItems = []
-    contextMenuOptions.menuItems = $a.Util.copy($a.link_context_menu)
+    menuItems = $a.Util.copy($a.link_context_menu)
+    #if it has demand profile then we push the Visualize demand item
+    if @model.get('demand')?
+      menuItems.push $a.Util.copy($a.link_context_menu_demand_item)[0]
+    contextMenuOptions.menuItems = menuItems
     #set this id for the select item so we know what event to call
     _.each(contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
     contextMenuOptions.class = 'context_menu'
@@ -96,12 +100,18 @@ class window.sirius.MapLinkView extends Backbone.View
 
   # creates the editor for a link
   _editor: (evt) ->
-    env = new $a.EditorLinkView(elem: 'link', model: @model, width: 375)
+    env = new $a.EditorLinkView(elem: 'link', models: [@model], width: 375)
     $('body').append(env.el)
     env.render()
     $(env.el).tabs()
     $(env.el).dialog('open')
     evt.stop()
+
+  viewDemands: () ->
+    dv = new $a.DemandVisualizer(@model.get('demand'))
+    $('body').append(dv.el)
+    dv.render()
+    $(dv.el).dialog('open')
 
   # The following handles the show/hide of links and arrow heads
   hideLink: ->

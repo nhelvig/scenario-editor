@@ -25,7 +25,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
   ]
 
   renderConstDemands: (sel) ->
-    content = _.map @demand.demands_by_vehicle_type(), (demand, idx) =>
+    content = _.map @demand.demands_by_vehicle_type(), (demand, idx) =>      
       vehicleType = @typeOrder.get('vehicle_type')[idx].get('name')
       args =
         elemId: @link.id
@@ -169,10 +169,10 @@ class window.sirius.DemandVisualizer extends Backbone.View
           if(i % 3 == 0) then 'darkGray' else 'lightGray'
 
       xAxisText = axisGroup.selectAll('text.xAxis').
-      	data(every(xAxisSampleInterval,vals[0])).
-      	enter().
-      	append('svg:text').
-      	attr('x', (d,i) -> xScale(xAxisSampleInterval*i)).
+        data(every(xAxisSampleInterval,vals[0])).
+        enter().
+        append('svg:text').
+        attr('x', (d,i) -> xScale(xAxisSampleInterval*i)).
       	attr('y', height-2).
       	attr('text-anchor','middle').
       	style('font-size', "#{labelFontSize}px").
@@ -194,7 +194,6 @@ class window.sirius.DemandVisualizer extends Backbone.View
         x((d, idx) -> xScale(idx) + padding).
       	y((d) -> height + padding - yScale(d) - 2).
       	interpolate('step-after')
-
       _.each vals, (vehicleTypeVals, i) =>
         vehicleType = @typeOrder.get('vehicle_type')[i].get('name')
         padValueArray(vehicleTypeVals)
@@ -238,7 +237,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
       @dataDisplay = _.template($('#demand-graph-template').html())
       @$el.html @vizWindow(elemId: @link.id, content: @dataDisplay(elemId: @link.id))
     @$el.attr 'title', "Demand - Link #{@link.get('name')}"
-
+  
   # render the dialog box. The calling function has responsability for
   # appending it as well as calling el.tabs and el.diaload('open')
   render: ->

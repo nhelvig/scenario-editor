@@ -21,12 +21,12 @@ $a.nav_bar_menu_items =
     'Close Local Network': (-> $a.broker.trigger('map:clear_map'))
     'Import Local Network': noconfig
   Windows:
-    'Node Browser': (-> $a.broker.trigger("app:open_browser"))
-    'Link Browser': noconfig
+    'Node Browser': (-> $a.BrowserView.start('node'))
+    'Link Browser': (-> $a.BrowserView.start('link'))
     'Path Browser': noconfig
     'Event Browser': noconfig
     'Controller Browser': noconfig
-    'Sensor Browser': noconfig
+    'Sensor Browser': (-> $a.BrowserView.start('sensor'))
     'Network Properties': noconfig
   Tools:
     'Import PeMS data': noconfig
@@ -75,6 +75,12 @@ $a.link_context_menu = [
     event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
 ]
 
+$a.link_context_menu_demand_item = [
+  {
+    label: 'View Demands'
+    className: 'context_menu_item'
+    event: ((e) -> $a.broker.trigger("link:view_demands:#{e.currentTarget.id}")) }
+]
 # Sensor Context Menu
 $a.sensor_context_menu = [
   {
@@ -97,10 +103,6 @@ $a.signal_context_menu = [
     label: 'Clear Selection'
     className: 'context_menu_item'
     event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
-]
-
-$a.demand_context_menu = [
-  { label: 'Visualize demand', className: 'context_menu_item', event: ((e) -> $a.broker.trigger("demand:show_dialog:#{e.currentTarget.id}")) }
 ]
 
 # Node Context Menu

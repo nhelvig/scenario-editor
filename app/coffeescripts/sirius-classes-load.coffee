@@ -29,15 +29,17 @@ $a.sirius_classes_without_extensions = [ 'ArrayText', 'ALatLng',
   'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
   'Weavingfactors', 'WeavingFactorSet' ]
 
+$a.sirius_collection_classes = ['NodeCollection','LinkCollection',
+  'SensorCollection']
+
 $a.sirius_map_view_classes = [
-  'AppView', 'BrowserView', 'ContextMenuItemView','ContextMenuView', 
-  'DemandVisualizer', 'EditorView', 'EditorLinkView', 'EditorSensorView', 
-  'EditorNodeView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
-  'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView',
-  'MapSensorView', 'MapControllerView', 'MapEventView',
+  'AppView', 'BrowserView', 'BrowserTypeView', 'ContextMenuItemView',
+  'ContextMenuView', 'DemandVisualizer', 'EditorView', 'EditorLinkView',
+  'EditorSensorView', 'EditorNodeView', 'FileUploadView', 'LayersMenuView',
+  'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView', 'MapNetworkView', 
+  'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView',
   'MapSignalView', 'Util', 'MessagePanelView', 'TreeView',
   'TreeParentItemView', 'TreeChildItemView',
-  'TreeChildItemLinkView', 'TreeChildItemDemandLinkView',
-  'TreeChildItemNetworkView', 'TreeChildItemNodeView',
+  'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
