@@ -53,7 +53,11 @@ describe("MapLinkView", function() {
       cm = model.get('contextMenu');
       expect(cm).not.toBe(null);
       menuItemLabels = _.pluck(cm.options.menuItems, 'label');
-      expect(menuItemLabels).toEqual(_.pluck($a.link_context_menu,'label'));
+      dataItemLabels = $a.link_context_menu;
+      if(this.view.model.get('demand') !== null)
+        dataItemLabels.push($a.link_context_menu_demand_item[0]);
+      
+      expect(menuItemLabels).toEqual(_.pluck(dataItemLabels,'label'));
     });
   });
   
