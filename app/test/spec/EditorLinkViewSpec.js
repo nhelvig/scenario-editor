@@ -115,7 +115,6 @@ describe("EditorLinkView", function() {
     spyOn($a.EditorLinkView.prototype, 'geomLine').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'geomRoad').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'save').andCallThrough();
-    spyOn($a.EditorLinkView.prototype, 'saveRecord').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveDesc').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveFD').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveDP').andCallThrough();
@@ -139,16 +138,16 @@ describe("EditorLinkView", function() {
       });
       
       it('Is backed by a model instance', function() {
-        expect(this.view.model).toBeDefined();
+        expect(this.view.models).toBeDefined();
       });
       
       it("should should have id", function() {
-        val = "link-dialog-form-" + this.view.model.cid;
+        val = "link-dialog-form-" + this.view.models[0].cid;
         expect(this.view.el.id).toEqual(val);
       });
   
       it("should should have title", function() {
-        val = "Link Editor: " + this.view.model.get('name');
+        val = "Link Editor: " + this.view.models[0].get('name');
         expect(this.view.el.title).toEqual(val);
       });
   
@@ -170,7 +169,7 @@ describe("EditorLinkView", function() {
     });
     
     it("should should have correct type selected", function() {
-      val = this.view.model.get('type');
+      val = this.view.models[0].get('type');
       elem = $($(this.view.el).find('#link_type option:selected'));
       expect(elem).toHaveValue(val);
     });
@@ -178,20 +177,16 @@ describe("EditorLinkView", function() {
     //checks that template was created correctly
     //Note: the lane_offset check cvalls toString to force NaN to a string
     it("has the correct text content", function() {
-      model = this.view.model;
+      model = this.view.models[0];
       fdp = model.get('fundamentaldiagramprofile')
       fd = fdp.get('fundamentaldiagram')[0] || null
       cp = model.get('capacity') || null
       dp = model.get('demand') || null
-      var rec = "";
-      if(model.get('record')) 
-        rec = 'on';
       
       var v = {
         name: model.get('name'),
         description: model.get('description').get('text'),
         roadName: model.get('road_name'),
-        record: rec,
         lanes: model.get('lanes'),
         laneOffset: model.get('lane_offset'),
         length: model.get('length'),
@@ -214,7 +209,6 @@ describe("EditorLinkView", function() {
       var view = this.view;
       expect(view.$('#link_name')).toHaveValue(v.name);
       expect(view.$('#description')).toHaveValue(v.description);
-      expect(view.$('#record')).toHaveValue(v.record);
       expect(view.$('#lanes')).toHaveValue(v.lanes);
       expect(view.$('#lane_offset')).toHaveValue(v.laneOffset.toString());
       expect(view.$('#length')).toHaveValue(v.length);
@@ -256,10 +250,6 @@ describe("EditorLinkView", function() {
       it("Link Tab: 'Road Name' field calls save", function() { 
         $('#road_name').blur();
         expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
-      });
-      it("Link Tab: 'Record' field calls saveRecord", function() { 
-        $('#record').click();
-        expect($a.EditorLinkView.prototype.saveRecord).toHaveBeenCalled();
       });
       it("Link Tab: 'Type' field calls save", function() { 
         $('#link_type').blur();
@@ -406,26 +396,18 @@ describe("EditorLinkView", function() {
       });
     });
     
-    describe("When the record check box click handler fired", function() {
-      it("record is saved", function() { 
-        $('#record').attr('checked', 'checked'); 
-        $('#record').click();
-        expect(this.view.model.get('record')).toBeTruthy();
-      });
-    });
-    
     describe("When fields handlers fired their information is saved", function() {
       _.each(testsLinkGeo, function(test) { 
         it(test.desc, function() {
           $(test.id).val(test.val);
           $(test.id).blur();
-          expect(this.view.model.get(test.field)).toEqual(test.val);
+          expect(this.view.models[0].get(test.field)).toEqual(test.val);
         });
       });
      it("Link Tab: 'Desription' is saved", function() {
        $("#description").val("changed");
        $("#description").blur();
-       expect(this.view.model.get('description').get('text')).toEqual("changed");
+       expect(this.view.models[0].get('description').get('text')).toEqual("changed");
      });
      it("Link Tab: 'Type' is saved", function() {
        selected = $($(this.view.el)).find('#link_type option:selected')
@@ -434,13 +416,13 @@ describe("EditorLinkView", function() {
        $(options[1]).attr('selected', true);
        newSelectedValue = $(options[1]).val();
        $("#link_type").blur();
-       expect(this.view.model.get("type")).toEqual(newSelectedValue);
+       expect(this.view.models[0].get("type")).toEqual(newSelectedValue);
      });
      _.each(testsFD, function(test) { 
        it(test.desc, function() {
          $(test.id).val(test.val);
          $(test.id).blur();
-         fdp = this.view.model.get('fundamentaldiagramprofile');
+         fdp = this.view.models[0].get('fundamentaldiagramprofile');
          fd = fdp.get('fundamentaldiagram')[0];
          expect(fd.get(test.field)).toEqual(test.val);
        });
@@ -449,7 +431,7 @@ describe("EditorLinkView", function() {
        it(test.desc, function() {
          $(test.id).val(test.val);
          $(test.id).blur();
-         dp = this.view.model.get('demand');
+         dp = this.view.models[0].get('demand');
          expect(dp.get(test.field)).toEqual(test.val);
        });
      });
@@ -457,7 +439,7 @@ describe("EditorLinkView", function() {
        it(test.desc, function() {
          $(test.id).val(test.val);
          $(test.id).blur();
-         cp = this.view.model.get('capacity');
+         cp = this.view.models[0].get('capacity');
          if(cp !== undefined)
           expect(cp.get(test.field)).toEqual(test.val);
         });
@@ -467,7 +449,7 @@ describe("EditorLinkView", function() {
        $("#link_demand_start_minute").val(1);
        $("#link_demand_start_second").val(1);
        $("#link_demand_start_hour").blur();
-       dp = this.view.model.get('demand');
+       dp = this.view.models[0].get('demand');
        expect(dp.get("start_time")).toEqual(3661);
      });
      it("Demand Tab: Sampling Period is saved", function() {
@@ -475,7 +457,7 @@ describe("EditorLinkView", function() {
        $("#link_demand_sample_minute").val(1);
        $("#link_demand_sample_second").val(1);
        $("#link_demand_sample_hour").blur();
-       dp = this.view.model.get('demand');
+       dp = this.view.models[0].get('demand');
        expect(dp.get("dt")).toEqual(3661);
      });
      it("Capacity Tab: Start Time is saved", function() {
@@ -483,7 +465,7 @@ describe("EditorLinkView", function() {
        $("#link_capacity_start_minute").val(1);
        $("#link_capacity_start_second").val(1);
        $("#link_capacity_start_hour").blur();
-       cp = this.view.model.get('capacity');
+       cp = this.view.models[0].get('capacity');
        if(cp !== undefined)
         expect(cp.get("start_time")).toEqual(3661);
      });
@@ -492,7 +474,7 @@ describe("EditorLinkView", function() {
        $("#link_capacity_sample_minute").val(1);
        $("#link_capacity_sample_second").val(1);
        $("#link_capacity_sample_hour").blur();
-       cp = this.view.model.get('capacity');
+       cp = this.view.models[0].get('capacity');
        if(cp !== undefined)
         expect(cp.get("dt")).toEqual(3661);
      });

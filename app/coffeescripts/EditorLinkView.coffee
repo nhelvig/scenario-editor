@@ -145,7 +145,7 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   
   # this saves fields in the capacity profiles
   saveCP: (e) ->
-    p = @model.get('capacity')
+    p = @models[0].get('capacity')
     p?.set('text', $("##{e.currentTarget.id}").val())
 
   saveCPTime: ->
@@ -155,11 +155,11 @@ class window.sirius.EditorLinkView extends window.sirius.EditorView
   # save profile data
   _saveProfileData: (args) ->
     id = args.id
-    p = @model.get(args.profile)
+    p = @models[0].get(args.profile)
     p?.set(args.fieldId, $("##{id}").val())
     
   _saveProfileTimeData: (args) ->
-    p = @model.get(args.profile)
+    p = @models[0].get(args.profile)
     start = {
       'h': $("#link_#{args.profile}_start_hour").val()
       'm': $("#link_#{args.profile}_start_minute").val()
