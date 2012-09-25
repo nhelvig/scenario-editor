@@ -120,6 +120,13 @@ window.sirius.Util =
     else
       desc = desc.join("; ")
   
+  # save the description of any model element
+  saveDesc: (opts) ->
+    _.each(opts.models, (m) ->
+        m.set('description', new $a.Description()) unless m.get('description')?
+        m.get('description').set('text', $("##{opts.id}").val())
+    )
+  
   # this method retrieves the geometry from the any model
   getGeometry: (opts) ->
     _.map(opts.models, (m) -> 

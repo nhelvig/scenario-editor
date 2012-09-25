@@ -51,7 +51,7 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
     description:  $a.Util.getDesc(models)
     lat: $a.Util.getGeometry({models:models, geom:'lat'})
     lng: $a.Util.getGeometry({models:models, geom:'lng'})
-    elev: $a.Util.getGeometry({models:models, geom:'elevation'})
+    elevation: $a.Util.getGeometry({models:models, geom:'elevation'})
     lock: if models[0].has('lock') and models[0].get('lock') then 'checked' else ''
 
   # these are callback events for various elements in the interface
@@ -64,8 +64,7 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
   # this method saves the description
   saveDesc: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) ->
-                      m.get('description').set('text', $("##{id}").val()))
+    $a.Util.saveDesc({models: @models, id: id})
   
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element
