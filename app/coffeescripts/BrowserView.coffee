@@ -7,6 +7,7 @@ class window.sirius.BrowserView extends Backbone.View
     switch type
       when 'node' then new window.sirius.BrowserNodeView()
       when 'link' then new window.sirius.BrowserLinkView()
+      when 'sensor' then new window.sirius.BrowserSensorView()
   
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData

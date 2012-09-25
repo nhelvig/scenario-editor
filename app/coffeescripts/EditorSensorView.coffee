@@ -27,8 +27,16 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
   render: ->
     super @elem
     @_setSelectedType()
+    @_checkDisableFields()
     @
 
+  # if in browser we disable some fields from being editted
+  _checkDisableFields: ->
+    if (@models.length > 1)
+      $('#sensor_lat').attr("disabled", true)
+      $('#sensor_lng').attr("disabled", true)
+      $('#sensor_elevation').attr("disabled", true)
+  
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
     format = @models[0].get('data_sources').get('data_source')[0].get('format')

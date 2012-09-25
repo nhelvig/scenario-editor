@@ -26,7 +26,7 @@ $a.nav_bar_menu_items =
     'Path Browser': noconfig
     'Event Browser': noconfig
     'Controller Browser': noconfig
-    'Sensor Browser': noconfig
+    'Sensor Browser': (-> $a.BrowserView.start('sensor'))
     'Network Properties': noconfig
   Tools:
     'Import PeMS data': noconfig

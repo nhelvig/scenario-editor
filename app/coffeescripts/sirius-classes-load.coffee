@@ -29,7 +29,8 @@ $a.sirius_classes_without_extensions = [ 'ArrayText', 'ALatLng',
   'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
   'Weavingfactors', 'WeavingFactorSet' ]
 
-$a.sirius_collection_classes = ['NodeCollection','LinkCollection']
+$a.sirius_collection_classes = ['NodeCollection','LinkCollection',
+  'SensorCollection']
 
 $a.sirius_map_view_classes = [
   'AppView', 'BrowserView', 'BrowserTypeView', 'ContextMenuItemView',

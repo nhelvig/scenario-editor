@@ -31,6 +31,8 @@ class window.sirius.MapNetworkView extends Backbone.View
     $a.nodeList = new $a.NodeCollection(list.get('node'))
     list = $a.models.get('networklist').get('network')[0].get('linklist')
     $a.linkList = new $a.LinkCollection(list.get('link'))
+    list = $a.models.get('sensorlist')
+    $a.sensorList = new $a.SensorCollection(list.get('sensor'))
   
   _drawScenarioItems: () ->
     if @scenario.get('sensorlist')?

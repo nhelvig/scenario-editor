@@ -68,32 +68,30 @@ class window.sirius.BrowserSensorView extends  window.sirius.BrowserView
   $a = window.sirius
   
   initialize: ->
-    $a.linkList.forEach((link) => link.on('change', @rePopulateTable, @))
-    super {elem: 'link'}
+    $a.sensorList.forEach((sensor) => sensor.on('change', @rePopulateTable, @))
+    super {elem: 'sensor'}
   
   render:() ->
-    @$el.dialog({width:850})
+    @$el.dialog({width:800})
     super
   
   renderEditor: (models) ->
-    models = [$a.linkList.at(0)] unless models?
-    super new $a.EditorLinkView(models: models, elem: @elem, width: 375)
+    models = [$a.sensorList.at(0)] unless models?
+    super new $a.EditorSensorView(models: models, elem: @elem, width: 300)
       
   _getData: () ->
-    $a.linkList.getBrowserColumnData()
+    $a.sensorList.getBrowserColumnData()
   
   _getColumns: () ->
     columns =  [
             { "sTitle": "Id","bVisible": false},
-            { "sTitle": "Name","sWidth": "17%"},
-            { "sTitle": "Road Name","sWidth": "17%"},
-            { "sTitle": "Type","sWidth": "17%"},
-            { "sTitle": "Lanes","sWidth": "17%"},
-            { "sTitle": "Begin","sWidth": "16%"},
-            { "sTitle": "End","sWidth": "16%"},
+            { "sTitle": "Type","sWidth": "25%"},
+            { "sTitle": "Link Type","sWidth": "25%"},
+            { "sTitle": "Links","sWidth": "25%"},
+            { "sTitle": "Description","sWidth": "25%"},
         ]
   
   _getSelectedElems: (selectedIds) ->
-    $a.linkList.filter((link) ->
-            link if _.include(selectedIds, link.get('id'))
+    $a.sensorList.filter((sensor) ->
+            sensor if _.include(selectedIds, sensor.get('id'))
         )
