@@ -13,8 +13,8 @@ class window.sirius.MapNetworkView extends Backbone.View
     
   initialize: (@scenario) ->
     @networks =  @scenario.get('networklist').get('network')
-    _.each(@networks, (network) => @_drawNetwork(network))
     @_initializeCollections()
+    _.each(@networks, (network) => @_drawNetwork(network))
     @_drawScenarioItems()
     
     # This class creates the tree view of all the elements of the scenario

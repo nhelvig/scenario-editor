@@ -11,6 +11,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
 
   initialize: (model, @network) ->
     super model
+    @model.on('change:selected', @toggleSelected, @)
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:select_neighbors_out:#{@model.cid}", @selectMyOutLinks, @)
@@ -105,6 +106,14 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $a.broker.trigger("app:tree_highlight:#{io.get('link').cid}")
     $a.broker.trigger("app:tree_show_item:#{io.get('link').cid}")
 
+  # This method toggles the selection of the node
+  toggleSelected: () ->
+    console.log @model
+    if(@model.get('selected') is true)
+      @makeSelected()
+    else
+      @clearSelected()
+  
   # This method swaps the icon for the selected icon
   makeSelected: () ->
     super @_getTypeIcon true

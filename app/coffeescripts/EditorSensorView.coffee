@@ -13,14 +13,14 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
     'blur #sensor_links' : 'saveLinks'
     'blur #sensor_desc' : 'saveDesc'
     'blur #sensor_hour, #sensor_minute, #sensor_second' : 'saveTime'
-    'blur #sensor_lat, #sensor_lng, #sensor_elev' : 'saveGeo'
+    'blur #sensor_lat, #sensor_lng, #sensor_elevation' : 'saveGeo'
     'click #display-at-pos' : 'displayAtPos'
   }    
   
   # the options argument has the Sensor model and type of dialog to
   # create('sensor')
   initialize: (options) ->
-    options.templateData = @_getTemplateData(options.model)
+    options.templateData = @_getTemplateData(options.models)
     super options
 
   # call the super class to set up the dialog box and then set select boxes
@@ -31,73 +31,80 @@ class window.sirius.EditorSensorView extends window.sirius.EditorView
 
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
-    format = @model.get('data_sources').get('data_source')[0].get('format')
-    type = @model.get('type')
-    lType = @model.get('link_type')
+    format = @models[0].get('data_sources').get('data_source')[0].get('format')
+    type = @models[0].get('type')
+    lType = @models[0].get('link_type')
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_format > option[value='#{format}']").attr('selected','selected')
     $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
   # set up a hash of values from the model and inserted into the html template
-  _getTemplateData: (model) ->
-    dt = model.get('data_sources').get('data_source')[0].get('dt')
+  _getTemplateData: (models) ->
+    dt = models[0].get('data_sources').get('data_source')[0].get('dt')
     { 
-      description: model.get('description').get('text')
-      lat: model.get('position').get('point')[0].get('lat')
-      lng: model.get('position').get('point')[0].get('lng')
-      elev: model.get('position').get('point')[0].get('elevation')
+      description: $a.Util.getDesc(models)
+      lat: $a.Util.getGeometry({models:models, geom:'lat'})
+      lng: $a.Util.getGeometry({models:models, geom:'lng'})
+      elev: $a.Util.getGeometry({models:models, geom:'elevation'})
       #TODO: how should I retrieve a point/data_source from the second sensor?
-      url: model.get('data_sources').get('data_source')[0].get('url')
+      url: _.map(models, (m) -> 
+              m.get('data_sources').get('data_source')[0].get('url')).join('; ')
       url_desc: URL_DESC
-      format: model.get('data_sources').get('data_source')[0].get('format')
       dt: $a.Util.convertSecondsToHoursMinSec(dt || 0)
-      links: model.get('link_reference').get('id')
-      link_type: model.get('link_type')
-      sensor_type: model.get('type')
+      links: _.map(models, (m) -> m.get('link_reference').get('id')).join('; ')
     }
   
+
   # these are callback events for various elements in the interface
   # This is used to save the all the fields when focus is lost from
   # the element
   save: (e) ->
     id = e.currentTarget.id
-    fieldId = id
-    fieldId = id[7...] if id.indexOf("sensor") is 0
-    @model.set(fieldId, $("##{id}").val())
+    fieldId = @_getFieldId(id)
+    _.each(@models, (m) -> m.set(fieldId, $("##{id}").val()))
 
   # description is in its own descripiton object
   saveDesc: (e) ->
     id = e.currentTarget.id
-    @model.get('description').set('text', $("##{id}").val())
+    _.each(@models, (m) ->
+                      m.get('description').set('text', $("##{id}").val()))
   
   # links are in the link_reference attribute
   saveLinks: (e) ->
     id = e.currentTarget.id
-    @model.get('link_reference').set('id', $("##{id}").val())
+    @models[0].get('link_reference').set('id', $("##{id}").val())
   
   # format and url in the data course attribute
   saveDataSource: (e) ->
     id = e.currentTarget.id
-    fieldId = id
-    fieldId = id[7...] if id.indexOf("sensor") is 0
-    p = @model.get('data_sources').get('data_source')[0]
-    p?.set(fieldId, $("##{id}").val())
+    fieldId = @_getFieldId(id)
+    _.each(@models, (m) ->
+          p = m.get('data_sources').get('data_source')[0]
+          p?.set(fieldId, $("##{id}").val())
+    )
   
   # saves the dt field -- first converts h, m, s to seconds
   saveTime: (e) ->
-    p = @model.get('data_sources').get('data_source')[0]
     dt = {
       'h': $("#sensor_hour").val()
       'm': $("#sensor_minute").val()
       's': $("#sensor_second").val()
-    } 
-    p?.set('dt', $a.Util.convertToSeconds(dt))
+    }
+    _.each(@models, (m) ->
+                      p = m.get('data_sources').get('data_source')[0]
+                      p?.set('dt', $a.Util.convertToSeconds(dt))
+    )
   
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element
   saveGeo: (e) ->
     id = e.currentTarget.id
-    @model.get('position').get('point')[0].set(id, $("##{id}").val())
+    fieldId = @_getFieldId(id)
+    @models[0].get('position').get('point')[0].set(fieldId, $("##{id}").val())
+  
+  _getFieldId: (id) ->
+    id = id[7...] if id.indexOf("sensor") is 0
+    id
   
   displayAtPos: (e) ->
     e.preventDefault()

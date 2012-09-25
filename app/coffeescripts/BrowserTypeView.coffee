@@ -25,8 +25,10 @@ class window.sirius.BrowserNodeView extends  window.sirius.BrowserView
   
   _getSelectedElems: (selectedIds) ->
     selectedNodes = $a.nodeList.filter((node) ->
-            node if _.include(selectedIds, node.get('id'))
+              node if _.include(selectedIds, node.get('id'))
         )
+    #$a.nodeList.setSelected(selectedNodes)
+    selectedNodes
   
 class window.sirius.BrowserLinkView extends  window.sirius.BrowserView
   $a = window.sirius

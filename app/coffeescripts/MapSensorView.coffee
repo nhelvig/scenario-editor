@@ -19,7 +19,7 @@ class window.sirius.MapSensorView extends window.sirius.MapMarkerView
     
   # creates the editor for this marker
   _editor: ->
-    env = new $a.EditorSensorView(elem: 'sensor', model: @model, width: 300)
+    env = new $a.EditorSensorView(elem: 'sensor', models: [@model], width: 300)
     $('body').append(env.el)
     env.render()
     $(env.el).tabs()

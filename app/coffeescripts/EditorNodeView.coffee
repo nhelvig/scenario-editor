@@ -48,23 +48,12 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models) ->
     name: _.map(models, (m) -> m.get('name')).join(", ") 
-    description: @_getDesc(models)
-    lat: _.map(models, (m) -> m.get('position').get('point')[0].get('lat')).join(", ")
-    lng:  _.map(models, (m) -> m.get('position').get('point')[0].get('lng')).join(", ")
-    elevation:  _.map(models, (m) -> m.get('position').get('point')[0].get('elevation')).join(", ")
+    description:  $a.Util.getDesc(models)
+    lat: $a.Util.getGeometry({models:models, geom:'lat'})
+    lng: $a.Util.getGeometry({models:models, geom:'lng'})
+    elev: $a.Util.getGeometry({models:models, geom:'elevation'})
     lock: if models[0].has('lock') and models[0].get('lock') then 'checked' else ''
 
-  #if descriptions on the models are empty then keep description blank
-  _getDesc: (models) ->
-    desc = _.map(models, (m) -> 
-                  if m.get('description')?
-                    m.get('description').get('text')
-                )
-    if(undefined in desc)
-      desc = ''
-    else
-      desc = desc.join("; ")
-  
   # these are callback events for various elements in the interface
   # This is used to save the name, type and description when focus is
   # lost from the element

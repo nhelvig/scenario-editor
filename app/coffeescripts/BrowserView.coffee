@@ -72,7 +72,7 @@ class window.sirius.BrowserView extends Backbone.View
         prevPos = e.pageX
       drag: (e) =>
         @_setResizerHeight()
-        total = $("#left").width() +  $("#right").width()
+        total = $("#left").width() + $("#right").width()
         delta = (prevPos - e.pageX)
         prevPos = e.pageX
         divLeftWidth = $("#left").width() - delta
@@ -94,7 +94,7 @@ class window.sirius.BrowserView extends Backbone.View
   
   attachRowSelection: () ->
     $('#browser_table tbody').click( (event) =>
-        $(event.target.parentNode).toggleClass('row_selected');
+        $(event.target.parentNode).toggleClass('row_selected')
         selectedIds = []
         $(@dTable.fnSettings().aoData).each( (data) ->  
           if($(this.nTr).hasClass('row_selected'))
@@ -106,7 +106,7 @@ class window.sirius.BrowserView extends Backbone.View
         @renderEditor(selectedModels) unless _.isEmpty(selectedIds)
         $(@nev.el).tabs("select", tabSelected)
     )
-    
+
   rePopulateTable: () ->
     @data = @_getData()
     rowIndex = 0
@@ -116,4 +116,3 @@ class window.sirius.BrowserView extends Backbone.View
             self.dTable.fnUpdate(self.data[rowIndex],rowIndex)
           rowIndex++
     )
-    
