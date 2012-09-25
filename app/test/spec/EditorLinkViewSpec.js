@@ -125,7 +125,7 @@ describe("EditorLinkView", function() {
     
     this.view = new $a.EditorLinkView({
       elem: 'link', 
-      model: model
+      models: [model]
     });
   });
 

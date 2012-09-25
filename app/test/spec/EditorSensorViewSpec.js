@@ -13,7 +13,7 @@ describe("EditorSensorView", function() {
     spyOn($a.EditorSensorView.prototype, 'saveGeo').andCallThrough();
     this.view = new $a.EditorSensorView({
       elem: 'sensor', 
-      model: model
+      models: [model]
     });
   });
   
@@ -27,15 +27,15 @@ describe("EditorSensorView", function() {
     });
     
     it('Is backed by a model instance', function() {
-      expect(this.view.model).toBeDefined();
+      expect(this.view.models).toBeDefined();
     });
     
     it("should should have id", function() {
-      expect(this.view.el.id).toEqual("sensor-dialog-form-" + this.view.model.cid);
+      expect(this.view.el.id).toEqual("sensor-dialog-form-" + this.view.models[0].cid);
     });
 
     it("should should have title", function() {
-      title = "Sensor Editor: " + this.view.model.get('name');
+      title = "Sensor Editor: " + this.view.models[0].get('name');
       expect(this.view.el.title).toEqual(title);
     });
 
@@ -53,7 +53,7 @@ describe("EditorSensorView", function() {
       expect(this.view.el.innerHTML).toContain(desc);
     });
     it("should should have correct type selected", function() {
-      type = this.view.model.get('type');
+      type = this.view.models[0].get('type');
       elem = $($(this.view.el).find('#sensor_type option:selected'));
       expect(elem).toHaveValue(type);
     });
@@ -66,7 +66,7 @@ describe("EditorSensorView", function() {
    
     //checks that template was created correctly
     it("has the correct text content", function() {
-      model = this.view.model;
+      model = this.view.models[0];
       desc = model.get('description').get('text');
       expect(this.view.$('#sensor_desc')).toHaveValue(desc);
       expect(this.view.$('#sensor_type')).toHaveValue(model.get('type'));
@@ -85,14 +85,14 @@ describe("EditorSensorView", function() {
       lng = model.get('position').get('point')[0].get('lng');
       expect(this.view.$('#sensor_lng')).toHaveValue(lng);
       elev = model.get('position').get('point')[0].get('elevation').toString();
-      expect(this.view.$('#sensor_elev')).toHaveValue(elev);
+      expect(this.view.$('#sensor_elevation')).toHaveValue(elev);
     });
   });
  
   describe("Events", function() {
     beforeEach(function() {
       this.view.render();
-      model = this.view.model;
+      model = this.view.models[0];
       point = model.get('display_position').get('point')[0];
     });
 
@@ -142,7 +142,7 @@ describe("EditorSensorView", function() {
         expect($a.EditorSensorView.prototype.saveGeo).toHaveBeenCalled();
       });
       it("Geo Tab: 'Elevation' field calls saveGeo", function() { 
-        $('#sensor_elev').blur();
+        $('#sensor_elevation').blur();
         expect($a.EditorSensorView.prototype.saveGeo).toHaveBeenCalled();
       });
     });

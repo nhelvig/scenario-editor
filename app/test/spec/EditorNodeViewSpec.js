@@ -10,7 +10,7 @@ describe("EditorNodeView", function() {
     spyOn($a.EditorNodeView.prototype, 'removeJoinLinks').andCallThrough();
     this.view = new $a.EditorNodeView({
       elem: 'node', 
-      model: model
+      models: [model]
     });
   });
   
