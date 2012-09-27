@@ -1,0 +1,6 @@
+prototypes/*/js/**
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
+app/js/**
+
