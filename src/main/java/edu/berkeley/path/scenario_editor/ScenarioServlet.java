@@ -29,19 +29,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
-* This Class Handles Ajax requests to retrieve Alarm and System information and
-* returns them to the client.
+* This Class Handles Ajax requests to and returns them to the client.
 *
 */
 public class ScenarioServlet extends HttpServlet {
   /**
   *
-  * Handles Get Ajax request from Alarm dashboard and sends back all
-  * configured alarm and system information
+  * Handles Get Ajax request
   *
-  * @param request Ajax request for system and alarm information
-  * @param response The HttpServletResponse object containing JSON system and
-  * alarm information
+  * @param request Ajax request for system 
+  * @param response The HttpServletResponse object containing JSON
   */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
                                                     throws ServletException, IOException {
