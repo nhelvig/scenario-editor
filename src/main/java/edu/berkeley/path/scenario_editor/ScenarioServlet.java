@@ -22,11 +22,24 @@
 **/
 package edu.berkeley.path.scenario_editor;
 
-import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.BufferedReader;  
+import javax.xml.transform.stream.StreamResult; 
+import javax.xml.transform.stream.StreamSource;  
+
+import javax.xml.transform.Transformer;  
+import javax.xml.transform.TransformerFactory; 
+import javax.xml.transform.OutputKeys;
+
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.FileWriter;
 
 /**
 * This Class Handles Ajax requests to and returns them to the client.
@@ -40,14 +53,54 @@ public class ScenarioServlet extends HttpServlet {
   * @param request Ajax request for system 
   * @param response The HttpServletResponse object containing JSON
   */
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-                                                    throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+                                          throws ServletException, IOException {
   
-    String jsonTest = "{'test':'json'}";
-    
+    String jsonTest = "{'test':'jsonfunsaljdf'}";
+    getPostData(request);
     response.setContentType("application/json");
     response.setStatus(HttpServletResponse.SC_OK);
     response.getWriter().print(jsonTest);
   
   }
+  
+  private void getPostData(HttpServletRequest req) {
+    StringBuilder sb = new StringBuilder();
+    try {
+        BufferedReader reader = req.getReader();
+
+        String line="";
+        line = reader.readLine();
+        while (line != null){
+            sb.append(line).append("\n");
+            line = reader.readLine();
+        } 
+        reader.close();
+
+        format(sb.toString());
+    } catch(Exception e) {
+        //TODO how are we logging?
+    }
+    
+  }
+  
+  public void format(String unformattedXml) {
+      try {
+        StreamSource xmlInput = new StreamSource(new StringReader(unformattedXml));
+        StringWriter stringWriter = new StringWriter();
+        StreamResult xmlOutput = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setAttribute("indent-number", 2);
+        Transformer transformer = transformerFactory.newTransformer(); 
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.transform(xmlInput, xmlOutput);
+        FileWriter fw = new FileWriter("file.xml");
+        fw.write(xmlOutput.getWriter().toString().trim());
+        fw.close();
+      } catch (Exception e) {
+        throw new RuntimeException(e); // simple exception handling, please review it
+      }
+    }
+
+   
 }
