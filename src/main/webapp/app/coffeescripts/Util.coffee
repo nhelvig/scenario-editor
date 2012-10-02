@@ -74,6 +74,9 @@ window.sirius.Util =
     xhReq.open("post", attrs.serverWrite, false)
     xhReq.setRequestHeader('Content-Type',"text/xml")
     xhReq.onload = ->
+      # xhReq = new XMLHttpRequest()
+      # xhReq.open("post", attrs.serverDownload, false)
+      # xhReq.send()
       elemIF = document.createElement("iframe")
       elemIF.id = "download-iframe"
       elemIF.src = attrs.serverDownload
