@@ -1,1 +1,15 @@
 <div id="map_canvas" class="map_canvas_narrow"></div>
+<script type="text/template" id="parent-item-menu-template">
+  <a class='dropdown-toggle' data-toggle='dropdown' href='#{{textLower}}'>{{text}}<b class='caret'></b></a>
+  <ul class='dropdown-menu'></ul>
+</script>
+<script type="text/template" id="child-item-menu-template">
+  <a href='#'>{{text}}</a>
+</script>
+ <script type="text/template" id="context-menu-template">
+  <div id="{{elemId}}" class="{{elemClass}}">
+  </div>
+</script>
+<script type="text/template" id="message-panel-template">
+  {{message}} 
+</script>

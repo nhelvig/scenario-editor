@@ -5,13 +5,16 @@ class window.sirius.AppView extends Backbone.View
   $a = window.sirius
   $evt = google.maps.event
 
+  @start: ->
+    new window.sirius.AppView().render()
+    
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
     _.templateSettings =
       evaluate: /{%([\s\S]+?)%}/g,
       interpolate: /\{\{(.+?)\}\}/g
     $a.broker = _.clone(Backbone.Events)
-    @render()
+    @
 
   render: ->
     @_initializeMap()
@@ -19,8 +22,6 @@ class window.sirius.AppView extends Backbone.View
     @_contextMenu()
     @_layersMenu()
     @_messagePanel()
-    @_treeMenuToggle()
-    @_attachEvents()
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
@@ -29,7 +30,6 @@ class window.sirius.AppView extends Backbone.View
     $a.broker.on('app:open_scenario', @openScenario, @)
     $a.broker.on("app:save_scenario", @saveScenario, @)
     $a.broker.on("map:alert", @showAlert, @)
-    $a.broker.on("map:toggle_tree", @toggleTree, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -66,10 +66,10 @@ class window.sirius.AppView extends Backbone.View
   # This creates the main navigation bar menu
   _navBar: () ->
     attrs = { name: 'localNetwork', id: 'uploadField', attach: '#main-nav div' }
-    new $a.FileUploadView(attrs)
+    @fuv = new $a.FileUploadView(attrs)
 
     attrs = { menuItems: $a.nav_bar_menu_items, attach: '#main-nav div' }
-    new $a.NavBarView(attrs)
+    @nbv = new $a.NavBarView(attrs)
 
   # This creates the layers menu bar
   _layersMenu: () ->
@@ -79,7 +79,7 @@ class window.sirius.AppView extends Backbone.View
               parentId: 'lh'
               menuItems: $a.layers_menu
             }
-    lmenu = new $a.LayersMenuView(attrs)
+    @lmenu = new $a.LayersMenuView(attrs)
 
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
@@ -93,8 +93,6 @@ class window.sirius.AppView extends Backbone.View
         doc = document.implementation.createDocument(null, null, null)
         attrs =
           xml: $a.models.to_xml(doc)
-          serverWrite: "../Scenario.do"
-          serverDownload: "../Scenario.do?action=download"
         $a.Util.writeAndDownloadXML(attrs)
      else
         $a.broker.trigger("app:show_message:info", "No scenario loaded")
@@ -118,10 +116,11 @@ class window.sirius.AppView extends Backbone.View
     $a.broker.trigger('app:show_message:success', 'Cleared map')
 
   _messagePanel: ->
-    new $a.MessagePanelView()
+    @mpv = new $a.MessagePanelView()
 
   _setKeyDownEvents: (e) ->
     # Open Local Network ALT-A
+    # Save Local Network ALT-S
     # We set ALT_DOWN to false here because
     # the click event is preventing key up from being called
     if $a.ALT_DOWN and e.keyCode == 65
@@ -148,36 +147,3 @@ class window.sirius.AppView extends Backbone.View
     $('.container').fadeIn(200)
     $('#lh').fadeIn(200)
     $('#mh').fadeIn(200)
-
-  _treeMenuToggle: () ->
-    toggleTree = document.createElement "button"
-    toggleTree.innerHTML = " < "
-    toggleTree.id = "collapseTree"
-    document.getElementById("map_canvas").appendChild toggleTree
-    toggleTree.onclick = ->
-      $a.broker.trigger('map:toggle_tree', 0)
-
-  _attachEvents: ->
-    $('#expand-all').click( ->
-      all_checks = $('.expand-tree')
-      btn = document.getElementById('expand-all')
-      if btn.innerHTML == '+' and all_checks.length > 0
-        checkBox.checked = true for checkBox in all_checks
-        btn.innerHTML = '-'
-      else if btn.innerHTML == '-' and all_checks.length > 0
-        checkBox.checked = false for checkBox in all_checks
-        btn.innerHTML = '+'
-      )
-
-  toggleTree: (display) =>
-    button = document.getElementById 'collapseTree'
-    if button.innerHTML == ' &gt; ' and (display == 0 or display == false)
-      button.innerHTML = ' < '
-      $('#right_tree').hide(200)
-      align = right: '0%'
-      $('#collapseTree').animate(align, 200)
-    else if button.innerHTML == ' &lt; ' and (display == 0 or display == true)
-      button.innerHTML = ' > '
-      $('#right_tree').show(200)
-      align = right: '22%'
-      $('#collapseTree').animate(align, 200)

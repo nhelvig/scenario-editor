@@ -22,7 +22,6 @@
 **/
 package edu.berkeley.path.scenario_editor;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +46,7 @@ import java.io.OutputStream;
 * This Class Handles Ajax requests to and returns them to the client.
 *
 */
-public class ScenarioServlet extends HttpServlet {
+public class ScenarioDownloadServlet extends HttpServlet {
   
   /**
   *
@@ -62,7 +61,6 @@ public class ScenarioServlet extends HttpServlet {
       setUpDownload(response);
     } catch(Exception e) {
       e.printStackTrace();
-      //TODO how are we logging?
     }
   
   }
@@ -72,19 +70,22 @@ public class ScenarioServlet extends HttpServlet {
   * Handles POST Ajax request
   *
   * @param request Ajax request for system 
-  * @param response The HttpServletResponse object containing JSON
+  * @param response The HttpServletResponse object is not used here
   */
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
                                           throws ServletException, IOException {
     try {
         getPostData(request);
-      
     } catch(Exception e) {
       e.printStackTrace();
-      //TODO how are we logging?
     }
   }
   
+  /**
+  * Takes the reponse object and sets up the file for download
+  *
+  * @param response The HttpServletResponse object used to hold the file contents
+  */
   private void setUpDownload(HttpServletResponse response)
   {
     try{
@@ -107,6 +108,12 @@ public class ScenarioServlet extends HttpServlet {
     }
   }
   
+  /**
+  * Takes the request object, gets the xml data and writes it to the file system
+  * after formatting the xml
+  *
+  * @param request The HttpServletRequest object holds xml file contents
+  */
   private void getPostData(HttpServletRequest req) {
     StringBuilder sb = new StringBuilder();
     try {
@@ -123,10 +130,14 @@ public class ScenarioServlet extends HttpServlet {
         formatXML(sb.toString());
     } catch(Exception e) {
         e.printStackTrace();
-        //TODO how are we logging?
     }
   }
   
+  /**
+  * A helper method used to format and write the xml to the file system.
+  *
+  * @param unformattedXML The string of xml not formatted
+  */
   public void formatXML(String unformattedXml) {
       try {
         StreamSource xmlInput = new StreamSource(new StringReader(unformattedXml));

@@ -9,8 +9,9 @@ class window.sirius.MapLinkView extends Backbone.View
   $a = window.sirius
 
   initialize: (@model, @network, @legs) ->
-    @_createEncodedPath @legs
-    @_saveEncodedPath()
+    if(@legs?)
+      @_createEncodedPath @legs
+      @_saveEncodedPath()
     @_drawLink()
     @_contextMenu()
     $a.broker.on('map:init', @render, @)
