@@ -73,17 +73,39 @@ class window.sirius.TreeView extends Backbone.View
       modelListName: 'signal'
       attachId: 'signals'
     })
-
+    
+    $a.broker.on("map:toggle_tree", @toggleTree, @)
     $a.broker.on('app:main_tree', @render, @)
 
   # Attach itself as well as trigger events for the parent and child
   # nodes to be rendered
   render: ->
     $(@parent).append(@el)
+    @_setUpToggleAndExpand()
     $a.broker.trigger('app:parent_tree')
     $a.broker.trigger('app:child_trees')
+    $a.broker.trigger('map:toggle_tree')
     @
 
+  _setUpToggleAndExpand: () ->
+    @treeOpen = false
+    $("#map_canvas").append $('#toggle-tree-button-template').html()
+    
+    $('#collapseTree').click( ->
+      $a.broker.trigger('map:toggle_tree')
+    )
+    
+    $('#expand-all').click( ->
+      all_checks = $('.expand-tree')
+      btn = $('#expand-all')[0]
+      if btn.innerHTML == '+' and all_checks.length > 0
+        checkBox.checked = true for checkBox in all_checks
+        btn.innerHTML = '-'
+      else if btn.innerHTML == '-' and all_checks.length > 0
+        checkBox.checked = false for checkBox in all_checks
+        btn.innerHTML = '+'
+    )
+  
   # Creates all the parents nodes and prepares them for rendering
   _createParentNodes: (list) ->
     _.each list, (e) ->  new $a.TreeParentItemView(e)
@@ -164,3 +186,18 @@ class window.sirius.TreeView extends Backbone.View
         [element.get('node')]
       when 'sensors'
         [element.get('link')]
+  
+  toggleTree: (display) =>
+    button = $('#collapseTree')[0]
+    if @treeOpen
+      @treeOpen = false
+      button.innerHTML = ' < '
+      $('#right_tree').hide(200)
+      align = right: '0%'
+      $('#collapseTree').animate(align, 200)
+    else
+      @treeOpen = true
+      button.innerHTML = ' > '
+      $('#right_tree').show(200)
+      align = right: '22%'
+      $('#collapseTree').animate(align, 200)

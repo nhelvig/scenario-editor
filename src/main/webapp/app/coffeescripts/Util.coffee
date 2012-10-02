@@ -70,16 +70,14 @@ window.sirius.Util =
   # file and download it back to the user. Call From "Save Local Network" menu 
   # item
   writeAndDownloadXML: (attrs) ->
+    servletPath = "../ScenarioDownload.do"
     xhReq = new XMLHttpRequest()
-    xhReq.open("post", attrs.serverWrite, false)
+    xhReq.open("post", servletPath, false)
     xhReq.setRequestHeader('Content-Type',"text/xml")
     xhReq.onload = ->
-      # xhReq = new XMLHttpRequest()
-      # xhReq.open("post", attrs.serverDownload, false)
-      # xhReq.send()
       elemIF = document.createElement("iframe")
       elemIF.id = "download-iframe"
-      elemIF.src = attrs.serverDownload
+      elemIF.src =servletPath
       elemIF.style.display = "none"
       $('body').append(elemIF)
     xhReq.send(new XMLSerializer().serializeToString(attrs.xml))
