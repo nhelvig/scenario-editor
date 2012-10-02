@@ -93,8 +93,8 @@ class window.sirius.AppView extends Backbone.View
         doc = document.implementation.createDocument(null, null, null)
         attrs =
           xml: $a.models.to_xml(doc)
-          serverWrite: "../scenario.php"
-          serverDownload: "../scenario-download.php"
+          serverWrite: "../Scenario.do"
+          serverDownload: "../Scenario.do?action=download"
         $a.Util.writeAndDownloadXML(attrs)
      else
         $a.broker.trigger("app:show_message:info", "No scenario loaded")

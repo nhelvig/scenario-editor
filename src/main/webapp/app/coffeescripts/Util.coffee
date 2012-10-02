@@ -69,17 +69,20 @@ window.sirius.Util =
   # This makes an ajax call to the server in order to write the model's xml 
   # file and download it back to the user. Call From "Save Local Network" menu 
   # item
-  writeAndDownloadXML: (xml, serverWrite, serverDownload) ->
+  writeAndDownloadXML: (attrs) ->
     xhReq = new XMLHttpRequest()
     xhReq.open("post", attrs.serverWrite, false)
     xhReq.setRequestHeader('Content-Type',"text/xml")
     xhReq.onload = ->
+      # xhReq = new XMLHttpRequest()
+      # xhReq.open("post", attrs.serverDownload, false)
+      # xhReq.send()
       elemIF = document.createElement("iframe")
       elemIF.id = "download-iframe"
       elemIF.src = attrs.serverDownload
       elemIF.style.display = "none"
       $('body').append(elemIF)
-    xhReq.send(new XMLSerializer().serializeToString(xml))
+    xhReq.send(new XMLSerializer().serializeToString(attrs.xml))
   
   # this takes seconds and returns an array hold the extracted hours,
   # minutes, seconds
