@@ -34,8 +34,8 @@ window.load_sirius = ->
             'js/menu-data.js',
             'js/sirius-classes-load.js', ->
               load_sirius_classes ->
-                  # load the application
-                 window.sirius.AppView.start()
+                # load the application
+                window.sirius.AppView.start()
 
 head.js 'https://www.google.com/jsapi',
         '../lib/js/jquery-1.7.1.js',

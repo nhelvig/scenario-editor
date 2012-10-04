@@ -61,6 +61,11 @@ $a.main_context_menu = [
     className:'context_menu_item'
     event: (-> $a.map.panTo $a.contextMenu.position)
     label:'Center map here' }
+  {className:'context_menu_separator'}
+  {
+    className:'context_menu_item'
+    event: (-> $a.broker.trigger("map:add_node"))
+    label:'Add Node here' }
 ]
 
 # Link Context Menu
