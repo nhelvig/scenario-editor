@@ -46,6 +46,7 @@ import java.io.OutputStream;
 * This Class Handles Ajax requests to and returns them to the client.
 *
 */
+@SuppressWarnings("serial")
 public class ScenarioDownloadServlet extends HttpServlet {
   
   /**
@@ -75,14 +76,14 @@ public class ScenarioDownloadServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
                                           throws ServletException, IOException {
     try {
-        getPostData(request);
+      getPostData(request);
     } catch(Exception e) {
       e.printStackTrace();
     }
   }
   
   /**
-  * Takes the reponse object and sets up the file for download
+  * Takes the response object and sets up the file for download
   *
   * @param response The HttpServletResponse object used to hold the file contents
   */

@@ -31,7 +31,7 @@ public class TestScenarioDownloadServlet
     /**
      * Rigourous Test ;)
      */
-    public void testApp()
+    public void testFormatXML()
     {
         assertTrue( true );
     }
