@@ -6,24 +6,30 @@ load_sirius_classes = (after) ->
   head.js "js/Sirius.js", ->
     class_paths = _.map(
       window.sirius.sirius_classes_without_extensions, (cname) -> 
-        "js/#{cname}.js"
+        "js/views/*/#{cname}.js"
     )
     class_paths = class_paths.concat _.flatten(
       _.map(
         window.sirius.sirius_map_view_classes, (cname) -> 
-          "js/#{cname}.js"
+          "js/views/*/#{cname}.js"
         )
     )
     class_paths = class_paths.concat _.flatten(
       _.map(
         window.sirius.sirius_classes_with_extensions, (cname) -> 
-          ["js/#{cname}.js","js/extensions/#{cname}.js"]
+          ["js/views/*/#{cname}.js","js/views/*/extensions/#{cname}.js"]
         )
     )
     class_paths = class_paths.concat _.flatten(
       _.map(
         window.sirius.sirius_collection_classes, (cname) -> 
           "js/collections/#{cname}.js"
+        )
+    )
+    class_paths = class_paths.concat _.flatten(
+      _.map(
+        window.sirius.sirius_util_classes, (cname) -> 
+          "js/util/#{cname}.js"
         )
     )
     class_paths.push after
