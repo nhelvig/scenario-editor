@@ -23,7 +23,7 @@ load_sirius_classes = (after) ->
     class_paths = class_paths.concat _.flatten(
       _.map(
         window.sirius.sirius_collection_classes, (cname) -> 
-          "js/#{cname}.js"
+          "js/collections/#{cname}.js"
         )
     )
     class_paths.push after
