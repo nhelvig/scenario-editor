@@ -60,4 +60,5 @@ head.js 'https://www.google.com/jsapi',
         '../lib/js/bootstrap/js/bootstrap.min.js', ->
                google.load "maps", "3",
                   callback: "window.load_sirius()",
-                  other_params: "libraries=geometry,drawing&sensor=false"             
+                  other_params: "libraries=geometry,drawing&sensor=false"
+            
