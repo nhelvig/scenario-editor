@@ -1,6 +1,6 @@
 $a = window.sirius
 
-$a.sirius_classes_with_extensions = [ 'Begin', 'CapacityProfile',
+$a.models_with_extensions = [ 'Begin', 'CapacityProfile',
   'Controller', 'ControllerSet', 'Data_sources', 'DemandProfile',
   'Density', 'Display_position', 'Dynamics', 'End', 'Event', 'EventSet',
   'FundamentalDiagramProfile','Input', 'Intersection', 'Link', 'LinkList',
@@ -10,7 +10,7 @@ $a.sirius_classes_with_extensions = [ 'Begin', 'CapacityProfile',
   'Splitratio', 'SplitratioProfile'
 ]
 
-$a.sirius_classes_without_extensions = [ 'ArrayText', 'ALatLng',
+$a.models_without_extensions = [ 'ALatLng',
   'CapacityProfile', 'Data_source', 'Decision_point',
   'Decision_point_split', 'Decision_points', 'DecisionPoints',
   'DemandProfileSet', 'Description', 'DirectionsCacheEntry',
@@ -23,16 +23,18 @@ $a.sirius_classes_without_extensions = [ 'ArrayText', 'ALatLng',
   'NetworkConnections', 'Networkpair', 'Od_demandProfile',
   'ODDemandProfileSet', 'Outputs', 'On_off_switch', 'Outputs',
   'Parameter', 'Parameters', 'Plan_reference', 'Points', 'Postmile',
-  'Qcontroller', 'ReferenceHelper', 'Route_segment', 'Route_segments',
+  'Qcontroller', 'Route_segment', 'Route_segments',
   'RouteSegments', 'ScenarioElement', 'Splitratio', 'SplitratioEvent',
   'SplitRatioProfileSet', 'Stage', 'TargetElements', 'To', 'Units',
   'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
   'Weavingfactors', 'WeavingFactorSet' ]
 
-$a.sirius_collection_classes = ['NodeCollection','LinkCollection',
+$a.models_util = ['ArrayText', 'ReferenceHelper']
+
+$a.collection_classes = ['NodeCollection','LinkCollection',
   'SensorCollection']
 
-$a.sirius_map_view_classes = [
+$a.map_view_classes = [
   'AppView', 'BrowserView', 'BrowserTypeView', 'ContextMenuItemView',
   'ContextMenuView', 'DemandVisualizer', 'EditorView', 'EditorLinkView',
   'EditorSensorView', 'EditorNodeView', 'FileUploadView', 'LayersMenuView',
@@ -44,4 +46,4 @@ $a.sirius_map_view_classes = [
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.sirius_util_classes = ['Util']
+$a.util_classes = ['Util']
