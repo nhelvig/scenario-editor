@@ -15,16 +15,15 @@ class window.sirius.NodeListCollection extends Backbone.Collection
     )
   
   addOne: (e) ->
-    gPoint = new google.maps.Point(e.pageX, e.pageY)
-    latlng = $a.map.getProjection().fromPointToLatLng(gPoint)
-    window.console.log latlng.lat
+    latlng = $a.contextMenu.position
     n = new $a.Node()
     pt = new $a.Point()
-    pt.set('lat',latlng.lat)
-    pt.set('lng',latlng.lng)
+    pt.set('lat',latlng.lat())
+    pt.set('lng',latlng.lng())
     pt.set('elevation', NaN)
     p = new $a.Position()
-    p.set('point', pt)
+    p.get('point').splice(0,2) # position starts with two empty points
+    p.get('point').push(pt)
     n.set('position', p)
     @add(n)
       

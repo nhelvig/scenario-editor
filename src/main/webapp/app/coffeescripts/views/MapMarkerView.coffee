@@ -10,7 +10,7 @@ class window.sirius.MapMarkerView extends Backbone.View
     @latLng = $a.Util.getLatLng(model)
     @draw()
     gevent = google.maps.event
-    gevent.addListener(@marker, 'dragend', @dragMarker())
+    #gevent.addListener(@marker, 'dragend', @dragMarker())
     gevent.addListener(@marker, 'click', (event) => @manageMarkerSelect())
     gevent.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
     $a.broker.on('map:clear_selected', @clearSelected, @)
@@ -21,6 +21,8 @@ class window.sirius.MapMarkerView extends Backbone.View
 
   render: ->
     @marker.setMap($a.map)
+    console.log @marker
+    $a.testM = @marker
     @
 
   # Draw the marker by determining the type of icon
@@ -29,7 +31,6 @@ class window.sirius.MapMarkerView extends Backbone.View
   # to pass the correct icon
   draw: ->
     @marker = new google.maps.Marker
-        map: null
         position: @latLng
         draggable: true
         icon: @getIcon()
