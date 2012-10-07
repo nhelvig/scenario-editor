@@ -49,7 +49,8 @@ window.load_sirius = ->
                 # load the application
                 window.sirius.AppView.start()
 
-head.js 'https://www.google.com/jsapi',
+head.js 'http://www.google.com/jsapi',
+        'http://maps.googleapis.com/maps/api/js?key=AIzaSyAsii_YGX6OZ70lonsZf35cZPfOpO6ShC8&sensor=false',
         '../lib/js/jquery-1.7.1.js',
         '../lib/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
         '../lib/js/underscore.js',

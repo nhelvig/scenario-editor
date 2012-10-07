@@ -26,3 +26,5 @@ window.sirius.Node::outputs = ->
 
 window.sirius.Node::ios = ->
   _.union(@outputs(), @inputs())
+
+  

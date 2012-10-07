@@ -28,7 +28,8 @@ class window.sirius.MapNetworkView extends Backbone.View
   
   _initializeCollections: () ->
     list = $a.models.get('networklist').get('network')[0].get('nodelist')
-    $a.nodeList = new $a.NodeCollection(list.get('node'))
+    $a.nodeList = new $a.NodeListCollection(list.get('node'))
+    
     list = $a.models.get('networklist').get('network')[0].get('linklist')
     $a.linkList = new $a.LinkCollection(list.get('link'))
     list = $a.models.get('sensorlist')
@@ -124,7 +125,9 @@ class window.sirius.MapNetworkView extends Backbone.View
     new $a.MapLinkView(params.linkModel, params.network, legs)
 
   _drawNodes: (nodes, network) ->
-    _.each(nodes, (i) ->  new $a.MapNodeView(i, network))
+    $a.nodeListView = new $a.NodeListView($a.nodeList, network)
+    $a.nodeListView.render()
+    #_.each(nodes, (i) ->  new $a.MapNodeView(i, network))
 
   _drawSensors: (sensors) ->
     _.each(sensors, (i) ->  new $a.MapSensorView(i))

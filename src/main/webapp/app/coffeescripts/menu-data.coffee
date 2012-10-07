@@ -64,7 +64,7 @@ $a.main_context_menu = [
   {className:'context_menu_separator'}
   {
     className:'context_menu_item'
-    event: (-> $a.broker.trigger("map:add_node"))
+    event: ((e) -> $a.nodeList.trigger("nodes:add", e))
     label:'Add Node here' }
 ]
 
