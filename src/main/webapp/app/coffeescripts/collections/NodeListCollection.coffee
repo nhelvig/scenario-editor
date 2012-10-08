@@ -14,7 +14,7 @@ class window.sirius.NodeListCollection extends Backbone.Collection
       node.set('selected', true) if !node.get('selected')
     )
   
-  addOne: (e) ->
+  addOne: ->
     latlng = $a.contextMenu.position
     n = new $a.Node()
     pt = new $a.Point()

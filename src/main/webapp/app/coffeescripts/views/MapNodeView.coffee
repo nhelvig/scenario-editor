@@ -108,7 +108,6 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
 
   # This method toggles the selection of the node
   toggleSelected: () ->
-    console.log @model
     if(@model.get('selected') is true)
       @makeSelected()
     else

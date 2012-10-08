@@ -1,7 +1,7 @@
 # MapMarkerView is base class for scenario elements represented by a
 # single latitude and longitude on the Map
 class window.sirius.MapMarkerView extends Backbone.View
-  @IMAGE_PATH: '../lib/data/img/'
+  @IMAGE_PATH: '/lib/data/img/'
   $a = window.sirius
 
   initialize: (@model) ->
