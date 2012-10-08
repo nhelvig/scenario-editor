@@ -21,8 +21,6 @@ class window.sirius.MapMarkerView extends Backbone.View
 
   render: ->
     @marker.setMap($a.map)
-    console.log @marker
-    $a.testM = @marker
     @
 
   # Draw the marker by determining the type of icon
