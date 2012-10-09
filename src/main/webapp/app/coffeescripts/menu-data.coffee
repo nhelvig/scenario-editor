@@ -64,7 +64,7 @@ $a.main_context_menu = [
   {className:'context_menu_separator'}
   {
     className:'context_menu_item'
-    event: ((e) -> $a.nodeList.trigger("nodes:add", e))
+    event: (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
     label:'Add Node here' }
 ]
 

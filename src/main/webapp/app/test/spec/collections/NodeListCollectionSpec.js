@@ -23,7 +23,7 @@ describe("NodeListCollection", function() {
     });
     
     it("should be watching addOne", function() {
-      this.nCollect.trigger("nodes:add");
+      this.nCollect.trigger("nodes:add", new google.maps.LatLng(37,-122));
       expect($a.NodeListCollection.prototype.addOne).toHaveBeenCalled();
     });
   });
@@ -48,9 +48,8 @@ describe("NodeListCollection", function() {
   
   describe("addOne ", function() {
     it("should create a new node and add it to the collection", function() {
-      $a.contextMenu.position = new google.maps.LatLng(37,-122);
       var lengthBefore = this.nCollect.length;
-      this.nCollect.addOne();
+      this.nCollect.addOne(new google.maps.LatLng(37,-122));
       expect(lengthBefore + 1).toEqual(this.nCollect.length);
     });
   });

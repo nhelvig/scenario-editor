@@ -20,8 +20,7 @@ describe("NodeListView", function() {
     });
     
     it("should be watching addAndRender", function() {
-      $a.contextMenu.position = new google.maps.LatLng(37,-122);
-      this.nCollect.addOne();
+      this.nCollect.addOne(new google.maps.LatLng(37,-122));
       expect($a.NodeListView.prototype.addAndRender).toHaveBeenCalled();
     });
   });
