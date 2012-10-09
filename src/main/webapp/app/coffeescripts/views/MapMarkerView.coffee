@@ -1,7 +1,7 @@
 # MapMarkerView is base class for scenario elements represented by a
 # single latitude and longitude on the Map
 class window.sirius.MapMarkerView extends Backbone.View
-  @IMAGE_PATH: '../lib/data/img/'
+  @IMAGE_PATH: '/lib/data/img/'
   $a = window.sirius
 
   initialize: (@model) ->
@@ -10,7 +10,7 @@ class window.sirius.MapMarkerView extends Backbone.View
     @latLng = $a.Util.getLatLng(model)
     @draw()
     gevent = google.maps.event
-    gevent.addListener(@marker, 'dragend', @dragMarker())
+    #gevent.addListener(@marker, 'dragend', @dragMarker())
     gevent.addListener(@marker, 'click', (event) => @manageMarkerSelect())
     gevent.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
     $a.broker.on('map:clear_selected', @clearSelected, @)
@@ -29,7 +29,6 @@ class window.sirius.MapMarkerView extends Backbone.View
   # to pass the correct icon
   draw: ->
     @marker = new google.maps.Marker
-        map: null
         position: @latLng
         draggable: true
         icon: @getIcon()
