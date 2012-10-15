@@ -26,4 +26,6 @@ class window.sirius.NodeListCollection extends Backbone.Collection
     p.get('point').push(pt)
     n.set('position', p)
     @add(n)
-      
+ 
+  isOneSelected: (nodes) ->
+    @forEach((node) -> return node.get('selected') if node.get('selected'))  

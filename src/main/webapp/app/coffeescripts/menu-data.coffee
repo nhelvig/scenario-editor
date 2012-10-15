@@ -48,24 +48,20 @@ context_menu_item = (label, event) ->
 
 # Main window context menu
 $a.main_context_menu = [
-  {
-    className:'context_menu_item'
-    event: (-> $a.map.setZoom $a.map.getZoom()+1)
-    label:'Zoom in' }
-  {
-    className:'context_menu_item'
-    event: (-> $a.map.setZoom $a.map.getZoom()-1)
-    label:'Zoom out' }
+  context_menu_item 'Zoom in', (-> $a.map.setZoom $a.map.getZoom()+1)
+  context_menu_item 'Zoom out', (-> $a.map.setZoom $a.map.getZoom()-1)
   {className:'context_menu_separator'}
-  {
-    className:'context_menu_item'
-    event: (-> $a.map.panTo $a.contextMenu.position)
-    label:'Center map here' }
+  context_menu_item 'Center map here', (-> $a.map.panTo $a.contextMenu.position)
+]
+
+$a.node_add = [
   {className:'context_menu_separator'}
-  {
-    className:'context_menu_item'
-    event: (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
-    label:'Add Node here' }
+  context_menu_item 'Add Node here', (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
+]
+$a.node_selected = [
+  context_menu_item 'Add Node and Link here', (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
+  context_menu_item 'Add Origin here', (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
+  context_menu_item 'Add Destination here', (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
 ]
 
 # Link Context Menu

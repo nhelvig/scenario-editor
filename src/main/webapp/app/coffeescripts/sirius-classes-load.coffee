@@ -35,12 +35,12 @@ $a.collection_classes = ['NodeListCollection','NodeListView', 'LinkCollection',
   'SensorCollection']
 
 $a.map_view_classes = [
-  'AppView', 'BrowserView', 'BrowserTypeView', 'ContextMenuItemView',
-  'ContextMenuView', 'DemandVisualizer', 'EditorView', 'EditorLinkView',
-  'EditorSensorView', 'EditorNodeView', 'FileUploadView', 'LayersMenuView',
-  'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView', 'MapNetworkView', 
-  'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView',
-  'MapSignalView', 'MessagePanelView', 'TreeView',
+  'AppView', 'BrowserView', 'BrowserTypeView', 'ContextMenuHandler', 
+  'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
+  'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
+  'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView',
+  'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 
+  'MapEventView', 'MapSignalView', 'MessagePanelView', 'TreeView',
   'TreeParentItemView', 'TreeChildItemView',
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
