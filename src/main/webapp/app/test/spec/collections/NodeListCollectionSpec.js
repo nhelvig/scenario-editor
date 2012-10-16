@@ -6,7 +6,7 @@ describe("NodeListCollection", function() {
   beforeEach(function() {
     network = $a.scenario.get('networklist').get('network')[0];
     models = network.get('nodelist').get('node');
-    spyOn($a.NodeListCollection.prototype, 'addOne').andCallThrough();
+    spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     
     this.nCollect = new $a.NodeListCollection(models);
   });
@@ -22,9 +22,9 @@ describe("NodeListCollection", function() {
       expect(arrSel.length).toEqual(this.nCollect.length);
     });
     
-    it("should be watching addOne", function() {
+    it("should be watching addNode", function() {
       this.nCollect.trigger("nodes:add", new google.maps.LatLng(37,-122));
-      expect($a.NodeListCollection.prototype.addOne).toHaveBeenCalled();
+      expect($a.NodeListCollection.prototype.addNode).toHaveBeenCalled();
     });
   });
   
@@ -46,10 +46,10 @@ describe("NodeListCollection", function() {
     });
   });
   
-  describe("addOne ", function() {
+  describe("addNode ", function() {
     it("should create a new node and add it to the collection", function() {
       var lengthBefore = this.nCollect.length;
-      this.nCollect.addOne(new google.maps.LatLng(37,-122));
+      this.nCollect.addNode(new google.maps.LatLng(37,-122));
       expect(lengthBefore + 1).toEqual(this.nCollect.length);
     });
   });

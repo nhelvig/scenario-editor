@@ -71,64 +71,42 @@ $a.node_selected = [
 
 # Link Context Menu
 $a.link_context_menu = [
-  {
-    label: 'Select Link and its Nodes'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")) }
-  {
-    label: 'Clear Selection'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
+  context_menu_item  'Select Link and its Nodes',
+                      ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
+  context_menu_item  'Clear Selection',
+                      ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]
 
 $a.link_context_menu_demand_item = [
-  {
-    label: 'View Demands'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("link:view_demands:#{e.currentTarget.id}")) }
+  context_menu_item  'View Demands'
+                      ((e) -> $a.broker.trigger("link:view_demands:#{e.currentTarget.id}"))
 ]
 # Sensor Context Menu
 $a.sensor_context_menu = [
-  {
-    label: 'Select sensor link'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")) }
-  {
-    label: 'Clear Selection'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
+  context_menu_item 'Select sensor link',
+                    ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
+  context_menu_item 'Clear Selection',
+                    ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]
 
 # Signal Context Menu
 $a.signal_context_menu = [
-  {
-    label: 'Select signal node'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")) }
-  {
-    label: 'Clear Selection'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
+  context_menu_item 'Select signal node',
+                    ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
+  context_menu_item 'Clear Selection',
+                    ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]
 
 # Node Context Menu
 $a.node_context_menu = [
-  {
-    label: 'Select node and its links'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")) }
-  {
-    label: 'Select Outgoing links'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:select_neighbors_out:#{e.currentTarget.id}")) }
-  {
-    label: 'Select Incoming links'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:select_neighbors_in:#{e.currentTarget.id}")) }
-  {
-    label: 'Clear Selection'
-    className: 'context_menu_item'
-    event: ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")) }
+  context_menu_item 'Select node and its links',
+                    ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
+  context_menu_item 'Select Outgoing links',
+                    ((e) -> $a.broker.trigger("map:select_neighbors_out:#{e.currentTarget.id}"))
+  context_menu_item 'Select Incoming links',
+                    ((e) -> $a.broker.trigger("map:select_neighbors_in:#{e.currentTarget.id}"))
+  context_menu_item 'Clear Selection',
+                    ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]
 
 # Layers Menu

@@ -2,7 +2,7 @@ describe("menu-data", function() {
   $a = window.sirius;
   
   beforeEach(function() {
-    spyOn($a.NodeListCollection.prototype, 'addOne').andCallThrough();
+    spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     
     network = $a.scenario.get('networklist').get('network')[0];
     models = network.get('nodelist').get('node');
@@ -32,7 +32,7 @@ describe("menu-data", function() {
     });
     it("should trigger nodes:add for 'Add Node Here'", function() {
       ($a.node_add[1].event)();
-      expect($a.NodeListCollection.prototype.addOne).toHaveBeenCalled();
+      expect($a.NodeListCollection.prototype.addNode).toHaveBeenCalled();
     });
   });
 });

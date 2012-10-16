@@ -1,9 +1,8 @@
-class window.sirius.LinkCollection extends Backbone.Collection
+class window.sirius.LinkListCollection extends Backbone.Collection
   $a = window.sirius
   model: $a.Link
   
-  initialize: ->
-    @on('links:add', @addOne, @)
+  initialize: (@models)->
     $a.broker.on('link_coll:add', @addLink, @)
   
   addLink: (args) ->
@@ -11,7 +10,7 @@ class window.sirius.LinkCollection extends Backbone.Collection
     begin = new window.sirius.Begin()
     begin.set('node_id', args.begin.get('id'))
     begin.set('node', args.begin)
-
+    
     end = new window.sirius.End()
     end.set('node_id', args.end.get('id'))
     end.set('node', args.end)
@@ -33,6 +32,5 @@ class window.sirius.LinkCollection extends Backbone.Collection
                     link.get('end').get('node').get('name')
                   ]
                 )
-  
 
   

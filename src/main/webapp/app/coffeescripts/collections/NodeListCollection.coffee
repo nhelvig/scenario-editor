@@ -4,7 +4,7 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   
   initialize:(@models) ->
     @forEach((node) -> node.set('selected', false))
-    @on('nodes:add', @addOne, @)
+    @on('nodes:add', @addNode, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
     @on('nodes:add_dest', @addLinkDest, @)
@@ -17,7 +17,7 @@ class window.sirius.NodeListCollection extends Backbone.Collection
       node.set('selected', true) if !node.get('selected')
     )
   
-  addOne: (position, type) ->
+  addNode: (position, type) ->
     latlng = position
     n = new $a.Node()
     pt = new $a.Point()
@@ -33,17 +33,17 @@ class window.sirius.NodeListCollection extends Backbone.Collection
     n
 
   addLink: (position) ->
-    node = @addOne(position)
+    node = @addNode(position)
     selNode = _.filter(@models, (node) -> node.get('selected') is true)
     $a.broker.trigger('link_coll:add', {begin:selNode[0], end:node})
   
   addLinkOrigin: (position) ->
-    node = @addOne(position,'terminal')
+    node = @addNode(position,'terminal')
     selNode = _.filter(@models, (node) -> node.get('selected') is true)
     $a.broker.trigger('link_coll:add', {begin:node, end:selNode[0] })
     
   addLinkDest: (position) ->
-    node = @addOne(position, 'terminal')
+    node = @addNode(position, 'terminal')
     selNode = _.filter(@models, (node) -> node.get('selected') is true)
     $a.broker.trigger('link_coll:add', {begin:selNode[0], end:node})
     

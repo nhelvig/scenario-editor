@@ -20,7 +20,7 @@ describe("NodeListView", function() {
     });
     
     it("should be watching addAndRender", function() {
-      this.nCollect.addOne(new google.maps.LatLng(37,-122));
+      this.nCollect.addNode(new google.maps.LatLng(37,-122));
       expect($a.NodeListView.prototype.addAndRender).toHaveBeenCalled();
     });
   });
