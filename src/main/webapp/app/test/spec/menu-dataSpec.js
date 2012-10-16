@@ -31,7 +31,7 @@ describe("menu-data", function() {
       expect(Math.floor($a.map.center.lat())).toEqual(pos.lat());
     });
     it("should trigger nodes:add for 'Add Node Here'", function() {
-      ($a.main_context_menu[5].event)();
+      ($a.node_add[1].event)();
       expect($a.NodeListCollection.prototype.addOne).toHaveBeenCalled();
     });
   });

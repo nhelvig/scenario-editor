@@ -53,4 +53,12 @@ describe("NodeListCollection", function() {
       expect(lengthBefore + 1).toEqual(this.nCollect.length);
     });
   });
+
+  describe("isOneSelected ", function() {
+    it("should return true if one node is selected", function() {
+      expect(this.nCollect.isOneSelected()).not.toBeTruthy();
+      this.nCollect.models[0].set('selected', true);
+      expect(this.nCollect.isOneSelected()).toBeTruthy();
+    });
+  });
 });

@@ -5,6 +5,9 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   initialize:(@models) ->
     @forEach((node) -> node.set('selected', false))
     @on('nodes:add', @addOne, @)
+    @on('nodes:add_link', @addLink, @)
+    @on('nodes:add_origin', @addOne, @)
+    @on('nodes:add_dest', @addOne, @)
   
   getBrowserColumnData: () ->
     @models.map((node) -> [node.get('id'), node.get('name'),node.get('type')])
@@ -26,6 +29,17 @@ class window.sirius.NodeListCollection extends Backbone.Collection
     p.get('point').push(pt)
     n.set('position', p)
     @add(n)
- 
-  isOneSelected: (nodes) ->
-    @forEach((node) -> return node.get('selected') if node.get('selected'))  
+    n
+
+  addLink: (position) ->
+    node = @addOne(position)
+    selNode = _.filter(@models, (node) -> node.get('selected') is true)
+    $a.broker.trigger('link_coll:add', {end:node, begin:selNode[0]})
+    
+  isOneSelected: ->
+    selected = false
+    @forEach((node) ->
+      if node.get('selected')
+        selected = true
+    )
+    selected

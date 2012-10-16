@@ -109,8 +109,10 @@ class window.sirius.MapMarkerView extends Backbone.View
 
   # This method swaps the icon for the selected icon
   makeSelected: (img) ->
+    @model.set('selected', true)
     @_setSelected img
 
   # This method swaps the icon for the de-selected icon
   clearSelected: (img) ->
+    @model.set('selected', false)
     @_setSelected img

@@ -56,16 +56,6 @@ class window.sirius.AppView extends Backbone.View
         items: $a.main_context_menu
         map: $a.map is not null
         })
-    # contextMenuOptions = {}
-    # contextMenuOptions.menuItems= $a.main_context_menu
-    # contextMenuOptions.id='main-context-menu'
-    # contextMenuOptions.class='context_menu'
-    # $a.contextMenu = new $a.ContextMenuView(contextMenuOptions)
-    # $evt.addListener(
-    #                   $a.map,
-    #                   'rightclick',
-    #                   (mouseEvent) -> $a.contextMenu.show mouseEvent.latLng
-    #                 )
 
   # This creates the main navigation bar menu
   _navBar: () ->
