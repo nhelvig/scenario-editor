@@ -1,4 +1,3 @@
-window.sirius.MapRouteHandler =
-  directionsService = new google.maps.DirectionsService()
+window.sirius.MapRouteHandler
   
   
