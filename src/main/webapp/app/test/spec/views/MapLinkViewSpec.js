@@ -8,7 +8,7 @@ describe("MapLinkView", function() {
     model = network.get('linklist').get('link')[0];
 
     expectedEncodedPath = "}r}eF`bmiVuGn@c@DwIhAiBT";
-    legs = [
+    model.legs = [
       {
         steps: [
           {
@@ -26,7 +26,7 @@ describe("MapLinkView", function() {
     spyOn($a.MapLinkView.prototype, 'clearSelected').andCallThrough();
     spyOn($a.MapLinkView.prototype, '_triggerClearSelectEvents').andCallThrough();
     spyOn($a.MapLinkView.prototype, 'linkSelect').andCallThrough();
-    this.view = new $a.MapLinkView(model, network, legs);
+    this.view = new $a.MapLinkView(model, network);
   });
   
   afterEach(function() {
