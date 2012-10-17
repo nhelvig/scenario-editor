@@ -46,4 +46,4 @@ $a.map_view_classes = [
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.util_classes = ['Util']
+$a.util_classes = ['Util', 'GoogleMapRouteHandler']

@@ -11,7 +11,7 @@ describe("LinkListCollection", function() {
     begin = models[0].get('begin');
     end = models[0].get('end');
   });
-
+  
   describe("Instantiation", function() {
     it("sets models to a collection of links", function() {
       expect(this.lColl.models).not.toBeNull();
@@ -24,16 +24,15 @@ describe("LinkListCollection", function() {
   });
   
    describe("getBrowserColumnData", function() {
-     it("should return id, name,road_name, type, lanes, begin node name, and 
-                          end node name for editor browser table", function() {
+       it("should return id, name,road_name, type, lanes, begin node name, and end node name for editor browser table", function() {
        arrColumnsData = this.lColl.getBrowserColumnData();
        expect(arrColumnsData[0][0]).toEqual(this.lColl.models[0].get('id'));
        expect(arrColumnsData[0][1]).toEqual(this.lColl.models[0].get('name'));
        expect(arrColumnsData[0][2]).toEqual(this.lColl.models[0].get('road_name'));
        expect(arrColumnsData[0][3]).toEqual(this.lColl.models[0].get('type'));
        expect(arrColumnsData[0][4]).toEqual(this.lColl.models[0].get('lanes'));
-       expect(arrColumnsData[0][5]).toEqual(this.lColl.models[0].get('begin').get('name'));
-       expect(arrColumnsData[0][6]).toEqual(this.lColl.models[0].get('end').get('name'));
+       expect(arrColumnsData[0][5]).toEqual(this.lColl.models[0].get('begin').get('node').get('name'));
+       expect(arrColumnsData[0][6]).toEqual(this.lColl.models[0].get('end').get('node').get('name'));
      });
    });
   

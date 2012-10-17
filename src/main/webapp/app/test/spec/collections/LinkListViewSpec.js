@@ -1,64 +1,53 @@
 describe("LinkListView", function() {
   $a = window.sirius;
-  var models;
-  var network;
+  var models, network, begin, end;
   
-  // beforeEach(function() {
-  //   network = $a.scenario.get('networklist').get('network')[0];
-  //   models = network.get('nodelist').get('node');
-  //   spyOn($a.NodeListCollection.prototype, 'addOne').andCallThrough();
-  //   
-  //   this.nCollect = new $a.NodeListCollection(models);
-  // });
+  beforeEach(function() {
+    loadFixtures('context.menu.view.fixture.html');
+    network = $a.scenario.get('networklist').get('network')[0];
+    models = network.get('linklist').get('link');
+    spyOn($a.LinkListView.prototype, 'addAndRender').andCallThrough();
+    spyOn($a.LinkListView.prototype, 'createAndDrawLink').andCallThrough();
+    
+    this.lColl = new $a.LinkListCollection(models);
+    this.view = new $a.LinkListView(this.lColl, network);
+    begin = models[0].get('begin');
+    end = models[0].get('end');
+  });
+  
+  describe("Instantiation", function() {
+    it("sets all its collection and network attributes", function() {
+      expect(this.view.collection).not.toBeNull();
+      expect(this.view.network).not.toBeNull();
+    });
+    
+    it("should be watching addAndRender", function() {
+      this.lColl.addLink({begin:begin,end:end});
+      expect($a.LinkListView.prototype.addAndRender).toHaveBeenCalled();
+    });
+  
+    it("should be watching createAndDrawLink", function() {
+      $a.broker.trigger('map:draw_link', models[0]);
+      expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();
+    });
+    
+    it("should call getLinkGeometry, create GoogleRouteHandler", function() {
+      expect(this.view.routeHandler).not.toBeNull();
+    });
+  });
 
-  // describe("Instantiation", function() {
-  //   it("sets models to a collection of nodes", function() {
-  //     expect(this.nCollect.models).not.toBeNull();
-  //   });
-  // 
-  //   it("sets all its models selected attribute to false", function() {
-  //     mod = this.nCollect.models;
-  //     arrSel = mod.filter(function(node){ return node.get('selected') == false});
-  //     expect(arrSel.length).toEqual(this.nCollect.length);
-  //   });
-  //   
-  //   it("should be watching addOne", function() {
-  //     this.nCollect.trigger("nodes:add", new google.maps.LatLng(37,-122));
-  //     expect($a.NodeListCollection.prototype.addOne).toHaveBeenCalled();
-  //   });
-  // });
-  // 
-  // describe("getBrowserColumnData", function() {
-  //   it("should return id, name, type for editor browser table", function() {
-  //     arrColumnsData = this.nCollect.getBrowserColumnData();
-  //     expect(arrColumnsData[0][0]).toEqual(this.nCollect.models[0].get('id'));
-  //     expect(arrColumnsData[0][1]).toEqual(this.nCollect.models[0].get('name'));
-  //     expect(arrColumnsData[0][2]).toEqual(this.nCollect.models[0].get('type'));
-  //   });
-  // });
-  // 
-  // describe("setSelected ", function() {
-  //   it("should sets the select field to true", function() {
-  //     mod = this.nCollect.models;
-  //     this.nCollect.setSelected(mod);
-  //     arrSel = mod.filter(function(node){ return node.get('selected') == true});
-  //     expect(arrSel.length).toEqual(this.nCollect.length);
-  //   });
-  // });
-  // 
-  // describe("addOne ", function() {
-  //   it("should create a new node and add it to the collection", function() {
-  //     var lengthBefore = this.nCollect.length;
-  //     this.nCollect.addOne(new google.maps.LatLng(37,-122));
-  //     expect(lengthBefore + 1).toEqual(this.nCollect.length);
-  //   });
-  // });
-  // 
-  // describe("isOneSelected ", function() {
-  //   it("should return true if one node is selected", function() {
-  //     expect(this.nCollect.isOneSelected()).not.toBeTruthy();
-  //     this.nCollect.models[0].set('selected', true);
-  //     expect(this.nCollect.isOneSelected()).toBeTruthy();
-  //   });
-  // });
+  describe("createAndDrawLink", function() {
+      it("should create MapLinkViews for link", function() {
+        mlv = this.view.createAndDrawLink(models[0]);
+        expect(mlv).not.toBeNull();
+        expect(mlv.link.getMap()).toEqual($a.map);
+      });
+    });
+    
+  describe("addAndRender", function() {
+    it("should create a MapNodeView and render it", function() {
+      link = this.view.addAndRender(models[0]);
+      expect(link.get('linkgeometry')).not.toBeNull();
+    });
+  });
 });

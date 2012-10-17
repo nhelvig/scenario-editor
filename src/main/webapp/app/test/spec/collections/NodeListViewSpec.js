@@ -8,7 +8,8 @@ describe("NodeListView", function() {
     network = $a.scenario.get('networklist').get('network')[0];
     models = network.get('nodelist').get('node');
     spyOn($a.NodeListView.prototype, 'addAndRender').andCallThrough();
-    
+    spyOn($a.NodeListView.prototype, 'render').andCallThrough();
+  
     this.nCollect = new $a.NodeListCollection(models);
     this.view = new $a.NodeListView(this.nCollect, network);
   });
@@ -23,6 +24,11 @@ describe("NodeListView", function() {
       this.nCollect.addNode(new google.maps.LatLng(37,-122));
       expect($a.NodeListView.prototype.addAndRender).toHaveBeenCalled();
     });
+    
+    it("should be watching render", function() {
+      $a.broker.trigger('map:init')
+      expect($a.NodeListView.prototype.render).toHaveBeenCalled();
+    });
   });
 
   describe("Rendering", function() {
@@ -33,9 +39,9 @@ describe("NodeListView", function() {
     });
   });
   
-  describe("addOne", function() {
+  describe("addNodeView", function() {
     it("should create a MapNodeView for a Node model", function() {
-      this.view.addOne(models[0]);
+      this.view.addNodeView(models[0]);
       expect(this.view.mnv).not.toBeNull();
     });
   });

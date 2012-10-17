@@ -3,16 +3,18 @@ class window.sirius.NodeListView extends Backbone.Collection
   views : []
   
   initialize: (@collection, @network) ->
+    $a.broker.on('map:init', @render, @)
     @collection.on('add', @addAndRender, @)
   
-  addOne: (node) ->
+  addNodeView: (node) ->
     mnv = new $a.MapNodeView(node, @network)
+    mnv.render()
     @views.push(mnv)
     mnv
     
   addAndRender: (node) ->
-    @addOne(node).render()
+    @addNodeView(node)
   
   render: ->
-    @collection.forEach(@addOne, @)
+    @collection.forEach(@addNodeView, @)
     @

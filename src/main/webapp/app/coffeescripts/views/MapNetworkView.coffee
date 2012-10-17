@@ -57,10 +57,9 @@ class window.sirius.MapNetworkView extends Backbone.View
   # These methods instantiate each elements view instance in the map
   _drawLinks: (network) ->
     $a.linkListView = new $a.LinkListView($a.linkList, network)
-
+    
   _drawNodes: (nodes, network) ->
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
-    $a.nodeListView.render()
 
   _drawSensors: (sensors) ->
     _.each(sensors, (i) ->  new $a.MapSensorView(i))
