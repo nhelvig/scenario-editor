@@ -35,7 +35,7 @@ $a.collection_classes = ['NodeListCollection','NodeListView',
   'LinkListCollection', 'LinkListView', 'SensorCollection']
 
 $a.map_view_classes = [
-  'AppView', 'BrowserView', 'BrowserTypeView', 'ContextMenuHandler', 
+  'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
   'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
   'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView',
@@ -46,4 +46,4 @@ $a.map_view_classes = [
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.util_classes = ['Util', 'GoogleMapRouteHandler']
+$a.util_classes = ['ContextMenuHandler', 'GoogleMapRouteHandler', 'Util']

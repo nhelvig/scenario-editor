@@ -70,6 +70,7 @@ class window.sirius.MapLinkView extends Backbone.View
           icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
           fillColor: 'blue'
           offset: '50%'
+          scale: 0.5
         }]
       strokeOpacity: 0.6
       strokeWeight: 4

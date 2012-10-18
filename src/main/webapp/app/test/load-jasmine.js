@@ -15,7 +15,10 @@
     'DensitySpec', 'EndSpec', 'EventSpec', 'InputSpec', 'IntersectionSpec',
     'LinkSpec', 'NodeSpec', 'OutputSpec', 'OdSpec', 'ScenarioSpec',
     'SignalSpec', 'SplitratioProfileSpec'
-  ]; 
+  ];
+  
+  util_jasmine_specs = ['ContextMenuHandlerSpec'
+  ];
   
   load_sirius_classes = function(after) {
     return head.js("../js/models/Sirius.js",'../js/sirius-classes-load.js', function() {
@@ -62,6 +65,9 @@
           })));
           class_paths = class_paths.concat(_.flatten(_.map(collections_jasmine_specs, function(cname) {
             return "spec/collections/" + cname + ".js";
+          })));
+          class_paths = class_paths.concat(_.flatten(_.map(util_jasmine_specs, function(cname) {
+            return "spec/util/" + cname + ".js";
           })));
           class_paths.push(after);
           return head.js.apply(this, class_paths);
