@@ -7,7 +7,7 @@ class window.sirius.GoogleMapRouteHandler
     
   # recursive method used to grab the Google route for every link
   # indexOfLink starts at the end of the link list and is decreased 
-  # on each recrusive call
+  # on each recursive call
   _requestLink: (indexOfLink) ->
     if indexOfLink > -1
       link = @links[indexOfLink]
