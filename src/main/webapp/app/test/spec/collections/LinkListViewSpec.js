@@ -14,7 +14,7 @@ describe("LinkListView", function() {
     begin = models[0].get('begin');
     end = models[0].get('end');
   });
-  
+    
   describe("Instantiation", function() {
     it("sets all its collection and network attributes", function() {
       expect(this.view.collection).not.toBeNull();
@@ -35,14 +35,14 @@ describe("LinkListView", function() {
       expect(this.view.routeHandler).not.toBeNull();
     });
   });
-
+   
   describe("createAndDrawLink", function() {
-      it("should create MapLinkViews for link", function() {
-        mlv = this.view.createAndDrawLink(models[0]);
-        expect(mlv).not.toBeNull();
-        expect(mlv.link.getMap()).toEqual($a.map);
-      });
+    it("should create MapLinkViews for link", function() {
+      mlv = this.view.createAndDrawLink(models[0]);
+      expect(mlv).not.toBeNull();
+      expect(mlv.link.getMap()).toEqual($a.map);
     });
+  });
     
   describe("addAndRender", function() {
     it("should create a MapNodeView and render it", function() {

@@ -1,3 +1,5 @@
+# This handles the routing calls and will eventually become only one way we get
+# routing information
 class window.sirius.GoogleMapRouteHandler
   $a = window.sirius
   
@@ -46,7 +48,7 @@ class window.sirius.GoogleMapRouteHandler
         if rte.warnings.length > 0
           msg = "#{WARNING_MSG} #{rte.warnings}"
           $a.broker.trigger('app:show_message:info', msg)
-        link.legs = rte.legs
+        link.legs = rte.legs if link?
         $a.broker.trigger('map:draw_link', link)
       else #if @_isOverQuery(status) and params.attempts < 10
         setTimeout (() => @_directionsRequest(request)), 3000
@@ -55,6 +57,6 @@ class window.sirius.GoogleMapRouteHandler
     )
     
   #checks to see if we are over the google query limit
-  _isOverQuery: () ->
+  _isOverQuery: (status) ->
     status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT
   

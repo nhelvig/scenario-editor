@@ -17,7 +17,7 @@
     'SignalSpec', 'SplitratioProfileSpec'
   ];
   
-  util_jasmine_specs = ['ContextMenuHandlerSpec'
+  util_jasmine_specs = ['ContextMenuHandlerSpec', 'GoogleMapRouteHandlerSpec'
   ];
   
   load_sirius_classes = function(after) {
