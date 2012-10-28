@@ -1,5 +1,5 @@
 # This class is used to manage our sensor models.
-class window.sirius.SensorCollection extends Backbone.Collection
+class window.sirius.SensorListCollection extends Backbone.Collection
   $a = window.sirius
   model: $a.Sensor
   

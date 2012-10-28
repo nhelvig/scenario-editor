@@ -24,15 +24,18 @@ describe("LinkListCollection", function() {
   });
   
    describe("getBrowserColumnData", function() {
-       it("should return id, name,road_name, type, lanes, begin node name, and end node name for editor browser table", function() {
+      var desc = "should return id, name,road_name, type, lanes, ";
+      desc += "begin node name, and end node name for editor browser table";
+       it(desc, function() {
        arrColumnsData = this.lColl.getBrowserColumnData();
-       expect(arrColumnsData[0][0]).toEqual(this.lColl.models[0].get('id'));
-       expect(arrColumnsData[0][1]).toEqual(this.lColl.models[0].get('name'));
-       expect(arrColumnsData[0][2]).toEqual(this.lColl.models[0].get('road_name'));
-       expect(arrColumnsData[0][3]).toEqual(this.lColl.models[0].get('type'));
-       expect(arrColumnsData[0][4]).toEqual(this.lColl.models[0].get('lanes'));
-       expect(arrColumnsData[0][5]).toEqual(this.lColl.models[0].get('begin').get('node').get('name'));
-       expect(arrColumnsData[0][6]).toEqual(this.lColl.models[0].get('end').get('node').get('name'));
+       lColl = this.lColl.models[0];
+       expect(arrColumnsData[0][0]).toEqual(lColl.get('id'));
+       expect(arrColumnsData[0][1]).toEqual(lColl.get('name'));
+       expect(arrColumnsData[0][2]).toEqual(lColl.get('road_name'));
+       expect(arrColumnsData[0][3]).toEqual(lColl.get('type'));
+       expect(arrColumnsData[0][4]).toEqual(lColl.get('lanes'));
+       expect(arrColumnsData[0][5]).toEqual(lColl.get('begin').get('node').get('name'));
+       expect(arrColumnsData[0][6]).toEqual(lColl.get('end').get('node').get('name'));
      });
    });
   

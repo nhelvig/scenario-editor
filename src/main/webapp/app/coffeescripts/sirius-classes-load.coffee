@@ -32,7 +32,7 @@ $a.models_without_extensions = [ 'ALatLng',
 $a.models_util = ['ArrayText', 'ReferenceHelper']
 
 $a.collection_classes = ['NodeListCollection','NodeListView', 
-  'LinkListCollection', 'LinkListView', 'SensorCollection']
+  'LinkListCollection', 'LinkListView', 'SensorListCollection']
 
 $a.map_view_classes = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
