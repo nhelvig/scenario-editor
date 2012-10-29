@@ -18,6 +18,7 @@ class window.sirius.MapMarkerView extends Backbone.View
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:clear_map', @removeElement, @)
+    $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
 
   render: ->
     @marker.setMap($a.map)
