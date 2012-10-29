@@ -32,12 +32,13 @@ class window.sirius.BrowserNodeView extends  window.sirius.BrowserView
   
   # get the node models of the items that are selected. Called by BrowserView
   # in order to get the data for each selected model and render it in the
-  # editor
-  _getSelectedElems: (selectedIds) ->
+  # editor, this also clears and sets the nodes on the map
+  _configureSelectedElems: (selectedIds) ->
     selectedNodes = $a.nodeList.filter((node) ->
-              node if _.include(selectedIds, node.get('id'))
-        )
-    #$a.nodeList.setSelected(selectedNodes)
+      node if _.include(selectedIds, node.get('id'))
+    )
+    $a.nodeList.clearSelected()
+    $a.nodeList.setSelected(selectedNodes)
     selectedNodes
 
 # the browser view for the links
@@ -79,7 +80,7 @@ class window.sirius.BrowserLinkView extends  window.sirius.BrowserView
   # get the link models of the items that are selected. Called by BrowserView
   # in order to get the data for each selected model and render it in the
   # editor
-  _getSelectedElems: (selectedIds) ->
+  _configureSelectedElems: (selectedIds) ->
     $a.linkList.filter((link) ->
             link if _.include(selectedIds, link.get('id'))
         )
@@ -121,7 +122,7 @@ class window.sirius.BrowserSensorView extends  window.sirius.BrowserView
   # get the sensor models of the items that are selected. Called by BrowserView
   # in order to get the data for each selected model and render it in the
   # editor
-  _getSelectedElems: (selectedIds) ->
+  _configureSelectedElems: (selectedIds) ->
     $a.sensorList.filter((sensor) ->
             sensor if _.include(selectedIds, sensor.get('id'))
         )

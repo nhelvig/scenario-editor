@@ -6,7 +6,7 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   # when initialized go through the models and set selected to false, and 
   # set up all the events need to add nodes to the collection.  
   initialize:(@models) ->
-    @forEach((node) -> node.set('selected', false))
+    @clearSelected()
     @on('nodes:add', @addNode, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
@@ -24,7 +24,12 @@ class window.sirius.NodeListCollection extends Backbone.Collection
     _.each(nodes, (node) ->
       node.set('selected', true) if !node.get('selected')
     )
-  
+
+  # set selected to false for all nodes. It is triggered
+  # when the node browser closes as well as when we initialize the collection
+  clearSelected: ->
+    @forEach((node) -> node.set('selected', false))
+    
   # addNode creates a node of the type and at the position passed in and adds
   # to the collection. It is called from the context menu's add node event
   addNode: (position, type) ->

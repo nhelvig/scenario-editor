@@ -34,9 +34,10 @@ describe("LinkListCollection", function() {
        expect(arrColumnsData[0][2]).toEqual(lColl.get('road_name'));
        expect(arrColumnsData[0][3]).toEqual(lColl.get('type'));
        expect(arrColumnsData[0][4]).toEqual(lColl.get('lanes'));
-       node = lColl.get('begin').get('node');
-       expect(arrColumnsData[0][5]).toEqual(node.get('name'));
-       expect(arrColumnsData[0][6]).toEqual(node.get('name'));
+       nodeB = lColl.get('begin').get('node');
+       nodeE = lColl.get('end').get('node');
+       expect(arrColumnsData[0][5]).toEqual(nodeB.get('name'));
+       expect(arrColumnsData[0][6]).toEqual(nodeE.get('name'));
      });
    });
   

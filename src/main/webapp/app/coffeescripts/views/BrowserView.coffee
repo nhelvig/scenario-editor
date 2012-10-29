@@ -33,11 +33,11 @@ class window.sirius.BrowserView extends Backbone.View
         @$el.remove()
 
     @renderTable()
-    @_firstRowSelected()
     @renderEditor()
     @$el.dialog('open')
     @renderResizer()
     @attachRowSelection()
+    @_firstRowSelected()
     @
     
   # render the editor for the right pane
@@ -65,6 +65,7 @@ class window.sirius.BrowserView extends Backbone.View
   _firstRowSelected: () ->
     nTop = $('#browser_table tbody tr')[0]
     $(nTop).addClass('row_selected')
+    $('#browser_table tbody').click()
   
   # this renders the resize bar between panes
   renderResizer: (e) ->
@@ -108,7 +109,7 @@ class window.sirius.BrowserView extends Backbone.View
           if($(this.nTr).hasClass('row_selected'))
             selectedIds.push @_aData[0]
         )
-        selectedModels = @_getSelectedElems(selectedIds)
+        selectedModels = @_configureSelectedElems(selectedIds)
         tabSelected = $(@nev.el).tabs().tabs('option', 'selected')
         $('#right [id*="dialog-form"]').remove()
         @renderEditor(selectedModels) unless _.isEmpty(selectedIds)

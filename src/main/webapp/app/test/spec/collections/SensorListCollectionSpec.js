@@ -3,8 +3,7 @@ describe("SensorListCollection", function() {
   var models, network, begin, end;
   
   beforeEach(function() {
-    network = $a.scenario.get('networklist').get('network')[0];
-    models = network.get('sensorlist').get('sensor');
+    models = $a.scenario.get('sensorlist').get('sensor');
     this.sColl= new $a.SensorListCollection(models);
   });
   
@@ -28,11 +27,12 @@ describe("SensorListCollection", function() {
        sColl = this.sColl.models[0];
        expect(arrColumnsData[0][0]).toEqual(sColl.get('id'));
        expect(arrColumnsData[0][1]).toEqual(sColl.get('type'));
-       expect(arrColumnsData[0][2]).toEqual(sColl.get('link_reference').get('id'));
-       expect(arrColumnsData[0][6]).toEqual(sColl.get('description').get('text'));
+       expect(arrColumnsData[0][2]).toEqual(sColl.get('link_type'));
+       expect(arrColumnsData[0][3]).toEqual(sColl.get('link_reference').get('id'));
+       expect(arrColumnsData[0][4]).toEqual(sColl.get('description').get('text'));
      });
    });
-  
+
   describe("setSelected ", function() {
     it("should sets the select field to true", function() {
       mod = this.sColl.models;
