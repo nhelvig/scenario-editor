@@ -18,6 +18,7 @@ class window.sirius.MapMarkerView extends Backbone.View
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:clear_map', @removeElement, @)
+    $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
 
   render: ->
     @marker.setMap($a.map)
@@ -57,6 +58,7 @@ class window.sirius.MapMarkerView extends Backbone.View
     $a.broker.off('map:clear_selected')
     $a.broker.off("map:select_item:#{@model.cid}")
     $a.broker.off("map:clear_item:#{@model.cid}")
+    $a.broker.off("map:open_editor:#{@model.cid}")
     @hideMarker() if @marker?
     @marker = null
 
@@ -109,8 +111,10 @@ class window.sirius.MapMarkerView extends Backbone.View
 
   # This method swaps the icon for the selected icon
   makeSelected: (img) ->
+    @model.set('selected', true)
     @_setSelected img
 
   # This method swaps the icon for the de-selected icon
   clearSelected: (img) ->
+    @model.set('selected', false)
     @_setSelected img

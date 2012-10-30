@@ -52,16 +52,7 @@ class window.sirius.AppView extends Backbone.View
   # of the application.Currently we have zoom in and zoom out as well as center
   # the map.
   _contextMenu: () ->
-    contextMenuOptions = {}
-    contextMenuOptions.menuItems= $a.main_context_menu
-    contextMenuOptions.id='main-context-menu'
-    contextMenuOptions.class='context_menu'
-    $a.contextMenu = new $a.ContextMenuView(contextMenuOptions)
-    $evt.addListener(
-                      $a.map,
-                      'rightclick',
-                      (mouseEvent) -> $a.contextMenu.show mouseEvent.latLng
-                    )
+    new $a.ContextMenuHandler({items: $a.main_context_menu})
 
   # This creates the main navigation bar menu
   _navBar: () ->

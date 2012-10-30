@@ -3,7 +3,7 @@
 # up on intialization
 class window.sirius.ContextMenuItemView extends Backbone.View
   tagName: 'li'
-
+  
   initialize: (@parentId, values) ->
     @template = _.template($('#child-item-menu-template').html())
     @$el.html @template({text: values.label})  if values.label

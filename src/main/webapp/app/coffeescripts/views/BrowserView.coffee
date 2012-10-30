@@ -33,18 +33,20 @@ class window.sirius.BrowserView extends Backbone.View
         @$el.remove()
 
     @renderTable()
-    @_firstRowSelected()
     @renderEditor()
     @$el.dialog('open')
     @renderResizer()
     @attachRowSelection()
+    @_firstRowSelected()
     @
-
+    
+  # render the editor for the right pane
   renderEditor: (@nev) ->
     @nev.render()
     $(@nev.el).tabs()
     $('#right').append(@nev.el)
-    
+  
+  # render the table in the left pane
   renderTable: () ->
     @dTable = $('#browser_table').dataTable( {
         "aaData": @_getData(),
@@ -59,10 +61,13 @@ class window.sirius.BrowserView extends Backbone.View
         "bJQueryUI": true,
     })
   
+  # upon redering make sure first row is selected
   _firstRowSelected: () ->
     nTop = $('#browser_table tbody tr')[0]
     $(nTop).addClass('row_selected')
+    $('#browser_table tbody').click()
   
+  # this renders the resize bar between panes
   renderResizer: (e) ->
     prevPos = 0
     @_setResizerHeight()
@@ -87,12 +92,15 @@ class window.sirius.BrowserView extends Backbone.View
         $("#resize").css('position', '')
     })
   
+  # this height of the resize bar is set dependent on the dialog box height
   _setResizerHeight: () ->
     height = $(@nev.el).height()
     handleTop = height / 2 - 25
     $("#handle").css('margin-top', "#{handleTop}px")
     $("#resize").css('height', "#{height}px")
   
+  # the click event for each row. Every row clicked triggers a rendering
+  # of the editor in the right pane
   attachRowSelection: () ->
     $('#browser_table tbody').click( (event) =>
         $(event.target.parentNode).toggleClass('row_selected')
@@ -101,13 +109,15 @@ class window.sirius.BrowserView extends Backbone.View
           if($(this.nTr).hasClass('row_selected'))
             selectedIds.push @_aData[0]
         )
-        selectedModels = @_getSelectedElems(selectedIds)
+        selectedModels = @_configureSelectedElems(selectedIds)
         tabSelected = $(@nev.el).tabs().tabs('option', 'selected')
         $('#right [id*="dialog-form"]').remove()
         @renderEditor(selectedModels) unless _.isEmpty(selectedIds)
         $(@nev.el).tabs("select", tabSelected)
     )
 
+  # if any change in the editor is made the table itself is rendered again
+  # to make sure the state is synchronized
   rePopulateTable: () ->
     @data = @_getData()
     rowIndex = 0

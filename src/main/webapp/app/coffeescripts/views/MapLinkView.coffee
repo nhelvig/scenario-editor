@@ -8,9 +8,9 @@ class window.sirius.MapLinkView extends Backbone.View
 
   $a = window.sirius
 
-  initialize: (@model, @network, @legs) ->
-    if(@legs?)
-      @_createEncodedPath @legs
+  initialize: (@model, @network) ->
+    if(@model.legs?)
+      @_createEncodedPath @model.legs
       @_saveEncodedPath()
     @_drawLink()
     @_contextMenu()
@@ -28,8 +28,10 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
     $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
+    $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
+
 
   render: ->
     @link.setMap($a.map)
@@ -70,6 +72,7 @@ class window.sirius.MapLinkView extends Backbone.View
           icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
           fillColor: 'blue'
           offset: '50%'
+          scale: 0.5
         }]
       strokeOpacity: 0.6
       strokeWeight: 4
@@ -106,7 +109,7 @@ class window.sirius.MapLinkView extends Backbone.View
     env.render()
     $(env.el).tabs()
     $(env.el).dialog('open')
-    evt.stop()
+    evt?.stop()
 
   viewDemands: () ->
     dv = new $a.DemandVisualizer(@model.get('demand'))
@@ -135,9 +138,10 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off("map:select_network:#{@network.cid}")
     $a.broker.off("map:clear_network:#{@network.cid}")
+    $a.broker.off("map:open_editor:#{@model.cid}")
     @hideLink() if @link
     @link = null
-
+  
   # Select events for link
   # Unless the Shift key is held down, this function clears any other selected
   # items on the map and in the tree after we determine if this link is to

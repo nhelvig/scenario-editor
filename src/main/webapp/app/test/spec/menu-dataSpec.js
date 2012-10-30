@@ -2,7 +2,7 @@ describe("menu-data", function() {
   $a = window.sirius;
   
   beforeEach(function() {
-    spyOn($a.NodeListCollection.prototype, 'addOne').andCallThrough();
+    spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     
     network = $a.scenario.get('networklist').get('network')[0];
     models = network.get('nodelist').get('node');
@@ -31,8 +31,8 @@ describe("menu-data", function() {
       expect(Math.floor($a.map.center.lat())).toEqual(pos.lat());
     });
     it("should trigger nodes:add for 'Add Node Here'", function() {
-      ($a.main_context_menu[5].event)();
-      expect($a.NodeListCollection.prototype.addOne).toHaveBeenCalled();
+      ($a.node_add[1].event)();
+      expect($a.NodeListCollection.prototype.addNode).toHaveBeenCalled();
     });
   });
 });

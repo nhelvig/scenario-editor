@@ -31,19 +31,19 @@ $a.models_without_extensions = [ 'ALatLng',
 
 $a.models_util = ['ArrayText', 'ReferenceHelper']
 
-$a.collection_classes = ['NodeListCollection','NodeListView', 'LinkCollection', 
-  'SensorCollection']
+$a.collection_classes = ['NodeListCollection','NodeListView', 
+  'LinkListCollection', 'LinkListView', 'SensorListCollection']
 
 $a.map_view_classes = [
-  'AppView', 'BrowserView', 'BrowserTypeView', 'ContextMenuItemView',
-  'ContextMenuView', 'DemandVisualizer', 'EditorView', 'EditorLinkView',
-  'EditorSensorView', 'EditorNodeView', 'FileUploadView', 'LayersMenuView',
-  'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView', 'MapNetworkView', 
-  'MapNodeView', 'MapSensorView', 'MapControllerView', 'MapEventView',
-  'MapSignalView', 'MessagePanelView', 'TreeView',
+  'AppView', 'BrowserView', 'BrowserTypeView',  
+  'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
+  'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
+  'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView',
+  'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 
+  'MapEventView', 'MapSignalView', 'MessagePanelView', 'TreeView',
   'TreeParentItemView', 'TreeChildItemView',
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.util_classes = ['Util']
+$a.util_classes = ['ContextMenuHandler', 'GoogleMapRouteHandler', 'Util']

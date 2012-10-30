@@ -31,9 +31,9 @@ class window.sirius.MapNetworkView extends Backbone.View
     $a.nodeList = new $a.NodeListCollection(list.get('node'))
     
     list = $a.models.get('networklist').get('network')[0].get('linklist')
-    $a.linkList = new $a.LinkCollection(list.get('link'))
+    $a.linkList = new $a.LinkListCollection(list.get('link'))
     list = $a.models.get('sensorlist')
-    $a.sensorList = new $a.SensorCollection(list?.get('sensor') || [])
+    $a.sensorList = new $a.SensorListCollection(list?.get('sensor') || [])
   
   _drawScenarioItems: () ->
     if @scenario.get('sensorlist')?
@@ -49,85 +49,17 @@ class window.sirius.MapNetworkView extends Backbone.View
   # instantiate the various elements of the network
   _drawNetwork: (network)->
     $a.map.setCenter($a.Util.getLatLng(network))
-    @_drawRoute(network)
+    @_drawLinks(network)
     if network.get('nodelist')?
       @_drawNodes network.get('nodelist').get('node'), network
 
-  # _drawRoute uses the Google Direction's api to get the data used to render 
-  # the route. The network reference is the network you are drawing now
-  _drawRoute: (network)->
-    @directionsService = new google.maps.DirectionsService()
-    @_requestLink(network.get('linklist').get('link').length - 1, network)
-
-  # recursive method used to grab the Google route for every link
-  # indexOfLink starts at the end of the link list and is decreased 
-  # on each recrusive call
-  _requestLink: (indexOfLink, network) ->
-    if indexOfLink > -1
-      link = network.get('linklist').get('link')[indexOfLink]
-      begin =  link.get('begin').get('node')
-      end = link.get('end').get('node')
-      #Create DirectionsRequest using DRIVING directions.
-      request = {
-       origin: $a.Util.getLatLng(begin),
-       destination: $a.Util.getLatLng(end),
-       travelMode: google.maps.TravelMode.DRIVING,
-      }
-      # request the route from the directions service.
-      # The parameters are the request object for Google API
-      # as well as 0, indicating the number of attempts -- read
-      # below
-      params = {
-        request: request
-        linkModel: link
-        network: network
-        attempts: 0
-      }
-      
-      geom = link.get('linkgeometry')
-      geom = geom?.get('encodedpolyline')?.get('points')?.get('text')
-      # geometry exists to query googele again
-      if(geom?)
-        @_drawLink params
-      else
-        @_directionsRequest(params)
-      @_requestLink(indexOfLink - 1, network)
-    else
-      $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
-    
-  
-  # _directionsRequest makes the actual route request to google. if we 
-  # recieve any error, this method will wait 3 seconds and then 
-  # call itself again with the same request object. I removed
-  # monitoring the the number of attempts and just keep trying until we are 
-  # done. If get a route, this method calls _drawLink to render the link on the 
-  # page
-  _directionsRequest: (params) ->
-    @directionsService.route(params.request, (response, status) =>
-      if (status == google.maps.DirectionsStatus.OK)
-        rte = response.routes[0]
-        if rte.warnings.length > 0
-          msg = "#{WARNING_MSG} #{rte.warnings}"
-          $a.broker.trigger('app:show_message:info', msg)
-        @_drawLink params, rte.legs
-      else #if @_isOverQuery(status) and params.attempts < 10
-        setTimeout (() => @_directionsRequest(params)), 3000
-      #else #I took out any error and just keep loading
-      #  $a.broker.trigger('app:show_message:error', "#{ERROR_MSG} #{status}")
-    )
-
-  #checks to see if we are over the google query limit
-  _isOverQuery: () ->
-    status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT
   
   # These methods instantiate each elements view instance in the map
-  _drawLink: (params, legs) ->
-    new $a.MapLinkView(params.linkModel, params.network, legs)
-
+  _drawLinks: (network) ->
+    $a.linkListView = new $a.LinkListView($a.linkList, network)
+    
   _drawNodes: (nodes, network) ->
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
-    $a.nodeListView.render()
-    #_.each(nodes, (i) ->  new $a.MapNodeView(i, network))
 
   _drawSensors: (sensors) ->
     _.each(sensors, (i) ->  new $a.MapSensorView(i))
