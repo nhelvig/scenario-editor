@@ -77,7 +77,6 @@ $a.link_context_menu = [
                       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Remove this link',
                     ((e) -> $a.linkList.trigger("links:remove", e.currentTarget.id))
-
   context_menu_item  'Clear Selection',
                       ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]

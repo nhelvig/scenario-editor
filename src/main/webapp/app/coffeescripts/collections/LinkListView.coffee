@@ -8,6 +8,7 @@ class window.sirius.LinkListView extends Backbone.Collection
   initialize: (@collection, @network) ->
     $a.broker.on('map:draw_link', @createAndDrawLink, @)
     @collection.on('add', @addAndRender, @)
+    @collection.on('remove', @removeLink, @)
     @getLinkGeometry()
   
   # create the route handler for the models
@@ -26,4 +27,6 @@ class window.sirius.LinkListView extends Backbone.Collection
   addAndRender: (link) ->
     @routeHandler.setUpLink(link)
     link
-  
+
+  removeLink: (link) ->
+    @views = _.reject(@views, (view) => view.model is link)

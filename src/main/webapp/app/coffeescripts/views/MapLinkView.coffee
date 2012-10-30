@@ -14,6 +14,7 @@ class window.sirius.MapLinkView extends Backbone.View
       @_saveEncodedPath()
     @_drawLink()
     @_contextMenu()
+    @model.on('remove', @removeLink, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
     $a.broker.on('map:show_link_layer', @showLink, @)
@@ -31,7 +32,6 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
-
 
   render: ->
     @link.setMap($a.map)
@@ -127,6 +127,7 @@ class window.sirius.MapLinkView extends Backbone.View
   # in order to remove an element you need to unpublish the events, hide the
   # marker and set it to null
   removeLink: ->
+    @model.off('remove')
     $a.broker.off('map:init')
     $a.broker.off('map:hide_link_layer')
     $a.broker.off('map:show_link_layer')
@@ -136,12 +137,15 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.off("map:clear_item:#{@model.cid}")
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
+    $a.broker.off('map:clear_selected')
     $a.broker.off("map:select_network:#{@network.cid}")
     $a.broker.off("map:clear_network:#{@network.cid}")
     $a.broker.off("map:open_editor:#{@model.cid}")
+    $a.broker.off("map:clear_map")
+    $a.broker.off("link:view_demands:#{@model.cid}")
     @hideLink() if @link
     @link = null
-  
+    
   # Select events for link
   # Unless the Shift key is held down, this function clears any other selected
   # items on the map and in the tree after we determine if this link is to
