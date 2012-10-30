@@ -6,6 +6,10 @@ class window.sirius.TreeChildItemLinkView extends window.sirius.TreeChildItemVie
   # Overridden method that registers LinkTreeItem to appropriate layer 
   # hide/show events
   setUpEvents: ->
+    if @model.get('targetreferences')?
+      @model.get('targetreferences')[0].on('remove', @removeItem, @)
+    @model.get('link').on('remove', @removeItem, @) if @model.get('link')?
+    
     $a.broker.on('map:show_link_layer', @showItem, @)
     $a.broker.on('map:hide_link_layer', @hideItem, @)
     _.each(@targets, (elem) =>

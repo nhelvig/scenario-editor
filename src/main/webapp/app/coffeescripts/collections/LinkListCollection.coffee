@@ -12,6 +12,8 @@ class window.sirius.LinkListCollection extends Backbone.Collection
         link.get('begin').get('node').bind('remove', => @removeNode(link, 'begin'))
         link.get('end').get('node').bind('remove', => @removeNode(link, 'end'))
     )
+    @forEach((link) -> link.bind('remove', => @destroy))
+    @on('links:remove', @removeLink, @)
   
   # addLink takes the begin node and end node ids, sets up the appropriate
   # begin and end node objects, creates the link and adds it to the collection
@@ -34,6 +36,12 @@ class window.sirius.LinkListCollection extends Backbone.Collection
   # itself has been removed from the node collection
   removeNode: (link, type) ->
     link.set(type, null)
+  
+  # removeLink removes the link from the collection and takes it off the 
+  # map.
+  removeLink: (linkID) ->
+    link = _.filter(@models, (link) -> link.cid is linkID)
+    @remove(link)
   
   # This is called when a link browser is created in order to return
   # the desired column data for the table.
