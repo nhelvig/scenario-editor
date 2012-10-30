@@ -7,10 +7,12 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   # set up all the events need to add nodes to the collection.  
   initialize:(@models) ->
     @clearSelected()
+    @forEach((node) -> node.bind('remove', => @destroy))
     @on('nodes:add', @addNode, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
     @on('nodes:add_dest', @addLinkDest, @)
+    @on('nodes:remove', @removeNode, @)
   
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
@@ -29,7 +31,13 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   # when the node browser closes as well as when we initialize the collection
   clearSelected: ->
     @forEach((node) -> node.set('selected', false))
-    
+  
+  # removeNode removes this node from the collection and takes it off the 
+  # map.
+  removeNode: (nodeID) ->
+    node = _.filter(@models, (node) -> node.cid is nodeID)
+    @remove(node)
+  
   # addNode creates a node of the type and at the position passed in and adds
   # to the collection. It is called from the context menu's add node event
   addNode: (position, type) ->
@@ -53,21 +61,21 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   # via the triggering of the link_coll:add method
   addLink: (position) ->
     node = @addNode(position)
-    selNode = _getSelectedNode()
+    selNode = @_getSelectedNode()
     $a.broker.trigger('link_coll:add', {begin:selNode[0], end:node})
   
   # similar to addLink above except it creates a terminal node and draws the link
   # from this position to the other selected node
   addLinkOrigin: (position) ->
     node = @addNode(position,'terminal')
-    selNode = _getSelectedNode()
+    selNode = @_getSelectedNode()
     $a.broker.trigger('link_coll:add', {begin:node, end:selNode[0] })
   
   # similar to addLink above except it creates a terminal node and draws the link
   # to this position from the other selected node
   addLinkDest: (position) ->
     node = @addNode(position, 'terminal')
-    selNode = _getSelectedNode()
+    selNode = @_getSelectedNode()
     $a.broker.trigger('link_coll:add', {begin:selNode[0], end:node})
   
   # this returns true if exactly one node is selected. It is called by

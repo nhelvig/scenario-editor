@@ -48,4 +48,11 @@ describe("LinkListCollection", function() {
       expect(lengthBefore + 1).toEqual(this.lColl.length);
     });
   });
+  
+  describe("removeNode ", function() {
+    it("should remove the begin or end node from link", function() {
+      this.lColl.removeNode(this.lColl.models[0],'End');
+      expect(this.lColl.models[0].get('End')).toBeNull();
+    });
+  });
 });

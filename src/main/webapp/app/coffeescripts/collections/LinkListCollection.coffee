@@ -4,8 +4,14 @@ class window.sirius.LinkListCollection extends Backbone.Collection
   model: $a.Link
   
   # set up the event that calls for the addition of a link to the collection
+  # register the links begin and end nodes with the remove method on the model
+  # node
   initialize: (@models)->
     $a.broker.on('link_coll:add', @addLink, @)
+    @forEach((link) => 
+        link.get('begin').get('node').bind('remove', => @removeNode(link, 'begin'))
+        link.get('end').get('node').bind('remove', => @removeNode(link, 'end'))
+    )
   
   # addLink takes the begin node and end node ids, sets up the appropriate
   # begin and end node objects, creates the link and adds it to the collection
@@ -24,6 +30,11 @@ class window.sirius.LinkListCollection extends Backbone.Collection
     @add(link)
     link
   
+  # This removes either the begin or end node from the link if the node
+  # itself has been removed from the node collection
+  removeNode: (link, type) ->
+    link.set(type, null)
+  
   # This is called when a link browser is created in order to return
   # the desired column data for the table.
   getBrowserColumnData: () ->
@@ -38,5 +49,4 @@ class window.sirius.LinkListCollection extends Backbone.Collection
                     link.get('end').get('node').get('name')
                   ]
                 )
-
   

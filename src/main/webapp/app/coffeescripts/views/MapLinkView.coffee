@@ -138,7 +138,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.off("map:clear_network:#{@network.cid}")
     @hideLink() if @link
     @link = null
-
+  
   # Select events for link
   # Unless the Shift key is held down, this function clears any other selected
   # items on the map and in the tree after we determine if this link is to

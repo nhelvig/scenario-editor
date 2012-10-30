@@ -101,6 +101,8 @@ $a.signal_context_menu = [
 $a.node_context_menu = [
   context_menu_item 'Edit this node',
                     ((e) -> $a.broker.trigger("map:open_editor:#{e.currentTarget.id}"))
+  context_menu_item 'Remove this node',
+                    ((e) -> $a.nodeList.trigger("nodes:remove", e.currentTarget.id))
   context_menu_item 'Select node and its links',
                     ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Select Outgoing links',

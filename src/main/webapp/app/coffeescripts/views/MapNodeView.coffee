@@ -12,6 +12,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
   initialize: (model, @network) ->
     super model
     @model.on('change:selected', @toggleSelected, @)
+    @model.on('remove', @removeElement, @)
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:select_neighbors_out:#{@model.cid}", @selectMyOutLinks, @)
@@ -24,11 +25,13 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $a.broker.on("map:select_network:#{@network.cid}", @makeSelected, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
 
+
   getIcon: ->
     super @_getTypeIcon false
 
   # Context Menu
-  # Create the Node Context Menu. Call the super class method to create the context menu
+  # Create the Node Context Menu. Call the super class method to create the 
+  # context menu
   _contextMenu: () ->
     super 'node', $a.node_context_menu
 
@@ -41,7 +44,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $(env.el).dialog('open')
 
   # This method overrides MapMarkerView to unpublish specific events to this type
-  # and then calls super to set itself to null, unpublish the general events, and hide itself
+  # and then calls super to set itself to null, unpublish the general events, 
+  # and hide itself
   removeElement: ->
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:select_neighbors_out:#{@model.cid}")
@@ -53,6 +57,7 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $a.broker.off("map:nodes:hide_#{@model.get('type')}")
     $a.broker.off("map:select_network:#{@network.cid}")
     $a.broker.off("map:clear_network:#{@network.cid}")
+    $a.broker.off("map:remove_node:#{@model.cid}")
     super
 
   ################# select events for marker
@@ -73,6 +78,8 @@ class window.sirius.MapNodeView extends window.sirius.MapMarkerView
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
 
+  # remove myself from the map
+  
   # This method is called from the context menu and selects itself and all the nodes links.
   # Note: The links references are from the output and input attributes on the node.
   selectSelfandMyLinks: () ->
