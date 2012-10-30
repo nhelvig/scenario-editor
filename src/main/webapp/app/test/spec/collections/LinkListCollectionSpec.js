@@ -7,6 +7,8 @@ describe("LinkListCollection", function() {
     models = network.get('linklist').get('link');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
+    
     this.lColl= new $a.LinkListCollection(models);
     begin = models[0].get('begin');
     end = models[0].get('end');
@@ -26,9 +28,13 @@ describe("LinkListCollection", function() {
       this.lColl.trigger("links:remove", models[0].cid);
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
+    it("should be watching reDrawLink", function() {
+      $a.broker.trigger("map:redraw_link", begin.get('node'));
+      expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();
+    });
   });
-  
-   describe("getBrowserColumnData", function() {
+    
+  describe("getBrowserColumnData", function() {
       var desc = "should return id, name,road_name, type, lanes, ";
       desc += "begin node name, and end node name for editor browser table";
        it(desc, function() {
@@ -68,4 +74,12 @@ describe("LinkListCollection", function() {
       expect(this.lColl.models[0].get('End')).toBeNull();
     });
   });
+  
+  describe("reDrawLink ", function() {
+    it("should find links connected to the node and redraw them", function() {
+      links = this.lColl.reDrawLink(begin.get('node'));
+      expect(links.length > 0).toBeTruthy();
+    });
+  });
 });
+

@@ -27,4 +27,8 @@ window.sirius.Node::outputs = ->
 window.sirius.Node::ios = ->
   _.union(@outputs(), @inputs())
 
+window.sirius.Node::updatePosition = (pos) ->
+  @get('position').get('point')[0].set('lat', pos.lat())
+  @get('position').get('point')[0].set('lng', pos.lng())
+
   

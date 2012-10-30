@@ -92,3 +92,4 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   # gets the selected node from the collection
   _getSelectedNode:  ->
     _.filter(@models, (node) -> node.get('selected') is true)
+

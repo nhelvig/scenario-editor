@@ -22,7 +22,7 @@ describe("GoogleMapRouteHandler", function() {
       grh = $a.GoogleMapRouteHandler
       link = this.gmrh.links[0]
       link.set('linkgeometry', null);
-      this.gmrh.setUpLink(link);
+      this.gmrh.setUpLink(link, true);
       expect(grh.prototype._directionsRequest).toHaveBeenCalled();
     });
   });
