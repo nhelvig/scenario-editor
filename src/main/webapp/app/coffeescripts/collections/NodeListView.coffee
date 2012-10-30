@@ -8,6 +8,7 @@ class window.sirius.NodeListView extends Backbone.Collection
   initialize: (@collection, @network) ->
     $a.broker.on('map:init', @render, @)
     @collection.on('add', @addNodeView, @)
+    @collection.on('remove', @removeNode, @)
   
   # create node view object and render it when a new node is added to the
   # map
@@ -21,3 +22,7 @@ class window.sirius.NodeListView extends Backbone.Collection
   render: ->
     @collection.forEach(@addNodeView, @)
     @
+  
+  # this removes the node from the views array upon removal from collection
+  removeNode: (node) ->
+    @views = _.reject(@views, (view) => view.model is node)

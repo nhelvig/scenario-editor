@@ -28,5 +28,6 @@ class window.sirius.LinkListView extends Backbone.Collection
     @routeHandler.setUpLink(link)
     link
 
+  # this removes the link from the views array upon removal from collection
   removeLink: (link) ->
     @views = _.reject(@views, (view) => view.model is link)

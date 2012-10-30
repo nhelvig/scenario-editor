@@ -6,7 +6,7 @@ describe("LinkListCollection", function() {
     network = $a.scenario.get('networklist').get('network')[0];
     models = network.get('linklist').get('link');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
-    
+    spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
     this.lColl= new $a.LinkListCollection(models);
     begin = models[0].get('begin');
     end = models[0].get('end');
@@ -20,6 +20,11 @@ describe("LinkListCollection", function() {
     it("should be watching addLink", function() {
       $a.broker.trigger("link_coll:add", {begin:begin,end:end});
       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
+    });
+
+    it("should be watching removeLink", function() {
+      this.lColl.trigger("links:remove", models[0].cid);
+      expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
   });
   
@@ -40,6 +45,14 @@ describe("LinkListCollection", function() {
        expect(arrColumnsData[0][6]).toEqual(nodeE.get('name'));
      });
    });
+  
+  describe("removeLink ", function() {
+    it("should remove a link from the collection", function() {
+      var lengthBefore = this.lColl.length;
+      this.lColl.removeLink(models[0].cid);
+      expect(lengthBefore - 1).toEqual(this.lColl.length);
+    });
+  });
   
   describe("addLink ", function() {
     it("should create a new link and add it to the collection", function() {

@@ -9,6 +9,7 @@ describe("NodeListView", function() {
     models = network.get('nodelist').get('node');
     spyOn($a.NodeListView.prototype, 'addNodeView').andCallThrough();
     spyOn($a.NodeListView.prototype, 'render').andCallThrough();
+    spyOn($a.NodeListView.prototype, 'removeNode').andCallThrough();
   
     this.nCollect = new $a.NodeListCollection(models);
     this.view = new $a.NodeListView(this.nCollect, network);
@@ -29,6 +30,11 @@ describe("NodeListView", function() {
       $a.broker.trigger('map:init')
       expect($a.NodeListView.prototype.render).toHaveBeenCalled();
     });
+    
+    it("should be watching removeNode", function() {
+      this.nCollect.trigger('remove', models[0]);
+      expect($a.NodeListView.prototype.removeNode).toHaveBeenCalled();
+    });
   });
 
   describe("Rendering", function() {
@@ -43,6 +49,14 @@ describe("NodeListView", function() {
     it("should create a MapNodeView for a Node model", function() {
       this.view.addNodeView(models[0]);
       expect(this.view.mnv).not.toBeNull();
+    });
+  });
+  
+  describe("removeNode", function() {
+    it("should remove the MapNodeView from views array", function() {
+      var lengthBefore = this.view.views.length;
+      this.view.removeNode(models[1]);
+      expect(this.view.views.length).toEqual(lengthBefore - 1);
     });
   });
 });
