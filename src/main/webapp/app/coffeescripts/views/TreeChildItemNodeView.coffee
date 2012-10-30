@@ -6,6 +6,7 @@ class window.sirius.TreeChildItemNodeView extends window.sirius.TreeChildItemVie
   # Overridden method that registers NodeTreeItem to appropriate layer 
   # hide/show events
   setUpEvents: ->
+    @model.get('node').on('remove', @removeItem, @)
     $a.broker.on('map:show_node_layer', @showItem, @)
     $a.broker.on('map:hide_node_layer', @hideItem, @)
     _.each(@targets, (elem) =>
