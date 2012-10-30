@@ -52,7 +52,7 @@ describe("LinkListView", function() {
     
   describe("addAndRender", function() {
     it("should create a MapNodeView and render it", function() {
-      link = this.view.addAndRender(models[0]);
+      link = this.view.addAndRender(models[0], true);
       expect(link.get('linkgeometry')).not.toBeNull();
     });
   });

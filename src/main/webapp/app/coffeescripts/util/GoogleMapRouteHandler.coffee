@@ -13,12 +13,15 @@ class window.sirius.GoogleMapRouteHandler
   _requestLink: (indexOfLink) ->
     if indexOfLink > -1
       link = @links[indexOfLink]
-      @setUpLink(link)
+      @setUpLink(link, false)
       @_requestLink(indexOfLink - 1)
     else
       $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
   
-  setUpLink: (link) ->
+  # setUpLink takes the link that may need geometry and a flag indicating 
+  # whether or not we want to force new geometry to be querried. This happens
+  # when an existing node is dragged or a node is added.
+  setUpLink: (link, forceNewRoute) ->
       begin =  link.get('begin').get('node')
       end = link.get('end').get('node')
       #Create DirectionsRequest using DRIVING directions.
@@ -31,7 +34,7 @@ class window.sirius.GoogleMapRouteHandler
       geom = link.get('linkgeometry')
       geom = geom?.get('encodedpolyline')?.get('points')?.get('text')
       # geometry exists to query google again
-      if(geom is undefined or geom is null)
+      if(geom is undefined or geom is null or forceNewRoute is true)
         @_directionsRequest(request, link)
       link
   

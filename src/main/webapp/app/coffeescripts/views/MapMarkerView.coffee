@@ -10,7 +10,7 @@ class window.sirius.MapMarkerView extends Backbone.View
     @latLng = $a.Util.getLatLng(model)
     @draw()
     gevent = google.maps.event
-    #gevent.addListener(@marker, 'dragend', @dragMarker())
+    gevent.addListener(@marker, 'dragend', => @dragMarker())
     gevent.addListener(@marker, 'click', (event) => @manageMarkerSelect())
     gevent.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
     $a.broker.on('map:clear_selected', @clearSelected, @)
@@ -90,8 +90,11 @@ class window.sirius.MapMarkerView extends Backbone.View
   # events used to move the marker and update its position
   dragMarker: ->
     @latLng = @marker.getPosition()
+    @marker.setTitle @_getTitle()
     $a.map.panTo(@latLng)
-
+    @model.updatePosition(@latLng)
+    $a.broker.trigger("map:redraw_link", @model)
+ 
   ################# The following handles the show and hide of node layers
   hideMarker: ->
     @marker.setMap(null)

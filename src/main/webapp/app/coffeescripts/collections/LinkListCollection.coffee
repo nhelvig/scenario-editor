@@ -7,11 +7,13 @@ class window.sirius.LinkListCollection extends Backbone.Collection
   # register the links begin and end nodes with the remove method on the model
   # node
   initialize: (@models)->
+    $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('link_coll:add', @addLink, @)
     @forEach((link) => 
         link.get('begin').get('node').bind('remove', => @removeNode(link, 'begin'))
         link.get('end').get('node').bind('remove', => @removeNode(link, 'end'))
     )
+
     @forEach((link) -> link.bind('remove', => @destroy))
     @on('links:remove', @removeLink, @)
   
@@ -58,3 +60,17 @@ class window.sirius.LinkListCollection extends Backbone.Collection
                   ]
                 )
   
+  # This method is triggered when a node is dragged. First find the links whose
+  # begin or end node is effected and then remove them from the map and re-add
+  # them so they are redrawn
+  reDrawLink: (node) ->
+    links = _.filter(@models, (link) -> 
+                        link.get('begin').get('node') is node or 
+                        link.get('end').get('node') is node
+            )
+    _.each(links, (link) => 
+                    @remove(link)
+                    @add(link)
+          )
+    links
+    
