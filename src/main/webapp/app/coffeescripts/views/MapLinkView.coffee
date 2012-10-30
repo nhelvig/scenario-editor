@@ -28,8 +28,10 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
     $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
+    $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
+
 
   render: ->
     @link.setMap($a.map)
@@ -107,7 +109,7 @@ class window.sirius.MapLinkView extends Backbone.View
     env.render()
     $(env.el).tabs()
     $(env.el).dialog('open')
-    evt.stop()
+    evt?.stop()
 
   viewDemands: () ->
     dv = new $a.DemandVisualizer(@model.get('demand'))
@@ -136,6 +138,7 @@ class window.sirius.MapLinkView extends Backbone.View
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off("map:select_network:#{@network.cid}")
     $a.broker.off("map:clear_network:#{@network.cid}")
+    $a.broker.off("map:open_editor:#{@model.cid}")
     @hideLink() if @link
     @link = null
   
