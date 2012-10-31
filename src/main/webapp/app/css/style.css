@@ -181,7 +181,7 @@ hr {
 
 #tree li.file a
 {
-  background: url(../../lib/data/img/document.png) 0 0 no-repeat;
+  background: url(../images/document.png) 0 0 no-repeat;
   color: #000;
   padding-left: 21px;
   text-decoration: none;
@@ -217,7 +217,7 @@ hr {
 
 #tree li input + label
 {
-  background: url(../../lib/data/img/toggle-small-expand.png) 40px 0px no-repeat; 
+  background: url(../images/toggle-small-expand.png) 40px 0px no-repeat; 
   margin: 0em 0 0 -44px; /* 15px */
   padding: 1.563em 0 0 80px;
   height: 1em;
@@ -225,7 +225,7 @@ hr {
 
 #tree li input:checked + label
 {
-  background: url(../../lib/data/img/toggle-small.png) 40px 0px no-repeat;
+  background: url(../images/toggle-small.png) 40px 0px no-repeat;
   margin: 0em 0 0 -44px; /* 20px */
   padding: 1.563em 0 0 80px;
   height: auto;
@@ -235,7 +235,7 @@ hr {
 
 #tree li label
 {
-  background: url(../../lib/data/img/folder-horizontal.png) 15px 1px no-repeat;
+  background: url(../images/folder-horizontal.png) 15px 1px no-repeat;
   cursor: pointer;
   display: block;
   padding-left: 37px;

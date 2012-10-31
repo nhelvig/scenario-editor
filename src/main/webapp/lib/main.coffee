@@ -11,13 +11,13 @@ load_sirius_classes = (after) ->
     class_paths = class_paths.concat _.flatten(
       _.map(
         window.sirius.models_util, (cname) -> 
-          "js/models/util/#{cname}.js"
+          "js/util/#{cname}.js"
       )
     )
     class_paths = class_paths.concat _.flatten(
       _.map(
         window.sirius.models_with_extensions, (cname) -> 
-          ["js/models/#{cname}.js","js/models/extensions/#{cname}.js"]
+          ["js/models/#{cname}.js","js/extensions/#{cname}.js"]
         )
     )
     class_paths = class_paths.concat _.flatten(
@@ -50,15 +50,15 @@ window.load_sirius = ->
                 window.sirius.AppView.start()
 
 head.js 'https://www.google.com/jsapi',
-        '../lib/js/jquery-1.7.1.js',
-        '../lib/js/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
-        '../lib/js/underscore.js',
-        '../lib/js/backbone.js',
-        '../lib/js/jquery.dataTables.min.js',
-        '../lib/js/jquery.layout.min-1.2.0.js',
-        '../lib/js/d3.v2.js',
-        '../lib/js/bootstrap/js/bootstrap.min.js', ->
+        'js/vendor/jquery-1.7.1.js',
+        'js/vendor/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js',
+        'js/vendor/underscore.js',
+        'js/vendor/backbone.js',
+        'js/vendor/jquery.dataTables.min.js',
+        'js/vendor/d3.v2.js',
+        'js/vendor/bootstrap/js/bootstrap.min.js', ->
                google.load "maps", "3",
                   callback: "window.load_sirius()",
                   other_params: "libraries=geometry,drawing&sensor=false"
+            
             
