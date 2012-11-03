@@ -7,7 +7,6 @@ window.beats.Network::initialize = ->
   @set 'nodelist', new window.beats.NodeList
   @set 'linklist', new window.beats.LinkList
   @set 'networklist', new window.beats.NetworkList
-  @set 'odlist', new window.beats.ODList
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
   @set 'description', new window.beats.Description
