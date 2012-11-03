@@ -1,4 +1,4 @@
-class window.sirius.Decision_points extends Backbone.Model
+class window.sirius.Column_name extends Backbone.Model
   ### $a = alias for sirius namespace ###
   $a = window.sirius
   @from_xml1: (xml, object_with_id) ->
@@ -9,19 +9,23 @@ class window.sirius.Decision_points extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Decision_points()
-    obj.set('text', xml.text())
+    obj = new window.sirius.Column_name()
+    name = $(xml).attr('name')
+    obj.set('name', name)
+    key = $(xml).attr('key')
+    obj.set('key', (key.toString().toLowerCase() == 'true') if key?)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('decision_points')
+    xml = doc.createElement('column_name')
     if @encode_references
       @encode_references()
-    xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))
+    xml.setAttribute('name', @get('name')) if @has('name')
+    xml.setAttribute('key', @get('key')) if @has('key')
     xml
   
-  deep_copy: -> Decision_points.from_xml1(@to_xml(), {})
+  deep_copy: -> Column_name.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

@@ -3,7 +3,7 @@
 # classes and libraries into memory.
 # It also instantiates the AppView class and begin the rendering process.
 load_sirius_classes = (after) ->
-  head.js "js/models/Sirius.js", ->
+  head.js "js/models/Beats.js", ->
     class_paths = _.map(
       window.sirius.models_without_extensions, (cname) -> 
         "js/models/#{cname}.js"
@@ -42,7 +42,7 @@ load_sirius_classes = (after) ->
     head.js.apply(@, class_paths)
 
 window.load_sirius = ->
-    head.js "js/models/Sirius.js",
+    head.js "js/models/Beats.js",
             'js/menu-data.js',
             'js/sirius-classes-load.js', ->
               load_sirius_classes ->
@@ -60,5 +60,3 @@ head.js 'https://www.google.com/jsapi',
                google.load "maps", "3",
                   callback: "window.load_sirius()",
                   other_params: "libraries=geometry,drawing&sensor=false"
-            
-            

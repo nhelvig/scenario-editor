@@ -1,4 +1,4 @@
-class window.sirius.On_off_switch extends Backbone.Model
+class window.sirius.ActivationIntervals extends Backbone.Model
   ### $a = alias for sirius namespace ###
   $a = window.sirius
   @from_xml1: (xml, object_with_id) ->
@@ -9,20 +9,20 @@ class window.sirius.On_off_switch extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.On_off_switch()
-    value = $(xml).attr('value')
-    obj.set('value', value)
+    obj = new window.sirius.ActivationIntervals()
+    interval = xml.children('interval')
+    obj.set('interval', _.map($(interval), (interval_i) -> $a.Interval.from_xml2($(interval_i), deferred, object_with_id)))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('on_off_switch')
+    xml = doc.createElement('ActivationIntervals')
     if @encode_references
       @encode_references()
-    xml.setAttribute('value', @get('value')) if @has('value')
+    _.each(@get('interval') || [], (a_interval) -> xml.appendChild(a_interval.to_xml(doc)))
     xml
   
-  deep_copy: -> On_off_switch.from_xml1(@to_xml(), {})
+  deep_copy: -> ActivationIntervals.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

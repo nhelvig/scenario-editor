@@ -1,4 +1,4 @@
-class window.sirius.Qcontroller extends Backbone.Model
+class window.sirius.Queue_controller extends Backbone.Model
   ### $a = alias for sirius namespace ###
   $a = window.sirius
   @from_xml1: (xml, object_with_id) ->
@@ -9,7 +9,7 @@ class window.sirius.Qcontroller extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Qcontroller()
+    obj = new window.sirius.Queue_controller()
     parameters = xml.children('parameters')
     obj.set('parameters', _.reduce(parameters.find("parameter"),
           (acc,par_xml) ->
@@ -20,12 +20,14 @@ class window.sirius.Qcontroller extends Backbone.Model
     ))
     type = $(xml).attr('type')
     obj.set('type', type)
+    java_class = $(xml).attr('java_class')
+    obj.set('java_class', java_class)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('qcontroller')
+    xml = doc.createElement('queue_controller')
     if @encode_references
       @encode_references()
     if @has('parameters')
@@ -38,8 +40,9 @@ class window.sirius.Qcontroller extends Backbone.Model
       xml.appendChild(parameters_xml)
     
     xml.setAttribute('type', @get('type')) if @has('type')
+    xml.setAttribute('java_class', @get('java_class')) if @has('java_class')
     xml
   
-  deep_copy: -> Qcontroller.from_xml1(@to_xml(), {})
+  deep_copy: -> Queue_controller.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

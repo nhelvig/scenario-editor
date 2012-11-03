@@ -1,4 +1,4 @@
-class window.sirius.Lane_count_change extends Backbone.Model
+class window.sirius.Row extends Backbone.Model
   ### $a = alias for sirius namespace ###
   $a = window.sirius
   @from_xml1: (xml, object_with_id) ->
@@ -9,20 +9,20 @@ class window.sirius.Lane_count_change extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Lane_count_change()
-    delta = $(xml).attr('delta')
-    obj.set('delta', Number(delta))
+    obj = new window.sirius.Row()
+    column = xml.children('column')
+    obj.set('column', _.map($(column), (column_i) -> $a.Column.from_xml2($(column_i), deferred, object_with_id)))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('lane_count_change')
+    xml = doc.createElement('row')
     if @encode_references
       @encode_references()
-    if @has('delta') && @delta != 0 then xml.setAttribute('delta', @get('delta'))
+    _.each(@get('column') || [], (a_column) -> xml.appendChild(a_column.to_xml(doc)))
     xml
   
-  deep_copy: -> Lane_count_change.from_xml1(@to_xml(), {})
+  deep_copy: -> Row.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

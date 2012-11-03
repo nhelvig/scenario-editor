@@ -18,6 +18,8 @@ class window.sirius.SplitratioProfile extends Backbone.Model
     obj.set('start_time', Number(start_time))
     dt = $(xml).attr('dt')
     obj.set('dt', Number(dt))
+    destination_network_id = $(xml).attr('destination_network_id')
+    obj.set('destination_network_id', destination_network_id)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -30,6 +32,7 @@ class window.sirius.SplitratioProfile extends Backbone.Model
     xml.setAttribute('node_id', @get('node_id')) if @has('node_id')
     if @has('start_time') && @start_time != 0 then xml.setAttribute('start_time', @get('start_time'))
     xml.setAttribute('dt', @get('dt')) if @has('dt')
+    xml.setAttribute('destination_network_id', @get('destination_network_id')) if @has('destination_network_id')
     xml
   
   deep_copy: -> SplitratioProfile.from_xml1(@to_xml(), {})

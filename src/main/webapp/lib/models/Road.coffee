@@ -1,4 +1,4 @@
-class window.sirius.Points extends Backbone.Model
+class window.sirius.Road extends Backbone.Model
   ### $a = alias for sirius namespace ###
   $a = window.sirius
   @from_xml1: (xml, object_with_id) ->
@@ -9,19 +9,20 @@ class window.sirius.Points extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Points()
-    obj.set('text', xml.text())
+    obj = new window.sirius.Road()
+    name = $(xml).attr('name')
+    obj.set('name', name)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('Points')
+    xml = doc.createElement('road')
     if @encode_references
       @encode_references()
-    xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))
+    xml.setAttribute('name', @get('name')) if @has('name')
     xml
   
-  deep_copy: -> Points.from_xml1(@to_xml(), {})
+  deep_copy: -> Road.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

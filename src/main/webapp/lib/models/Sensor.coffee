@@ -10,10 +10,6 @@ class window.sirius.Sensor extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.sirius.Sensor()
-    description = xml.children('description')
-    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
-    position = xml.children('position')
-    obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id))
     display_position = xml.children('display_position')
     obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
     link_reference = xml.children('link_reference')
@@ -26,16 +22,20 @@ class window.sirius.Sensor extends Backbone.Model
             acc
           {}
     ))
-    data_sources = xml.children('data_sources')
-    obj.set('data_sources', $a.Data_sources.from_xml2(data_sources, deferred, object_with_id))
+    table = xml.children('table')
+    obj.set('table', $a.Table.from_xml2(table, deferred, object_with_id))
     id = $(xml).attr('id')
     obj.set('id', id)
     link_position = $(xml).attr('link_position')
     obj.set('link_position', Number(link_position))
     type = $(xml).attr('type')
     obj.set('type', type)
-    link_type = $(xml).attr('link_type')
-    obj.set('link_type', link_type)
+    sensor_id_original = $(xml).attr('sensor_id_original')
+    obj.set('sensor_id_original', sensor_id_original)
+    lane_number = $(xml).attr('lane_number')
+    obj.set('lane_number', Number(lane_number))
+    health_status = $(xml).attr('health_status')
+    obj.set('health_status', Number(health_status))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -44,8 +44,6 @@ class window.sirius.Sensor extends Backbone.Model
     xml = doc.createElement('sensor')
     if @encode_references
       @encode_references()
-    xml.appendChild(@get('description').to_xml(doc)) if @has('description')
-    xml.appendChild(@get('position').to_xml(doc)) if @has('position')
     xml.appendChild(@get('display_position').to_xml(doc)) if @has('display_position')
     xml.appendChild(@get('link_reference').to_xml(doc)) if @has('link_reference')
     if @has('parameters')
@@ -57,11 +55,13 @@ class window.sirius.Sensor extends Backbone.Model
       )
       xml.appendChild(parameters_xml)
     
-    xml.appendChild(@get('data_sources').to_xml(doc)) if @has('data_sources')
+    xml.appendChild(@get('table').to_xml(doc)) if @has('table')
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('link_position', @get('link_position')) if @has('link_position')
     xml.setAttribute('type', @get('type')) if @has('type')
-    xml.setAttribute('link_type', @get('link_type')) if @has('link_type')
+    xml.setAttribute('sensor_id_original', @get('sensor_id_original')) if @has('sensor_id_original')
+    xml.setAttribute('lane_number', @get('lane_number')) if @has('lane_number')
+    xml.setAttribute('health_status', @get('health_status')) if @has('health_status')
     xml
   
   deep_copy: -> Sensor.from_xml1(@to_xml(), {})
