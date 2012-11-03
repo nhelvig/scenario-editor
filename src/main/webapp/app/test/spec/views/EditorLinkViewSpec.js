@@ -1,5 +1,5 @@
 describe("EditorLinkView", function() {
-  $a = window.sirius;
+  $a = window.beats;
 
   var testsLinkGeo = [
       {

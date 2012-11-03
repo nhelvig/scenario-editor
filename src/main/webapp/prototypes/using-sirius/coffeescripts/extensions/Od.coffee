@@ -1,8 +1,8 @@
-window.sirius.Od::initialize = ->
-  # TODO probably delete, no obvious PathList replacement in sirius
-  #@set('pathlist', new window.sirius.PathList)
+window.beats.Od::initialize = ->
+  # TODO probably delete, no obvious PathList replacement in beats
+  #@set('pathlist', new window.beats.PathList)
 
-window.sirius.Od::resolve_references = (deferred, object_with_id) ->
+window.beats.Od::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     [n_origin_id, n_destination_id, l_origin_id, l_destination_id] = [
       @get('network_id_origin'),
@@ -28,7 +28,7 @@ window.sirius.Od::resolve_references = (deferred, object_with_id) ->
     unless n_origin and n_destination
       throw "Od instance can't find network for id == #{end}"
 
-window.sirius.Od::encode_references = ->
+window.beats.Od::encode_references = ->
   @set('network_id_origin', @get('network_origin').id)
   @set('network_id_destination', @get('network_destination').id)
   @set('link_id_origin', @get('link_origin').id)

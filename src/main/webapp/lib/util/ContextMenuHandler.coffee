@@ -1,7 +1,7 @@
 # This class handles the creation and population of any context menu in the
 # system
-class window.sirius.ContextMenuHandler
-  $a = window.sirius
+class window.beats.ContextMenuHandler
+  $a = window.beats
   
   # set up the listener that allows for a menu to be created on 
   # right-click

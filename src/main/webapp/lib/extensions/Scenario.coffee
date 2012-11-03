@@ -1,4 +1,4 @@
-window.sirius.Scenario.from_xml = (xml) ->
+window.beats.Scenario.from_xml = (xml) ->
   object_with_id =
     network: {}
     node: {}
@@ -6,7 +6,7 @@ window.sirius.Scenario.from_xml = (xml) ->
     path: {}
     sensor: {}
 
-  sc = window.sirius.Scenario.from_xml1(xml, object_with_id)
+  sc = window.beats.Scenario.from_xml1(xml, object_with_id)
   sc.object_with_id = object_with_id
 
   if sc.has('demandprofileset')
@@ -39,43 +39,43 @@ window.sirius.Scenario.from_xml = (xml) ->
 
   sc
 
-window.sirius.Scenario::initialize = ->
-  @set('schemaVersion', window.sirius.SchemaVersion)
+window.beats.Scenario::initialize = ->
+  @set('schemaVersion', window.beats.SchemaVersion)
   @object_with_id = network: {}, node: {}, link: {}, path: {}, sensor: {}
-  @set('settings', new window.sirius.Settings())
-  @set('network', new window.sirius.Network())
+  @set('settings', new window.beats.Settings())
+  @set('network', new window.beats.Network())
 
-window.sirius.Scenario::network_with_id = (id) ->
+window.beats.Scenario::network_with_id = (id) ->
   @object_with_id.network[id]
 
-window.sirius.Scenario::node_with_id = (id) ->
+window.beats.Scenario::node_with_id = (id) ->
   @object_with_id.node[id]
 
-window.sirius.Scenario::link_with_id = (id) ->
+window.beats.Scenario::link_with_id = (id) ->
   @object_with_id.link[id]
 
-window.sirius.Scenario::set_network_with_id = (id, network) ->
+window.beats.Scenario::set_network_with_id = (id, network) ->
   if network
     @object_with_id.network[id] = network
   else
     delete @object_with_id.network[id]
 
-window.sirius.Scenario::set_node_with_id = (id, node) ->
+window.beats.Scenario::set_node_with_id = (id, node) ->
   if node
     @object_with_id.node[id] = node
   else
     delete @object_with_id.node[id]
 
-window.sirius.Scenario::set_link_with_id = (id, link) ->
+window.beats.Scenario::set_link_with_id = (id, link) ->
   if link
     @object_with_id.link[id] = link
   else
     delete @object_with_id.link[id]
 
-window.sirius.Scenario::stampSchemaVersion = ->
-  @set('schemaVersion', window.sirius.SchemaVersion)
+window.beats.Scenario::stampSchemaVersion = ->
+  @set('schemaVersion', window.beats.SchemaVersion)
 
-window.sirius.Scenario::encode_references = ->
+window.beats.Scenario::encode_references = ->
   demandprofileset = @get('demandprofileset')
   capacityprofileset = @get('downstreamboundarycapacityprofileset')
   initialdensityprofile = @get('initialdensityprofile')
@@ -101,21 +101,21 @@ window.sirius.Scenario::encode_references = ->
           (link) =>
             if link.has('demand')
               if(!demandprofileset)
-                @set('demandprofileset', new window.sirius.DemandProfileSet())
+                @set('demandprofileset', new window.beats.DemandProfileSet())
               if(!demandprofileset.has('demandprofile'))
                 demandprofileset.set('demandprofile', [])
               demandprofileset.get('demandprofile').push(link.get('demand'))
 
             if link.has('capacity')
               if(!capacityprofileset)
-                @set('downstreamboundarycapacityprofileset', new window.sirius.DownstreamBoundaryCapacityProfileSet())
+                @set('downstreamboundarycapacityprofileset', new window.beats.DownstreamBoundaryCapacityProfileSet())
               if(!capacityprofileset.has('capacityprofile'))
                 capacityprofileset.set('capacityprofile',[])
               capacityprofileset.get('capacityprofile').push(link.get('capacity'))
 
             if link.has('density')
               if(!initialdensityprofile)
-                @set('initialdensityprofile', new window.sirius.InitialDensityProfile())
+                @set('initialdensityprofile', new window.beats.InitialDensityProfile())
               if(!initialdensityprofile.has('density'))
                 initialdensityprofile.set('density', [])
               initialdensityprofile.get('density').push(link.get('density'))

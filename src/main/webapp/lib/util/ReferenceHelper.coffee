@@ -1,4 +1,4 @@
-window.sirius.ReferenceHelper =
+window.beats.ReferenceHelper =
   resolver: (fieldGet, fieldSet, fieldType, name, errName, applyToChild) ->
     (deferred, object_with_id) ->
       deferred.push =>

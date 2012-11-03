@@ -1,2 +1,2 @@
-window.sirius.SignalList::defaults =
+window.beats.SignalList::defaults =
   signal: []

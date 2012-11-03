@@ -1,2 +1,2 @@
-window.sirius.Data_sources::defaults =
+window.beats.Data_sources::defaults =
   source: []

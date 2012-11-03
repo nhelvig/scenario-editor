@@ -1,6 +1,6 @@
-class window.sirius.EncodedPolyline extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.EncodedPolyline extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.EncodedPolyline extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.EncodedPolyline()
+    obj = new window.beats.EncodedPolyline()
     Points = xml.children('Points')
     obj.set('points', $a.Points.from_xml2(Points, deferred, object_with_id))
     Levels = xml.children('Levels')

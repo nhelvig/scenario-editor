@@ -1,2 +1,2 @@
-window.sirius.ODList::defaults =
+window.beats.ODList::defaults =
   od: []

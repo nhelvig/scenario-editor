@@ -1,6 +1,6 @@
-class window.sirius.Od extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.Od extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.Od extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Od()
+    obj = new window.beats.Od()
     path_segments = xml.children('path_segments')
     obj.set('path_segments', $a.Path_segments.from_xml2(path_segments, deferred, object_with_id))
     decision_points = xml.children('decision_points')

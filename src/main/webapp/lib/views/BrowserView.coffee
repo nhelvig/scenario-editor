@@ -1,13 +1,13 @@
 # This creates the browsers window for all element
-class window.sirius.BrowserView extends Backbone.View
-  $a = window.sirius
+class window.beats.BrowserView extends Backbone.View
+  $a = window.beats
 
   # static method used to instantiate new Browser -- called from main menu
   @start: (type) ->
     switch type
-      when 'node' then new window.sirius.BrowserNodeView()
-      when 'link' then new window.sirius.BrowserLinkView()
-      when 'sensor' then new window.sirius.BrowserSensorView()
+      when 'node' then new window.beats.BrowserNodeView()
+      when 'link' then new window.beats.BrowserLinkView()
+      when 'sensor' then new window.beats.BrowserSensorView()
   
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData

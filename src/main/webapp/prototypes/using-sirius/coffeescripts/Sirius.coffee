@@ -1,1 +1,1 @@
-window.sirius = {}
+window.beats = {}

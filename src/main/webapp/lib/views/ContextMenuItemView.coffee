@@ -1,7 +1,7 @@
 # This class represents individual items in a context menu.
 # Note that the events are passed in as functions and attached to the item
 # up on intialization
-class window.sirius.ContextMenuItemView extends Backbone.View
+class window.beats.ContextMenuItemView extends Backbone.View
   tagName: 'li'
   
   initialize: (@parentId, values) ->

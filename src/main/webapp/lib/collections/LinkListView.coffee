@@ -1,6 +1,6 @@
 # This manages the views for the link collection
-class window.sirius.LinkListView extends Backbone.Collection
-  $a = window.sirius
+class window.beats.LinkListView extends Backbone.Collection
+  $a = window.beats
   views : []
   
   # set up the draw link and add events and instantiate

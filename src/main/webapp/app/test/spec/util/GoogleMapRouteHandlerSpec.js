@@ -1,7 +1,7 @@
 // I am not testing the _directionsRequest at this point except to 
 // verify that the directionsService is set up.
 describe("GoogleMapRouteHandler", function() {
-  $a = window.sirius;
+  $a = window.beats;
   
   beforeEach(function() {
     linklist = $a.scenario.get('networklist').get('network')[0].get('linklist');

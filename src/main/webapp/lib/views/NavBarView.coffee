@@ -1,6 +1,6 @@
 # This class adds the Parent Items to the Nav Bar
-class window.sirius.NavBarView extends Backbone.View
-  $a = window.sirius
+class window.beats.NavBarView extends Backbone.View
+  $a = window.beats
   tagName: "ul"
   className: "nav"
 

@@ -1,2 +1,2 @@
-window.sirius.NodeList::defaults =
+window.beats.NodeList::defaults =
   node: []

@@ -1,6 +1,6 @@
-class window.sirius.LinkList extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.LinkList extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.LinkList extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.LinkList()
+    obj = new window.beats.LinkList()
     link = xml.children('link')
     obj.set('link', _.map($(link), (link_i) -> $a.Link.from_xml2($(link_i), deferred, object_with_id)))
     if obj.resolve_references

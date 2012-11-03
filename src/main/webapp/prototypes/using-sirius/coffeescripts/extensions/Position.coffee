@@ -1,2 +1,2 @@
-window.sirius.Position::defaults =
+window.beats.Position::defaults =
   point: []

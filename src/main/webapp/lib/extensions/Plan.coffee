@@ -1,3 +1,3 @@
-window.sirius.Plan::defaults =
+window.beats.Plan::defaults =
   intersection: []
   cyclelength: 0

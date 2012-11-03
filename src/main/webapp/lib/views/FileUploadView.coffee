@@ -1,7 +1,7 @@
 # This class creates the file upload markup. I didn't create a corresponding
 # model class here. I may in the future
-class window.sirius.FileUploadView extends Backbone.View
-  $a = window.sirius
+class window.beats.FileUploadView extends Backbone.View
+  $a = window.beats
   tagName: "input"
   type: "file"
 

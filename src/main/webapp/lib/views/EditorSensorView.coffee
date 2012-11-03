@@ -1,6 +1,6 @@
 # This creates the editor dialogs for sensor elements
-class window.sirius.EditorSensorView extends window.sirius.EditorView 
-  $a = window.sirius
+class window.beats.EditorSensorView extends window.beats.EditorView 
+  $a = window.beats
   
   # Displayed in the editor to describe how to format urls
   URL_DESC = '* Note:<br/>Enter a full url or shorthand like:'

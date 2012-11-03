@@ -1,6 +1,6 @@
-class window.sirius.Node extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.Node extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.Node extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Node()
+    obj = new window.beats.Node()
     roadway_markers = xml.children('roadway_markers')
     obj.set('roadway_markers', $a.Roadway_markers.from_xml2(roadway_markers, deferred, object_with_id))
     outputs = xml.children('outputs')

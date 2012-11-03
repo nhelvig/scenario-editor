@@ -1,7 +1,7 @@
 # The view class for each link child item in the tree view. Each child item
 # is <li> tag with an anchor surrounding the name.
-class window.sirius.TreeChildItemLinkView extends window.sirius.TreeChildItemView
-  $a = window.sirius
+class window.beats.TreeChildItemLinkView extends window.beats.TreeChildItemView
+  $a = window.beats
 
   # Overridden method that registers LinkTreeItem to appropriate layer 
   # hide/show events

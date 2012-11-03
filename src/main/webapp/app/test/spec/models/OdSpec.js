@@ -3,9 +3,9 @@ describe("Od", function() {
   var testBNode, testENode, testBegin, testEnd, testOd;
   
   beforeEach(function() {
-    testBNode = new window.sirius.Node({id: testBNodeId});
-    testENode = new window.sirius.Node({id: testENodeId});
-    testOd = new window.sirius.Od({begin_node: testBNode, end_node: testENode});
+    testBNode = new window.beats.Node({id: testBNodeId});
+    testENode = new window.beats.Node({id: testENodeId});
+    testOd = new window.beats.Od({begin_node: testBNode, end_node: testENode});
   });
   
   it("should not blow up on to_xml", function() {
@@ -15,7 +15,7 @@ describe("Od", function() {
   });
   
   it("should resolve begin and end as begin_node and end_node", function() {
-    var o = new window.sirius.Od({begin: testBNodeId, end: testENodeId});
+    var o = new window.beats.Od({begin: testBNodeId, end: testENodeId});
     var object_with_id = { 'node': [] };
     var deferred = [];
     object_with_id.node[testBNodeId] = testBNode;

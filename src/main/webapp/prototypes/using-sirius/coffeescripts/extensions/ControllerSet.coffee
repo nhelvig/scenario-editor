@@ -1,2 +1,2 @@
-window.sirius.ControllerSet::defaults =
+window.beats.ControllerSet::defaults =
   controller: []

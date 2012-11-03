@@ -1,6 +1,6 @@
-class window.sirius.Begin extends Backbone.Model
+class window.beats.Begin extends Backbone.Model
   ### $a = alias for aurora namespace ###
-  $a = window.sirius
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.Begin extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Begin()
+    obj = new window.beats.Begin()
     node_id = $(xml).attr('node_id')
     obj.set('node_id', node_id)
     if obj.resolve_references

@@ -1,8 +1,8 @@
 # The view class for each child item in the tree view. Each child item
 # is <li> tag with an anchor surrounding the name. It is the super of
 # Link and Node Tree Items but can also render non-link/node tree items
-class window.sirius.TreeChildItemView extends Backbone.View
-  $a = window.sirius
+class window.beats.TreeChildItemView extends Backbone.View
+  $a = window.beats
   tagName: "li"
   className: "file"
   events:

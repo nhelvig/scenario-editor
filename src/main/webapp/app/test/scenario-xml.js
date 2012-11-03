@@ -1,4 +1,4 @@
-$a = window.sirius;
+$a = window.beats;
 $a.fileText = '<?xml version="1.0" encoding="utf-8"?>\<scenario id="null" name="null" schemaVersion="1.0.19">\
    <settings>\
       <units>US</units>\

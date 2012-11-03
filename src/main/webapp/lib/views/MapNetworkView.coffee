@@ -6,8 +6,8 @@
 #
 # The class also creates and then triggers the rendering of the treeView 
 # of the scenario elements.
-class window.sirius.MapNetworkView extends Backbone.View
-  $a = window.sirius
+class window.beats.MapNetworkView extends Backbone.View
+  $a = window.beats
   WARNING_MSG = 'Directions API Warning(s):'
   ERROR_MSG = 'Directions API Error: Could not render link :'
     

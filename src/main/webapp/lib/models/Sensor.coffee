@@ -1,6 +1,6 @@
-class window.sirius.Sensor extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.Sensor extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.Sensor extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Sensor()
+    obj = new window.beats.Sensor()
     display_position = xml.children('display_position')
     obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
     link_reference = xml.children('link_reference')

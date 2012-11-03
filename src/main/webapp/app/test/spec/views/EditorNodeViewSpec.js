@@ -1,5 +1,5 @@
 describe("EditorNodeView", function() {
-  $a = window.sirius;
+  $a = window.beats;
   
   beforeEach(function() {
     loadFixtures('editor.node.view.fixture.html');

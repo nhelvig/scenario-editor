@@ -1,2 +1,2 @@
-window.sirius.LinkList::defaults =
+window.beats.LinkList::defaults =
   link: []

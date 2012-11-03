@@ -1,10 +1,10 @@
 # Creates sensors by overriding getIcon from MapMarkerView and registering
 # show/hide events from the sensors layer. It also adds itself to and holds a
 # static array of sensors
-class window.sirius.MapSensorView extends window.sirius.MapMarkerView
+class window.beats.MapSensorView extends window.beats.MapMarkerView
   @ICON: 'camera-orig'
   @SELECTED_ICON: 'camera-selected'
-  $a = window.sirius
+  $a = window.beats
   
   initialize: (model) ->
     super model

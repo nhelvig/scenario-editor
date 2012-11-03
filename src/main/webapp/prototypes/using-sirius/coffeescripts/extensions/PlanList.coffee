@@ -1,2 +1,2 @@
-window.sirius.PlanList::defaults =
+window.beats.PlanList::defaults =
   plan: []

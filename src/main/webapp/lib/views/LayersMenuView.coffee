@@ -2,8 +2,8 @@
 # menu-data.coffee. In combination with LayersMenuViewItemit will
 # recursively render a menu and its submenus if they are defined
 # in the data file correctly.
-class window.sirius.LayersMenuView extends Backbone.View
-  $a = window.sirius
+class window.beats.LayersMenuView extends Backbone.View
+  $a = window.beats
   tagName : 'ul'
   # used to create hover effects on the submenus
   events : {

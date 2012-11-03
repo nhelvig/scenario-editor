@@ -1,16 +1,16 @@
-window.sirius.Signal::defaults =
+window.beats.Signal::defaults =
   phase: []
 
-window.sirius.Signal::resolve_references =
-  window.sirius.ReferenceHelper.resolver('node_id', 'node', 'node', 'signal', 'Signal', true)
+window.beats.Signal::resolve_references =
+  window.beats.ReferenceHelper.resolver('node_id', 'node', 'node', 'signal', 'Signal', true)
 
-window.sirius.Signal::encode_references = ->
+window.beats.Signal::encode_references = ->
   @set 'node_id', @get('node').id
 
-window.sirius.Signal::phase_with_nema = (nema) ->
+window.beats.Signal::phase_with_nema = (nema) ->
   _.find(@get('phase'), (phase) -> phase.get('nema') == nema)
 
-window.sirius.Signal::calc_phase_row_col = ->
+window.beats.Signal::calc_phase_row_col = ->
   _.each(@get('phase'),
     (ph) ->
       nema = ph.get('nema')

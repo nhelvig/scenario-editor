@@ -2,8 +2,8 @@
 # is a li tag with label for its name, a hidden checkbox that enables
 # us to swap the open/close image easily, and the ol tag for its
 # child elements to be attached to.
-class window.sirius.TreeParentItemView extends Backbone.View
-  $a = window.sirius
+class window.beats.TreeParentItemView extends Backbone.View
+  $a = window.beats
   tagName: 'li'
   className: 'tree-parent-node'
 

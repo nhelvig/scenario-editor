@@ -1,4 +1,4 @@
-sirius_classes_with_extensions = [
+beats_classes_with_extensions = [
   'Begin','Controller', 'ControllerSet',
   'Data_sources', 'Density', 'Display_position',
   'Dynamics', 'End', 'Event', 'EventSet', 'Input',
@@ -10,7 +10,7 @@ sirius_classes_with_extensions = [
   'TargetElements'
 ]
 
-sirius_classes_without_extensions = [
+beats_classes_without_extensions = [
   'ALatLng', 'ArrayText', 'CapacityProfile',
   'Data_source', 'Decision_point', 'Decision_points', 'DecisionPoints',
   'Decision_point_split', 'DemandProfile', 'DemandProfileSet', 'Description',
@@ -29,11 +29,11 @@ sirius_classes_without_extensions = [
   'To', 'Units', 'VehicleType', 'VehicleTypeOrder', 'VehicleTypes', 'Weavingfactors', 'WeavingFactorsProfile'
 ]
 
-load_sirius_classes = (after) ->
+load_beats_classes = (after) ->
   head.js "js/Sirius.js", ->
-    class_paths = _.map(sirius_classes_without_extensions, (cname) -> "js/#{cname}.js")
+    class_paths = _.map(beats_classes_without_extensions, (cname) -> "js/#{cname}.js")
     class_paths = class_paths.concat _.flatten(_.map(
-      sirius_classes_with_extensions,
+      beats_classes_with_extensions,
       (cname) -> ["js/#{cname}.js","js/extensions/#{cname}.js"]
     ))
     class_paths.push after
@@ -43,11 +43,11 @@ head.js('../shared/jquery-1.7.1.js',
         '../shared/underscore.js',
         '../shared/backbone.js',
         '../shared/bootstrap/js/bootstrap.js', ->
-            load_sirius_classes ->
+            load_beats_classes ->
               $("#load_scenario").click ->
                 xml_text = $("#scenario_text").val()
                 xml = $.parseXML(xml_text)
-                window.textarea_scenario = window.sirius.Scenario.from_xml($(xml).children())
+                window.textarea_scenario = window.beats.Scenario.from_xml($(xml).children())
               $("#write_scenario_as_xml").click ->
                 doc = document.implementation.createDocument('document:xml','scenario',null)
                 the_xml = window.textarea_scenario.to_xml(doc)

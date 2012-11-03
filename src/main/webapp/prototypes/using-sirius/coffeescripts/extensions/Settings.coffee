@@ -1,2 +1,2 @@
-window.sirius.Settings::initialize = ->
-  @set('units', new window.sirius.Units())
+window.beats.Settings::initialize = ->
+  @set('units', new window.beats.Units())

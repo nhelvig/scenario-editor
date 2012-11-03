@@ -1,5 +1,5 @@
 describe("EditorSensorView", function() {
-  $a = window.sirius;
+  $a = window.beats;
   
   beforeEach(function() {
     loadFixtures('editor.sensor.view.fixture.html');

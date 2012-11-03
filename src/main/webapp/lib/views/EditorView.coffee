@@ -1,6 +1,6 @@
 # This is the super class for the editor dialogs for all elements
-class window.sirius.EditorView extends Backbone.View
-  $a = window.sirius
+class window.beats.EditorView extends Backbone.View
+  $a = window.beats
 
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData

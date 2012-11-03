@@ -1,2 +1,2 @@
-window.sirius.PlanSequence::defaults =
+window.beats.PlanSequence::defaults =
   plan_reference: []

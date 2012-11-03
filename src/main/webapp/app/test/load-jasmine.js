@@ -20,26 +20,23 @@
   util_jasmine_specs = ['ContextMenuHandlerSpec', 'GoogleMapRouteHandlerSpec'
   ];
   
-  load_sirius_classes = function(after) {
-    return head.js("../js/models/Sirius.js",'../js/sirius-classes-load.js', function() {
+  load_app_classes = function(after) {
+    return head.js("../js/models/Beats.js",'../js/classes-load.js', function() {
       var class_paths;
-      class_paths = _.map(window.sirius.models_without_extensions, function(cname) {
+      class_paths = _.map(window.beats.models_without_extensions, function(cname) {
         return "../js/models/" + cname + ".js";
       });
-      class_paths = class_paths.concat(_.flatten(_.map(window.sirius.models_util, function(cname) {
+      class_paths = class_paths.concat(_.flatten(_.map(window.beats.utils, function(cname) {
         return "../js/util/" + cname + ".js";
       })));
-      class_paths = class_paths.concat(_.flatten(_.map(window.sirius.models_with_extensions, function(cname) {
+      class_paths = class_paths.concat(_.flatten(_.map(window.beats.models_with_extensions, function(cname) {
         return ["../js/models/" + cname + ".js", "../js/extensions/" + cname + ".js"];
       })));
-      class_paths = class_paths.concat(_.flatten(_.map(window.sirius.map_view_classes, function(cname) {
+      class_paths = class_paths.concat(_.flatten(_.map(window.beats.map_views, function(cname) {
         return "../js/views/" + cname + ".js";
       })));
-      class_paths = class_paths.concat(_.flatten(_.map(window.sirius.collection_classes, function(cname) {
+      class_paths = class_paths.concat(_.flatten(_.map(window.beats.collections, function(cname) {
         return "../js/collections/" + cname + ".js";
-      })));
-      class_paths = class_paths.concat(_.flatten(_.map(window.sirius.util_classes, function(cname) {
-        return "../js/util/" + cname + ".js";
       })));
       class_paths.push(after);
       return head.js.apply(this, class_paths);
@@ -74,9 +71,9 @@
         });
   };
   
-  window.loadSirius = function(after) {
-    return head.js("../js/models/Sirius.js", '../js/menu-data.js', 'scenario-xml.js', function() {
-      return load_sirius_classes(function() {
+  window.loadApp = function(after) {
+    return head.js("../js/models/Beats.js", '../js/menu-data.js', 'scenario-xml.js', function() {
+      return load_app_classes(function() {
           return load_jasmine_specs_templates(after);
         });
     });
@@ -91,7 +88,7 @@
         '../js/vendor/bootstrap/js/bootstrap.min.js', 
         function() {
           google.load("maps", "3",{
-                  callback: "window.loadSirius(runner)",
+                  callback: "window.loadApp(runner)",
                   other_params: "libraries=geometry,drawing&sensor=false"
                 });
           });

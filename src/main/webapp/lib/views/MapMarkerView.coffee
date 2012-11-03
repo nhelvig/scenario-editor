@@ -1,8 +1,8 @@
 # MapMarkerView is base class for scenario elements represented by a
 # single latitude and longitude on the Map
-class window.sirius.MapMarkerView extends Backbone.View
+class window.beats.MapMarkerView extends Backbone.View
   @IMAGE_PATH: '/scenario-editor-0.1-SNAPSHOT/app/images/'
-  $a = window.sirius
+  $a = window.beats
 
   initialize: (@model) ->
     # get the position, we only draw if the position is defined

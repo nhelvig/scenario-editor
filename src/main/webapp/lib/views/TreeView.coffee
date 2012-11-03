@@ -1,7 +1,7 @@
 # This class Creates the TreeView by going through the appropriate lists
 # and making parent and child nodes for the tree
-class window.sirius.TreeView extends Backbone.View
-  $a = window.sirius
+class window.beats.TreeView extends Backbone.View
+  $a = window.beats
   tagName: 'ol'
   id: 'tree'
 

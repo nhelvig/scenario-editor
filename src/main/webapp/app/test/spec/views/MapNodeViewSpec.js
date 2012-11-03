@@ -1,5 +1,5 @@
 describe("MapNodeView", function() {
-  var $s = window.sirius;
+  var $s = window.beats;
   var network, model;
 
   beforeEach(function() {

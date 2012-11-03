@@ -1,2 +1,2 @@
-window.sirius.PathList::defaults =
+window.beats.PathList::defaults =
   path: []

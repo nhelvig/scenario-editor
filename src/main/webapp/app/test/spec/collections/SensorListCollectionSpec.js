@@ -1,5 +1,5 @@
 describe("SensorListCollection", function() {
-  $a = window.sirius;
+  $a = window.beats;
   var models, network, begin, end;
   
   beforeEach(function() {

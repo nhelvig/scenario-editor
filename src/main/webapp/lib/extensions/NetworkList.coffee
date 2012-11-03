@@ -1,2 +1,2 @@
-window.sirius.NetworkList::defaults =
+window.beats.NetworkList::defaults =
   network: []

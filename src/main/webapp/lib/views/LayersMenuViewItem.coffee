@@ -3,8 +3,8 @@
 # toggle show/hide on the map. Note that if it finds
 # there is a submenu attached to it, then it will call
 # back to LayerMenuView to create a new menu and attach it to itself
-class window.sirius.LayersMenuViewItem extends Backbone.View
-  $a = window.sirius
+class window.beats.LayersMenuViewItem extends Backbone.View
+  $a = window.beats
   tagName : 'li'
   isShowing: true
 

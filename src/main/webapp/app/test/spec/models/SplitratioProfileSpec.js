@@ -4,8 +4,8 @@ describe("SplitratioProfile", function() {
   var testSplitratioProfile;
 
   beforeEach(function() {
-    testNode = new window.sirius.Node({id: testNodeId});
-    testSplitratioProfile = new window.sirius.SplitratioProfile({node: testNode});
+    testNode = new window.beats.Node({id: testNodeId});
+    testSplitratioProfile = new window.beats.SplitratioProfile({node: testNode});
   });
 
   it("should not blow up on to_xml", function() {
@@ -19,7 +19,7 @@ describe("SplitratioProfile", function() {
   });
 
   it("should resolve node_id as node", function() {
-    var s = new window.sirius.SplitratioProfile({node_id: testNodeId});
+    var s = new window.beats.SplitratioProfile({node_id: testNodeId});
     expectResolution(s, 'node', testNode);
   });
 

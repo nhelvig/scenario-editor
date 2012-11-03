@@ -1,6 +1,6 @@
 # This creates the editor dialogs for node elements
-class window.sirius.EditorNodeView extends window.sirius.EditorView
-  $a = window.sirius
+class window.beats.EditorNodeView extends window.beats.EditorView
+  $a = window.beats
   events : {
     'blur #name, #type' : 'save'
     'blur #description' : 'saveDesc'

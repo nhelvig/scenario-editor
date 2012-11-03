@@ -1,2 +1,2 @@
-window.sirius.Dynamics::defaults =
+window.beats.Dynamics::defaults =
   type: "CTM"

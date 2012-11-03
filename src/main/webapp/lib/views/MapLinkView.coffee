@@ -2,11 +2,11 @@
 # Polyline drawn between two steps in the route as well as
 # an arrow head pointing in the appropriate direction if the
 # Polyline is sufficiently long.
-class window.sirius.MapLinkView extends Backbone.View
+class window.beats.MapLinkView extends Backbone.View
   @LINK_COLOR: 'blue'
   @SELECTED_LINK_COLOR: 'red'
 
-  $a = window.sirius
+  $a = window.beats
 
   initialize: (@model, @network) ->
     if(@model.legs?)

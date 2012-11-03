@@ -9,9 +9,9 @@ describe("Link", function() {
   var testLink2;
 
   beforeEach(function() {
-    testNode = new window.sirius.Node({id: testNodeId});
-    testNode2 = new window.sirius.Node({id: testNodeId2});
-    testNode3 = new window.sirius.Node({id: testNodeId3});
+    testNode = new window.beats.Node({id: testNodeId});
+    testNode2 = new window.beats.Node({id: testNodeId2});
+    testNode3 = new window.beats.Node({id: testNodeId3});
     testLink1 = simpleLink(testNode, testNode2);
     testLink2 = simpleLink(testNode, testNode3);
     testLink3 = simpleLink(testNode, testNode3);

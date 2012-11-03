@@ -4,8 +4,8 @@ describe("DemandProfile", function() {
   var testDemandProfile;
   
   beforeEach(function() {
-    testLink = new window.sirius.Link({id: testLinkId});
-    testDemandProfile = new window.sirius.DemandProfile({link: testLink});
+    testLink = new window.beats.Link({id: testLinkId});
+    testDemandProfile = new window.beats.DemandProfile({link: testLink});
   });
   
   it("should not blow up on to_xml", function() {
@@ -19,7 +19,7 @@ describe("DemandProfile", function() {
   });
   
   it("should resolve link_id_origin as link", function() {
-    var d = new window.sirius.DemandProfile({link_id_origin: testLinkId});
+    var d = new window.beats.DemandProfile({link_id_origin: testLinkId});
     expectResolution(d, 'link', testLink);
     expect(testLink.get('demand')).toEqual(d);
   });

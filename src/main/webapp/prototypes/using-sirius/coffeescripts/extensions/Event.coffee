@@ -1,8 +1,8 @@
-window.sirius.Event::display_point = ->
+window.beats.Event::display_point = ->
   display_position = @get('display_position')
   if not display_position
-    display_position = new window.sirius.Display_position()
-    p = new window.sirius.Point()
+    display_position = new window.beats.Display_position()
+    p = new window.beats.Point()
     display_position.get('point').push(p)
 
     pos_elt = null
@@ -23,7 +23,7 @@ window.sirius.Event::display_point = ->
 
     display_position.get('point')[0]
 
-window.sirius.Event::resolve_references = (deferred, object_with_id) ->
+window.beats.Event::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     scenario_elements = @get('targetelements')?.get('scenarioelement')
     scenario_links = _.map( scenario_elements, (sel) -> [sel.get('type'), sel.id] )
@@ -48,7 +48,7 @@ window.sirius.Event::resolve_references = (deferred, object_with_id) ->
     @set 'link', link
     @set 'network', network
 
-window.sirius.Event::encode_references = ->
+window.beats.Event::encode_references = ->
   @set('node_id', @get('node').id) if @has('node')
   @set('link_id', @get('link').id) if @has('link')
   @set('network_id', @get('network').id) if @has('network')

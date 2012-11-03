@@ -1,6 +1,6 @@
 # This class is used to manage our node models. 
-class window.sirius.NodeListCollection extends Backbone.Collection
-  $a = window.sirius
+class window.beats.NodeListCollection extends Backbone.Collection
+  $a = window.beats
   model: $a.Node
   
   # when initialized go through the models and set selected to false, and 

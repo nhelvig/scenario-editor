@@ -1,7 +1,7 @@
 # This handles the routing calls and will eventually become only one way we get
 # routing information
-class window.sirius.GoogleMapRouteHandler
-  $a = window.sirius
+class window.beats.GoogleMapRouteHandler
+  $a = window.beats
   
   constructor: (@links) ->
     @directionsService = new google.maps.DirectionsService()

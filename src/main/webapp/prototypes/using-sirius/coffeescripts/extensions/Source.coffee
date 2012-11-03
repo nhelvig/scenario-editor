@@ -1,4 +1,4 @@
-window.sirius.Source::defaults =
+window.beats.Source::defaults =
   url: ""
   dt: 1
   format: ""

@@ -1,5 +1,5 @@
 describe("NodeListCollection", function() {
-  $a = window.sirius;
+  $a = window.beats;
   var models;
   var network;
   

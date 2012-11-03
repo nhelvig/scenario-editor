@@ -1,7 +1,7 @@
 # The view class for each child item in the nav bar view. Each child item
 # is an <li> tag with an anchor surrounding the name. 
-class window.sirius.NavChildItemView extends Backbone.View
-  $a = window.sirius
+class window.beats.NavChildItemView extends Backbone.View
+  $a = window.beats
   tagName: "li"
   
   # The model attribute is the model for this class, the element attribute is 

@@ -1,6 +1,6 @@
 # This creates the editor dialogs for node elements
-class window.sirius.EditorLinkView extends window.sirius.EditorView
-  $a = window.sirius
+class window.beats.EditorLinkView extends window.beats.EditorView
+  $a = window.beats
   events : {
     'blur #link_name, #road_name, #link_type' : 'save'
     'blur #lanes, #lane_offset, #length' : 'save'

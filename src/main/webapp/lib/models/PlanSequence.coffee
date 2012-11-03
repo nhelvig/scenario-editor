@@ -1,6 +1,6 @@
-class window.sirius.PlanSequence extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.PlanSequence extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.PlanSequence extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.PlanSequence()
+    obj = new window.beats.PlanSequence()
     plan_reference = xml.children('plan_reference')
     obj.set('plan_reference', _.map($(plan_reference), (plan_reference_i) -> $a.Plan_reference.from_xml2($(plan_reference_i), deferred, object_with_id)))
     transition_delay = $(xml).attr('transition_delay')

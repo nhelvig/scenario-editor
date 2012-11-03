@@ -1,2 +1,2 @@
-window.sirius.EventSet::defaults =
+window.beats.EventSet::defaults =
   event: []

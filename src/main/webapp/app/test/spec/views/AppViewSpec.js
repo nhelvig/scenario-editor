@@ -1,5 +1,5 @@
 describe("AppView", function() {
-  $a = window.sirius;
+  $a = window.beats;
 
   beforeEach(function() {
     loadFixtures('main.canvas.view.fixture.html');

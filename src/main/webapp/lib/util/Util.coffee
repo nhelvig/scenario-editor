@@ -1,6 +1,6 @@
 # A class of static methods used to store general functions used by
 # many classes.
-window.sirius.Util =
+window.beats.Util =
   _round_dec: (num,dec) ->
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
 

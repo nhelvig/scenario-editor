@@ -1,4 +1,4 @@
-class window.sirius.ArrayText
+class window.beats.ArrayText
   @slice_and_dice: (data, delims, convert) ->
     dim = delims.length
 

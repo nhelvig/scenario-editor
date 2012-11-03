@@ -1,5 +1,5 @@
 describe("MapLinkView", function() {
-  var $a = window.sirius;
+  var $a = window.beats;
   var network, model, legs;
   
   beforeEach(function() {
