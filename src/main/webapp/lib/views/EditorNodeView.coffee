@@ -47,7 +47,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models) ->
-    name: _.map(models, (m) -> m.get('name')).join(", ") 
+    name: _.map(models, (m) -> m.get('name')).join(", ")
     description:  $a.Util.getDesc(models)
     lat: $a.Util.getGeometry({models:models, geom:'lat'})
     lng: $a.Util.getGeometry({models:models, geom:'lng'})

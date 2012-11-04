@@ -79,8 +79,6 @@
       <div id="tabs-sensor-1">
         <form>
           <fieldset>
-            <label for="sensor-desc">Description</label>
-            <textarea rows="2" name="sensor-desc" id="sensor_desc" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
             <label for="sensor-type">Type</label>
             <select id="sensor_type" name ="sensor-type" class="ui-widget-content ui-corner-all">
               <option value="static_point">Static Point</option>
@@ -103,22 +101,6 @@
       <div id="tabs-sensor-2">
         <form>
           <fieldset>
-            <label>Time step</label>
-            <label for="sensor-hour" class="time">h</label>              
-            <input type="number"  id="sensor_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dt['h']}}" />
-
-            <label for="sensor-minute" class="time">: m</label>
-            <input type="number" id="sensor_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['m']}}" />
-              
-            <label for="sensor-second" class="time">:: s</label>
-            <input type="number" id="sensor_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['s']}}" />
-              
-            <label>Format</label>
-            <select id="sensor_format" name="sensor-format" class="ui-widget-content ui-corner-all">
-              <option value="PeMS Data Clearinghouse">PeMS Data Clearinghouse</option>
-              <option value="Caltrans DBX">Caltrans DBX</option>
-              <option value="BHL">BHL</option>
-            </select><br/>
             <label>URL *</label>
             <input type="text" name="sensor-url" id="sensor_url" class="text ui-widget-content ui-corner-all" value="{{url}}"/>
             <label>{{url_desc}}</label>

@@ -41,14 +41,13 @@ describe("EditorNodeView", function() {
   
   describe("Rendering", function() {
     beforeEach(function() {
-      this.view.render();
+      this.v = this.view.render();
     });
     it("returns the view object", function() {
-      expect(this.view.render()).toEqual(this.view);
+      expect(this.v).toEqual(this.view);
     });
     
     it("produces the correct HTML", function() {
-      this.view.render();
       expect(this.view.el.innerHTML).toContain('<label for="name">Name</label>');
     });
     
