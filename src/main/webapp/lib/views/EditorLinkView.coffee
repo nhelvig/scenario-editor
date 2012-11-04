@@ -2,7 +2,7 @@
 class window.beats.EditorLinkView extends window.beats.EditorView
   $a = window.beats
   events : {
-    'blur #link_name, #road_name, #link_type' : 'save'
+    'blur #link_name, #link_type' : 'save'
     'blur #lanes, #lane_offset, #length' : 'save'
     'blur #capacity,
       #critical_speed, 
@@ -27,7 +27,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
       #link_capacity_sample_hour, 
       #link_capacity_sample_minute, 
       #link_capacity_sample_second' : 'saveCPTime'
-    'blur #description' : 'saveDesc'
+    #'blur #description' : 'saveDesc'
     'click #do-subdivide' : 'subDivide'
     'click #do-split': 'doSplit'
     'click #add-lt' : 'addLeftTurn'
@@ -83,9 +83,9 @@ class window.beats.EditorLinkView extends window.beats.EditorView
                   fdp = m.get('fundamentaldiagramprofile')
                   fdp?.get('fundamentaldiagram')[0] || null
           )
-    name: _.map(models, (m) -> m.get('name')).join(", ")
+    name: _.map(models, (m) -> m.get('roads').get('road')[0].get('name')).join(", ")
     description: '' #_.map(models, (m) -> m.get('description').get('text')).join("; ")
-    roadName: _.map(models, (m) -> m.get('road_name')).join(", ")
+    roadName: '' # remove?
     lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
     laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  
     length: _.map(models, (m) -> m.get('length')).join(", ")  
@@ -117,11 +117,11 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     fieldId = id[5...] if id.indexOf("link") is 0
     _.each(@models, (m) -> m.set(fieldId, $("##{id}").val()))
 
-  # this method saves the description
-  saveDesc: (e) ->
-    id = e.currentTarget.id
-    _.each(@models, (m) ->
-                      m.get('description').set('text', $("##{id}").val()))
+  # # this method saves the description
+  # saveDesc: (e) ->
+  #   id = e.currentTarget.id
+  #   _.each(@models, (m) ->
+  #                     m.get('description').set('text', $("##{id}").val()))
   
   # this saves fields in the fundamental diagram
   saveFD: (e) ->
