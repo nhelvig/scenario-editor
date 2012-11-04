@@ -15,7 +15,6 @@ class window.beats.SensorListCollection extends Backbone.Collection
               sensor.get('type'), 
               sensor.get('link_type'),
               sensor.get('link_reference').get('id'),
-              sensor.get('description').get('text')
             ]
     )
   
