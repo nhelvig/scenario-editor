@@ -29,21 +29,21 @@ describe("MapNodeView", function() {
       $s.broker.trigger("map:select_neighbors:" + model.cid);
       expect($s.MapNodeView.prototype.selectSelfandMyLinks).toHaveBeenCalled();
       expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(3);
+      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(12);
     });
 
     it("should handle select all incoming links", function() {
       $s.broker.trigger("map:select_neighbors_in:" + model.cid);
       expect($s.MapNodeView.prototype.selectMyInLinks).toHaveBeenCalled();
       expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(1);
+      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(8);
     });
 
     it("should handle select all outgoing links", function() {
       $s.broker.trigger("map:select_neighbors_out:" + model.cid);
       expect($s.MapNodeView.prototype.selectMyOutLinks).toHaveBeenCalled();
       expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(2);
+      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(4);
     });
   });
 });
