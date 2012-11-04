@@ -84,7 +84,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
                   fdp?.get('fundamentaldiagram')[0] || null
           )
     name: _.map(models, (m) -> m.get('name')).join(", ")
-    description: _.map(models, (m) -> m.get('description').get('text')).join("; ")
+    description: '' #_.map(models, (m) -> m.get('description').get('text')).join("; ")
     roadName: _.map(models, (m) -> m.get('road_name')).join(", ")
     lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
     laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  

@@ -195,11 +195,11 @@ describe("EditorLinkView", function() {
       fdp = model.get('fundamentaldiagramprofile')
       fd = fdp.get('fundamentaldiagram')[0] || null
       cp = model.get('capacity') || null
-      dp = model.get('demand') || null
+      dp = $a.scenario.get('demand') || null
       
       var v = {
-        name: model.get('name'),
-        description: model.get('description').get('text'),
+        name: model.get('roads').get('road')[0].get('name'),
+        description: '', //model.get('description').get('text'),
         roadName: model.get('road_name'),
         lanes: model.get('lanes'),
         laneOffset: model.get('lane_offset'),

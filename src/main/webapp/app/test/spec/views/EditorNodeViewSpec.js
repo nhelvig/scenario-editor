@@ -60,7 +60,6 @@ describe("EditorNodeView", function() {
     //checks that template was created correctly
     //Note: the elevation check force NaN to a string
     it("has the correct text content", function() {
-      model = this.view.models[0];
       expect(this.view.$('#name')).toHaveValue(model.get('name'));
       expect(this.view.$('#descripton')).toHaveValue(model.get('description'));
       lat = model.get('position').get('point')[0].get('lat');
