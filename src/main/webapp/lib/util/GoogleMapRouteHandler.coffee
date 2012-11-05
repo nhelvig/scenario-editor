@@ -14,7 +14,11 @@ class window.beats.GoogleMapRouteHandler
     if indexOfLink > -1
       link = @links[indexOfLink]
       @setUpLink(link, false)
-      @_requestLink(indexOfLink - 1)
+      if(indexOfLink % 8 != 0)
+        @_requestLink(indexOfLink - 1)
+      else
+        $a.broker.trigger('app:show_message:info', "Loading ...")
+        setTimeout (() => @_requestLink(indexOfLink - 1)), 8000
     else
       $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
   
@@ -32,7 +36,7 @@ class window.beats.GoogleMapRouteHandler
       }
       
       geom = link.get('linkgeometry')
-      geom = geom?.get('encodedpolyline')?.get('points')?.get('text')
+      #geom = geom?.get('encodedpolyline')?.get('points')?.get('text')
       # geometry exists to query google again
       if(geom is undefined or geom is null or forceNewRoute is true)
         @_directionsRequest(request, link)
@@ -51,9 +55,11 @@ class window.beats.GoogleMapRouteHandler
         if rte.warnings.length > 0
           msg = "#{WARNING_MSG} #{rte.warnings}"
           $a.broker.trigger('app:show_message:info', msg)
-        link.legs = rte.legs if link?
-        $a.broker.trigger('map:draw_link', link)
+        if link?
+          link.legs = rte.legs 
+          $a.broker.trigger('map:draw_link', link)
       else #if @_isOverQuery(status) and params.attempts < 10
+        $a.broker.trigger('app:show_message:error', "#{status}")
         setTimeout (() => @_directionsRequest(request)), 3000
       #else #I took out any error and just keep loading
       #  $a.broker.trigger('app:show_message:error', "#{ERROR_MSG} #{status}")

@@ -59,7 +59,8 @@ describe("EditorSensorView", function() {
     it("has the correct text content", function() {
       model = this.view.models[0];
       expect(this.view.$('#sensor_type')).toHaveValue(model.get('type'));
-      expect(this.view.$('#sensor_link_type')).toHaveValue(model.get('link_type'));
+      link_type = model.get('link').get('type');
+      expect(this.view.$('#sensor_link_type')).toHaveValue(link_type);
       links = model.get('link_reference').get('id')
       expect(this.view.$('#sensor_links')).toHaveValue(links);
       lat = model.get('position').get('point')[0].get('lat');
@@ -121,12 +122,13 @@ describe("EditorSensorView", function() {
           });
         });
         it("Sensor Tab: Link Type is saved", function() {
-          expectSaveSelect({
-            el: this.view.el,
-            id: '#sensor_link_type',
-            modelField: 'link_type',
-            model: model
-          });
+          selected = $($(this.view.el)).find('#sensor_link_type option:selected');
+          $(selected).attr('selected', false);
+          options = $(this.view.el).find('#sensor_link_type option');
+          $(options[8]).attr('selected', true);
+          newSelectedValue = $(options[8]).val();
+          $('#sensor_link_type').blur();
+          expect(model.get('link').get('type')).toEqual(newSelectedValue);
         });
         it("Sensor Tab: Links are saved", function() {
           expectSave({

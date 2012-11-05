@@ -37,7 +37,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
     type = @models[0].get('type')
-    lType = @models[0].get('link_type')
+    lType = @models[0].get('link').get('type')
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
