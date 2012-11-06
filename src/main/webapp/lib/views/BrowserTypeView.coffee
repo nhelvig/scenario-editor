@@ -70,7 +70,6 @@ class window.beats.BrowserLinkView extends  window.beats.BrowserView
     columns =  [
             { "sTitle": "Id","bVisible": false},
             { "sTitle": "Name","sWidth": "17%"},
-            { "sTitle": "Road Name","sWidth": "17%"},
             { "sTitle": "Type","sWidth": "17%"},
             { "sTitle": "Lanes","sWidth": "17%"},
             { "sTitle": "Begin","sWidth": "16%"},

@@ -54,6 +54,12 @@ beforeEach(function() {
     var link = new window.beats.Link({begin: begin, end: end});
     var outputSingle = new window.beats.Output({link: link});
     var inputSingle = new window.beats.Input({link: link});
+    var road = new window.beats.Road()
+    road.set('name','name1');
+    var road2 = new window.beats.Road();
+    road2.set('name','name2');
+    link.set('roads', new window.beats.Roads());
+    link.get('roads').set('road', [road,road2]);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
@@ -70,7 +76,7 @@ beforeEach(function() {
     } else {
       node2.get('inputs').get('input').push(inputSingle);
     }
-    
+  
     return link;
   };
   

@@ -38,9 +38,8 @@ describe("MapLinkView", function() {
       expect(this.view.encodedPath).toEqual(expectedEncodedPath);
     });
     
-    it("should save encoded the path to linkgeometry", function() {
-      lg = this.view.model.get('linkgeometry');
-      //encodedPath = lg.get('encodedpolyline').get('points').get('text');
+    it("should save encoded the path to shape", function() {
+      lg = this.view.model.get('shape');
       expect(lg).toEqual(expectedEncodedPath);
     });
 

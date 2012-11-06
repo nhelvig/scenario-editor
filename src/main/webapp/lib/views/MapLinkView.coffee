@@ -39,7 +39,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # this method reads the path of points contained in the legs, joins them
   # into one array with no duplicates and then encodes the using googles
-  # geomtry package in order to save the path to models linkgeometry field
+  # geomtry package in order to save the path to models shape field
   _createEncodedPath: (legs) ->
     smPath = []
     for leg in legs
@@ -51,22 +51,13 @@ class window.beats.MapLinkView extends Backbone.View
 
   # save the encoded path to the model
   _saveEncodedPath: ->
-    # lg = new $a.LinkGeometry()
-    # ep = new $a.EncodedPolyline()
-    # pts = new $a.Points()
-    # pts.set(text:@encodedPath)
-    # ep.set(points: pts)
-    # lg.set(encodedpolyline:ep)
-    # @model.set(linkgeometry: lg)
-    @model.set('linkgeometry', @encodedPath)
+    @model.set('shape', @encodedPath)
     
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
   _drawLink: ->
-    linkGeom = @model.get('linkgeometry')
-    #polyPath = linkGeom.get('encodedpolyline').get('points').get('text')
+    linkGeom = @model.get('shape')
     @link = new google.maps.Polyline({
-      #path: google.maps.geometry.encoding.decodePath polyPath
       path: google.maps.geometry.encoding.decodePath linkGeom
       map: $a.map
       strokeColor:  MapLinkView.LINK_COLOR

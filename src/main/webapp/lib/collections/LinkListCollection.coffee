@@ -48,11 +48,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # This is called when a link browser is created in order to return
   # the desired column data for the table.
   getBrowserColumnData: () ->
-    @models.map((link) -> 
+    @models.map((link) ->
                   [
                     link.get('id'),
-                    link.get('name'),
-                    link.get('road_name'),
+                    link.get_road_names(),
                     link.get('type'),
                     link.get('lanes'),
                     link.get('begin').get('node').get('name'),

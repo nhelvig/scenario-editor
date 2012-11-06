@@ -27,7 +27,6 @@ class window.beats.EditorLinkView extends window.beats.EditorView
       #link_capacity_sample_hour, 
       #link_capacity_sample_minute, 
       #link_capacity_sample_second' : 'saveCPTime'
-    #'blur #description' : 'saveDesc'
     'click #do-subdivide' : 'subDivide'
     'click #do-split': 'doSplit'
     'click #add-lt' : 'addLeftTurn'
@@ -36,6 +35,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     'click #reverse-link' : 'reverseLink'
     'click #geom-line' : 'geomLine'
     'click #geom-road' : 'geomRoad'
+    'click #in_sync' : 'saveInSync'
   }
 
   # the options argument has the Node model and type of dialog to create('node')
@@ -71,6 +71,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     if (@models.length > 1)
       $('#link_name').attr("disabled", true)
       $('#length').attr("disabled", true)
+      $('#in_sync').attr("disabled", true)
   
   # creates a hash of values taken from the model for the html template
   # I could have just passed the model but I did it this way because 
@@ -83,9 +84,8 @@ class window.beats.EditorLinkView extends window.beats.EditorView
                   fdp = m.get('fundamentaldiagramprofile')
                   fdp?.get('fundamentaldiagram')[0] || null
           )
-    name: _.map(models, (m) -> m.get('roads').get('road')[0].get('name')).join(", ")
-    description: '' #_.map(models, (m) -> m.get('description').get('text')).join("; ")
-    roadName: '' # remove?
+    name: _.map(models, (m) -> m.get_road_names()).join(", ")
+    insync: if models[0].has('in_sync') and models[0].get('in_sync') then 'checked' else ''
     lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
     laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  
     length: _.map(models, (m) -> m.get('length')).join(", ")  
@@ -117,12 +117,11 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     fieldId = id[5...] if id.indexOf("link") is 0
     _.each(@models, (m) -> m.set(fieldId, $("##{id}").val()))
 
-  # # this method saves the description
-  # saveDesc: (e) ->
-  #   id = e.currentTarget.id
-  #   _.each(@models, (m) ->
-  #                     m.get('description').set('text', $("##{id}").val()))
-  
+  # This saves the checkbox indicating the link is in sync
+  saveInSync: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.set(id, $("##{id}").prop('checked')))
+
   # this saves fields in the fundamental diagram
   saveFD: (e) ->
     id = e.currentTarget.id
