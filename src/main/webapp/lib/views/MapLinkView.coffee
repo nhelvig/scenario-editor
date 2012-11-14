@@ -51,12 +51,12 @@ class window.beats.MapLinkView extends Backbone.View
 
   # save the encoded path to the model
   _saveEncodedPath: ->
-    @model.set('shape', @encodedPath)
+    @model.set('shape', new $a.Shape().set('text', @encodedPath))
     
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
   _drawLink: ->
-    linkGeom = @model.get('shape')
+    linkGeom = @model.get('shape').get('text')
     @link = new google.maps.Polyline({
       path: google.maps.geometry.encoding.decodePath linkGeom
       map: $a.map

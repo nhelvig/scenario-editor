@@ -39,7 +39,7 @@ describe("MapLinkView", function() {
     });
     
     it("should save encoded the path to shape", function() {
-      lg = this.view.model.get('shape');
+      lg = this.view.model.get('shape').get('text');
       expect(lg).toEqual(expectedEncodedPath);
     });
 

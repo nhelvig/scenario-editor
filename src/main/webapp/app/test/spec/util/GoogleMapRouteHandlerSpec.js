@@ -21,7 +21,7 @@ describe("GoogleMapRouteHandler", function() {
     it("should call directionRequest if no geometry", function() {     
       grh = $a.GoogleMapRouteHandler
       link = this.gmrh.links[0]
-      link.set('linkgeometry', null);
+      link.set('shape', null);
       this.gmrh.setUpLink(link, true);
       expect(grh.prototype._directionsRequest).toHaveBeenCalled();
     });
