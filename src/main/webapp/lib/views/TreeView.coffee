@@ -149,7 +149,11 @@ class window.beats.TreeView extends Backbone.View
   _createChildNodes: (params, type) ->
     _.each(params.parentList.get(params.modelListName), (e) =>
       targets = @_findTargetElements(e, params.attachId)
-      name = targets[0].get('name')
+      switch params.type
+        when 'link' then name = targets[0].get_road_names()
+        when 'node' then name = targets[0].name()
+        else name = targets[0].get('name')
+  
       # for OD Profiles
       name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
       attrs =
