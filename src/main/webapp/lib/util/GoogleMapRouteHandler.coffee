@@ -23,7 +23,7 @@ class window.beats.GoogleMapRouteHandler
           $a.broker.trigger('app:show_message:info', 'Loading ...')
       else
         $a.broker.trigger('map:draw_link', link)
-      
+        @_requestLink(indexOfLink - 1)
     else
       $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
   

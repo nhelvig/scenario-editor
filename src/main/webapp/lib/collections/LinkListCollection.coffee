@@ -54,8 +54,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
                     link.get_road_names(),
                     link.get('type'),
                     link.get('lanes'),
-                    link.get('begin').get('node').get('name'),
-                    link.get('end').get('node').get('name')
+                    link.get('begin').get('node').get_road_names(),
+                    link.get('end').get('node').get_road_names()
                   ]
                 )
   

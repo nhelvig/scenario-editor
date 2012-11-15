@@ -52,7 +52,7 @@ class window.beats.BrowserView extends Backbone.View
         "aaData": @_getData(),
         "aoColumns": @_getColumns(),
         "aaSorting": [[ 0, "desc" ]]
-        "bPaginate": false,
+        "bPaginate": true,
         "bLengthChange": true,
         "bFilter": false,
         "bSort": true,
