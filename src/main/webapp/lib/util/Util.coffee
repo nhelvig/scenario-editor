@@ -110,23 +110,6 @@ window.beats.Util =
     seconds += hms['s'] * 1
     seconds
 
-  #if descriptions on the models are empty then keep description blank
-  getDesc: (models) ->
-    desc = _.map(models, (m) -> 
-                  if m.get('description')?
-                    m.get('description').get('text')
-                )
-    if(undefined in desc)
-      desc = ''
-    else
-      desc = desc.join("; ")
-  
-  # save the description of any model element
-  saveDesc: (opts) ->
-    _.each(opts.models, (m) ->
-        m.set('description', new $a.Description()) unless m.get('description')?
-        m.get('description').set('text', $("##{opts.id}").val())
-    )
   
   # this method retrieves the geometry from the any model
   getGeometry: (opts) ->
