@@ -13,10 +13,10 @@ window.beats.Node::output_indexes = (other_node) ->
   )
 
 window.beats.Node::get_road_names = ->
-  _.map(@get('roadway_markers').get('marker'), 
+  _.map(@get('roadway_markers')?.get('marker'), 
     (marker) -> 
-      marker.get('name')
-  ).join(", ")
+      marker?.get('name')
+  ).join(", ") || "Name not defined"
   
 window.beats.Node::terminal = ->
   @get('type') is 'T'

@@ -32,7 +32,7 @@ describe("EditorNodeView", function() {
     });
   
     it("should should have title", function() {
-      title = "Node Editor: " + this.view.models[0].get('name');
+      title = "Node Editor: " + this.view.models[0].get_road_names();
       expect(this.view.el.title).toEqual(title);
     });
     
@@ -77,16 +77,11 @@ describe("EditorNodeView", function() {
        this.point = this.view.models[0].get('position').get('point')[0]
      });
  
-     describe("When name, description, and type blur handler fired", function() {
+     describe("When name and type blur handler fired", function() {
        it("name is saved", function() {     
          $('#name').val("Name Changed");
          $("#name").blur();
          expect(this.view.models[0].get('name')).toEqual("Name Changed");
-       });
-       it("description is saved", function() {
-         $('#description').val("Changed");
-         $("#description").blur();
-         expect(this.view.models[0].get('description').get('text')).toEqual("Changed");
        });
        it("type is saved", function() {
          selected = $($(this.view.el)).find('#type option:selected')
