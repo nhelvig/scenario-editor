@@ -1,5 +1,5 @@
 describe("EditorNodeView", function() {
-  $a = window.sirius;
+  $a = window.beats;
   
   beforeEach(function() {
     loadFixtures('editor.node.view.fixture.html');
@@ -30,25 +30,24 @@ describe("EditorNodeView", function() {
     it("should should have id", function() {
       expect(this.view.el.id).toEqual("node-dialog-form-" + this.view.models[0].cid);
     });
-
+  
     it("should should have title", function() {
       title = "Node Editor: " + this.view.models[0].get('name');
       expect(this.view.el.title).toEqual(title);
     });
     
-
+  
   });
   
   describe("Rendering", function() {
     beforeEach(function() {
-      this.view.render();
-    });
+              this.v = this.view.render();
+            });
     it("returns the view object", function() {
-      expect(this.view.render()).toEqual(this.view);
+      expect(this.v).toEqual(this.view);
     });
     
     it("produces the correct HTML", function() {
-      this.view.render();
       expect(this.view.el.innerHTML).toContain('<label for="name">Name</label>');
     });
     
@@ -60,8 +59,8 @@ describe("EditorNodeView", function() {
     //checks that template was created correctly
     //Note: the elevation check force NaN to a string
     it("has the correct text content", function() {
-      model = this.view.models[0];
-      expect(this.view.$('#name')).toHaveValue(model.get('name'));
+      name = model.get('roadway_markers').get('marker')[0].get('name')
+      expect(this.view.$('#name')).toHaveValue(name);
       expect(this.view.$('#descripton')).toHaveValue(model.get('description'));
       lat = model.get('position').get('point')[0].get('lat');
       expect(this.view.$('#lat')).toHaveValue(lat);
@@ -73,74 +72,74 @@ describe("EditorNodeView", function() {
   });
 
   describe("Events", function() {
-    beforeEach(function() {
-      this.view.render();
-      this.point = this.view.models[0].get('position').get('point')[0]
-    });
-
-    describe("When name, description, and type blur handler fired", function() {
-      it("name is saved", function() {     
-        $('#name').val("Name Changed");
-        $("#name").blur();
-        expect(this.view.models[0].get('name')).toEqual("Name Changed");
-      });
-      it("description is saved", function() {
-        $('#description').val("Changed");
-        $("#description").blur();
-        expect(this.view.models[0].get('description').get('text')).toEqual("Changed");
-      });
-      it("type is saved", function() {
-        selected = $($(this.view.el)).find('#type option:selected')
-        $(selected).attr('selected', false);
-        options = $(this.view.el).find("select option");
-        $(options[1]).attr('selected', true);
-        newSelectedValue = $(options[1]).val();
-        $("#type").blur();            
-        expect(this.view.models[0].get('type')).toEqual(newSelectedValue); 
-      });
-    });
-
-    describe("When lat, lng, elevation blur handler fired", function() {
-      it("lat is saved", function() {     
-        $('#lat').val("999");
-        $("#lat").blur();
-        expect(this.point.get('lat') == 999);
-      });
-      it("lng is saved", function() {     
-        $('#lng').val("999");
-        $("#lng").blur();
-        expect(this.point.get('lng') ==  999);
-      });
-      it("elevation is saved", function() {     
-        $('#elevation').val("999");
-        $("#elevation").blur();
-        expect(this.point.get('elevation')  == 999);
-      });
-    });
-
-    describe("When the lock click handler fired", function() {
-      it("lock is saved", function() { 
-        $('#lock').attr('checked', 'checked'); 
-        $('#lock').click();
-        expect(this.view.models[0].get('lock')).toBeTruthy();
-      });
-    });
-
-    describe("When buttons clicked handler fired", function() {
-      it("edit-signal button calls signalEditor unless disabled", function() {
-        if(!($('#edit-signal').is(':disabled'))) {
-          $('#edit-signal').click();
-          expect($a.EditorNodeView.prototype.signalEditor).toHaveBeenCalled();
-        }
-      });
-      it("choose-name button calls chooseName", function() { 
-        $('#choose-name').click();
-        expect($a.EditorNodeView.prototype.chooseName).toHaveBeenCalled();
-      });
-      it("remove-join-links button calls removeJoinLinks", function() { 
-        $('#remove-join-links').click();
-        expect($a.EditorNodeView.prototype.removeJoinLinks).toHaveBeenCalled();
-      });
-    });
-  });
+     beforeEach(function() {
+       this.view.render();
+       this.point = this.view.models[0].get('position').get('point')[0]
+     });
+ 
+     describe("When name, description, and type blur handler fired", function() {
+       it("name is saved", function() {     
+         $('#name').val("Name Changed");
+         $("#name").blur();
+         expect(this.view.models[0].get('name')).toEqual("Name Changed");
+       });
+       it("description is saved", function() {
+         $('#description').val("Changed");
+         $("#description").blur();
+         expect(this.view.models[0].get('description').get('text')).toEqual("Changed");
+       });
+       it("type is saved", function() {
+         selected = $($(this.view.el)).find('#type option:selected')
+         $(selected).attr('selected', false);
+         options = $(this.view.el).find("select option");
+         $(options[1]).attr('selected', true);
+         newSelectedValue = $(options[1]).val();
+         $("#type").blur();            
+         expect(this.view.models[0].get('type')).toEqual(newSelectedValue); 
+       });
+     });
+ 
+     describe("When lat, lng, elevation blur handler fired", function() {
+       it("lat is saved", function() {     
+         $('#lat').val("999");
+         $("#lat").blur();
+         expect(this.point.get('lat') == 999);
+       });
+       it("lng is saved", function() {     
+         $('#lng').val("999");
+         $("#lng").blur();
+         expect(this.point.get('lng') ==  999);
+       });
+       it("elevation is saved", function() {     
+         $('#elevation').val("999");
+         $("#elevation").blur();
+         expect(this.point.get('elevation')  == 999);
+       });
+     });
+ 
+     describe("When the lock click handler fired", function() {
+       it("lock is saved", function() { 
+         $('#lock').attr('checked', 'checked'); 
+         $('#lock').click();
+         expect(this.view.models[0].get('lock')).toBeTruthy();
+       });
+     });
+ 
+     describe("When buttons clicked handler fired", function() {
+       it("edit-signal button calls signalEditor unless disabled", function() {
+         if(!($('#edit-signal').is(':disabled'))) {
+           $('#edit-signal').click();
+           expect($a.EditorNodeView.prototype.signalEditor).toHaveBeenCalled();
+         }
+       });
+       it("choose-name button calls chooseName", function() { 
+         $('#choose-name').click();
+         expect($a.EditorNodeView.prototype.chooseName).toHaveBeenCalled();
+       });
+       it("remove-join-links button calls removeJoinLinks", function() { 
+         $('#remove-join-links').click();
+         expect($a.EditorNodeView.prototype.removeJoinLinks).toHaveBeenCalled();
+       });
+     });
+   });
 });

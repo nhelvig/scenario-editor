@@ -9,9 +9,9 @@ describe("Link", function() {
   var testLink2;
 
   beforeEach(function() {
-    testNode = new window.sirius.Node({id: testNodeId});
-    testNode2 = new window.sirius.Node({id: testNodeId2});
-    testNode3 = new window.sirius.Node({id: testNodeId3});
+    testNode = new window.beats.Node({id: testNodeId});
+    testNode2 = new window.beats.Node({id: testNodeId2});
+    testNode3 = new window.beats.Node({id: testNodeId3});
     testLink1 = simpleLink(testNode, testNode2);
     testLink2 = simpleLink(testNode, testNode3);
     testLink3 = simpleLink(testNode, testNode3);
@@ -31,6 +31,12 @@ describe("Link", function() {
     it("should not return non-parallel links", function() {
       expect(testLink1.parallel_links()).not.toContain(testLink2);
       expect(testLink1.parallel_links()).not.toContain(testLink3);
+    });
+  });
+  
+  describe("get_road_names", function() {
+    it("should return road_names concatenated with comma", function() {
+      expect(testLink1.get_road_names()).toEqual("name1, name2");
     });
   });
 });

@@ -1,6 +1,6 @@
 # the browser view for the nodes
-class window.sirius.BrowserNodeView extends  window.sirius.BrowserView
-  $a = window.sirius
+class window.beats.BrowserNodeView extends  window.beats.BrowserView
+  $a = window.beats
   
   # set up the change event for the nodes. If there is change to a node
   # we re-opulate the table
@@ -42,8 +42,8 @@ class window.sirius.BrowserNodeView extends  window.sirius.BrowserView
     selectedNodes
 
 # the browser view for the links
-class window.sirius.BrowserLinkView extends  window.sirius.BrowserView
-  $a = window.sirius
+class window.beats.BrowserLinkView extends  window.beats.BrowserView
+  $a = window.beats
   
   # set up the change event for the links. If there is change to a node
   # we re-opulate the table
@@ -70,7 +70,6 @@ class window.sirius.BrowserLinkView extends  window.sirius.BrowserView
     columns =  [
             { "sTitle": "Id","bVisible": false},
             { "sTitle": "Name","sWidth": "17%"},
-            { "sTitle": "Road Name","sWidth": "17%"},
             { "sTitle": "Type","sWidth": "17%"},
             { "sTitle": "Lanes","sWidth": "17%"},
             { "sTitle": "Begin","sWidth": "16%"},
@@ -86,8 +85,8 @@ class window.sirius.BrowserLinkView extends  window.sirius.BrowserView
         )
 
 # the browser view for the sensors
-class window.sirius.BrowserSensorView extends  window.sirius.BrowserView
-  $a = window.sirius
+class window.beats.BrowserSensorView extends  window.beats.BrowserView
+  $a = window.beats
 
   # set up the change event for the sensors. If there is change to a node
   # we re-opulate the table  

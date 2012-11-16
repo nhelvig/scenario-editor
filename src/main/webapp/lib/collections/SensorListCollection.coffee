@@ -1,6 +1,6 @@
 # This class is used to manage our sensor models.
-class window.sirius.SensorListCollection extends Backbone.Collection
-  $a = window.sirius
+class window.beats.SensorListCollection extends Backbone.Collection
+  $a = window.beats
   model: $a.Sensor
   
   # when initialized go through the models and set selected to false
@@ -15,7 +15,6 @@ class window.sirius.SensorListCollection extends Backbone.Collection
               sensor.get('type'), 
               sensor.get('link_type'),
               sensor.get('link_reference').get('id'),
-              sensor.get('description').get('text')
             ]
     )
   

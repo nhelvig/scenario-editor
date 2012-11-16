@@ -1,7 +1,7 @@
 # This class Creates the TreeView by going through the appropriate lists
 # and making parent and child nodes for the tree
-class window.sirius.TreeView extends Backbone.View
-  $a = window.sirius
+class window.beats.TreeView extends Backbone.View
+  $a = window.beats
   tagName: 'ol'
   id: 'tree'
 
@@ -149,7 +149,10 @@ class window.sirius.TreeView extends Backbone.View
   _createChildNodes: (params, type) ->
     _.each(params.parentList.get(params.modelListName), (e) =>
       targets = @_findTargetElements(e, params.attachId)
-      name = targets[0].get('name')
+      switch params.type
+        when 'link', 'node' then name = targets[0].get_road_names()
+        else name = targets[0].get('name')
+  
       # for OD Profiles
       name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
       attrs =

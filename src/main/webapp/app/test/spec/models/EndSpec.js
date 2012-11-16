@@ -4,8 +4,8 @@ describe("End", function() {
   var testEnd;
 
   beforeEach(function() {
-    testNode = new window.sirius.Node({id: testNodeId});
-    testEnd = new window.sirius.End({node: testNode});
+    testNode = new window.beats.Node({id: testNodeId});
+    testEnd = new window.beats.End({node: testNode});
   });
   
   it("should not blow up on to_xml", function() {
@@ -19,7 +19,7 @@ describe("End", function() {
   });
 
   it("should resolve node_id as node", function() {
-    var e = new window.sirius.End({node_id: testNodeId});
+    var e = new window.beats.End({node_id: testNodeId});
     expectResolution(e, 'node', testNode);
   });
   

@@ -1,6 +1,6 @@
-class window.sirius.Weavingfactors extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.Weavingfactors extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,9 +9,11 @@ class window.sirius.Weavingfactors extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Weavingfactors()
-    node_id = $(xml).attr('node_id')
-    obj.set('node_id', node_id)
+    obj = new window.beats.Weavingfactors()
+    link_in = $(xml).attr('link_in')
+    obj.set('link_in', link_in)
+    link_out = $(xml).attr('link_out')
+    obj.set('link_out', link_out)
     obj.set('text', xml.text())
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
@@ -21,7 +23,8 @@ class window.sirius.Weavingfactors extends Backbone.Model
     xml = doc.createElement('weavingfactors')
     if @encode_references
       @encode_references()
-    xml.setAttribute('node_id', @get('node_id')) if @has('node_id')
+    xml.setAttribute('link_in', @get('link_in')) if @has('link_in')
+    xml.setAttribute('link_out', @get('link_out')) if @has('link_out')
     xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))
     xml
   

@@ -4,8 +4,8 @@ describe("Output", function() {
   var testOutput;
 
   beforeEach(function() {
-    testLink = new window.sirius.Link({id: testLinkId});
-    testOutput = new window.sirius.Output({link: testLink});
+    testLink = new window.beats.Link({id: testLinkId});
+    testOutput = new window.beats.Output({link: testLink});
   });
 
   it("should not blow up on to_xml", function() {
@@ -19,7 +19,7 @@ describe("Output", function() {
   });
 
   it("should resolve link_id as link", function() {
-    var o = new window.sirius.Output({link_id: testLinkId});
+    var o = new window.beats.Output({link_id: testLinkId});
     expectResolution(o, 'link', testLink);
   });
 

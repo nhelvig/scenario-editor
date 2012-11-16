@@ -1,10 +1,10 @@
 # Creates events by overriding getIcon from MapMarkerView and registering
 # show/hide events from the event layer. It also adds itself to and holds a 
 # static array of events
-class window.sirius.MapEventView extends window.sirius.MapMarkerView
+class window.beats.MapEventView extends window.beats.MapMarkerView
   @ICON: 'event-deselected'
   @SELECTED_ICON: 'event-selected'
-  $a = window.sirius
+  $a = window.beats
 
   initialize: (model) ->
     super model

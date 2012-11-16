@@ -6,8 +6,8 @@
 # The specification requires onAdd, draw, and onRemove
 # to be overridden. See document on Google OverlayView for details on rendering:
 # developers.google.com/maps/documentation/javascript/reference#OverlayView
-class window.sirius.ContextMenuView extends google.maps.OverlayView
-  $a = window.sirius
+class window.beats.ContextMenuView extends google.maps.OverlayView
+  $a = window.beats
   el: {}
 
   constructor: (@options) ->

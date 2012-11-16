@@ -1,6 +1,6 @@
-class window.sirius.To extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.To extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.To extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.To()
+    obj = new window.beats.To()
     ALatLng = xml.children('ALatLng')
     obj.set('alatlng', $a.ALatLng.from_xml2(ALatLng, deferred, object_with_id))
     if obj.resolve_references

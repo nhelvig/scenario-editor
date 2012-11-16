@@ -1,6 +1,6 @@
-class window.sirius.Phase extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.Phase extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,9 +9,9 @@ class window.sirius.Phase extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.Phase()
-    links = xml.children('links')
-    obj.set('links', $a.Links.from_xml2(links, deferred, object_with_id))
+    obj = new window.beats.Phase()
+    link_references = xml.children('link_references')
+    obj.set('link_references', $a.Link_references.from_xml2(link_references, deferred, object_with_id))
     nema = $(xml).attr('nema')
     obj.set('nema', Number(nema))
     protected_ = $(xml).attr('protected_')
@@ -36,7 +36,7 @@ class window.sirius.Phase extends Backbone.Model
     xml = doc.createElement('phase')
     if @encode_references
       @encode_references()
-    xml.appendChild(@get('links').to_xml(doc)) if @has('links')
+    xml.appendChild(@get('link_references').to_xml(doc)) if @has('link_references')
     xml.setAttribute('nema', @get('nema')) if @has('nema')
     xml.setAttribute('protected_', @get('protected_')) if @has('protected_')
     xml.setAttribute('permissive', @get('permissive')) if @has('permissive')

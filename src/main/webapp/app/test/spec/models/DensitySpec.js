@@ -4,8 +4,8 @@ describe("Density", function() {
   var testDensity;
 
   beforeEach(function() {
-    testLink = new window.sirius.Link({id: testLinkId});
-    testDensity = new window.sirius.Density({link: testLink});
+    testLink = new window.beats.Link({id: testLinkId});
+    testDensity = new window.beats.Density({link: testLink});
   });
 
   it("should not blow up on to_xml", function() {
@@ -19,7 +19,7 @@ describe("Density", function() {
   });
 
   it("should resolve link_id as link", function() {
-    var d = new window.sirius.Density({link_id: testLinkId});
+    var d = new window.beats.Density({link_id: testLinkId});
     expectResolution(d, 'link', testLink);
   });
 

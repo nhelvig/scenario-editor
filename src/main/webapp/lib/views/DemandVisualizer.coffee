@@ -18,7 +18,7 @@ topYVal = (height, yScale, demand, demandProfile) ->
 
 padValueArray = (arr) -> arr.push(_.last(arr))
 
-class window.sirius.DemandVisualizer extends Backbone.View
+class window.beats.DemandVisualizer extends Backbone.View
   vehicleTypeColors = [
     '#cc0000', '#cccc00', '#3300ff', '#33cc00', '#ccff00'
     '#333300', '#00ffff', '#66ccff', '#996600', '#9933ff'
@@ -227,7 +227,7 @@ class window.sirius.DemandVisualizer extends Backbone.View
               Math.max(maxHeight,minHighlight)
 
   initialize: (@demand) ->
-    @profileSet = window.sirius.models.get('demandprofileset')
+    @profileSet = window.beats.models.get('demandprofileset')
     @typeOrder = @profileSet.get('vehicletypeorder')
     @link = @demand.get('link')
     @vizWindow = _.template($('#demand-visualizer-window-template').html())

@@ -1,6 +1,6 @@
-class window.sirius.SplitratioProfile extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.SplitratioProfile extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.SplitratioProfile extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.SplitratioProfile()
+    obj = new window.beats.SplitratioProfile()
     splitratio = xml.children('splitratio')
     obj.set('splitratio', _.map($(splitratio), (splitratio_i) -> $a.Splitratio.from_xml2($(splitratio_i), deferred, object_with_id)))
     node_id = $(xml).attr('node_id')
@@ -18,6 +18,8 @@ class window.sirius.SplitratioProfile extends Backbone.Model
     obj.set('start_time', Number(start_time))
     dt = $(xml).attr('dt')
     obj.set('dt', Number(dt))
+    destination_network_id = $(xml).attr('destination_network_id')
+    obj.set('destination_network_id', destination_network_id)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -30,6 +32,7 @@ class window.sirius.SplitratioProfile extends Backbone.Model
     xml.setAttribute('node_id', @get('node_id')) if @has('node_id')
     if @has('start_time') && @start_time != 0 then xml.setAttribute('start_time', @get('start_time'))
     xml.setAttribute('dt', @get('dt')) if @has('dt')
+    xml.setAttribute('destination_network_id', @get('destination_network_id')) if @has('destination_network_id')
     xml
   
   deep_copy: -> SplitratioProfile.from_xml1(@to_xml(), {})

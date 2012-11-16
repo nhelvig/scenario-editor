@@ -1,6 +1,6 @@
 # This manages the views for the link collection
-class window.sirius.LinkListView extends Backbone.Collection
-  $a = window.sirius
+class window.beats.LinkListView extends Backbone.Collection
+  $a = window.beats
   views : []
   
   # set up the draw link and add events and instantiate
@@ -24,11 +24,11 @@ class window.sirius.LinkListView extends Backbone.Collection
   
   # when a link is added to the link collection, this function is called to 
   # set up the geometry on the map via the routeHandler. We force a new route
-  # to be drawn from here because if the geometry exists it has been moved
-  # on the map or we have a new node that wants a link
+  # to be drawn by setting the shape to null from here because if the shape 
+  # exists it has been moved on the map or we have a new node that wants a link
   addAndRender: (link) ->
-    forceNewRoute = true
-    @routeHandler.setUpLink(link, forceNewRoute)
+    link.set('shape', null)
+    @routeHandler.setUpLink(link)
     link
 
   # this removes the link from the views array upon removal from collection

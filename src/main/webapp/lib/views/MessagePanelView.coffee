@@ -1,6 +1,6 @@
 # This class creates the warnings panel and controls its display
-class window.sirius.MessagePanelView extends Backbone.View
-  $a = window.sirius
+class window.beats.MessagePanelView extends Backbone.View
+  $a = window.beats
   className: 'alert alert-bottom close'
  
   initialize: ->

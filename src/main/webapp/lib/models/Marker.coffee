@@ -1,6 +1,6 @@
-class window.sirius.On_off_switch extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.Marker extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,20 +9,23 @@ class window.sirius.On_off_switch extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.On_off_switch()
-    value = $(xml).attr('value')
-    obj.set('value', value)
+    obj = new window.beats.Marker()
+    name = $(xml).attr('name')
+    obj.set('name', name)
+    postmile = $(xml).attr('postmile')
+    obj.set('postmile', Number(postmile))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('on_off_switch')
+    xml = doc.createElement('marker')
     if @encode_references
       @encode_references()
-    xml.setAttribute('value', @get('value')) if @has('value')
+    xml.setAttribute('name', @get('name')) if @has('name')
+    xml.setAttribute('postmile', @get('postmile')) if @has('postmile')
     xml
   
-  deep_copy: -> On_off_switch.from_xml1(@to_xml(), {})
+  deep_copy: -> Marker.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

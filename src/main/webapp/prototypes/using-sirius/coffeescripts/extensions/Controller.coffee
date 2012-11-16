@@ -1,11 +1,11 @@
-$a = window.sirius
+$a = window.beats
 
-window.sirius.Controller::initialize = ->
+window.beats.Controller::initialize = ->
   @set 'parameters', {}
   @set 'planlist', new $a.PlanList()
   @set 'plansequence', new $a.PlanSequence()
 
-window.sirius.Controller::display_point = ->
+window.beats.Controller::display_point = ->
   if(not @has('display_position'))
     display_position = new $a.Display_position()
     @set 'display_position', display_position
@@ -31,7 +31,7 @@ window.sirius.Controller::display_point = ->
 
     display_position.get('point')[0]
 
-window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
+window.beats.Controller::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     scenario_elements = @get('targetelements').get('scenarioelement')
     scenario_links = _.map( scenario_elements, (sel) -> [sel.get('type'), sel.id] )
@@ -64,7 +64,7 @@ window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
     if !node_id and !link_id and !network_id and !signal_id
       throw "Controller must have node_id, link_id, network_id, or signal_id"
 
-window.sirius.Controller::encode_references = ->
+window.beats.Controller::encode_references = ->
   @set('node_id', @get('node').id) if @has('node')
   @set('link_id', @get('link').id) if @has('link')
   @set('network_id', @get('network').id) if @has('network')

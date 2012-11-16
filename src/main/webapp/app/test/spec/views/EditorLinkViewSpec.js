@@ -1,5 +1,5 @@
 describe("EditorLinkView", function() {
-  $a = window.sirius;
+  $a = window.beats;
 
   var testsLinkGeo = [
       {
@@ -119,7 +119,7 @@ describe("EditorLinkView", function() {
   beforeEach(function() {
     loadFixtures('editor.link.view.fixture.html');
     network = $a.scenario.get('networklist').get('network')[0];
-    model = network.get('linklist').get('link')[0];
+    model = _.find(network.get('linklist').get('link'), function(m) { return m.get('demand') != undefined; });
     spyOn($a.EditorLinkView.prototype, 'doSplit').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'subDivide').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'addLeftTurn').andCallThrough();
@@ -129,7 +129,7 @@ describe("EditorLinkView", function() {
     spyOn($a.EditorLinkView.prototype, 'geomLine').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'geomRoad').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'save').andCallThrough();
-    spyOn($a.EditorLinkView.prototype, 'saveDesc').andCallThrough();
+    spyOn($a.EditorLinkView.prototype, 'saveInSync').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveFD').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveDP').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveCP').andCallThrough();
@@ -191,17 +191,17 @@ describe("EditorLinkView", function() {
     //checks that template was created correctly
     //Note: the lane_offset check cvalls toString to force NaN to a string
     it("has the correct text content", function() {
-      model = this.view.models[0];
-      fdp = model.get('fundamentaldiagramprofile')
-      fd = fdp.get('fundamentaldiagram')[0] || null
-      cp = model.get('capacity') || null
-      dp = model.get('demand') || null
+      var count = 0;
+      var model = this.view.models[0];
+      fdp = model.get('fundamentaldiagramprofile');
+      fd = fdp.get('fundamentaldiagram')[0] || null;
+      cp = model.get('capacity') || null;
+      dp = model.get('demand') || null;
       
       var v = {
-        name: model.get('name'),
-        description: model.get('description').get('text'),
-        roadName: model.get('road_name'),
+        name: model.get('roads').get('road')[0].get('name'),
         lanes: model.get('lanes'),
+        insync: model.get('in_sync'),
         laneOffset: model.get('lane_offset'),
         length: model.get('length'),
         freeFlowSpeed: fd.get('free_flow_speed'),
@@ -224,7 +224,6 @@ describe("EditorLinkView", function() {
       
       var view = this.view;
       expect(view.$('#link_name')).toHaveValue(v.name);
-      expect(view.$('#description')).toHaveValue(v.description);
       expect(view.$('#lanes')).toHaveValue(v.lanes);
       expect(view.$('#lane_offset')).toHaveValue(v.laneOffset.toString());
       expect(view.$('#length')).toHaveValue(v.length);
@@ -265,17 +264,9 @@ describe("EditorLinkView", function() {
         $('#link_name').blur();
         expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
       });
-      it("Link Tab: 'Road Name' field calls save", function() { 
-        $('#road_name').blur();
-        expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
-      });
       it("Link Tab: 'Type' field calls save", function() { 
         $('#link_type').blur();
         expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
-      });
-      it("Link Tab: 'Description' field calls saveDesc", function() { 
-        $('#description').blur();
-        expect($a.EditorLinkView.prototype.saveDesc).toHaveBeenCalled();
       });
       it("Geo Tab: 'Lanes' field calls save", function() { 
         $('#lanes').blur();
@@ -382,6 +373,13 @@ describe("EditorLinkView", function() {
         expect($a.EditorLinkView.prototype.saveCPTime).toHaveBeenCalled();
       });
     });
+    describe("When the In Sync click handler fired", function() {
+       it("in_sync is saved", function() { 
+         $('#in_sync').attr('checked', 'checked'); 
+         $('#in_sync').click();
+         expect(this.view.models[0].get('in_sync')).toBeTruthy();
+       });
+     });
     
     describe("When buttons clicked handler fired", function() {
       it("'Sub Divide Now' button calls subDivide", function() { 
@@ -430,11 +428,6 @@ describe("EditorLinkView", function() {
           expect(this.view.models[0].get(test.field)).toEqual(test.val);
         });
       });
-     it("Link Tab: 'Desription' is saved", function() {
-       $("#description").val("changed");
-       $("#description").blur();
-       expect(this.view.models[0].get('description').get('text')).toEqual("changed");
-     });
      it("Link Tab: 'Type' is saved", function() {
        selected = $($(this.view.el)).find('#link_type option:selected')
        $(selected).attr('selected', false);

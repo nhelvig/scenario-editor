@@ -1,5 +1,5 @@
 describe("SensorListCollection", function() {
-  $a = window.sirius;
+  $a = window.beats;
   var models, network, begin, end;
   
   beforeEach(function() {
@@ -29,7 +29,6 @@ describe("SensorListCollection", function() {
        expect(arrColumnsData[0][1]).toEqual(sColl.get('type'));
        expect(arrColumnsData[0][2]).toEqual(sColl.get('link_type'));
        expect(arrColumnsData[0][3]).toEqual(sColl.get('link_reference').get('id'));
-       expect(arrColumnsData[0][4]).toEqual(sColl.get('description').get('text'));
      });
    });
 

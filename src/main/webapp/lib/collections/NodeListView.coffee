@@ -1,6 +1,6 @@
 # This manages the views for the node collection
-class window.sirius.NodeListView extends Backbone.Collection
-  $a = window.sirius
+class window.beats.NodeListView extends Backbone.Collection
+  $a = window.beats
   views : []
   
   # render all the nodes upon map:init and set up the add event

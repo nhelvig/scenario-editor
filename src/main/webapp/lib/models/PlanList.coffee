@@ -1,6 +1,6 @@
-class window.sirius.PlanList extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.PlanList extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.PlanList extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.PlanList()
+    obj = new window.beats.PlanList()
     plan = xml.children('plan')
     obj.set('plan', _.map($(plan), (plan_i) -> $a.Plan.from_xml2($(plan_i), deferred, object_with_id)))
     if obj.resolve_references

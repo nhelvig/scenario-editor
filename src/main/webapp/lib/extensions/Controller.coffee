@@ -1,11 +1,11 @@
-$a = window.sirius
+$a = window.beats
 
-window.sirius.Controller::initialize = ->
+window.beats.Controller::initialize = ->
   @set 'parameters', {}
   @set 'planlist', new $a.PlanList()
   @set 'plansequence', new $a.PlanSequence()
 
-window.sirius.Controller::display_point = ->
+window.beats.Controller::display_point = ->
   if(not @has('display_position'))
     display_position = new $a.Display_position()
     @set 'display_position', display_position
@@ -31,7 +31,7 @@ window.sirius.Controller::display_point = ->
 
     display_position.get('point')[0]
 
-window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
+window.beats.Controller::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set 'id', @get('id')
     @set('targetreferences',[]);
@@ -49,7 +49,7 @@ window.sirius.Controller::resolve_references = (deferred, object_with_id) ->
     #    throw "Event must have target elements defined"
 
 
-window.sirius.Controller::encode_references = ->
+window.beats.Controller::encode_references = ->
   # TODO : do we to encode references? All the data will be written back via 
   # scenarioElements
   # @set('node_id', @get('node').id) if @has('node')

@@ -4,8 +4,8 @@ describe("Intersection", function() {
   var testIntersection;
   
   beforeEach(function() {
-    testNode = new window.sirius.Node({id: testNodeId});
-    testIntersection = new window.sirius.Intersection({node: testNode});
+    testNode = new window.beats.Node({id: testNodeId});
+    testIntersection = new window.beats.Intersection({node: testNode});
   });
   
   it("should not blow up on to_xml", function() {
@@ -19,7 +19,7 @@ describe("Intersection", function() {
   });
   
   it("should resolve node_id as node", function() {
-    var i = new window.sirius.Intersection({node_id: testNodeId});
+    var i = new window.beats.Intersection({node_id: testNodeId});
     expectResolution(i, 'node', testNode);
   });
 

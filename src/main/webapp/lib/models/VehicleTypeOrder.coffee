@@ -1,6 +1,6 @@
-class window.sirius.VehicleTypeOrder extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.VehicleTypeOrder extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.VehicleTypeOrder extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.VehicleTypeOrder()
+    obj = new window.beats.VehicleTypeOrder()
     vehicle_type = xml.children('vehicle_type')
     obj.set('vehicle_type', _.map($(vehicle_type), (vehicle_type_i) -> $a.Vehicle_type.from_xml2($(vehicle_type_i), deferred, object_with_id)))
     if obj.resolve_references

@@ -79,8 +79,6 @@
       <div id="tabs-sensor-1">
         <form>
           <fieldset>
-            <label for="sensor-desc">Description</label>
-            <textarea rows="2" name="sensor-desc" id="sensor_desc" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
             <label for="sensor-type">Type</label>
             <select id="sensor_type" name ="sensor-type" class="ui-widget-content ui-corner-all">
               <option value="static_point">Static Point</option>
@@ -90,9 +88,15 @@
             <label for="sensor-link-type">Link Type</label>
             <select id="sensor_link_type" name ="sensor-link-type" class="ui-widget-content ui-corner-all">
               <option value="freeway">Freeway mainline</option>
+              <option value="freeway_connector">Freeway Connector</option>
+              <option value="heavy_vehicle">Heavy Vehicle</option>
               <option value="hov_lane">HOV lanes</option>
-              <option value="on_ramp">On-ramps</option>
-              <option value="off_ramp">Off-ramps</option>
+              <option value="hot_lane">HOT lanes</option>            
+              <option value="intersection_approach">Intersection Approach</option>            
+              <option value="onramp">On-ramps</option>
+              <option value="offramp">Off-ramps</option>
+              <option value="street">Street</option>
+              <option value="electric_toll">Electric Toll</option>
               <option value="other">Other</option>
             </select><br/>
             <label for="sensor-links">Links</label>
@@ -103,22 +107,6 @@
       <div id="tabs-sensor-2">
         <form>
           <fieldset>
-            <label>Time step</label>
-            <label for="sensor-hour" class="time">h</label>              
-            <input type="number"  id="sensor_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dt['h']}}" />
-
-            <label for="sensor-minute" class="time">: m</label>
-            <input type="number" id="sensor_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['m']}}" />
-              
-            <label for="sensor-second" class="time">:: s</label>
-            <input type="number" id="sensor_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['s']}}" />
-              
-            <label>Format</label>
-            <select id="sensor_format" name="sensor-format" class="ui-widget-content ui-corner-all">
-              <option value="PeMS Data Clearinghouse">PeMS Data Clearinghouse</option>
-              <option value="Caltrans DBX">Caltrans DBX</option>
-              <option value="BHL">BHL</option>
-            </select><br/>
             <label>URL *</label>
             <input type="text" name="sensor-url" id="sensor_url" class="text ui-widget-content ui-corner-all" value="{{url}}"/>
             <label>{{url_desc}}</label>
@@ -161,8 +149,6 @@
                 <option value="other">Other</option>
               </select><br/>
               <button id="edit-signal" class="text ui-widget-content ui-corner-all" >Edit Signal</button>
-              <label for="description">Description</label>
-              <textarea rows="2" name="description" id="description" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
             </fieldset>
           </form>
         </div>
@@ -205,25 +191,19 @@
               <input type="text" name="link-name" id="link_name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
               <label for="type">Type</label>
               <select id="link_type" name ="type" class="ui-widget-content ui-corner-all">
-                <option value="">Dummy Link</option>
                 <option value="electric_toll">Electric Toll Coll. Lane</option>
                 <option value="freeway">Freeway Mainline</option>
                 <option value="HOT">HOT lane</option>
                 <option value="HOV">HOV lane</option>
                 <option value="heavy_vehicle">Heavy Vehicle Lane</option>
-                <option value="">Highway Mainline</option>
+                <option value="intersection_approach">Intersection Approach</option>
                 <option value="freeway_connector">Interconnect</option>
-                <option value="">Left Turn Pocket</option>
                 <option value="offramp">Off-ramp</option>
                 <option value="onramp">On-ramp</option>
-                <option value="">Right Turn Pocket</option>
                 <option value="street">Street</option>
               </select><br/>
-              <label for="road-name">Road Name</label>
-              <input type="text" name="road-name" id="road_name" class="text ui-widget-content ui-corner-all" value="{{roadName}}"/>
-              <br/>
-              <label for="description">Description</label>
-              <textarea rows="2" name="description" id="description" class="text ui-widget-content ui-corner-all">{{description}}</textarea>
+              <input type="checkbox" name="in_sync" id="in_sync" class="text ui-widget-content ui-corner-all" {{insync}} />
+              <span>In Sync</span>
             </fieldset>
           </form>
         </div>

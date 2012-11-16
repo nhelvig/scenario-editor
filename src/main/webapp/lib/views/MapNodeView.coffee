@@ -1,13 +1,13 @@
 # Creates nodes by overriding getIcon from MapMarkerView and registering
 # show/hide events from the node layer. It also adds itself to and holds a static
 # array of nodes
-class window.sirius.MapNodeView extends window.sirius.MapMarkerView
+class window.beats.MapNodeView extends window.beats.MapMarkerView
   @ICON: 'dot'
   @SELECTED_ICON: 'reddot'
   @TERMINAL_ICON: 'square'
   @SELECTED_TERMINAL_ICON: 'red-square'
   @TERMINAL_TYPE: 'terminal'
-  $a = window.sirius
+  $a = window.beats
 
   initialize: (model, @network) ->
     super model

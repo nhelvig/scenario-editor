@@ -1,5 +1,5 @@
 describe("LinkListCollection", function() {
-  $a = window.sirius;
+  $a = window.beats;
   var models, network, begin, end;
   
   beforeEach(function() {
@@ -41,14 +41,13 @@ describe("LinkListCollection", function() {
        arrColumnsData = this.lColl.getBrowserColumnData();
        lColl = this.lColl.models[0];
        expect(arrColumnsData[0][0]).toEqual(lColl.get('id'));
-       expect(arrColumnsData[0][1]).toEqual(lColl.get('name'));
-       expect(arrColumnsData[0][2]).toEqual(lColl.get('road_name'));
-       expect(arrColumnsData[0][3]).toEqual(lColl.get('type'));
-       expect(arrColumnsData[0][4]).toEqual(lColl.get('lanes'));
+       expect(arrColumnsData[0][1]).toEqual(lColl.get_road_names());
+       expect(arrColumnsData[0][2]).toEqual(lColl.get('type'));
+       expect(arrColumnsData[0][3]).toEqual(lColl.get('lanes'));
        nodeB = lColl.get('begin').get('node');
        nodeE = lColl.get('end').get('node');
-       expect(arrColumnsData[0][5]).toEqual(nodeB.get('name'));
-       expect(arrColumnsData[0][6]).toEqual(nodeE.get('name'));
+       expect(arrColumnsData[0][4]).toEqual(nodeB.get('name'));
+       expect(arrColumnsData[0][5]).toEqual(nodeE.get('name'));
      });
    });
   

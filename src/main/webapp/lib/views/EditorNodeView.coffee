@@ -1,6 +1,6 @@
 # This creates the editor dialogs for node elements
-class window.sirius.EditorNodeView extends window.sirius.EditorView
-  $a = window.sirius
+class window.beats.EditorNodeView extends window.beats.EditorView
+  $a = window.beats
   events : {
     'blur #name, #type' : 'save'
     'blur #description' : 'saveDesc'
@@ -47,8 +47,7 @@ class window.sirius.EditorNodeView extends window.sirius.EditorView
   
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models) ->
-    name: _.map(models, (m) -> m.get('name')).join(", ") 
-    description:  $a.Util.getDesc(models)
+    name: _.map(models, (m) -> m.get('roadway_markers').get('marker')[0].get('name')).join(", ")
     lat: $a.Util.getGeometry({models:models, geom:'lat'})
     lng: $a.Util.getGeometry({models:models, geom:'lng'})
     elevation: $a.Util.getGeometry({models:models, geom:'elevation'})

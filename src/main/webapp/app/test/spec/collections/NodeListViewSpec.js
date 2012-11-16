@@ -1,5 +1,5 @@
 describe("NodeListView", function() {
-  $a = window.sirius;
+  $a = window.beats;
   var models;
   var network;
   

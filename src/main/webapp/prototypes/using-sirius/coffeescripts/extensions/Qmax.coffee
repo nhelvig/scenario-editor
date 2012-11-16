@@ -1,2 +1,2 @@
-window.sirius.Qmax::defaults =
+window.beats.Qmax::defaults =
   text: 100.0

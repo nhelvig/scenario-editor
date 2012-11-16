@@ -1,7 +1,7 @@
 // I am not testing the _directionsRequest at this point except to 
 // verify that the directionsService is set up.
 describe("GoogleMapRouteHandler", function() {
-  $a = window.sirius;
+  $a = window.beats;
   
   beforeEach(function() {
     linklist = $a.scenario.get('networklist').get('network')[0].get('linklist');
@@ -21,7 +21,7 @@ describe("GoogleMapRouteHandler", function() {
     it("should call directionRequest if no geometry", function() {     
       grh = $a.GoogleMapRouteHandler
       link = this.gmrh.links[0]
-      link.set('linkgeometry', null);
+      link.set('shape', null);
       this.gmrh.setUpLink(link, true);
       expect(grh.prototype._directionsRequest).toHaveBeenCalled();
     });

@@ -1,10 +1,10 @@
 # Creates signals by overriding getIcon from MapMarkerView and registering
 # show/hide events from the signals layer. It also adds itself to and holds a
 # static array of signals
-class window.sirius.MapSignalView extends window.sirius.MapMarkerView
+class window.beats.MapSignalView extends window.beats.MapMarkerView
   @ICON: 'green-triangle'
   @SELECTED_ICON: 'red-triangle'
-  $a = window.sirius
+  $a = window.beats
 
   initialize: (model) ->
     super  model

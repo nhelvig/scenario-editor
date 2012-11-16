@@ -1,4 +1,4 @@
-window.sirius.ArrayText =
+window.beats.ArrayText =
   slice_and_dice: (data, delims, convert) ->
     dim = delims.length
 

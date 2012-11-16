@@ -311,3 +311,12 @@ hr {
                 }
 #browser_table th { color: #F58400; }
 #browser_table td { padding: 5px; }
+#browser_table_length label {color:white;
+                             padding-top: 5px;
+                             padding-left: 10px;
+                              }
+#browser_table_length select {  display:inline;
+                                width:55px;
+                                height:15px;
+                              }
+#browser_table_paginate a {margin-right: 0em;}

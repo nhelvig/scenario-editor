@@ -1,5 +1,5 @@
 describe("menu-data", function() {
-  $a = window.sirius;
+  $a = window.beats;
   
   beforeEach(function() {
     spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();

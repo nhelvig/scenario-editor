@@ -1,13 +1,13 @@
 # This creates the browsers window for all element
-class window.sirius.BrowserView extends Backbone.View
-  $a = window.sirius
+class window.beats.BrowserView extends Backbone.View
+  $a = window.beats
 
   # static method used to instantiate new Browser -- called from main menu
   @start: (type) ->
     switch type
-      when 'node' then new window.sirius.BrowserNodeView()
-      when 'link' then new window.sirius.BrowserLinkView()
-      when 'sensor' then new window.sirius.BrowserSensorView()
+      when 'node' then new window.beats.BrowserNodeView()
+      when 'link' then new window.beats.BrowserLinkView()
+      when 'sensor' then new window.beats.BrowserSensorView()
   
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData
@@ -52,7 +52,7 @@ class window.sirius.BrowserView extends Backbone.View
         "aaData": @_getData(),
         "aoColumns": @_getColumns(),
         "aaSorting": [[ 0, "desc" ]]
-        "bPaginate": false,
+        "bPaginate": true,
         "bLengthChange": true,
         "bFilter": false,
         "bSort": true,
@@ -92,9 +92,14 @@ class window.sirius.BrowserView extends Backbone.View
         $("#resize").css('position', '')
     })
   
-  # this height of the resize bar is set dependent on the dialog box height
+  # this height of the resize bar is dependent on which side of browser is
+  # taller
   _setResizerHeight: () ->
-    height = $(@nev.el).height()
+    browserHeight = $("#right").height()
+    datatableHeight = $("#left").height()
+    height = browserHeight
+    height = datatableHeight if datatableHeight > height
+    
     handleTop = height / 2 - 25
     $("#handle").css('margin-top', "#{handleTop}px")
     $("#resize").css('height', "#{height}px")

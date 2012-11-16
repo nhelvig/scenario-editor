@@ -1,6 +1,6 @@
-class window.sirius.SplitratioEvent extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.SplitratioEvent extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,12 +9,11 @@ class window.sirius.SplitratioEvent extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.SplitratioEvent()
-    link_in = $(xml).attr('link_in')
-    obj.set('link_in', link_in)
-    vehicleTypeName = $(xml).attr('vehicleTypeName')
-    obj.set('vehicleTypeName', vehicleTypeName)
-    obj.set('text', xml.text())
+    obj = new window.beats.SplitratioEvent()
+    VehicleTypeOrder = xml.children('VehicleTypeOrder')
+    obj.set('vehicletypeorder', $a.VehicleTypeOrder.from_xml2(VehicleTypeOrder, deferred, object_with_id))
+    splitratio = xml.children('splitratio')
+    obj.set('splitratio', _.map($(splitratio), (splitratio_i) -> $a.Splitratio.from_xml2($(splitratio_i), deferred, object_with_id)))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -23,9 +22,8 @@ class window.sirius.SplitratioEvent extends Backbone.Model
     xml = doc.createElement('splitratioEvent')
     if @encode_references
       @encode_references()
-    xml.setAttribute('link_in', @get('link_in')) if @has('link_in')
-    xml.setAttribute('vehicleTypeName', @get('vehicleTypeName')) if @has('vehicleTypeName')
-    xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))
+    xml.appendChild(@get('vehicletypeorder').to_xml(doc)) if @has('vehicletypeorder')
+    _.each(@get('splitratio') || [], (a_splitratio) -> xml.appendChild(a_splitratio.to_xml(doc)))
     xml
   
   deep_copy: -> SplitratioEvent.from_xml1(@to_xml(), {})

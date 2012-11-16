@@ -1,6 +1,6 @@
-class window.sirius.DemandProfile extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.DemandProfile extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.DemandProfile extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.DemandProfile()
+    obj = new window.beats.DemandProfile()
     knob = $(xml).attr('knob')
     obj.set('knob', Number(knob))
     start_time = $(xml).attr('start_time')
@@ -18,6 +18,8 @@ class window.sirius.DemandProfile extends Backbone.Model
     obj.set('dt', Number(dt))
     link_id_origin = $(xml).attr('link_id_origin')
     obj.set('link_id_origin', link_id_origin)
+    destination_network_id = $(xml).attr('destination_network_id')
+    obj.set('destination_network_id', destination_network_id)
     std_dev_add = $(xml).attr('std_dev_add')
     obj.set('std_dev_add', Number(std_dev_add))
     std_dev_mult = $(xml).attr('std_dev_mult')
@@ -31,10 +33,11 @@ class window.sirius.DemandProfile extends Backbone.Model
     xml = doc.createElement('demandProfile')
     if @encode_references
       @encode_references()
-    xml.setAttribute('knob', @get('knob')) if @has('knob')
+    if @has('knob') && @knob != 1 then xml.setAttribute('knob', @get('knob'))
     if @has('start_time') && @start_time != 0 then xml.setAttribute('start_time', @get('start_time'))
     xml.setAttribute('dt', @get('dt')) if @has('dt')
     xml.setAttribute('link_id_origin', @get('link_id_origin')) if @has('link_id_origin')
+    xml.setAttribute('destination_network_id', @get('destination_network_id')) if @has('destination_network_id')
     xml.setAttribute('std_dev_add', @get('std_dev_add')) if @has('std_dev_add')
     xml.setAttribute('std_dev_mult', @get('std_dev_mult')) if @has('std_dev_mult')
     xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))

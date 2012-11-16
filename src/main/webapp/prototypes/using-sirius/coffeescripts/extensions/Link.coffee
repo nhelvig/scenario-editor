@@ -1,16 +1,16 @@
-window.sirius.Link::defaults =
+window.beats.Link::defaults =
   type: 'ST'
   lanes: 1
   lane_offset: 0
   record: true
 
-window.sirius.Link::initialize = ->
+window.beats.Link::initialize = ->
   # TODO probably delete qmax line, change fd line to FundamentalDiagram
-  #@set('qmax', new window.sirius.Qmax())
-  #@set('fd', new window.sirius.Fd())
-  @set('dynamics', new window.sirius.Dynamics())
+  #@set('qmax', new window.beats.Qmax())
+  #@set('fd', new window.beats.Fd())
+  @set('dynamics', new window.beats.Dynamics())
 
-window.sirius.Link::parallel_links = ->
+window.beats.Link::parallel_links = ->
   begin_node = @get('begin').node
   end_node = @get('end').node
 

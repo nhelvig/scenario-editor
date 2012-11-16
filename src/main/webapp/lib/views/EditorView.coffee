@@ -1,6 +1,6 @@
 # This is the super class for the editor dialogs for all elements
-class window.sirius.EditorView extends Backbone.View
-  $a = window.sirius
+class window.beats.EditorView extends Backbone.View
+  $a = window.beats
 
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData
@@ -9,7 +9,7 @@ class window.sirius.EditorView extends Backbone.View
     @elem = @options.elem
     @models = @options.models
     title  = $a.Util.toStandardCasing(@elem)  # eg. node -> Node
-    @$el.attr 'title', "#{title} Editor: #{@models[0].get('name')}"
+    @$el.attr 'title', "#{title} Editor: #{@models[0].get_road_names()}"
     @$el.attr 'id', "#{@elem}-dialog-form-#{@models[0].cid}"
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(options.templateData))

@@ -1,6 +1,6 @@
 # This class adds the Parent Items to the Nav Bar
-class window.sirius.NavParentItemView extends Backbone.View
-  $a = window.sirius
+class window.beats.NavParentItemView extends Backbone.View
+  $a = window.beats
   tagName: "li"
   className: "dropdown active"
 

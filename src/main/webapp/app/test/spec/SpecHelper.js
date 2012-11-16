@@ -1,5 +1,5 @@
 beforeEach(function() {
-  window.sirius.broker = _.clone(Backbone.Events);
+  window.beats.broker = _.clone(Backbone.Events);
   
   runDeferred = function(fList) {
     _.each(fList, function(f) { f(); });
@@ -45,19 +45,25 @@ beforeEach(function() {
         position: google.maps.ControlPosition.TOP_LEFT
       }
     }
-    window.sirius.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
+    window.beats.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
   }
   
   simpleLink = function(node1, node2) {
-    var begin = new window.sirius.Begin({node: node1});
-    var end = new window.sirius.End({node: node2});
-    var link = new window.sirius.Link({begin: begin, end: end});
-    var outputSingle = new window.sirius.Output({link: link});
-    var inputSingle = new window.sirius.Input({link: link});
+    var begin = new window.beats.Begin({node: node1});
+    var end = new window.beats.End({node: node2});
+    var link = new window.beats.Link({begin: begin, end: end});
+    var outputSingle = new window.beats.Output({link: link});
+    var inputSingle = new window.beats.Input({link: link});
+    var road = new window.beats.Road()
+    road.set('name','name1');
+    var road2 = new window.beats.Road();
+    road2.set('name','name2');
+    link.set('roads', new window.beats.Roads());
+    link.get('roads').set('road', [road,road2]);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
-      var outputs = new window.sirius.Outputs({output: output});
+      var outputs = new window.beats.Outputs({output: output});
       node1.set('outputs', outputs);
     } else {
       node1.get('outputs').get('output').push(outputSingle);
@@ -65,12 +71,12 @@ beforeEach(function() {
     
     if(!node2.has('inputs')) {
       var input = [inputSingle];
-      var inputs = new window.sirius.Inputs({input: input});
+      var inputs = new window.beats.Inputs({input: input});
       node2.set('inputs', inputs);
     } else {
       node2.get('inputs').get('input').push(inputSingle);
     }
-    
+  
     return link;
   };
   
@@ -80,28 +86,28 @@ beforeEach(function() {
     var scenario, srp, idp, density;
     var node1, node2, node3, link1, link2, link3;
     var srps, cp, cps, dps, dp;
-    node1 = new window.sirius.Node({id: 1});
-    node2 = new window.sirius.Node({id: 2});
-    node3 = new window.sirius.Node({id: 3});
+    node1 = new window.beats.Node({id: 1});
+    node2 = new window.beats.Node({id: 2});
+    node3 = new window.beats.Node({id: 3});
     link1 = simpleLink(node1, node2);
     link2 = simpleLink(node2, node3);
     link3 = simpleLink(node3, node1);
-    density = new window.sirius.Density({id: 1});
-    idp = new window.sirius.InitialDensitySet({density: [density]});
-    cp = new window.sirius.CapacityProfile({id: 1});
-    cps = new window.sirius.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
-    dp = new window.sirius.DemandProfile({id: 1});
-    dps = new window.sirius.DemandProfileSet({demandprofile: [dp]});
-    srp = new window.sirius.SplitratioProfile({id: 1});
-    srps = new window.sirius.SplitRatioProfileSet({splitratioprofile: [srp]});
-    linkList = new window.sirius.LinkList({link: [link1, link2, link3]});
-    nodeList = new window.sirius.NodeList({node: [node1, node2, node3]});
-    network = new window.sirius.Network({id: 1});
+    density = new window.beats.Density({id: 1});
+    idp = new window.beats.InitialDensitySet({density: [density]});
+    cp = new window.beats.CapacityProfile({id: 1});
+    cps = new window.beats.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
+    dp = new window.beats.DemandProfile({id: 1});
+    dps = new window.beats.DemandProfileSet({demandprofile: [dp]});
+    srp = new window.beats.SplitratioProfile({id: 1});
+    srps = new window.beats.SplitRatioProfileSet({splitratioprofile: [srp]});
+    linkList = new window.beats.LinkList({link: [link1, link2, link3]});
+    nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
+    network = new window.beats.Network({id: 1});
     // These must be called after initialize, initialize clears lists
     network.set('nodelist', nodeList);
     network.set('linklist', linkList);
-    networkList = new window.sirius.NetworkList({network: [network]});
-    scenario = new window.sirius.Scenario({
+    networkList = new window.beats.NetworkList({network: [network]});
+    scenario = new window.beats.Scenario({
       id: 1,
       networklist: networkList,
       initialdensityprofile: idp,

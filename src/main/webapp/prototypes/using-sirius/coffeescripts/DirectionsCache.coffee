@@ -1,6 +1,6 @@
-class window.sirius.DirectionsCache extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.DirectionsCache extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.DirectionsCache extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.DirectionsCache()
+    obj = new window.beats.DirectionsCache()
     DirectionsCacheEntry = xml.children('DirectionsCacheEntry')
     obj.set('directionscacheentry', _.map($(DirectionsCacheEntry), (DirectionsCacheEntry_i) -> $a.DirectionsCacheEntry.from_xml2($(DirectionsCacheEntry_i), deferred, object_with_id)))
     if obj.resolve_references

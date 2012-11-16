@@ -1,6 +1,6 @@
 # This class is used to manage our node models. 
-class window.sirius.NodeListCollection extends Backbone.Collection
-  $a = window.sirius
+class window.beats.NodeListCollection extends Backbone.Collection
+  $a = window.beats
   model: $a.Node
   
   # when initialized go through the models and set selected to false, and 
@@ -16,7 +16,9 @@ class window.sirius.NodeListCollection extends Backbone.Collection
   
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
-    @models.map((node) -> [node.get('id'), node.get('name'),node.get('type')])
+    @models.map((node) -> 
+                  [node.get('id'),node.get_road_names(),node.get('type')]
+                  )
   
   # this function sets all the nodes passed in selected field to true. It is
   # called by the BrowserTypeView for nodes in order to sync the view state

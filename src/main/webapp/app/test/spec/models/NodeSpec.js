@@ -5,14 +5,14 @@ describe("Node", function() {
   var testLink1, testLink2, testLink3;
 
   beforeEach(function() {
-    pt = new window.sirius.Point()
+    pt = new window.beats.Point()
     pt.set('lat',0)
     pt.set('lng',0)
     pt.set('elevation', NaN)
-    p = new window.sirius.Position()
+    p = new window.beats.Position()
     p.get('point').push(pt)
-    testNode1 = new window.sirius.Node({id: testNodeId, position: p});
-    testNode2 = new window.sirius.Node({id: testNodeId2});
+    testNode1 = new window.beats.Node({id: testNodeId, position: p});
+    testNode2 = new window.beats.Node({id: testNodeId2});
     testLink1 = simpleLink(testNode1, testNode2);
     testLink2 = simpleLink(testNode1, testNode2);
     testLink3 = simpleLink(testNode2, testNode1);    

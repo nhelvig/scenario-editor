@@ -1,5 +1,5 @@
 describe("MapLinkView", function() {
-  var $a = window.sirius;
+  var $a = window.beats;
   var network, model, legs;
   
   beforeEach(function() {
@@ -38,10 +38,9 @@ describe("MapLinkView", function() {
       expect(this.view.encodedPath).toEqual(expectedEncodedPath);
     });
     
-    it("should save encoded the path to linkgeometry", function() {
-      lg = this.view.model.get('linkgeometry');
-      encodedPath = lg.get('encodedpolyline').get('points').get('text');
-      expect(encodedPath).toEqual(expectedEncodedPath);
+    it("should save encoded the path to shape", function() {
+      lg = this.view.model.get('shape').get('text');
+      expect(lg).toEqual(expectedEncodedPath);
     });
 
     it("should have made polyline object", function() {
@@ -54,7 +53,7 @@ describe("MapLinkView", function() {
       expect(cm).not.toBe(null);
       menuItemLabels = _.pluck(cm.options.menuItems, 'label');
       dataItemLabels = $a.link_context_menu;
-      if(this.view.model.get('demand') !== null)
+      if(this.view.model.get('demand') != null)
         dataItemLabels.push($a.link_context_menu_demand_item[0]);
       
       expect(menuItemLabels).toEqual(_.pluck(dataItemLabels,'label'));

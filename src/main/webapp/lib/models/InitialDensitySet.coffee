@@ -1,6 +1,6 @@
-class window.sirius.InitialDensitySet extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.InitialDensitySet extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.InitialDensitySet extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.InitialDensitySet()
+    obj = new window.beats.InitialDensitySet()
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
     VehicleTypeOrder = xml.children('VehicleTypeOrder')
@@ -20,8 +20,6 @@ class window.sirius.InitialDensitySet extends Backbone.Model
     obj.set('id', id)
     name = $(xml).attr('name')
     obj.set('name', name)
-    tstamp = $(xml).attr('tstamp')
-    obj.set('tstamp', Number(tstamp))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -35,7 +33,6 @@ class window.sirius.InitialDensitySet extends Backbone.Model
     _.each(@get('density') || [], (a_density) -> xml.appendChild(a_density.to_xml(doc)))
     if @has('id') && @id != "" then xml.setAttribute('id', @get('id'))
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
-    xml.setAttribute('tstamp', @get('tstamp')) if @has('tstamp')
     xml
   
   deep_copy: -> InitialDensitySet.from_xml1(@to_xml(), {})

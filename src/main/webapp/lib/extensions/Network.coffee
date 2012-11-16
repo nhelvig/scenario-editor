@@ -1,21 +1,20 @@
-window.sirius.Network::defaults =
+window.beats.Network::defaults =
   ml_control: false
   q_control: false
   dt: 300
 
-window.sirius.Network::initialize = ->
-  @set 'nodelist', new window.sirius.NodeList
-  @set 'linklist', new window.sirius.LinkList
-  @set 'networklist', new window.sirius.NetworkList
-  @set 'odlist', new window.sirius.ODList
-  @set 'sensorlist', new window.sirius.SensorList
-  @set 'signallist', new window.sirius.SignalList
-  @set 'description', new window.sirius.Description
-  @set 'position', new window.sirius.Position
-  @get('position').get('point').push(new window.sirius.Point)
+window.beats.Network::initialize = ->
+  @set 'nodelist', new window.beats.NodeList
+  @set 'linklist', new window.beats.LinkList
+  @set 'networklist', new window.beats.NetworkList
+  @set 'sensorlist', new window.beats.SensorList
+  @set 'signallist', new window.beats.SignalList
+  @set 'description', new window.beats.Description
+  @set 'position', new window.beats.Position
+  @get('position').get('point').push(new window.beats.Point)
 
-window.sirius.Network::description_text = ->
+window.beats.Network::description_text = ->
   @get('description').get('text')
 
-window.sirius.Network::set_description_text = (s) ->
+window.beats.Network::set_description_text = (s) ->
   @get('description').set('text',s)

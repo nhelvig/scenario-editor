@@ -1,5 +1,5 @@
 describe("ContextMenuHandler", function() {
-  $a = window.sirius;
+  $a = window.beats;
   
   beforeEach(function() {
       loadFixtures("context.menu.view.fixture.html");

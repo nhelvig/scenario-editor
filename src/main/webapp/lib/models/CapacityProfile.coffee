@@ -1,6 +1,6 @@
-class window.sirius.CapacityProfile extends Backbone.Model
-  ### $a = alias for sirius namespace ###
-  $a = window.sirius
+class window.beats.CapacityProfile extends Backbone.Model
+  ### $a = alias for beats namespace ###
+  $a = window.beats
   @from_xml1: (xml, object_with_id) ->
     deferred = []
     obj = @from_xml2(xml, deferred, object_with_id)
@@ -9,7 +9,7 @@ class window.sirius.CapacityProfile extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.sirius.CapacityProfile()
+    obj = new window.beats.CapacityProfile()
     link_id = $(xml).attr('link_id')
     obj.set('link_id', link_id)
     start_time = $(xml).attr('start_time')

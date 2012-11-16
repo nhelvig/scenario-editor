@@ -1,2 +1,2 @@
-window.sirius.SensorList::defaults =
+window.beats.SensorList::defaults =
   sensor: []

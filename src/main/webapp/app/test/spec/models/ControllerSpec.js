@@ -14,23 +14,23 @@ describe("Controller", function() {
   
   var loadTargetReferences = function() {
     var targetRefs = [];
-    targetRefs.push(new window.sirius.ScenarioElement({type: 'node', id: testNodeId}));
-    targetRefs.push(new window.sirius.ScenarioElement({type: 'link', id: testLinkId}));
-    targetRefs.push(new window.sirius.ScenarioElement({type: 'controller', id: testOtherControllerId}));
-    targetRefs.push(new window.sirius.ScenarioElement({type: 'sensor', id: testSensorId}));
-    targetRefs.push(new window.sirius.ScenarioElement({type: 'event', id: testEventId}));
-    targetRefs.push(new window.sirius.ScenarioElement({type: 'signal', id: testSignalId}));
+    targetRefs.push(new window.beats.ScenarioElement({type: 'node', id: testNodeId}));
+    targetRefs.push(new window.beats.ScenarioElement({type: 'link', id: testLinkId}));
+    targetRefs.push(new window.beats.ScenarioElement({type: 'controller', id: testOtherControllerId}));
+    targetRefs.push(new window.beats.ScenarioElement({type: 'sensor', id: testSensorId}));
+    targetRefs.push(new window.beats.ScenarioElement({type: 'event', id: testEventId}));
+    targetRefs.push(new window.beats.ScenarioElement({type: 'signal', id: testSignalId}));
     return targetRefs;
   };
 
   beforeEach(function() {
-    testNode = new window.sirius.Node({id: testNodeId});
-    testLink = new window.sirius.Link({id: testLinkId});
-    testController = new window.sirius.Controller({node: testNode});
-    testOtherController = new window.sirius.Controller({id: testOtherControllerId, node: testNode});
-    testSensor = new window.sirius.Sensor({id: testSensorId});
-    testEvent = new window.sirius.Event({id: testEventId});
-    testSignal = new window.sirius.Signal({id: testSignalId});
+    testNode = new window.beats.Node({id: testNodeId});
+    testLink = new window.beats.Link({id: testLinkId});
+    testController = new window.beats.Controller({node: testNode});
+    testOtherController = new window.beats.Controller({id: testOtherControllerId, node: testNode});
+    testSensor = new window.beats.Sensor({id: testSensorId});
+    testEvent = new window.beats.Event({id: testEventId});
+    testSignal = new window.beats.Signal({id: testSignalId});
   });
   
   it("should not blow up on to_xml", function() {
@@ -50,7 +50,7 @@ describe("Controller", function() {
       object_with_id.sensor[testSensorId] = testSensor;
       object_with_id.event[testEventId] = testEvent;
       object_with_id.signal[testSignalId] = testSignal;
-      testController.set('targetelements', new window.sirius.TargetElements());
+      testController.set('targetelements', new window.beats.TargetElements());
       testController.get('targetelements').set('scenarioelement', loadTargetReferences());
       testController.resolve_references(deferred, object_with_id);
       runDeferred(deferred);

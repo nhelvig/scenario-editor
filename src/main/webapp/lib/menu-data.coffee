@@ -1,4 +1,4 @@
-$a = window.sirius
+$a = window.beats
 
 # The names of all the parent tree elements of the scenario. It is used in
 # MapNetworkView's _treeView method

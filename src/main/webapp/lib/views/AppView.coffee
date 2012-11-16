@@ -1,12 +1,12 @@
 # AppView is main organizing view for the application
 # It handles all the application level elements as well as
 # instantiating and triggering the Network to be drawn
-class window.sirius.AppView extends Backbone.View
-  $a = window.sirius
+class window.beats.AppView extends Backbone.View
+  $a = window.beats
   $evt = google.maps.event
 
   @start: ->
-    new window.sirius.AppView().render()
+    new window.beats.AppView().render()
     
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
