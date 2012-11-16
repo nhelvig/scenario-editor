@@ -46,8 +46,8 @@ describe("LinkListCollection", function() {
        expect(arrColumnsData[0][3]).toEqual(lColl.get('lanes'));
        nodeB = lColl.get('begin').get('node');
        nodeE = lColl.get('end').get('node');
-       expect(arrColumnsData[0][4]).toEqual(nodeB.get('name'));
-       expect(arrColumnsData[0][5]).toEqual(nodeE.get('name'));
+       expect(arrColumnsData[0][4]).toEqual(nodeB.get_road_names());
+       expect(arrColumnsData[0][5]).toEqual(nodeE.get_road_names());
      });
    });
   
