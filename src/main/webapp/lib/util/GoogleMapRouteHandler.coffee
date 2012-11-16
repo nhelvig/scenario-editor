@@ -20,7 +20,7 @@ class window.beats.GoogleMapRouteHandler
         @setUpLink(link)
         @_directionsRequest(link)
         if(indexOfLink % 10 == 0)
-          $a.broker.trigger('app:show_message:info', 'Loading ...')
+          $a.broker.trigger('app:show_message:info', "Loading ... #{indexOfLink} more" )
       else
         $a.broker.trigger('map:draw_link', link)
         @_requestLink(indexOfLink - 1)
