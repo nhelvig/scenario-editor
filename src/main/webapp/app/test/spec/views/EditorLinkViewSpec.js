@@ -161,7 +161,7 @@ describe("EditorLinkView", function() {
       });
   
       it("should should have title", function() {
-        val = "Link Editor: " + this.view.models[0].get('name');
+        val = "Link Editor: " + this.view.models[0].get_road_names();
         expect(this.view.el.title).toEqual(val);
       });
   

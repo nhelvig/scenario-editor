@@ -25,12 +25,12 @@ window.beats.Sensor::display_point = ->
   sensor.set('lng', row.lng)
   sensor.set('elevation', 0)
 
-
 window.beats.Sensor::lat = -> @get('point').get('lat')
 window.beats.Sensor::lng = -> @get('point').get('lng')
 window.beats.Sensor::elevation = -> @get('point').get('elevation')
 window.beats.Sensor::display_lat = -> @display_point().get('lat')
 window.beats.Sensor::display_lng = -> @display_point().get('lng')
+window.beats.Sensor::get_road_names = -> @get('link').get_road_names()
 
 window.beats.Sensor::initialize = ->
   @set('position', new window.beats.Position)

@@ -3,7 +3,6 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   $a = window.beats
   events : {
     'blur #name, #type' : 'save'
-    'blur #description' : 'saveDesc'
     'blur #lat, #lng, #elevation' : 'saveGeo'
     'click #lock' : 'saveLocked'
     'click #edit-signal' : 'signalEditor'
@@ -47,7 +46,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models) ->
-    name: _.map(models, (m) -> m.get('roadway_markers').get('marker')[0].get('name')).join(", ")
+    name: _.map(models, (m) -> m.get_road_names()).join(", ")
     lat: $a.Util.getGeometry({models:models, geom:'lat'})
     lng: $a.Util.getGeometry({models:models, geom:'lng'})
     elevation: $a.Util.getGeometry({models:models, geom:'elevation'})
@@ -59,11 +58,6 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   save: (e) ->
     id = e.currentTarget.id
     _.each(@models, (m) -> m.set(id, $("##{id}").val()))
-
-  # this method saves the description
-  saveDesc: (e) ->
-    id = e.currentTarget.id
-    $a.Util.saveDesc({models: @models, id: id})
   
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element
