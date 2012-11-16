@@ -92,9 +92,14 @@ class window.beats.BrowserView extends Backbone.View
         $("#resize").css('position', '')
     })
   
-  # this height of the resize bar is set dependent on the dialog box height
+  # this height of the resize bar is dependent on which side of browser is
+  # taller
   _setResizerHeight: () ->
-    height = $(@nev.el).height()
+    browserHeight = $("#right").height()
+    datatableHeight = $("#left").height()
+    height = browserHeight
+    height = datatableHeight if datatableHeight > height
+    
     handleTop = height / 2 - 25
     $("#handle").css('margin-top', "#{handleTop}px")
     $("#resize").css('height', "#{height}px")
