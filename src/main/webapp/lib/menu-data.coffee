@@ -15,7 +15,7 @@ noconfig = -> alert('Not Configured')
 # The menu items and their events for the main navigation bar
 $a.nav_bar_menu_items =
   File:
-    New: noconfig
+    'New': (-> $a.broker.trigger("app:new_scenario"))
     'Open Local Network': (-> $a.broker.trigger("app:open_scenario"))
     'Save Local Network': (->  $a.broker.trigger("app:save_scenario"))
     'Close Local Network': (-> $a.broker.trigger('map:clear_map'))

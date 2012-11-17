@@ -27,6 +27,7 @@ class window.beats.AppView extends Backbone.View
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
     $a.broker.on('map:upload_complete', @_displayMap, @)
     $a.broker.on("map:clear_map", @clearMap, @)
+    $a.broker.on("app:new_scenario", @newScenario, @)
     $a.broker.on('app:open_scenario', @openScenario, @)
     $a.broker.on("app:save_scenario", @saveScenario, @)
     $a.broker.on("map:alert", @showAlert, @)
@@ -90,6 +91,9 @@ class window.beats.AppView extends Backbone.View
 
   openScenario: ->
     $("#uploadField").click()
+  
+  newScenario: ->
+    $a.broker.trigger('map:clear_map')
   
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView

@@ -10,7 +10,7 @@ class window.beats.LinkListView extends Backbone.Collection
     @collection.on('add', @addAndRender, @)
     @collection.on('remove', @removeLink, @)
     @getLinkGeometry(@collection.models)
-  
+
   # create the route handler for the models
   getLinkGeometry: (models) ->
     @routeHandler = new $a.GoogleMapRouteHandler(models)
@@ -22,15 +22,16 @@ class window.beats.LinkListView extends Backbone.Collection
     @views.push(mlv)
     mlv
   
-  # when a link is added to the link collection, this function is called to 
-  # set up the geometry on the map via the routeHandler. We force a new route
-  # to be drawn by setting the shape to null from here because if the shape 
-  # exists it has been moved on the map or we have a new node that wants a link
+  # when a link is added to the link collection or a node moved, this function 
+  # is called to set up the geometry on the map via the routeHandler. 
+  # We force a new route to be drawn by setting the shape to null from here 
+  # because if the shape exists it has been moved on the map or we have a new 
+  # node that wants a link
   addAndRender: (link) ->
     link.set('shape', null)
-    @routeHandler.setUpLink(link)
+    @routeHandler.requestLink(link)
     link
-
+  
   # this removes the link from the views array upon removal from collection
   removeLink: (link) ->
     @views = _.reject(@views, (view) => view.model is link)

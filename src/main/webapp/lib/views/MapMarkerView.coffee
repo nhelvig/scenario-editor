@@ -93,7 +93,6 @@ class window.beats.MapMarkerView extends Backbone.View
     @marker.setTitle @_getTitle()
     $a.map.panTo(@latLng)
     @model.updatePosition(@latLng)
-    $a.broker.trigger("map:redraw_link", @model)
  
   ################# The following handles the show and hide of node layers
   hideMarker: ->
