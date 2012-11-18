@@ -27,7 +27,7 @@ describe("NodeListCollection", function() {
     });
     
     it("should be watching addNode", function() {
-      this.nCollect.trigger("nodes:add", new google.maps.LatLng(37,-122));
+      $a.broker.trigger("nodes:add", new google.maps.LatLng(37,-122));
       expect($a.NodeListCollection.prototype.addNode).toHaveBeenCalled();
     });
     it("should be watching addLink", function() {

@@ -10,8 +10,8 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     
     this.lColl= new $a.LinkListCollection(models);
-    begin = models[0].get('begin');
-    end = models[0].get('end');
+    begin = models[0].begin_node();
+    end = models[0].end_node();
   });
   
   describe("Instantiation", function() {
@@ -20,7 +20,7 @@ describe("LinkListCollection", function() {
     });
     
     it("should be watching addLink", function() {
-      $a.broker.trigger("link_coll:add", {begin:begin,end:end});
+      $a.broker.trigger("links_collection:add", {begin:begin,end:end});
       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
     });
 

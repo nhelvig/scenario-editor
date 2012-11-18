@@ -68,6 +68,6 @@ class window.beats.LinkListCollection extends Backbone.Collection
     bNode = link.begin_node()
     eNode = link.end_node()
     bNode.bind('remove', => @removeNode(link, 'begin'))
-    eNode.bind('remove', => @removeNode(link, 'end'))  
+    eNode.bind('remove', => @removeNode(link, 'end')) 
     bNode.position().on('change',(=> @reDrawLink(link)), @)
     eNode.position().on('change',(=> @reDrawLink(link)), @)

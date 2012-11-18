@@ -48,7 +48,7 @@ class window.beats.AppView extends Backbone.View
     }
     #attach the map to the namespace
     $a.map = new google.maps.Map $("#map_canvas")[0], mapOpts
-  
+    
   # This creates the context menu as well as adds the listeners for map area
   # of the application.Currently we have zoom in and zoom out as well as center
   # the map.
@@ -94,6 +94,10 @@ class window.beats.AppView extends Backbone.View
   
   newScenario: ->
     $a.broker.trigger('map:clear_map')
+    $a.models = $a.Scenario.from_xml()
+    new $a.MapNetworkView $a.models
+    $a.nodeList = new $a.NodeListCollection([])
+    $a.nodeListView = new $a.NodeListView($a.nodeList)
   
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView
@@ -103,7 +107,7 @@ class window.beats.AppView extends Backbone.View
     catch error
       $a.broker.trigger("app:show_message:error", error)
     $a.models = $a.Scenario.from_xml($(xml).children())
-    @mapView = new $a.MapNetworkView $a.models
+    new $a.MapNetworkView $a.models
 
   clearMap: ->
     $a.broker.trigger('map:toggle_tree', false)

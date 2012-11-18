@@ -4,11 +4,11 @@ class window.beats.NodeListCollection extends Backbone.Collection
   model: $a.Node
   
   # when initialized go through the models and set selected to false, and 
-  # set up all the events need to add nodes to the collection.  
+  # set up all the events need to add nodes to the collection.
   initialize:(@models) ->
     @clearSelected()
-    @forEach((node) -> node.bind('remove', => @destroy))
-    @on('nodes:add', @addNode, @)
+    @forEach((node) => @_setUpEvents(node))
+    $a.broker.on('nodes:add', @addNode, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
     @on('nodes:add_dest', @addLinkDest, @)
@@ -58,6 +58,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     n.set('position', p)
     n.set('type', type || 'simple')
     @add(n)
+    @_setUpEvents(n)
     n
     
   # addLink is called from the conttext menus add Link item when there is
@@ -98,3 +99,6 @@ class window.beats.NodeListCollection extends Backbone.Collection
   _getSelectedNode:  ->
     _.filter(@models, (node) -> node.get('selected') is true)
 
+  # This method sets up the events each node should listen too
+  _setUpEvents: (node) ->
+    node.bind('remove', => @destroy)

@@ -12,8 +12,8 @@ describe("LinkListView", function() {
     
     this.lColl = new $a.LinkListCollection(models);
     this.view = new $a.LinkListView(this.lColl, network);
-    begin = models[0].get('begin');
-    end = models[0].get('end');
+    begin = models[0].begin_node();
+    end = models[0].end_node();
   });
     
   describe("Instantiation", function() {

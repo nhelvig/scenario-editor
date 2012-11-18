@@ -52,12 +52,9 @@ $a.main_context_menu = [
   context_menu_item 'Zoom out', (-> $a.map.setZoom $a.map.getZoom()-1)
   {className:'context_menu_separator'}
   context_menu_item 'Center map here', (-> $a.map.panTo $a.contextMenu.position)
-]
-
-$a.node_add = [
   {className:'context_menu_separator'}
   context_menu_item 'Add Node here', 
-                    ( -> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
+                    ( -> $a.broker.trigger("nodes:add", $a.contextMenu.position))
 ]
 
 $a.node_selected = [
