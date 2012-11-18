@@ -8,15 +8,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # node
   initialize: (@models)->
     $a.broker.on("map:redraw_link", @reDrawLink, @)
-    @forEach((link) => 
-        link.bind('remove', => @destroy)
-        bNode = link.begin_node()
-        eNode = link.end_node()
-        bNode.bind('remove', => @removeNode(link, 'begin'))
-        eNode.bind('remove', => @removeNode(link, 'end'))  
-        bNode.position().on('change',(=> @reDrawLink(link)), @)
-        eNode.position().on('change',(=> @reDrawLink(link)), @)
-    )
+    @forEach((link) =>  @_setUpEvents(link))
     $a.broker.on('links_collection:add', @addLink, @)
     @on('links:remove', @removeLink, @)
   
@@ -35,6 +27,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.set('begin', begin)
     link.set('end', end)
     @add(link)
+    @_setUpEvents(link)
     link
   
   # This removes either the begin or end node from the link if the node
@@ -68,4 +61,13 @@ class window.beats.LinkListCollection extends Backbone.Collection
   reDrawLink: (link) ->
     @remove(link)
     @add(link)
-    
+  
+  # This method sets up the events each link should listen too
+  _setUpEvents: (link) ->
+    link.bind('remove', => @destroy)
+    bNode = link.begin_node()
+    eNode = link.end_node()
+    bNode.bind('remove', => @removeNode(link, 'begin'))
+    eNode.bind('remove', => @removeNode(link, 'end'))  
+    bNode.position().on('change',(=> @reDrawLink(link)), @)
+    eNode.position().on('change',(=> @reDrawLink(link)), @)
