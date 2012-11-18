@@ -43,42 +43,45 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # addNode creates a node of the type and at the position passed in and adds
   # to the collection. It is called from the context menu's add node event
   addNode: (position, type) ->
-    latlng = position
     n = new $a.Node()
-    pt = new $a.Point()
-    pt.set('lat',latlng.lat())
-    pt.set('lng',latlng.lng())
-    pt.set('elevation', NaN)
     p = new $a.Position()
-    p.get('point').splice(0,2) # position starts with two empty points
+    pt = new $a.Point()
+    pt.set(
+            { 
+              'lat':position.lat(),
+              'lng':position.lng(),
+              'elevation':NaN
+            }
+          )
+    p.set('point', []) 
     p.get('point').push(pt)
     n.set('position', p)
     n.set('type', type || 'simple')
     @add(n)
     n
-
+    
   # addLink is called from the conttext menus add Link item when there is
   # one other node selected. It adds a node at the position where the event
   # occurred, finds the other selected node, and then creates the link
   # via the triggering of the link_coll:add method
   addLink: (position) ->
-    node = @addNode(position)
     selNode = @_getSelectedNode()
-    $a.broker.trigger('link_coll:add', {begin:selNode[0], end:node})
+    node = @addNode(position)
+    $a.broker.trigger('links_collection:add', {begin:selNode[0], end:node})
   
   # similar to addLink above except it creates a terminal node and draws the link
   # from this position to the other selected node
   addLinkOrigin: (position) ->
     node = @addNode(position,'terminal')
     selNode = @_getSelectedNode()
-    $a.broker.trigger('link_coll:add', {begin:node, end:selNode[0] })
+    $a.broker.trigger('links_collection:add', {begin:node, end:selNode[0] })
   
   # similar to addLink above except it creates a terminal node and draws the link
   # to this position from the other selected node
   addLinkDest: (position) ->
     node = @addNode(position, 'terminal')
     selNode = @_getSelectedNode()
-    $a.broker.trigger('link_coll:add', {begin:selNode[0], end:node})
+    $a.broker.trigger('links_collection:add', {begin:selNode[0], end:node})
   
   # this returns true if exactly one node is selected. It is called by
   # the context menu handleer to ensure the appropriate items are added

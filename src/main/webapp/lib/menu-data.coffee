@@ -57,12 +57,12 @@ $a.main_context_menu = [
 $a.node_add = [
   {className:'context_menu_separator'}
   context_menu_item 'Add Node here', 
-                    (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
+                    ( -> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
 ]
 
 $a.node_selected = [
   context_menu_item 'Add Node and Link here', 
-                    (-> $a.nodeList.trigger("nodes:add_link", $a.contextMenu.position))
+                    ( -> $a.nodeList.trigger("nodes:add_link", $a.contextMenu.position))
   context_menu_item 'Add Origin here',
                     (-> $a.nodeList.trigger("nodes:add_origin", $a.contextMenu.position))
   context_menu_item 'Add Destination here',

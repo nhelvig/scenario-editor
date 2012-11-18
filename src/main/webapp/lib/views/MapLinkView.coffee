@@ -60,7 +60,7 @@ class window.beats.MapLinkView extends Backbone.View
     @link = new google.maps.Polyline({
       path: google.maps.geometry.encoding.decodePath linkGeom
       map: $a.map
-      strokeColor:  MapLinkView.LINK_COLOR
+      strokeColor: MapLinkView.LINK_COLOR
       icons: [{
           icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
           fillColor: 'blue'

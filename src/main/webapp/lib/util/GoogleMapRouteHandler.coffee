@@ -31,7 +31,7 @@ class window.beats.GoogleMapRouteHandler
   # events
   requestLink: (link) ->
     @setUpLink(link)
-    @_directionsRequestOneLink(link)    
+    @_directionsRequestOneLink(link)
     $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
   
   # setUpLink takes the link that may need geometry and a flag indicating 

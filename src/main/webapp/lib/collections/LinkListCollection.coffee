@@ -8,17 +8,16 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # node
   initialize: (@models)->
     $a.broker.on("map:redraw_link", @reDrawLink, @)
-    $a.broker.on('link_coll:add', @addLink, @)
     @forEach((link) => 
+        link.bind('remove', => @destroy)
         bNode = link.begin_node()
         eNode = link.end_node()
         bNode.bind('remove', => @removeNode(link, 'begin'))
         eNode.bind('remove', => @removeNode(link, 'end'))  
         bNode.position().on('change',(=> @reDrawLink(link)), @)
         eNode.position().on('change',(=> @reDrawLink(link)), @)
-
     )
-    @forEach((link) -> link.bind('remove', => @destroy))
+    $a.broker.on('links_collection:add', @addLink, @)
     @on('links:remove', @removeLink, @)
   
   # addLink takes the begin node and end node ids, sets up the appropriate

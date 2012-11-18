@@ -7,7 +7,7 @@ class window.beats.MapMarkerView extends Backbone.View
   initialize: (@model) ->
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
-    @latLng = $a.Util.getLatLng(model)
+    @latLng = $a.Util.getLatLng(@model)
     @draw()
     gevent = google.maps.event
     gevent.addListener(@marker, 'dragend', => @dragMarker())

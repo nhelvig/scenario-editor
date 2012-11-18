@@ -68,7 +68,7 @@ class window.beats.ContextMenuView extends google.maps.OverlayView
 
   onAdd: () ->
     _.each(@options.menuItems, (item) => 
-      new $a.ContextMenuItemView(@options.id, item)
+      item.view = new $a.ContextMenuItemView(@options.id, item, @position)
     )
 
   onRemove: () ->
