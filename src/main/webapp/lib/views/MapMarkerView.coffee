@@ -92,8 +92,6 @@ class window.beats.MapMarkerView extends Backbone.View
     @latLng = @marker.getPosition()
     @marker.setTitle @_getTitle()
     $a.map.panTo(@latLng)
-    console.log @model
-    console.log @latLng
     @model.updatePosition(@latLng)
  
   ################# The following handles the show and hide of node layers
