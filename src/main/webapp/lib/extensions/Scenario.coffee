@@ -1,6 +1,6 @@
 window.beats.Scenario.from_xml = (xml) ->
   object_with_id =
-    network: {}
+    networklist: {}
     node: {}
     link: {}
     path: {}
@@ -42,8 +42,11 @@ window.beats.Scenario.from_xml = (xml) ->
 window.beats.Scenario::initialize = ->
   @set('schemaVersion', window.beats.SchemaVersion)
   @object_with_id = network: {}, node: {}, link: {}, path: {}, sensor: {}
-  @set('settings', new window.beats.Settings())
-  @set('network', new window.beats.Network())
+  @set 'settings', new window.beats.Settings
+  @set 'networklist', new window.beats.NetworkList
+  @set 'sensorlist', new window.beats.SensorList
+  @set 'signallist', new window.beats.SignalList
+  
 
 window.beats.Scenario::network_with_id = (id) ->
   @object_with_id.network[id]

@@ -94,10 +94,13 @@ class window.beats.AppView extends Backbone.View
   
   newScenario: ->
     $a.broker.trigger('map:clear_map')
-    $a.models = $a.Scenario.from_xml()
-    new $a.MapNetworkView $a.models
+    $a.models = new $a.Scenario()
+    $a.models.get('networklist').set('network',[new $a.Network])
+    network = $a.models.get('networklist').get('network')[0]
     $a.nodeList = new $a.NodeListCollection([])
-    $a.nodeListView = new $a.NodeListView($a.nodeList)
+    $a.nodeListView = new $a.NodeListView($a.nodeList, network)
+    $a.linkList = new $a.LinkListCollection([])
+    $a.linkListView = new $a.LinkListView($a.linkList, network)
   
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView
