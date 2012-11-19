@@ -150,7 +150,7 @@ class window.beats.TreeView extends Backbone.View
     _.each(params.parentList.get(params.modelListName), (e) =>
       targets = @_findTargetElements(e, params.attachId)
       switch params.type
-        when 'link', 'node' then name = targets[0].get_road_names()
+        when 'link', 'node' then name = targets[0].road_names()
         else name = targets[0].get('name')
   
       # for OD Profiles

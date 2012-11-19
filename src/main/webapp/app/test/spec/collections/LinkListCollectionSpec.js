@@ -42,13 +42,16 @@ describe("LinkListCollection", function() {
        arrColumnsData = this.lColl.getBrowserColumnData();
        lColl = this.lColl.models[0];
        expect(arrColumnsData[0][0]).toEqual(lColl.get('id'));
-       expect(arrColumnsData[0][1]).toEqual(lColl.get_road_names());
+       expect(arrColumnsData[0][1]).toEqual(lColl.road_names
+());
        expect(arrColumnsData[0][2]).toEqual(lColl.get('type'));
        expect(arrColumnsData[0][3]).toEqual(lColl.get('lanes'));
        nodeB = lColl.get('begin').get('node');
        nodeE = lColl.get('end').get('node');
-       expect(arrColumnsData[0][4]).toEqual(nodeB.get_road_names());
-       expect(arrColumnsData[0][5]).toEqual(nodeE.get_road_names());
+       expect(arrColumnsData[0][4]).toEqual(nodeB.road_names
+());
+       expect(arrColumnsData[0][5]).toEqual(nodeE.road_names
+());
      });
    });
   
@@ -66,6 +69,11 @@ describe("LinkListCollection", function() {
       this.lColl.addLink({begin:begin,end:end});
       expect(lengthBefore + 1).toEqual(this.lColl.length);
     });
+    it("should create a new link and add it to the schema", function() {
+      var lengthBefore = $a.models.links().length;
+      this.lColl.addLink({begin:begin,end:end});
+      expect(lengthBefore + 1).toEqual($a.models.links().length);
+    })
   });
   
   describe("removeNode ", function() {

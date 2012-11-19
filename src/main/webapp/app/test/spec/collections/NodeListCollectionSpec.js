@@ -53,7 +53,8 @@ describe("NodeListCollection", function() {
     it("should return id, name, type for editor browser table", function() {
       arrColumnsData = this.nCollect.getBrowserColumnData();
       expect(arrColumnsData[0][0]).toEqual(this.nCollect.models[0].get('id'));
-      expect(arrColumnsData[0][1]).toEqual(this.nCollect.models[0].get_road_names());
+      expect(arrColumnsData[0][1]).toEqual(this.nCollect.models[0].road_names
+());
       expect(arrColumnsData[0][2]).toEqual(this.nCollect.models[0].get('type'));
     });
   });

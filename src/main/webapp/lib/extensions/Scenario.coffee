@@ -50,6 +50,9 @@ window.beats.Scenario::initialize = ->
 window.beats.Scenario::nodes = -> 
   @get('networklist').get('network')[0].get('nodelist').get('node')
 
+window.beats.Scenario::links = -> 
+  @get('networklist').get('network')[0].get('linklist').get('link')
+  
 window.beats.Scenario::network_with_id = (id) ->
   @object_with_id.network[id]
 

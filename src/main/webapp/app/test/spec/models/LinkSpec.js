@@ -34,9 +34,9 @@ describe("Link", function() {
     });
   });
   
-  describe("get_road_names", function() {
+  describe("road_names", function() {
     it("should return road_names concatenated with comma", function() {
-      expect(testLink1.get_road_names()).toEqual("name1, name2");
+      expect(testLink1.road_names()).toEqual("name1, name2");
     });
   });
 });

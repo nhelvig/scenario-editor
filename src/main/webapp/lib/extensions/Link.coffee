@@ -17,9 +17,8 @@ window.beats.Link::parallel_links = ->
       link2 isnt this and link2.get('end').get('node') is end_node
   ), (output) -> output.get('link'))
 
-
-window.beats.Link::get_road_names = ->
-  _.map(@get('roads').get('road'), (r) -> r.get('name')).join(", ")
+window.beats.Link::road_names = ->
+  _.map(@get('roads')?.get('road'), (r) -> r.get('name')).join(", ")
 
 window.beats.Link::begin_node = ->
   @get('begin').get('node')

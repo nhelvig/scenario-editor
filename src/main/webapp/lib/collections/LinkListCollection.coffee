@@ -13,7 +13,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @on('links:remove', @removeLink, @)
   
   # addLink takes the begin node and end node ids, sets up the appropriate
-  # begin and end node objects, creates the link and adds it to the collection
+  # begin and end node objects, creates the link, adds it to the collection
+  # and adds it to the schema
   addLink: (args) ->
     link = new window.beats.Link()
     begin = new window.beats.Begin()
@@ -27,6 +28,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.set('begin', begin)
     link.set('end', end)
     @add(link)
+    $a.models.links().push(link)
     @_setUpEvents(link)
     link
   
@@ -47,11 +49,11 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @models.map((link) ->
                   [
                     link.get('id'),
-                    link.get_road_names(),
+                    link.road_names(),
                     link.get('type'),
                     link.get('lanes'),
-                    link.get('begin').get('node').get_road_names(),
-                    link.get('end').get('node').get_road_names()
+                    link.get('begin').get('node').road_names(),
+                    link.get('end').get('node').road_names()
                   ]
                 )
   

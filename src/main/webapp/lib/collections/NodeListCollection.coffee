@@ -17,7 +17,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
     @models.map((node) -> 
-                  [node.get('id'),node.get_road_names(),node.get('type')]
+                  [node.get('id'),node.road_names(),node.get('type')]
                   )
   
   # this function sets all the nodes passed in selected field to true. It is

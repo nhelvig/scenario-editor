@@ -9,7 +9,7 @@ class window.beats.EditorView extends Backbone.View
     @elem = @options.elem
     @models = @options.models
     title  = $a.Util.toStandardCasing(@elem)  # eg. node -> Node
-    @$el.attr 'title', "#{title} Editor: #{@models[0].get_road_names()}"
+    @$el.attr 'title', "#{title} Editor: #{@models[0].road_names()}"
     @$el.attr 'id', "#{@elem}-dialog-form-#{@models[0].cid}"
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(options.templateData))

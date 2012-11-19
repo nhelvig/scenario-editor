@@ -33,7 +33,8 @@ describe("EditorSensorView", function() {
     });
 
     it("should should have title", function() {
-      title = "Sensor Editor: " + this.view.models[0].get_road_names();
+      title = "Sensor Editor: " + this.view.models[0].road_names
+();
       expect(this.view.el.title).toEqual(title);
     });
 
