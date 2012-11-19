@@ -58,7 +58,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     n.set('position', p)
     n.set('type', type || 'simple')
     @add(n)
-    $a.models.get('networklist').get('network')[0].get('nodelist').get('node').push(n)
+    #$a.models.get('networklist').get('network')[0].get('nodelist').get('node').push(n)
     @_setUpEvents(n)
     n
     
