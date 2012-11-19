@@ -3,7 +3,8 @@ describe("LinkListCollection", function() {
   var models, network, begin, end;
   
   beforeEach(function() {
-    network = $a.scenario.get('networklist').get('network')[0];
+    network = $a.models
+.get('networklist').get('network')[0];
     models = network.get('linklist').get('link');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();

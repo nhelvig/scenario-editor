@@ -41,7 +41,8 @@ class window.beats.NodeListCollection extends Backbone.Collection
     @remove(node)
   
   # addNode creates a node of the type and at the position passed in and adds
-  # to the collection. It is called from the context menu's add node event
+  # it to the collection as well as to the models schema. 
+  # It is called from the context menu's add node event
   addNode: (position, type) ->
     n = new $a.Node()
     p = new $a.Position()
@@ -58,10 +59,10 @@ class window.beats.NodeListCollection extends Backbone.Collection
     n.set('position', p)
     n.set('type', type || 'simple')
     @add(n)
-    #$a.models.get('networklist').get('network')[0].get('nodelist').get('node').push(n)
+    $a.models.nodes().push(n)
     @_setUpEvents(n)
     n
-    
+  
   # addLink is called from the conttext menus add Link item when there is
   # one other node selected. It adds a node at the position where the event
   # occurred, finds the other selected node, and then creates the link

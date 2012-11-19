@@ -4,7 +4,7 @@ describe("MapNodeView", function() {
 
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
-    network = $s.scenario.get('networklist').get('network')[0];
+    network = $s.models.get('networklist').get('network')[0];
     model = network.get('nodelist').get('node')[3];
 
     spyOn($s.MapNodeView.prototype, 'selectLink').andCallThrough();

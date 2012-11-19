@@ -3,7 +3,8 @@ describe("EditorSensorView", function() {
   
   beforeEach(function() {
     loadFixtures('editor.sensor.view.fixture.html');
-    model = $a.scenario.get('sensorlist').get('sensor')[0];
+    model = $a.models
+.get('sensorlist').get('sensor')[0];
     spyOn($a.EditorSensorView.prototype, 'displayAtPos').andCallThrough();
     spyOn($a.EditorSensorView.prototype, 'save').andCallThrough();
     spyOn($a.EditorSensorView.prototype, 'saveLinks').andCallThrough();

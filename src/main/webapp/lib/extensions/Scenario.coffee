@@ -46,7 +46,9 @@ window.beats.Scenario::initialize = ->
   @set 'networklist', new window.beats.NetworkList
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
-  
+
+window.beats.Scenario::nodes = -> 
+  @get('networklist').get('network')[0].get('nodelist').get('node')
 
 window.beats.Scenario::network_with_id = (id) ->
   @object_with_id.network[id]

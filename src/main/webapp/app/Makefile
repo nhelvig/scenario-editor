@@ -1,11 +1,8 @@
 watch:
 	coffee -o js -c ../lib 
-	coffee -o js/collections -c ../lib/collections
-	coffee -o js/extensions -c ../lib/extensions
 	coffee -o js/models -c ../lib/models
-	coffee -o js/util -c ../lib/util
 	cp -r ../lib/vendor js/.
-	coffee -w -o js/views -c ../lib/views
+	coffee -w -o js/ -c ../lib/views ../lib/extensions ../lib/collections ../lib/util
 
 all:
 	coffee -o js -c ../lib 

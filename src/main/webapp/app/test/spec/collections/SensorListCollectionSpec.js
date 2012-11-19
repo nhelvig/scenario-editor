@@ -3,7 +3,8 @@ describe("SensorListCollection", function() {
   var models, network, begin, end;
   
   beforeEach(function() {
-    models = $a.scenario.get('sensorlist').get('sensor');
+    models = $a.models
+.get('sensorlist').get('sensor');
     this.sColl= new $a.SensorListCollection(models);
   });
   
