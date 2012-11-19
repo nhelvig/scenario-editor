@@ -30,9 +30,5 @@ describe("menu-data", function() {
       var pos = $a.contextMenu.position;
       expect(Math.floor($a.map.center.lat())).toEqual(pos.lat());
     });
-    it("should trigger nodes:add for 'Add Node Here'", function() {
-      ($a.node_add[1].event)();
-      expect($a.NodeListCollection.prototype.addNode).toHaveBeenCalled();
-    });
   });
 });

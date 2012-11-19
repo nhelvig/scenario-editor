@@ -27,6 +27,7 @@ class window.beats.AppView extends Backbone.View
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
     $a.broker.on('map:upload_complete', @_displayMap, @)
     $a.broker.on("map:clear_map", @clearMap, @)
+    $a.broker.on("app:new_scenario", @newScenario, @)
     $a.broker.on('app:open_scenario', @openScenario, @)
     $a.broker.on("app:save_scenario", @saveScenario, @)
     $a.broker.on("map:alert", @showAlert, @)
@@ -47,7 +48,7 @@ class window.beats.AppView extends Backbone.View
     }
     #attach the map to the namespace
     $a.map = new google.maps.Map $("#map_canvas")[0], mapOpts
-  
+    
   # This creates the context menu as well as adds the listeners for map area
   # of the application.Currently we have zoom in and zoom out as well as center
   # the map.
@@ -91,6 +92,16 @@ class window.beats.AppView extends Backbone.View
   openScenario: ->
     $("#uploadField").click()
   
+  newScenario: ->
+    $a.broker.trigger('map:clear_map')
+    $a.models = new $a.Scenario()
+    $a.models.get('networklist').set('network',[new $a.Network])
+    network = $a.models.get('networklist').get('network')[0]
+    $a.nodeList = new $a.NodeListCollection([])
+    $a.nodeListView = new $a.NodeListView($a.nodeList, network)
+    $a.linkList = new $a.LinkListCollection([])
+    $a.linkListView = new $a.LinkListView($a.linkList, network)
+  
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView
   _displayMap: (fileText) ->
@@ -99,7 +110,7 @@ class window.beats.AppView extends Backbone.View
     catch error
       $a.broker.trigger("app:show_message:error", error)
     $a.models = $a.Scenario.from_xml($(xml).children())
-    @mapView = new $a.MapNetworkView $a.models
+    new $a.MapNetworkView $a.models
 
   clearMap: ->
     $a.broker.trigger('map:toggle_tree', false)

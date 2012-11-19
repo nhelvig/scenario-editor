@@ -32,7 +32,7 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
-
+  
   render: ->
     @link.setMap($a.map)
     @
@@ -52,7 +52,7 @@ class window.beats.MapLinkView extends Backbone.View
   # save the encoded path to the model
   _saveEncodedPath: ->
     @model.set('shape', new $a.Shape().set('text', @encodedPath))
-    
+  
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
   _drawLink: ->
@@ -60,7 +60,7 @@ class window.beats.MapLinkView extends Backbone.View
     @link = new google.maps.Polyline({
       path: google.maps.geometry.encoding.decodePath linkGeom
       map: $a.map
-      strokeColor:  MapLinkView.LINK_COLOR
+      strokeColor: MapLinkView.LINK_COLOR
       icons: [{
           icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
           fillColor: 'blue'

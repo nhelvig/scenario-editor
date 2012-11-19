@@ -7,12 +7,12 @@ class window.beats.GoogleMapRouteHandler
   
   constructor: (@links) ->
     @directionsService = new google.maps.DirectionsService()
-    @_requestLink(@links.length - 1)
+    @_requestLinks(@links.length - 1)
   
   # recursive method used to grab the Google route for every link
   # indexOfLink starts at the end of the link list and is decreased 
   # on each recursive call. If geometry exists we just draw the link
-  _requestLink: (indexOfLink) ->
+  _requestLinks: (indexOfLink) ->
     if indexOfLink > -1
       link = @links[indexOfLink]
       if(@_geomDoesNotExist(link))
@@ -20,12 +20,19 @@ class window.beats.GoogleMapRouteHandler
         @setUpLink(link)
         @_directionsRequest(link)
         if(indexOfLink % 10 == 0)
-          $a.broker.trigger('app:show_message:info', 'Loading ...')
+          $a.broker.trigger('app:show_message:info', "Loading ... #{indexOfLink} more" )
       else
         $a.broker.trigger('map:draw_link', link)
-        @_requestLink(indexOfLink - 1)
+        @_requestLinks(indexOfLink - 1)
     else
       $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
+  
+  # grab the Google route for one link -- happens on add link and move node
+  # events
+  requestLink: (link) ->
+    @setUpLink(link)
+    @_directionsRequestOneLink(link)
+    $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
   
   # setUpLink takes the link that may need geometry and a flag indicating 
   # whether or not we want to force new geometry to be querried. This happens
@@ -64,12 +71,26 @@ class window.beats.GoogleMapRouteHandler
             $a.broker.trigger('map:draw_link', link)
             if(rate > 200)
               rate -= 100
-            setTimeout (() =>  @_requestLink(link.index - 1)), rate
+            setTimeout (() =>  @_requestLinks(link.index - 1)), rate
         else
           rate = 1000
-          setTimeout (() =>  @_requestLink(link.index)), rate
+          setTimeout (() =>  @_requestLinks(link.index)), rate
       )
-    
+  
+  # this makes a single request to a link and triggers its drawing on the map
+  _directionsRequestOneLink: (link) ->
+      @directionsService.route(link.request, (response, status) =>
+        if (status == google.maps.DirectionsStatus.OK)
+          rte = response.routes[0]
+          if rte.warnings.length > 0
+            msg = "#{WARNING_MSG} #{rte.warnings}"
+            $a.broker.trigger('app:show_message:info', msg)
+          link.legs = rte.legs
+          $a.broker.trigger('map:draw_link', link)
+        else
+          setTimeout (() =>  @requestLink(link)), 1000
+      )
+  
   #checks to see if we are over the google query limit
   _isOverQuery: (status) ->
     status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT

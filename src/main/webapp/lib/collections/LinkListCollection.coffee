@@ -8,13 +8,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # node
   initialize: (@models)->
     $a.broker.on("map:redraw_link", @reDrawLink, @)
-    $a.broker.on('link_coll:add', @addLink, @)
-    @forEach((link) => 
-        link.get('begin').get('node').bind('remove', => @removeNode(link, 'begin'))
-        link.get('end').get('node').bind('remove', => @removeNode(link, 'end'))
-    )
-
-    @forEach((link) -> link.bind('remove', => @destroy))
+    @forEach((link) =>  @_setUpEvents(link))
+    $a.broker.on('links_collection:add', @addLink, @)
     @on('links:remove', @removeLink, @)
   
   # addLink takes the begin node and end node ids, sets up the appropriate
@@ -32,6 +27,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.set('begin', begin)
     link.set('end', end)
     @add(link)
+    @_setUpEvents(link)
     link
   
   # This removes either the begin or end node from the link if the node
@@ -59,17 +55,19 @@ class window.beats.LinkListCollection extends Backbone.Collection
                   ]
                 )
   
-  # This method is triggered when a node is dragged. First find the links whose
-  # begin or end node is effected and then remove them from the map and re-add
-  # them so they are redrawn
-  reDrawLink: (node) ->
-    links = _.filter(@models, (link) -> 
-                        link.get('begin').get('node') is node or 
-                        link.get('end').get('node') is node
-            )
-    _.each(links, (link) => 
-                    @remove(link)
-                    @add(link)
-          )
-    links
-    
+  # This method is triggered when a node is dragged. First remove the current
+  # link from the map and re-add the new link to the collection which 
+  # triggers the creation of view
+  reDrawLink: (link) ->
+    @remove(link)
+    @add(link)
+  
+  # This method sets up the events each link should listen too
+  _setUpEvents: (link) ->
+    link.bind('remove', => @destroy)
+    bNode = link.begin_node()
+    eNode = link.end_node()
+    bNode.bind('remove', => @removeNode(link, 'begin'))
+    eNode.bind('remove', => @removeNode(link, 'end')) 
+    bNode.position().on('change',(=> @reDrawLink(link)), @)
+    eNode.position().on('change',(=> @reDrawLink(link)), @)

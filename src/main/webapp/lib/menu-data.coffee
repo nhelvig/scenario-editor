@@ -15,7 +15,7 @@ noconfig = -> alert('Not Configured')
 # The menu items and their events for the main navigation bar
 $a.nav_bar_menu_items =
   File:
-    New: noconfig
+    'New': (-> $a.broker.trigger("app:new_scenario"))
     'Open Local Network': (-> $a.broker.trigger("app:open_scenario"))
     'Save Local Network': (->  $a.broker.trigger("app:save_scenario"))
     'Close Local Network': (-> $a.broker.trigger('map:clear_map'))
@@ -52,17 +52,14 @@ $a.main_context_menu = [
   context_menu_item 'Zoom out', (-> $a.map.setZoom $a.map.getZoom()-1)
   {className:'context_menu_separator'}
   context_menu_item 'Center map here', (-> $a.map.panTo $a.contextMenu.position)
-]
-
-$a.node_add = [
   {className:'context_menu_separator'}
   context_menu_item 'Add Node here', 
-                    (-> $a.nodeList.trigger("nodes:add", $a.contextMenu.position))
+                    ( -> $a.broker.trigger("nodes:add", $a.contextMenu.position))
 ]
 
 $a.node_selected = [
   context_menu_item 'Add Node and Link here', 
-                    (-> $a.nodeList.trigger("nodes:add_link", $a.contextMenu.position))
+                    ( -> $a.nodeList.trigger("nodes:add_link", $a.contextMenu.position))
   context_menu_item 'Add Origin here',
                     (-> $a.nodeList.trigger("nodes:add_origin", $a.contextMenu.position))
   context_menu_item 'Add Destination here',

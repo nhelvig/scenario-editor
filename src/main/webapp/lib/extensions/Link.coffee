@@ -20,3 +20,9 @@ window.beats.Link::parallel_links = ->
 
 window.beats.Link::get_road_names = ->
   _.map(@get('roads').get('road'), (r) -> r.get('name')).join(", ")
+
+window.beats.Link::begin_node = ->
+  @get('begin').get('node')
+
+window.beats.Link::end_node = ->
+  @get('end').get('node')

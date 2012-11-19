@@ -49,10 +49,10 @@ describe("ContextMenuHandler", function() {
        var expectedLength =  $a.main_context_menu.length;
        expect(this.items.length).toEqual(expectedLength);
      });
-     it("Models but no node selected: return menu with just standard and add node", function(){
+     it("Models but no node selected: return menu with just standard including add node", function(){
        $a.models = $a.scenario;
        this.items = this.cmh._populateMenu({items:$a.main_context_menu});
-       var expectedLength = $a.node_add.length + $a.main_context_menu.length;
+       var expectedLength = $a.main_context_menu.length;
        expect(this.items.length).toEqual(expectedLength);
      });
      it("Models node selected: return menu with standard and node selected actions", function(){
@@ -62,7 +62,7 @@ describe("ContextMenuHandler", function() {
        $a.nodeList = new $a.NodeListCollection(list.get('node'));
        $a.nodeList.models[0].set('selected',true);
        this.items = this.cmh._populateMenu({items:$a.main_context_menu});
-       var expectedLength = $a.node_add.length + $a.main_context_menu.length + $a.node_selected.length
+       var expectedLength = $a.main_context_menu.length + $a.node_selected.length
        expect(this.items.length).toEqual(expectedLength);
      });
    });

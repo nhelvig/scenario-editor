@@ -27,6 +27,5 @@ class window.beats.ContextMenuHandler
   _populateMenu: (args) ->
     items = {}
     items = args.items
-    items = _.union(items, $a.node_add) if $a.models? or $a.models is not undefined
     items = _.union(items, $a.node_selected) if $a.nodeList? and $a.nodeList.isOneSelected()
     items

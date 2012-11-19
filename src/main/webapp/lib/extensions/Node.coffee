@@ -34,7 +34,9 @@ window.beats.Node::ios = ->
   _.union(@outputs(), @inputs())
 
 window.beats.Node::updatePosition = (pos) ->
-  @get('position').get('point')[0].set('lat', pos.lat())
-  @get('position').get('point')[0].set('lng', pos.lng())
+  @get('position').get('point')[0].set({'lat':pos.lat(), 'lng':pos.lng()})
+
+window.beats.Node::position = ->
+  @get('position').get('point')[0]
 
   

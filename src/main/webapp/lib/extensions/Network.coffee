@@ -6,10 +6,8 @@ window.beats.Network::defaults =
 window.beats.Network::initialize = ->
   @set 'nodelist', new window.beats.NodeList
   @set 'linklist', new window.beats.LinkList
-  @set 'networklist', new window.beats.NetworkList
-  @set 'sensorlist', new window.beats.SensorList
-  @set 'signallist', new window.beats.SignalList
   @set 'description', new window.beats.Description
+  @set 'intersectioncache', new window.beats.IntersectionCache
   @set 'position', new window.beats.Position
   @get('position').get('point').push(new window.beats.Point)
 
