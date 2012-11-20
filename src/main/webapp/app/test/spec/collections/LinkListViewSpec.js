@@ -4,8 +4,7 @@ describe("LinkListView", function() {
   
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
-    network = $a.models
-.get('networklist').get('network')[0];
+    network = $a.models.get('networklist').get('network')[0];
     models = network.get('linklist').get('link');
     spyOn($a.LinkListView.prototype, 'addAndRender').andCallThrough();
     spyOn($a.LinkListView.prototype, 'createAndDrawLink').andCallThrough();
