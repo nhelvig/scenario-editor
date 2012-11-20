@@ -320,3 +320,6 @@ hr {
                                 height:15px;
                               }
 #browser_table_paginate a {margin-right: 0em;}
+
+/* jQuery UI Hacks */
+.ui-widget-content-select { border: 1px solid #666666; background: #000000; color: #ffffff; }
