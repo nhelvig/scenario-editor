@@ -6,6 +6,7 @@ class window.beats.LinkListView extends Backbone.Collection
   # set up the draw link and add events and instantiate
   # the MapRouteHanlder for models
   initialize: (@collection, @network) ->
+    $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:draw_link', @createAndDrawLink, @)
     @collection.on('add', @addAndRender, @)
     @collection.on('remove', @removeLink, @)
@@ -22,6 +23,10 @@ class window.beats.LinkListView extends Backbone.Collection
     @views.push(mlv)
     mlv
   
+  #this method clears the collection upon a clear map
+  clear: ->
+    $a.linkListView = {}
+    
   # when a link is added to the link collection or a node moved, this function 
   # is called to set up the geometry on the map via the routeHandler. 
   # We force a new route to be drawn by setting the shape to null from here 

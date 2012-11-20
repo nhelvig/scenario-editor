@@ -113,9 +113,10 @@ class window.beats.AppView extends Backbone.View
     new $a.MapNetworkView $a.models
 
   clearMap: ->
+    $a.models = {}
     $a.broker.trigger('map:toggle_tree', false)
     $a.broker.trigger('app:tree_clear')
-    $a.broker.trigger('app:show_message:success', 'Cleared map')
+    #$a.broker.trigger('app:show_message:success', 'Cleared map')
 
   _messagePanel: ->
     @mpv = new $a.MessagePanelView()

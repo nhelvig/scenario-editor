@@ -7,6 +7,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # register the links begin and end nodes with the remove method on the model
   # node
   initialize: (@models)->
+    $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     @forEach((link) =>  @_setUpEvents(link))
     $a.broker.on('links_collection:add', @addLink, @)
@@ -42,6 +43,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
   removeLink: (linkID) ->
     link = _.filter(@models, (link) -> link.cid is linkID)
     @remove(link)
+  
+  #this method clears the collection upon a clear map
+  clear: ->
+    $a.linkList = {}
   
   # This is called when a link browser is created in order to return
   # the desired column data for the table.

@@ -8,6 +8,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   initialize:(@models) ->
     @clearSelected()
     @forEach((node) => @_setUpEvents(node))
+    $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('nodes:add', @addNode, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
@@ -104,3 +105,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # This method sets up the events each node should listen too
   _setUpEvents: (node) ->
     node.bind('remove', => @destroy)
+    
+  #this method clears the collection upon a clear map
+  clear: ->
+    $a.nodeList = {}

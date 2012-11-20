@@ -1,5 +1,5 @@
 all:
-	make -C app/ -f Makefile all
+	make -C lib/ -f Makefile all
 
 test:
 	make all
