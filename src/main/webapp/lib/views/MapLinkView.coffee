@@ -134,7 +134,6 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.off("map:select_network:#{@network.cid}")
     $a.broker.off("map:clear_network:#{@network.cid}")
     $a.broker.off("map:open_editor:#{@model.cid}")
-    $a.broker.off("map:clear_map")
     $a.broker.off("link:view_demands:#{@model.cid}")
     @hideLink() if @link
     @link = null

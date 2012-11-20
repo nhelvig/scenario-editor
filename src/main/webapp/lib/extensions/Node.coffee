@@ -12,7 +12,7 @@ window.beats.Node::output_indexes = (other_node) ->
       [link, idx] if link.get('end').get('node') == other_node
   )
 
-window.beats.Node::get_road_names = ->
+window.beats.Node::road_names = ->
   _.map(@get('roadway_markers')?.get('marker'), 
     (marker) -> 
       marker?.get('name')

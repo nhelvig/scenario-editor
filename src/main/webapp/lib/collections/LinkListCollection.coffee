@@ -7,13 +7,15 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # register the links begin and end nodes with the remove method on the model
   # node
   initialize: (@models)->
+    $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on("map:redraw_link", @reDrawLink, @)
-    @forEach((link) =>  @_setUpEvents(link))
     $a.broker.on('links_collection:add', @addLink, @)
     @on('links:remove', @removeLink, @)
+    @forEach((link) =>  @_setUpEvents(link))
   
   # addLink takes the begin node and end node ids, sets up the appropriate
-  # begin and end node objects, creates the link and adds it to the collection
+  # begin and end node objects, creates the link, adds it to the collection
+  # and adds it to the schema
   addLink: (args) ->
     link = new window.beats.Link()
     begin = new window.beats.Begin()
@@ -27,13 +29,14 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.set('begin', begin)
     link.set('end', end)
     @add(link)
+    $a.models.links().push(link)
     @_setUpEvents(link)
     link
   
   # This removes either the begin or end node from the link if the node
   # itself has been removed from the node collection
   removeNode: (link, type) ->
-    link.set(type, null)
+    link.get(type).set('node', null)
   
   # removeLink removes the link from the collection and takes it off the 
   # map.
@@ -41,17 +44,25 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link = _.filter(@models, (link) -> link.cid is linkID)
     @remove(link)
   
+  # this method clears the collection upon a clear map as well shuts off the 
+  # events it is listening too.
+  clear: ->
+    $a.linkList = {}
+    $a.broker.off('map:redraw_link')
+    $a.broker.off('links_collection:add')
+    @off('links:remove')
+  
   # This is called when a link browser is created in order to return
   # the desired column data for the table.
   getBrowserColumnData: () ->
     @models.map((link) ->
                   [
                     link.get('id'),
-                    link.get_road_names(),
+                    link.road_names(),
                     link.get('type'),
                     link.get('lanes'),
-                    link.get('begin').get('node').get_road_names(),
-                    link.get('end').get('node').get_road_names()
+                    link.get('begin').get('node').road_names(),
+                    link.get('end').get('node').road_names()
                   ]
                 )
   

@@ -3,11 +3,14 @@ describe("LinkListCollection", function() {
   var models, network, begin, end;
   
   beforeEach(function() {
-    network = $a.scenario.get('networklist').get('network')[0];
+    network = $a.models.get('networklist').get('network')[0];
     models = network.get('linklist').get('link');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'removeNode').andCallThrough();
     
     this.lColl= new $a.LinkListCollection(models);
     begin = models[0].begin_node();
@@ -32,6 +35,13 @@ describe("LinkListCollection", function() {
       $a.broker.trigger("map:redraw_link", begin.get('node'));
       expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();
     });
+    it("should be watching clear", function() {
+      $a.broker.trigger("map:clear_map");
+      expect($a.LinkListCollection.prototype.clear).toHaveBeenCalled();
+    });
+    it("should call _setUpEvents", function() {
+      expect($a.LinkListCollection.prototype._setUpEvents).toHaveBeenCalled();
+    });
   });
     
   describe("getBrowserColumnData", function() {
@@ -41,13 +51,13 @@ describe("LinkListCollection", function() {
        arrColumnsData = this.lColl.getBrowserColumnData();
        lColl = this.lColl.models[0];
        expect(arrColumnsData[0][0]).toEqual(lColl.get('id'));
-       expect(arrColumnsData[0][1]).toEqual(lColl.get_road_names());
+       expect(arrColumnsData[0][1]).toEqual(lColl.road_names());
        expect(arrColumnsData[0][2]).toEqual(lColl.get('type'));
        expect(arrColumnsData[0][3]).toEqual(lColl.get('lanes'));
        nodeB = lColl.get('begin').get('node');
        nodeE = lColl.get('end').get('node');
-       expect(arrColumnsData[0][4]).toEqual(nodeB.get_road_names());
-       expect(arrColumnsData[0][5]).toEqual(nodeE.get_road_names());
+       expect(arrColumnsData[0][4]).toEqual(nodeB.road_names());
+       expect(arrColumnsData[0][5]).toEqual(nodeE.road_names());
      });
    });
   
@@ -65,20 +75,51 @@ describe("LinkListCollection", function() {
       this.lColl.addLink({begin:begin,end:end});
       expect(lengthBefore + 1).toEqual(this.lColl.length);
     });
+    it("should create a new link and add it to the schema", function() {
+      var lengthBefore = $a.models.links().length;
+      this.lColl.addLink({begin:begin,end:end});
+      expect(lengthBefore + 1).toEqual($a.models.links().length);
+    })
   });
   
   describe("removeNode ", function() {
     it("should remove the begin or end node from link", function() {
-      this.lColl.removeNode(this.lColl.models[0],'End');
-      expect(this.lColl.models[0].get('End')).toBeNull();
+      this.lColl.removeNode(this.lColl.models[0],'end');
+      expect(this.lColl.models[0].get('end').get('node')).toBeNull();
+      models[0].get('end').set('node', end)
     });
   });
   
   describe("reDrawLink ", function() {
     it("should find links connected to the node and redraw them", function() {
-      links = this.lColl.reDrawLink(begin.get('node'));
+      links = this.lColl.reDrawLink(begin);
       expect(links.length > 0).toBeTruthy();
     });
   });
+  
+  describe("clear ", function() {
+    beforeEach(function() {
+      this.lColl.clear();
+    });
+    it("should de-reference $a.linkList", function() {
+      expect($a.linkList).toEqual({});
+    });
+    it("should stop listening to map:redraw_link", function() {
+      $a.broker.trigger('map:redraw_link')    
+      expect($a.LinkListCollection.prototype.reDrawLink).not.toHaveBeenCalled();
+    }); 
+    it("should stop listening to links_collection:add", function() {
+      $a.broker.trigger('links_collection:add')    
+      expect($a.LinkListCollection.prototype.addLink).not.toHaveBeenCalled();
+    });
+    it("should stop listening to links:remove", function() {
+      this.lColl.trigger('links:remove')
+      expect($a.LinkListCollection.prototype.removeLink).not.toHaveBeenCalled();
+    });
+    it("should stop listening to map:clear_map", function() {
+      $a.LinkListCollection.prototype.clear.reset()
+      $a.broker.trigger('map:clear_map')
+      expect($a.LinkListCollection.prototype.clear).not.toHaveBeenCalled();
+    });
+  });
 });
-

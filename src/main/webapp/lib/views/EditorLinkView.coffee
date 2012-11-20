@@ -84,7 +84,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
                   fdp = m.get('fundamentaldiagramprofile')
                   fdp?.get('fundamentaldiagram')[0] || null
           )
-    name: _.map(models, (m) -> m.get_road_names()).join(", ")
+    name: _.map(models, (m) -> m.road_names()).join(", ")
     insync: if models[0].has('in_sync') and models[0].get('in_sync') then 'checked' else ''
     lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
     laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  

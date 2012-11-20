@@ -8,6 +8,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   initialize:(@models) ->
     @clearSelected()
     @forEach((node) => @_setUpEvents(node))
+    $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('nodes:add', @addNode, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
@@ -17,7 +18,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
     @models.map((node) -> 
-                  [node.get('id'),node.get_road_names(),node.get('type')]
+                  [node.get('id'),node.road_names(),node.get('type')]
                   )
   
   # this function sets all the nodes passed in selected field to true. It is
@@ -41,7 +42,8 @@ class window.beats.NodeListCollection extends Backbone.Collection
     @remove(node)
   
   # addNode creates a node of the type and at the position passed in and adds
-  # to the collection. It is called from the context menu's add node event
+  # it to the collection as well as to the models schema. 
+  # It is called from the context menu's add node event
   addNode: (position, type) ->
     n = new $a.Node()
     p = new $a.Position()
@@ -58,10 +60,10 @@ class window.beats.NodeListCollection extends Backbone.Collection
     n.set('position', p)
     n.set('type', type || 'simple')
     @add(n)
-    #$a.models.get('networklist').get('network')[0].get('nodelist').get('node').push(n)
+    $a.models.nodes().push(n)
     @_setUpEvents(n)
     n
-    
+  
   # addLink is called from the conttext menus add Link item when there is
   # one other node selected. It adds a node at the position where the event
   # occurred, finds the other selected node, and then creates the link
@@ -103,3 +105,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # This method sets up the events each node should listen too
   _setUpEvents: (node) ->
     node.bind('remove', => @destroy)
+    
+  #this method clears the collection upon a clear map
+  clear: ->
+    $a.nodeList = {}

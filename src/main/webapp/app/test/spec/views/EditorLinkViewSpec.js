@@ -118,7 +118,7 @@ describe("EditorLinkView", function() {
   
   beforeEach(function() {
     loadFixtures('editor.link.view.fixture.html');
-    network = $a.scenario.get('networklist').get('network')[0];
+    network = $a.models.get('networklist').get('network')[0];
     model = _.find(network.get('linklist').get('link'), function(m) { return m.get('demand') != undefined; });
     spyOn($a.EditorLinkView.prototype, 'doSplit').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'subDivide').andCallThrough();
@@ -161,7 +161,7 @@ describe("EditorLinkView", function() {
       });
   
       it("should should have title", function() {
-        val = "Link Editor: " + this.view.models[0].get_road_names();
+        val = "Link Editor: " + this.view.models[0].road_names();
         expect(this.view.el.title).toEqual(val);
       });
   

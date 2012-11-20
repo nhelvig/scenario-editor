@@ -6,6 +6,8 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # when initialized go through the models and set selected to false
   initialize:(@models) ->
     @models.forEach((sensor) -> sensor.set('selected', false))
+    $a.broker.on("map:clear_map", @clear, @)
+
   
   # the sensor browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
@@ -24,3 +26,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
     _.each(sensors, (sensor) ->
       sensor.set('selected', true) if !sensor.get('selected')
     )
+  
+  #this method clears the collection upon a clear map
+  clear: ->
+    $a.sensorList = {}

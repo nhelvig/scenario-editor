@@ -21,11 +21,11 @@ class window.beats.GoogleMapRouteHandler
         @_directionsRequest(link)
         if(indexOfLink % 10 == 0)
           $a.broker.trigger('app:show_message:info', "Loading ... #{indexOfLink} more" )
+        else if(indexOfLink == 0)
+          $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
       else
         $a.broker.trigger('map:draw_link', link)
         @_requestLinks(indexOfLink - 1)
-    else
-      $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
   
   # grab the Google route for one link -- happens on add link and move node
   # events

@@ -4,7 +4,7 @@ describe("NodeListCollection", function() {
   var network;
   
   beforeEach(function() {
-    network = $a.scenario.get('networklist').get('network')[0];
+    network = $a.models.get('networklist').get('network')[0];
     models = network.get('nodelist').get('node');
     spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'addLink').andCallThrough();
@@ -52,7 +52,7 @@ describe("NodeListCollection", function() {
     it("should return id, name, type for editor browser table", function() {
       arrColumnsData = this.nCollect.getBrowserColumnData();
       expect(arrColumnsData[0][0]).toEqual(this.nCollect.models[0].get('id'));
-      expect(arrColumnsData[0][1]).toEqual(this.nCollect.models[0].get_road_names());
+      expect(arrColumnsData[0][1]).toEqual(this.nCollect.models[0].road_names());
       expect(arrColumnsData[0][2]).toEqual(this.nCollect.models[0].get('type'));
     });
   });
@@ -80,6 +80,11 @@ describe("NodeListCollection", function() {
       var lengthBefore = this.nCollect.length;
       this.nCollect.addNode(new google.maps.LatLng(37,-122));
       expect(lengthBefore + 1).toEqual(this.nCollect.length);
+    });
+    it("should create a new node and add it to the models schema", function() {
+      var lengthBefore = $a.models.nodes().length;
+      this.nCollect.addNode(new google.maps.LatLng(37,-122));
+      expect(lengthBefore + 1).toEqual($a.models.nodes().length);
     });
   });
 

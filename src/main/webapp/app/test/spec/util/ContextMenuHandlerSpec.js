@@ -50,13 +50,11 @@ describe("ContextMenuHandler", function() {
        expect(this.items.length).toEqual(expectedLength);
      });
      it("Models but no node selected: return menu with just standard including add node", function(){
-       $a.models = $a.scenario;
        this.items = this.cmh._populateMenu({items:$a.main_context_menu});
        var expectedLength = $a.main_context_menu.length;
        expect(this.items.length).toEqual(expectedLength);
      });
      it("Models node selected: return menu with standard and node selected actions", function(){
-       $a.models = $a.scenario;
        list = $a.models.get('networklist').get('network')[0].get('nodelist');
        
        $a.nodeList = new $a.NodeListCollection(list.get('node'));

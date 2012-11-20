@@ -3,7 +3,7 @@ describe("EditorNodeView", function() {
   
   beforeEach(function() {
     loadFixtures('editor.node.view.fixture.html');
-    network = $a.scenario.get('networklist').get('network')[0];
+    network = $a.models.get('networklist').get('network')[0];
     model = network.get('nodelist').get('node')[0];
     spyOn($a.EditorNodeView.prototype, 'signalEditor').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'chooseName').andCallThrough();
@@ -32,7 +32,7 @@ describe("EditorNodeView", function() {
     });
   
     it("should should have title", function() {
-      title = "Node Editor: " + this.view.models[0].get_road_names();
+      title = "Node Editor: " + this.view.models[0].road_names();
       expect(this.view.el.title).toEqual(title);
     });
     

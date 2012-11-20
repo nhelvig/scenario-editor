@@ -6,6 +6,7 @@ class window.beats.NodeListView extends Backbone.Collection
   # render all the nodes upon map:init and set up the add event
   # for the collection
   initialize: (@collection, @network) ->
+    $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:init', @render, @)
     @collection.on('add', @addNodeView, @)
     @collection.on('remove', @removeNode, @)
@@ -17,6 +18,10 @@ class window.beats.NodeListView extends Backbone.Collection
     mnv.render()
     @views.push(mnv)
     mnv
+  
+  #this method clears the collection upon a clear map
+  clear: ->
+    $a.linkListView = {}
   
   # renders all the nodes in the collection by calling addNodeView
   render: ->
