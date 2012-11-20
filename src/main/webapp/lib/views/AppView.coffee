@@ -22,6 +22,7 @@ class window.beats.AppView extends Backbone.View
     @_contextMenu()
     @_layersMenu()
     @_messagePanel()
+    @newScenario()
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
@@ -105,6 +106,7 @@ class window.beats.AppView extends Backbone.View
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView
   _displayMap: (fileText) ->
+    $a.broker.trigger("map:clear_map")
     try
       xml = $.parseXML(fileText)
     catch error

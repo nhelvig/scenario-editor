@@ -4,8 +4,7 @@ describe("MapLinkView", function() {
   
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
-    network = $a.models
-.get('networklist').get('network')[0];
+    network = $a.models.get('networklist').get('network')[0];
     model = network.get('linklist').get('link')[0];
 
     expectedEncodedPath = "}r}eF`bmiVuGn@c@DwIhAiBT";

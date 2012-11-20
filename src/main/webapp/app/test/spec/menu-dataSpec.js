@@ -4,8 +4,7 @@ describe("menu-data", function() {
   beforeEach(function() {
     spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     
-    network = $a.models
-.get('networklist').get('network')[0];
+    network = $a.models.get('networklist').get('network')[0];
     models = network.get('nodelist').get('node');
     $a.nodeList = new $a.NodeListCollection(models);
     loadFixtures('main.canvas.view.fixture.html');

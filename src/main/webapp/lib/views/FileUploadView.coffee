@@ -21,8 +21,6 @@ class window.beats.FileUploadView extends Backbone.View
   # the xml file, parse it into objects, assign it to window.textarea_scenario,
   # and trigger an event indicating the upload is complete
   handleFiles : ->
-    $a.broker.trigger('map:clear_map')
-    $a.broker.trigger('map:toggle_tree', true)
     reader = new FileReader()
     reader.onloadend = (e) ->
       fileText = e.target.result

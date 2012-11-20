@@ -4,8 +4,7 @@ describe("GoogleMapRouteHandler", function() {
   $a = window.beats;
   
   beforeEach(function() {
-    linklist = $a.models
-.get('networklist').get('network')[0].get('linklist');
+    linklist = $a.models.get('networklist').get('network')[0].get('linklist');
     links = linklist.get('link');
     gmr = $a.GoogleMapRouteHandler
     spyOn(gmr.prototype, '_directionsRequest').andCallThrough();
