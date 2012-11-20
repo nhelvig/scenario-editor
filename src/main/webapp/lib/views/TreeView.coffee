@@ -5,75 +5,14 @@ class window.beats.TreeView extends Backbone.View
   tagName: 'ol'
   id: 'tree'
 
-  # The args contains the scenario models as well as what parent div it
+  # The args contains the @scenario models as well as what parent div it
   # should attach the tree too.
   initialize: (args) ->
-    scenario = args.scenario
+    @scenario = args.scenario
     @parent = args.attach
-    @_createParentNodes $a.main_tree_elements
-    @_createNetworkChildren({
-      parentList: scenario.get('networklist')
-      modelListName: 'network'
-      attachId: 'network-list'
-      nameList: null
-    })
-    @_createChildren({
-      parentList: scenario.get('networkconnections')
-      modelListName: 'network'
-      attachId:  'network-connections'
-      nameList: null
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('initialdensityset')
-      modelListName: 'density'
-      attachId: 'initial-density-profiles'
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('controllerset')
-      modelListName: 'controller'
-      attachId: 'controllers'
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('demandprofileset')
-      modelListName: 'demandprofile'
-      attachId: 'demand-profiles'
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('eventset')
-      modelListName: 'event'
-      attachId: 'events'
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('fundamentaldiagramprofileset')
-      modelListName: 'fundamentaldiagramprofile'
-      attachId: 'fundamental-diagram-profiles'
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('oddemandprofileset')
-      modelListName: 'oddemandprofile'
-      attachId: 'od-demand-profiles'
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('downstreamboundarycapacityprofileset')
-      modelListName: 'downstreamboundarycapacityprofile'
-      attachId: 'downstream-boundary-profiles'
-    })
-    @_createNodeChildren({
-      parentList: scenario.get('splitratioprofileset')
-      modelListName: 'splitratioprofile'
-      attachId: 'split-ratio-profiles'
-    })
-    @_createLinkChildren({
-      parentList: scenario.get('sensorlist')
-      modelListName: 'sensor'
-      attachId: 'sensors'
-    })
-    @_createNodeChildren({
-      parentList: scenario.get('signallist')
-      modelListName: 'signal'
-      attachId: 'signals'
-    })
-    
+    @_setUpTreeData()
+    @_createTree()
+    $a.broker.on("map:clear_map", @clearMap, @)
     $a.broker.on("map:toggle_tree", @toggleTree, @)
     $a.broker.on('app:main_tree', @render, @)
 
@@ -84,11 +23,35 @@ class window.beats.TreeView extends Backbone.View
     @_setUpToggleAndExpand()
     $a.broker.trigger('app:parent_tree')
     $a.broker.trigger('app:child_trees')
-    $a.broker.trigger('map:toggle_tree')
+    @toggleTree(true)
     @
+    
+  # This removed the unpublishes the object from the events
+  clearMap: () ->
+    $('#toggle-tree-button-template').remove()
+    @$el.remove()
+    $a.broker.off("map:toggle_tree")
+    $a.broker.off('app:main_tree')
+    $('#collapseTree').off('click')
+    $('#expand-all').off('click')
+  
+  # This sets up the parent and children nodes
+  _createTree: () ->
+    @_createParentNodes $a.main_tree_elements
+    @_createNetworkChildren(@parentNodes[0])
+    @_createChildren(@parentNodes[1])
+    @_createLinkChildren(@parentNodes[2])
+    @_createLinkChildren(@parentNodes[3])
+    @_createLinkChildren(@parentNodes[4])
+    @_createLinkChildren(@parentNodes[5])
+    @_createLinkChildren(@parentNodes[6])
+    @_createLinkChildren(@parentNodes[7])
+    @_createLinkChildren(@parentNodes[8])
+    @_createNodeChildren(@parentNodes[9])
+    @_createLinkChildren(@parentNodes[10])
+    @_createNodeChildren(@parentNodes[11])
 
   _setUpToggleAndExpand: () ->
-    @treeOpen = false
     $("#map_canvas").append $('#toggle-tree-button-template').html()
     
     $('#collapseTree').click( ->
@@ -191,16 +154,86 @@ class window.beats.TreeView extends Backbone.View
         [element.get('link')]
   
   toggleTree: (display) =>
+    # colled from collapse button rather then open/close scenario
+    if !display?
+      display = not @treeOpen
+      
     button = $('#collapseTree')[0]
-    if @treeOpen
-      @treeOpen = false
-      button.innerHTML = ' < '
-      $('#right_tree').hide(200)
-      align = right: '0%'
-      $('#collapseTree').animate(align, 200)
-    else
+    if display
       @treeOpen = true
       button.innerHTML = ' > '
       $('#right_tree').show(200)
       align = right: '22%'
       $('#collapseTree').animate(align, 200)
+    else
+      @treeOpen = false
+      button.innerHTML = ' < '
+      $('#right_tree').hide(200)
+      align = right: '0%'
+      $('#collapseTree').animate(align, 200)
+  
+  _setUpTreeData: ->   
+    @parentNodes = [
+        {
+          parentList: @scenario.get('networklist')
+          modelListName: 'network'
+          attachId: 'network-list'
+          nameList: null
+        },
+        {
+          parentList: @scenario.get('networkconnections')
+          modelListName: 'network'
+          attachId:  'network-connections'
+          nameList: null
+        },
+        {
+          parentList: @scenario.get('initialdensityset')
+          modelListName: 'density'
+          attachId: 'initial-density-profiles'
+        },
+        {
+          parentList: @scenario.get('controllerset')
+          modelListName: 'controller'
+          attachId: 'controllers'
+        },
+        {
+          parentList: @scenario.get('demandprofileset')
+          modelListName: 'demandprofile'
+          attachId: 'demand-profiles'
+        },
+        {
+          parentList: @scenario.get('eventset')
+          modelListName: 'event'
+          attachId: 'events'
+        },
+        {
+          parentList: @scenario.get('fundamentaldiagramprofileset')
+          modelListName: 'fundamentaldiagramprofile'
+          attachId: 'fundamental-diagram-profiles'
+        },
+        {
+          parentList: @scenario.get('oddemandprofileset')
+          modelListName: 'oddemandprofile'
+          attachId: 'od-demand-profiles'
+        },
+        {
+          parentList: @scenario.get('downstreamboundarycapacityprofileset')
+          modelListName: 'downstreamboundarycapacityprofile'
+          attachId: 'downstream-boundary-profiles'
+        },
+        {
+          parentList: @scenario.get('splitratioprofileset')
+          modelListName: 'splitratioprofile'
+          attachId: 'split-ratio-profiles'
+        },
+        {
+          parentList: @scenario.get('sensorlist')
+          modelListName: 'sensor'
+          attachId: 'sensors'
+        },
+        {
+          parentList: @scenario.get('signallist')
+          modelListName: 'signal'
+          attachId: 'signals'
+        }
+      ]

@@ -48,7 +48,6 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # events it is listening too.
   clear: ->
     $a.linkList = {}
-    $a.broker.off('map:clear_map')
     $a.broker.off('map:redraw_link')
     $a.broker.off('links_collection:add')
     @off('links:remove')
