@@ -69,10 +69,7 @@ $a.node_selected = [
 # Link Context Menu
 $a.link_context_menu = [
   context_menu_item 'Edit this link',
-                    ((e) -> 
-                      console.log("map:open_editor:#{e.currentTarget.id}");
-                      $a.broker.trigger("map:open_editor:#{e.currentTarget.id}")
-                    )
+                    ((e) -> $a.broker.trigger("map:open_editor:#{e.currentTarget.id}"))
   context_menu_item  'Select Link and its Nodes',
                       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Remove this link',
