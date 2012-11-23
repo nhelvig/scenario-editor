@@ -2,13 +2,11 @@ describe("menu-data", function() {
   $a = window.beats;
   
   beforeEach(function() {
+    googleMap();
     spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     
-    network = $a.models.get('networklist').get('network')[0];
-    models = network.get('nodelist').get('node');
+    models = $a.models.nodes();
     $a.nodeList = new $a.NodeListCollection(models);
-    loadFixtures('main.canvas.view.fixture.html');
-    new $a.AppView().render();
     
     $a.contextMenu = new $a.ContextMenuView({});
     $a.contextMenu.position = new google.maps.LatLng(37,-122);

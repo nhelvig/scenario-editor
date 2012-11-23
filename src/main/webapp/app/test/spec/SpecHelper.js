@@ -48,6 +48,15 @@ beforeEach(function() {
     window.beats.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
   }
   
+  modelSetUp = function() {
+    $a.models = $a.Scenario.from_xml($(xml).children());
+    network = $a.models.network();
+    $a.nodeList = new $a.NodeListCollection($a.models.nodes())
+    $a.nodeListView = new $a.NodeListView($a.nodeList, network)
+    $a.linkList = new $a.LinkListCollection($a.models.links())
+    $a.linkListView = new $a.LinkListView($a.linkList, network)
+  }
+  
   simpleLink = function(node1, node2) {
     var begin = new window.beats.Begin({node: node1});
     var end = new window.beats.End({node: node2});

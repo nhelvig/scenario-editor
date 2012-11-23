@@ -1,5 +1,6 @@
 describe("AppView", function() {
   $a = window.beats;
+  var msg = "";
 
   beforeEach(function() {
     loadFixtures('main.canvas.view.fixture.html');
@@ -19,23 +20,18 @@ describe("AppView", function() {
   describe("Rendering", function() {
     beforeEach(function() {
       this.view.render();
+      msg = "should instantiate the google map, File Upload View, Nav Bar, "
+      msg += "Context Menu, Layers Menu, and Message Panel"
     });
-    it("should instantiate the google map", function() {
+    afterEach(function(){
+      modelSetUp()
+    });
+    it(msg, function() {
       expect($a.map).not.toBeNull();
-    });
-    it("should instantiate a File Upload View", function() {
       expect(this.view.fuv).not.toBeNull();
-    });
-    it("should instantiate a Nav Bar", function() {
       expect(this.view.nbv).not.toBeNull();
-    });
-    it("should instantiate a Context Menu", function() {
       expect($a.contextMenu).not.toBeNull();
-    });
-    it("should instantiate a Layers Menu", function() {
       expect(this.view.lmenu).not.toBeNull();
-    });
-    it("should instantiate a Message Panel", function() {
       expect(this.view.mpv).not.toBeNull();
     });
   });

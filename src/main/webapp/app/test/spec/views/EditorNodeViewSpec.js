@@ -3,8 +3,7 @@ describe("EditorNodeView", function() {
   
   beforeEach(function() {
     loadFixtures('editor.node.view.fixture.html');
-    network = $a.models.get('networklist').get('network')[0];
-    model = network.get('nodelist').get('node')[0];
+    model = $a.models.nodes()[0];
     spyOn($a.EditorNodeView.prototype, 'signalEditor').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'chooseName').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'removeJoinLinks').andCallThrough();

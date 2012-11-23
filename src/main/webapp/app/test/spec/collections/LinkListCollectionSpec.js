@@ -116,10 +116,5 @@ describe("LinkListCollection", function() {
       this.lColl.trigger('links:remove')
       expect($a.LinkListCollection.prototype.removeLink).not.toHaveBeenCalled();
     });
-    it("should stop listening to map:clear_map", function() {
-      $a.LinkListCollection.prototype.clear.reset()
-      $a.broker.trigger('map:clear_map')
-      expect($a.LinkListCollection.prototype.clear).not.toHaveBeenCalled();
-    });
   });
 });

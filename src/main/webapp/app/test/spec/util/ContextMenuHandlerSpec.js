@@ -2,6 +2,7 @@ describe("ContextMenuHandler", function() {
   $a = window.beats;
   
   beforeEach(function() {
+      googleMap();
       loadFixtures("context.menu.view.fixture.html");
       spyOn($a.ContextMenuView.prototype, 'show').andCallThrough();
       this.cmh = new $a.ContextMenuHandler({  
@@ -55,9 +56,9 @@ describe("ContextMenuHandler", function() {
        expect(this.items.length).toEqual(expectedLength);
      });
      it("Models node selected: return menu with standard and node selected actions", function(){
-       list = $a.models.get('networklist').get('network')[0].get('nodelist');
+       list = $a.models.nodes();
        
-       $a.nodeList = new $a.NodeListCollection(list.get('node'));
+       $a.nodeList = new $a.NodeListCollection(list);
        $a.nodeList.models[0].set('selected',true);
        this.items = this.cmh._populateMenu({items:$a.main_context_menu});
        var expectedLength = $a.main_context_menu.length + $a.node_selected.length
