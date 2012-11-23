@@ -69,6 +69,9 @@ beforeEach(function() {
     road2.set('name','name2');
     link.set('roads', new window.beats.Roads());
     link.get('roads').set('road', [road,road2]);
+    var shape = new window.beats.Shape();
+    shape.set('text', '');  
+    link.set('shape', shape);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
@@ -112,6 +115,7 @@ beforeEach(function() {
     linkList = new window.beats.LinkList({link: [link1, link2, link3]});
     nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
     network = new window.beats.Network({id: 1});
+    
     // These must be called after initialize, initialize clears lists
     network.set('nodelist', nodeList);
     network.set('linklist', linkList);

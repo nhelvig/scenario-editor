@@ -69,11 +69,22 @@ $a.node_selected = [
 # Link Context Menu
 $a.link_context_menu = [
   context_menu_item 'Edit this link',
-                    ((e) -> $a.broker.trigger("map:open_editor:#{e.currentTarget.id}"))
+                    ((e) -> 
+                      console.log("map:open_editor:#{e.currentTarget.id}");
+                      $a.broker.trigger("map:open_editor:#{e.currentTarget.id}")
+                    )
   context_menu_item  'Select Link and its Nodes',
                       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Remove this link',
                     ((e) -> $a.linkList.trigger("links:remove", e.currentTarget.id))
+  {className:'context_menu_separator'}
+  context_menu_item 'Add sensor to this link',
+                    ((e) -> $a.linkList.trigger("links:add_sensor", e.currentTarget.id))
+  context_menu_item 'Add controller to this link',
+                    ((e) -> $a.linkList.trigger("links:add_controller", e.currentTarget.id))
+  context_menu_item 'Add event to this link',
+                    ((e) -> $a.linkList.trigger("links:add_event", e.currentTarget.id))
+  {className:'context_menu_separator'}
   context_menu_item  'Clear Selection',
                       ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]
