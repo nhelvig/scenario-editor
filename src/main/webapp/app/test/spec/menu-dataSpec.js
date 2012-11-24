@@ -29,7 +29,11 @@ describe("menu-data", function() {
       expect(Math.floor($a.map.center.lat())).toEqual(pos.lat());
     });
   });
-  
+  describe("Main Context Menu Events", function() {
+    it("should contain 9 items", function() {
+      expect($a.main_context_menu.length).toEqual(9);
+    });
+  });
   describe("Link Context Menu Events", function() {
     it("should contain 9 items", function() {
       expect($a.link_context_menu.length).toEqual(9);

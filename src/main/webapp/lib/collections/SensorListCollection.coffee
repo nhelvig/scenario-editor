@@ -7,6 +7,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   initialize:(@models) ->
     @models.forEach((sensor) -> sensor.set('selected', false))
     $a.broker.on("map:clear_map", @clear, @)
+    $a.broker.on('sensors:add', @addSensor, @)
 
   
   # the sensor browser calls this to gets the column data for the table
