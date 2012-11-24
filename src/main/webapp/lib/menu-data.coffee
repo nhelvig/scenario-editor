@@ -55,11 +55,11 @@ $a.main_context_menu = [
   {className:'context_menu_separator'}
   context_menu_item 'Add Node here', 
                     ( -> $a.broker.trigger("nodes:add", $a.contextMenu.position))
-  context_menu_item 'Add sensor here',
+  context_menu_item 'Add Sensor here',
                     ((e) -> $a.linkList.trigger("sensors:add", e.currentTarget.id))
-  context_menu_item 'Add controller here',
+  context_menu_item 'Add Controller here',
                     ((e) -> $a.linkList.trigger("controllers:add", e.currentTarget.id))
-  context_menu_item 'Add event here',
+  context_menu_item 'Add Event here',
                     ((e) -> $a.linkList.trigger("events:add", e.currentTarget.id))
 ]
 

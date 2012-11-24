@@ -3,7 +3,8 @@ describe("SensorListCollection", function() {
   var models, network, begin, end;
   
   beforeEach(function() {
-    models = $a.models.get('sensorlist').get('sensor');
+    spyOn($a.SensorListCollection.prototype, 'addSensor').andCallThrough();
+    models = $a.models.sensors();
     this.sColl= new $a.SensorListCollection(models);
   });
   
@@ -12,10 +13,14 @@ describe("SensorListCollection", function() {
       expect(this.sColl.models).not.toBeNull();
     });
     
-   it("sets all its models selected attribute to false", function() {
+    it("sets all its models selected attribute to false", function() {
       mod = this.sColl.models;
       arrSel = mod.filter(function(sens){ return sens.get('selected') == false});
       expect(arrSel.length).toEqual(this.sColl.length);
+    });
+    it("should be watching addSensor", function() {
+      $a.broker.trigger("sensors:add", new google.maps.LatLng(37,-122));
+      expect($a.SensorListCollection.prototype.addSensor).toHaveBeenCalled();
     });
   });
   

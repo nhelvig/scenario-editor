@@ -5,7 +5,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   
   # when initialized go through the models and set selected to false
   initialize:(@models) ->
-    @models.forEach((sensor) -> @_setUpEvents(sensor))
+    @models.forEach((sensor) => @_setUpEvents(sensor))
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('sensors:add', @addSensor, @)
 
@@ -17,7 +17,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
               sensor.get('id'), 
               sensor.get('type'), 
               sensor.get('link_type'),
-              sensor.get('link_reference').get('id'),
+              sensor.get('link_reference')?.get('id') || ''
             ]
     )
   
