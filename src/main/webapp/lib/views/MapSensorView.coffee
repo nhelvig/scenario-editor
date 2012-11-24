@@ -47,7 +47,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
     if iconName == "#{MapSensorView.ICON}.png"
       @_triggerClearSelectEvents()
-      $a.broker.trigger("app:tree_highlight:#{@model.get('link').cid}")
+      $a.broker.trigger("app:tree_highlight:#{@model.get('link')?.cid}") if @model.get('link')?
       @makeSelected()
     else
       @_triggerClearSelectEvents()

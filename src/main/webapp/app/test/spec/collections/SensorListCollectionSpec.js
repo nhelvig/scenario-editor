@@ -19,7 +19,7 @@ describe("SensorListCollection", function() {
       expect(arrSel.length).toEqual(this.sColl.length);
     });
     it("should be watching addSensor", function() {
-      $a.broker.trigger("sensors:add", new google.maps.LatLng(37,-122));
+      this.sColl.trigger("sensors:add", new google.maps.LatLng(37,-122));
       expect($a.SensorListCollection.prototype.addSensor).toHaveBeenCalled();
     });
   });
@@ -29,11 +29,11 @@ describe("SensorListCollection", function() {
      desc += "editor browser table";
      it(desc, function() {
        arrColumnsData = this.sColl.getBrowserColumnData();
-       sColl = this.sColl.models[0];
-       expect(arrColumnsData[0][0]).toEqual(sColl.get('id'));
-       expect(arrColumnsData[0][1]).toEqual(sColl.get('type'));
-       expect(arrColumnsData[0][2]).toEqual(sColl.get('link_type'));
-       expect(arrColumnsData[0][3]).toEqual(sColl.get('link_reference').get('id'));
+       s = this.sColl.models[0];
+       expect(arrColumnsData[0][0]).toEqual(s.get('id'));
+       expect(arrColumnsData[0][1]).toEqual(s.get('type'));
+       expect(arrColumnsData[0][2]).toEqual(s.get('link_type'));
+       expect(arrColumnsData[0][3]).toEqual(s.get('link_reference').get('id'));
      });
    });
 

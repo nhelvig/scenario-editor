@@ -56,11 +56,11 @@ $a.main_context_menu = [
   context_menu_item 'Add Node here', 
                     ( -> $a.broker.trigger("nodes:add", $a.contextMenu.position))
   context_menu_item 'Add Sensor here',
-                    ((e) -> $a.linkList.trigger("sensors:add", e.currentTarget.id))
+                    ((e) -> $a.sensorList.trigger("sensors:add", $a.contextMenu.position))
   context_menu_item 'Add Controller here',
-                    ((e) -> $a.linkList.trigger("controllers:add", e.currentTarget.id))
+                    ((e) -> $a.broker.trigger("controllers:add", $a.contextMenu.position))
   context_menu_item 'Add Event here',
-                    ((e) -> $a.linkList.trigger("events:add", e.currentTarget.id))
+                    ((e) -> $a.broker.trigger("events:add", $a.contextMenu.position))
 ]
 
 $a.node_selected = [

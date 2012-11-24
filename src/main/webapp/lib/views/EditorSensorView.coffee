@@ -37,19 +37,19 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
     type = @models[0].get('type')
-    lType = @models[0].get('link').get('type')
+    lType = @models[0].link()?.get('type')
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
   # set up a hash of values from the model and inserted into the html template
   _getTemplateData: (models) ->
     { 
-      lat: $a.Util.getGeometry({models:models, geom:'lat'})
-      lng: $a.Util.getGeometry({models:models, geom:'lng'})
-      elev: $a.Util.getGeometry({models:models, geom:'elevation'})
+      lat: models[0].display_lat();
+      lng: models[0].display_lng();
+      elev: models[0].display_elev();
       url: ''
       url_desc: URL_DESC
-      links: _.map(models, (m) -> m.get('link_reference').get('id')).join('; ')
+      links: _.map(models, (m) -> m.get('link_reference').get('id') if m.link()?).join('; ')
     }
   
 
@@ -71,7 +71,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   saveGeo: (e) ->
     id = e.currentTarget.id
     fieldId = @_getFieldId(id)
-    @models[0].get('position').get('point')[0].set(fieldId, $("##{id}").val())
+    @models[0].set_display_position(fieldId, $("##{id}").val())
   
   _getFieldId: (id) ->
     id = id[7...] if id.indexOf("sensor") is 0

@@ -4,7 +4,7 @@ window.beats.Sensor::resolve_references = (deferred, object_with_id) ->
     @set('link', link)
 
 window.beats.Sensor::point = ->
-  p = @get('position').get('point')
+  p = @get('display_position').get('point')
   p.push(new Point) unless p[0]
   p[0]
 
@@ -20,20 +20,19 @@ window.beats.Sensor::display_point = ->
   else
     @get('point')
 
-
-  sensor.set('lat', row.lat)
-  sensor.set('lng', row.lng)
-  sensor.set('elevation', 0)
-
+window.beats.Sensor::link = -> @get('link')
 window.beats.Sensor::lat = -> @get('point').get('lat')
 window.beats.Sensor::lng = -> @get('point').get('lng')
 window.beats.Sensor::elevation = -> @get('point').get('elevation')
 window.beats.Sensor::display_lat = -> @display_point().get('lat')
 window.beats.Sensor::display_lng = -> @display_point().get('lng')
-window.beats.Sensor::road_names = -> @get('link').road_names()
+window.beats.Sensor::display_elev = -> @display_point().get('elevation')
+window.beats.Sensor::road_names = -> @get('link')?.road_names() || ''
+window.beats.Sensor::set_display_position = (pointField, val) -> 
+  @get('display_position').get('point')[0].set(pointField, val)
 
 window.beats.Sensor::initialize = ->
-  @set('position', new window.beats.Position)
+  @set('display_position', new window.beats.Position)
 
 window.beats.Sensor::defaults =
   parameters: {}
@@ -52,5 +51,8 @@ window.beats.Sensor.from_station_row = (row) ->
   sensor.set('link_type', 'HOV') if row.link_type is 'HV'
   sensor.set('link_type', 'FW') if row.link_type is 'ML'
 
+  sensor.set('lat', row.lat)
+  sensor.set('lng', row.lng)
+  sensor.set('elevation', 0)
   ### TODO set display_position and parameters ###
   sensor

@@ -63,11 +63,11 @@ describe("EditorSensorView", function() {
       expect(this.view.$('#sensor_link_type')).toHaveValue(link_type);
       links = model.get('link_reference').get('id')
       expect(this.view.$('#sensor_links')).toHaveValue(links);
-      lat = model.get('position').get('point')[0].get('lat');
+      lat = model.display_lat();
       expect(this.view.$('#sensor_lat')).toHaveValue(lat);
-      lng = model.get('position').get('point')[0].get('lng');
+      lng = model.display_lng();
       expect(this.view.$('#sensor_lng')).toHaveValue(lng);
-      elev = model.get('position').get('point')[0].get('elevation').toString();
+      elev = model.display_elev().toString();
       expect(this.view.$('#sensor_elevation')).toHaveValue(elev);
     });
   });
@@ -76,7 +76,7 @@ describe("EditorSensorView", function() {
     beforeEach(function() {
       this.view.render();
       model = this.view.models[0];
-      point = model.get('display_position').get('point')[0];
+      point = model.display_point();
     });
 
     describe("When fields handler fired", function() {
