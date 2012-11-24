@@ -31,7 +31,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # addSensor creates a sensor of type and the at the position passed in and adds
   # it to the collection as well as to the models schema. 
   # It is called from the context menu's add sensor event
-  addNode: (position, type) ->
+  addSensor: (position, type) ->
     s = new $a.Sensor()
     p = new $a.Position()
     pt = new $a.Point()
