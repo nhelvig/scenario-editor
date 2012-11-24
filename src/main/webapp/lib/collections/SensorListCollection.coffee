@@ -5,7 +5,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   
   # when initialized go through the models and set selected to false
   initialize:(@models) ->
-    @models.forEach((sensor) -> sensor.set('selected', false))
+    @models.forEach((sensor) -> @_setUpEvents(sensor))
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('sensors:add', @addSensor, @)
 
@@ -27,6 +27,34 @@ class window.beats.SensorListCollection extends Backbone.Collection
     _.each(sensors, (sensor) ->
       sensor.set('selected', true) if !sensor.get('selected')
     )
+  
+  # addSensor creates a sensor of type and the at the position passed in and adds
+  # it to the collection as well as to the models schema. 
+  # It is called from the context menu's add sensor event
+  addNode: (position, type) ->
+    s = new $a.Sensor()
+    p = new $a.Position()
+    pt = new $a.Point()
+    pt.set(
+            { 
+              'lat':position.lat(),
+              'lng':position.lng(),
+              'elevation':NaN
+            }
+          )
+    p.set('point', []) 
+    p.get('point').push(pt)
+    s.set('display_position', p)
+    s.set('type', type || 'static_point')
+    @add(s)
+    $a.models.sensors().push(s)
+    @_setUpEvents(s)
+    s
+    
+  # This method sets up the events each sensor should listen too
+  _setUpEvents: (sensor) ->
+    sensor.bind('remove', => @destroy)
+    sensor.set('selected', false)
   
   #this method clears the collection upon a clear map
   clear: ->
