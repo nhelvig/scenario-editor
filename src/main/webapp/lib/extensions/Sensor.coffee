@@ -88,3 +88,8 @@ window.beats.Sensor.from_station_row = (row) ->
 
 window.beats.Sensor::updatePosition = (pos) ->
   @display_point().set({'lat':pos.lat(), 'lng':pos.lng()})
+
+window.beats.Sensor::remove = ->
+  sensors = window.beats.models.sensors()
+  sensors = _.reject(window.beats.models.sensors(), (s) => s is @)
+  window.beats.models.set_sensors(sensors)

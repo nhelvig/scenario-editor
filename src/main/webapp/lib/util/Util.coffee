@@ -51,7 +51,7 @@ window.beats.Util =
   # to find
   getElement: (id, list) ->
     _.find(list, (elem) ->  elem.get('id') == id)
-
+  
   # if there is no position specified and the elem is trying to use the
   # link or node it is attached too to find a position, we then move the
   # event, controller, signal or sensor slightly to the left

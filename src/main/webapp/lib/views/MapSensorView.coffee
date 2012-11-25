@@ -13,6 +13,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:hide_sensor_layer', @hideMarker, @)
     $a.broker.on('map:show_sensor_layer', @showMarker, @)
+    @model.on('remove', @removeElement, @)
 
   getIcon: ->
     super MapSensorView.ICON

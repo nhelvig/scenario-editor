@@ -4,6 +4,7 @@ describe("SensorListCollection", function() {
   
   beforeEach(function() {
     spyOn($a.SensorListCollection.prototype, 'addSensor').andCallThrough();
+    spyOn($a.SensorListCollection.prototype, 'removeSensor').andCallThrough();
     models = $a.models.sensors();
     this.sColl= new $a.SensorListCollection(models);
   });
@@ -21,6 +22,10 @@ describe("SensorListCollection", function() {
     it("should be watching addSensor", function() {
       $a.broker.trigger("sensors:add", new google.maps.LatLng(37,-122));
       expect($a.SensorListCollection.prototype.addSensor).toHaveBeenCalled();
+    });
+    it("should be watching removeSensor", function() {
+      this.sColl.trigger("sensors:remove", 1);
+      expect($a.SensorListCollection.prototype.removeSensor).toHaveBeenCalled();
     });
   });
   
@@ -56,6 +61,15 @@ describe("SensorListCollection", function() {
      var lengthBefore = $a.models.sensors().length;
      this.sColl.addSensor(new google.maps.LatLng(37,-122));
      expect(lengthBefore + 1).toEqual($a.models.sensors().length);
+    });
+  });
+  describe("removeSensor ", function() {
+    it("should remove it from collection and schema", function() {
+     sensor = scenarioAndFriends().sensor
+     this.sColl.add(sensor)
+     var lengthBefore = this.sColl.length;
+     this.sColl.removeSensor(sensor.cid);
+     expect(lengthBefore - 1).toEqual(this.sColl.length);
     });
   });
 });

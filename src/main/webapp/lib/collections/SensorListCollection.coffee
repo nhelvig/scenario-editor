@@ -8,7 +8,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
     @models.forEach((sensor) => @_setUpEvents(sensor))
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('sensors:add', @addSensor, @)
-
+    @on('sensors:remove', @removeSensor, @)
   
   # the sensor browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
@@ -28,6 +28,13 @@ class window.beats.SensorListCollection extends Backbone.Collection
       sensor.set('selected', true) if !sensor.get('selected')
     )
   
+  # removeSensor removes this sensor from the collection and takes it off the 
+  # map.
+  removeSensor: (sID) ->
+    sensor = _.filter(@models, (s) -> s.cid is sID)
+    @remove(sensor)
+    
+  
   # addSensor creates a sensor st the position passed in and adds
   # it to the collection as well as to the models schema. 
   # It is called from the context menu's add sensor event as well as triggered
@@ -43,7 +50,10 @@ class window.beats.SensorListCollection extends Backbone.Collection
     
   # This method sets up the events each sensor should listen too
   _setUpEvents: (sensor) ->
-    sensor.bind('remove', => @destroy)
+    sensor.bind('remove', =>
+                            sensor.remove()
+                            @destroy
+                      )
     sensor.set('selected', false)
   
   #this method clears the collection upon a clear map

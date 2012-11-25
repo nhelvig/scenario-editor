@@ -56,6 +56,9 @@ window.beats.Scenario::links = ->
 window.beats.Scenario::sensors = ->
   @get('sensorlist')?.get('sensor') || []
 
+window.beats.Scenario::set_sensors = (list) ->
+  @get('sensorlist')?.set('sensor', list)
+
 window.beats.Scenario::networklist = -> 
   @get('networklist')
    
