@@ -115,3 +115,13 @@ window.beats.Util =
   getGeometry: (opts) ->
     _.map(opts.models, (m) -> 
                   m.get('position').get('point')[0].get(opts.geom)).join(", ")
+  
+  
+  # this returns a new id that is not taken from the collection passed in
+  getNewElemId: (collection) ->
+    id = 1
+    while(true)
+      test = collection.filter((elem) -> elem.ident() is id)
+      if test?.length == 0
+        return id
+      id++

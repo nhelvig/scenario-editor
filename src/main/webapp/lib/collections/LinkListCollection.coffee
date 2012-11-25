@@ -19,6 +19,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # and adds it to the schema
   addLink: (args) ->
     link = new window.beats.Link()
+    
+    id = $a.Util.getNewElemId($a.models.links())
+    link.set('id', id)
+    
     begin = new window.beats.Begin()
     begin.set('node_id', args.begin.get('id'))
     begin.set('node', args.begin)
