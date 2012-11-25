@@ -15,7 +15,7 @@
   
   model_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'DemandProfileSpec', 
     'DensitySpec', 'EndSpec', 'EventSpec', 'InputSpec', 'IntersectionSpec',
-    'LinkSpec', 'NodeSpec', 'OutputSpec', 'ScenarioSpec',
+    'LinkSpec', 'NodeSpec', 'OutputSpec', 'ScenarioSpec', 'SensorSpec',
     'SignalSpec', 'SplitratioProfileSpec'
   ];
   

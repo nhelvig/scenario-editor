@@ -97,10 +97,12 @@ beforeEach(function() {
     var nodeList, linkList, network, networkList;
     var scenario, srp, idp, density;
     var node1, node2, node3, link1, link2, link3;
+    var sensor;
     var srps, cp, cps, dps, dp;
     node1 = new window.beats.Node({id: 1});
     node2 = new window.beats.Node({id: 2});
     node3 = new window.beats.Node({id: 3});
+    sensor = new window.beats.Sensor({id:1});
     link1 = simpleLink(node1, node2);
     link2 = simpleLink(node2, node3);
     link3 = simpleLink(node3, node1);
@@ -138,6 +140,7 @@ beforeEach(function() {
       link1: link1,
       link2: link2,
       link3: link3,
+      sensor: sensor,
       srp: srp,
       srps: srps,
       cps: cps,
