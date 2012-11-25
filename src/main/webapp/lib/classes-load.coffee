@@ -25,7 +25,8 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
   'Weavingfactors', 'WeavingFactorSet' ]
 
 $a.collections = ['NodeListCollection','NodeListView', 
-  'LinkListCollection', 'LinkListView', 'SensorListCollection']
+  'LinkListCollection', 'LinkListView', 'SensorListCollection', 'SensorListView'
+]
 
 $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
@@ -40,4 +41,5 @@ $a.map_views = [
 ]
 
 $a.utils= ['ArrayText',  'ContextMenuHandler', 'GoogleMapRouteHandler', 
-  'ReferenceHelper', 'Util']
+  'ReferenceHelper', 'Util'
+]

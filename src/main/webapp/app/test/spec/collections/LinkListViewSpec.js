@@ -51,7 +51,7 @@ describe("LinkListView", function() {
     
   describe("addAndRender", function() {
     it("should create a MapNodeView and render it", function() {
-      newLink = simpleLink(begin, end);
+      newLink = simpleLink(1, begin, end);
       link = this.view.addAndRender(newLink, true);
       expect(link.get('linkgeometry')).not.toBeNull();
     });

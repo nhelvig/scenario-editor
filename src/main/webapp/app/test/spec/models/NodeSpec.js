@@ -13,9 +13,9 @@ describe("Node", function() {
     p.get('point').push(pt)
     testNode1 = new window.beats.Node({id: testNodeId, position: p});
     testNode2 = new window.beats.Node({id: testNodeId2});
-    testLink1 = simpleLink(testNode1, testNode2);
-    testLink2 = simpleLink(testNode1, testNode2);
-    testLink3 = simpleLink(testNode2, testNode1);    
+    testLink1 = simpleLink(1, testNode1, testNode2);
+    testLink2 = simpleLink(2, testNode1, testNode2);
+    testLink3 = simpleLink(3, testNode2, testNode1);    
   });
 
   describe("input indexes", function() {

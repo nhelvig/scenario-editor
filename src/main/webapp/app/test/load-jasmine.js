@@ -10,16 +10,17 @@
   
   collections_jasmine_specs = [
     'NodeListCollectionSpec', 'NodeListViewSpec', 'LinkListCollectionSpec',
-    'LinkListViewSpec', 'SensorListCollectionSpec'
+    'LinkListViewSpec', 'SensorListCollectionSpec', 'SensorListViewSpec'
   ];
   
   model_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'DemandProfileSpec', 
     'DensitySpec', 'EndSpec', 'EventSpec', 'InputSpec', 'IntersectionSpec',
-    'LinkSpec', 'NodeSpec', 'OutputSpec', 'ScenarioSpec',
+    'LinkSpec', 'NodeSpec', 'OutputSpec', 'ScenarioSpec', 'SensorSpec',
     'SignalSpec', 'SplitratioProfileSpec'
   ];
   
-    util_jasmine_specs = ['ContextMenuHandlerSpec', 'GoogleMapRouteHandlerSpec'
+  util_jasmine_specs = [
+    'ContextMenuHandlerSpec', 'GoogleMapRouteHandlerSpec', 'UtilSpec'
   ];
   
   load_app_classes = function(after) {

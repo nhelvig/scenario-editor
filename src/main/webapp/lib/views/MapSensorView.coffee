@@ -13,6 +13,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:hide_sensor_layer', @hideMarker, @)
     $a.broker.on('map:show_sensor_layer', @showMarker, @)
+    @model.on('remove', @removeElement, @)
 
   getIcon: ->
     super MapSensorView.ICON
@@ -47,7 +48,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
     if iconName == "#{MapSensorView.ICON}.png"
       @_triggerClearSelectEvents()
-      $a.broker.trigger("app:tree_highlight:#{@model.get('link').cid}")
+      $a.broker.trigger("app:tree_highlight:#{@model.get('link')?.cid}") if @model.get('link')?
       @makeSelected()
     else
       @_triggerClearSelectEvents()

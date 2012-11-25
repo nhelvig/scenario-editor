@@ -57,10 +57,10 @@ beforeEach(function() {
     $a.linkListView = new $a.LinkListView($a.linkList, network)
   }
   
-  simpleLink = function(node1, node2) {
+  simpleLink = function(id, node1, node2) {
     var begin = new window.beats.Begin({node: node1});
     var end = new window.beats.End({node: node2});
-    var link = new window.beats.Link({begin: begin, end: end});
+    var link = new window.beats.Link({id: id,begin: begin, end: end});
     var outputSingle = new window.beats.Output({link: link});
     var inputSingle = new window.beats.Input({link: link});
     var road = new window.beats.Road()
@@ -69,6 +69,9 @@ beforeEach(function() {
     road2.set('name','name2');
     link.set('roads', new window.beats.Roads());
     link.get('roads').set('road', [road,road2]);
+    var shape = new window.beats.Shape();
+    shape.set('text', '');  
+    link.set('shape', shape);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
@@ -94,13 +97,15 @@ beforeEach(function() {
     var nodeList, linkList, network, networkList;
     var scenario, srp, idp, density;
     var node1, node2, node3, link1, link2, link3;
+    var sensor;
     var srps, cp, cps, dps, dp;
     node1 = new window.beats.Node({id: 1});
     node2 = new window.beats.Node({id: 2});
     node3 = new window.beats.Node({id: 3});
-    link1 = simpleLink(node1, node2);
-    link2 = simpleLink(node2, node3);
-    link3 = simpleLink(node3, node1);
+    sensor = new window.beats.Sensor({id:1});
+    link1 = simpleLink(1,node1, node2);
+    link2 = simpleLink(2,node2, node3);
+    link3 = simpleLink(3, node3, node1);
     density = new window.beats.Density({id: 1});
     idp = new window.beats.InitialDensitySet({density: [density]});
     cp = new window.beats.CapacityProfile({id: 1});
@@ -112,6 +117,7 @@ beforeEach(function() {
     linkList = new window.beats.LinkList({link: [link1, link2, link3]});
     nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
     network = new window.beats.Network({id: 1});
+    
     // These must be called after initialize, initialize clears lists
     network.set('nodelist', nodeList);
     network.set('linklist', linkList);
@@ -124,7 +130,7 @@ beforeEach(function() {
       demandprofileset: dps,
       splitratioprofileset: srps
     });
-    scenario.set('network', network);
+    scenario.set('networklist',networkList);
     
     return {
       scenario: scenario,
@@ -134,6 +140,7 @@ beforeEach(function() {
       link1: link1,
       link2: link2,
       link3: link3,
+      sensor: sensor,
       srp: srp,
       srps: srps,
       cps: cps,

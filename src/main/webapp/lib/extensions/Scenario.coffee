@@ -52,7 +52,16 @@ window.beats.Scenario::nodes = ->
 
 window.beats.Scenario::links = -> 
   @get('networklist').get('network')[0].get('linklist').get('link')
-  
+
+window.beats.Scenario::sensors = ->
+  @get('sensorlist')?.get('sensor') || []
+
+window.beats.Scenario::set_sensors = (list) ->
+  @get('sensorlist')?.set('sensor', list)
+
+window.beats.Scenario::networklist = -> 
+  @get('networklist')
+   
 window.beats.Scenario::network = -> 
   @get('networklist').get('network')[0]
 
@@ -91,7 +100,7 @@ window.beats.Scenario::encode_references = ->
   capacityprofileset = @get('downstreamboundarycapacityprofileset')
   initialdensityprofile = @get('initialdensityprofile')
   splitratioprofileset = @get('splitratioprofileset')
-  network = @get('network')
+  network = @network()
   linklist = network.get('linklist') if network
   nodelist = network.get('nodelist') if network
 

@@ -5,8 +5,8 @@ describe("NodeListView", function() {
   
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
-    network = $a.models.get('networklist').get('network')[0];
-    models = network.get('nodelist').get('node');
+    network = $a.models.network();
+    models = $a.models.nodes();
     spyOn($a.NodeListView.prototype, 'addNodeView').andCallThrough();
     spyOn($a.NodeListView.prototype, 'render').andCallThrough();
     spyOn($a.NodeListView.prototype, 'removeNode').andCallThrough();

@@ -4,12 +4,12 @@
 class window.beats.ContextMenuItemView extends Backbone.View
   tagName: 'li'
   
-  initialize: (@parentId, values, @position) ->
+  initialize: (@parentId, @values, @position) ->
     @template = _.template($('#child-item-menu-template').html())
-    @$el.html @template({text: values.label})  if values.label
-    @$el.attr 'class', values.className if values.className
-    @$el.attr 'id', values.id if values.id
-    @events = {click: values.event} if values.event
+    @$el.html @template({text: @values.label})  if @values.label
+    @$el.attr 'class', @values.className if @values.className
+    @$el.attr 'id', @values.id if @values.id
+    @events = {click: @values.event} if @values.event
     @render()
 
   render: ->

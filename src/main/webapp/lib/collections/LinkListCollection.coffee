@@ -10,6 +10,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
+    @on('links:add_sensor', @addSensorToLink, @)
     @on('links:remove', @removeLink, @)
     @forEach((link) =>  @_setUpEvents(link))
   
@@ -18,6 +19,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # and adds it to the schema
   addLink: (args) ->
     link = new window.beats.Link()
+    
+    id = $a.Util.getNewElemId($a.models.links())
+    link.set('id', id)
+    
     begin = new window.beats.Begin()
     begin.set('node_id', args.begin.get('id'))
     begin.set('node', args.begin)
@@ -82,3 +87,12 @@ class window.beats.LinkListCollection extends Backbone.Collection
     eNode.bind('remove', => @removeNode(link, 'end')) 
     bNode.position().on('change',(=> @reDrawLink(link)), @)
     eNode.position().on('change',(=> @reDrawLink(link)), @)
+
+  # This method adds a sensor to the link id passed in
+  addSensorToLink: (pos, cid) ->
+    link = @_getLink(cid)
+    $a.broker.trigger("sensors:add", pos, link)
+
+  # Find a link in the list by cid
+  _getLink : (cid) ->
+    @models.filter((link) -> link.cid is cid)[0]

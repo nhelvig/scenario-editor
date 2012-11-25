@@ -55,6 +55,12 @@ $a.main_context_menu = [
   {className:'context_menu_separator'}
   context_menu_item 'Add Node here', 
                     ( -> $a.broker.trigger("nodes:add", $a.contextMenu.position))
+  context_menu_item 'Add Sensor here',
+                    ((e) -> $a.broker.trigger("sensors:add", $a.contextMenu.position))
+  context_menu_item 'Add Controller here',
+                    ((e) -> $a.broker.trigger("controllers:add", $a.contextMenu.position))
+  context_menu_item 'Add Event here',
+                    ((e) -> $a.broker.trigger("events:add", $a.contextMenu.position))
 ]
 
 $a.node_selected = [
@@ -74,6 +80,14 @@ $a.link_context_menu = [
                       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Remove this link',
                     ((e) -> $a.linkList.trigger("links:remove", e.currentTarget.id))
+  {className:'context_menu_separator'}
+  context_menu_item 'Add sensor to this link',
+                    ((e) -> $a.linkList.trigger("links:add_sensor", $a.contextMenu.position, e.currentTarget.id))
+  context_menu_item 'Add controller to this link',
+                    ((e) -> $a.linkList.trigger("links:add_controller", e.currentTarget.id))
+  context_menu_item 'Add event to this link',
+                    ((e) -> $a.linkList.trigger("links:add_event", e.currentTarget.id))
+  {className:'context_menu_separator'}
   context_menu_item  'Clear Selection',
                       ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]
@@ -84,6 +98,10 @@ $a.link_context_menu_demand_item = [
 ]
 # Sensor Context Menu
 $a.sensor_context_menu = [
+  context_menu_item 'Edit this sensor',
+                    ((e) -> $a.broker.trigger("map:open_editor:#{e.currentTarget.id}"))
+  context_menu_item 'Remove this sensor',
+                    ((e) -> $a.sensorList.trigger("sensors:remove", e.currentTarget.id))
   context_menu_item 'Select sensor link',
                     ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Clear Selection',

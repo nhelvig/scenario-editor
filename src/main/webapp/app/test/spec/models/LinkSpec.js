@@ -12,9 +12,9 @@ describe("Link", function() {
     testNode = new window.beats.Node({id: testNodeId});
     testNode2 = new window.beats.Node({id: testNodeId2});
     testNode3 = new window.beats.Node({id: testNodeId3});
-    testLink1 = simpleLink(testNode, testNode2);
-    testLink2 = simpleLink(testNode, testNode3);
-    testLink3 = simpleLink(testNode, testNode3);
+    testLink1 = simpleLink(1, testNode, testNode2);
+    testLink2 = simpleLink(2, testNode, testNode3);
+    testLink3 = simpleLink(3, testNode, testNode3);
   });
 
   it("should not blow up on to_xml", function() {

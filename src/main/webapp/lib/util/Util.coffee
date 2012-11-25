@@ -51,7 +51,7 @@ window.beats.Util =
   # to find
   getElement: (id, list) ->
     _.find(list, (elem) ->  elem.get('id') == id)
-
+  
   # if there is no position specified and the elem is trying to use the
   # link or node it is attached too to find a position, we then move the
   # event, controller, signal or sensor slightly to the left
@@ -115,3 +115,13 @@ window.beats.Util =
   getGeometry: (opts) ->
     _.map(opts.models, (m) -> 
                   m.get('position').get('point')[0].get(opts.geom)).join(", ")
+  
+  
+  # this returns a new id that is not taken from the collection passed in
+  getNewElemId: (collection) ->
+    id = 1
+    while(true)
+      test = collection.filter((elem) -> elem.ident() is id)
+      if test?.length == 0
+        return id
+      id++
