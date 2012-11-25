@@ -45,8 +45,8 @@ window.beats.Sensor::initialize = ->
 
 window.beats.Sensor::from_position = (position, link) ->
   s = new window.beats.Sensor
-  p = new $a.Position()
-  pt = new $a.Point()
+  p = new window.beats.Position()
+  pt = new window.beats.Point()
   pt.set(
           { 
             'lat':position.lat(),
@@ -59,7 +59,8 @@ window.beats.Sensor::from_position = (position, link) ->
   s.set('display_position', p)
   s.set('type', 'static_point')
   s.set('link', link || null)
-  s.set('link_reference', new $a.Link_reference().set('id', link?.ident() || null))
+  id = link?.ident() || null
+  s.set('link_reference', new window.beats.Link_reference().set('id', id))
   s
 
 window.beats.Sensor::defaults =
