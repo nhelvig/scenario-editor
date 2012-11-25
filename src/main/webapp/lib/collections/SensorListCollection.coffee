@@ -50,6 +50,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
     s.set('display_position', p)
     s.set('static_point')
     s.set('link', link || null)
+    s.set('link_reference', link?.ident() || null)
     @add(s)
     $a.models.sensors().push(s)
     @_setUpEvents(s)
