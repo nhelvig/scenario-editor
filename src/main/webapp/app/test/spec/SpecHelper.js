@@ -57,10 +57,10 @@ beforeEach(function() {
     $a.linkListView = new $a.LinkListView($a.linkList, network)
   }
   
-  simpleLink = function(node1, node2) {
+  simpleLink = function(id, node1, node2) {
     var begin = new window.beats.Begin({node: node1});
     var end = new window.beats.End({node: node2});
-    var link = new window.beats.Link({begin: begin, end: end});
+    var link = new window.beats.Link({id: id,begin: begin, end: end});
     var outputSingle = new window.beats.Output({link: link});
     var inputSingle = new window.beats.Input({link: link});
     var road = new window.beats.Road()
@@ -103,9 +103,9 @@ beforeEach(function() {
     node2 = new window.beats.Node({id: 2});
     node3 = new window.beats.Node({id: 3});
     sensor = new window.beats.Sensor({id:1});
-    link1 = simpleLink(node1, node2);
-    link2 = simpleLink(node2, node3);
-    link3 = simpleLink(node3, node1);
+    link1 = simpleLink(1,node1, node2);
+    link2 = simpleLink(2,node2, node3);
+    link3 = simpleLink(3, node3, node1);
     density = new window.beats.Density({id: 1});
     idp = new window.beats.InitialDensitySet({density: [density]});
     cp = new window.beats.CapacityProfile({id: 1});
@@ -130,7 +130,7 @@ beforeEach(function() {
       demandprofileset: dps,
       splitratioprofileset: srps
     });
-    scenario.set('network', network);
+    scenario.set('networklist',networkList);
     
     return {
       scenario: scenario,

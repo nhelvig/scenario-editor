@@ -97,7 +97,7 @@ window.beats.Scenario::encode_references = ->
   capacityprofileset = @get('downstreamboundarycapacityprofileset')
   initialdensityprofile = @get('initialdensityprofile')
   splitratioprofileset = @get('splitratioprofileset')
-  network = @get('network')
+  network = @network()
   linklist = network.get('linklist') if network
   nodelist = network.get('nodelist') if network
 

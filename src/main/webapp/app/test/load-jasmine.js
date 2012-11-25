@@ -19,7 +19,8 @@
     'SignalSpec', 'SplitratioProfileSpec'
   ];
   
-    util_jasmine_specs = ['ContextMenuHandlerSpec', 'GoogleMapRouteHandlerSpec'
+  util_jasmine_specs = [
+    'ContextMenuHandlerSpec', 'GoogleMapRouteHandlerSpec', 'UtilSpec'
   ];
   
   load_app_classes = function(after) {
