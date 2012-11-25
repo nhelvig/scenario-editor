@@ -33,9 +33,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     
     link.set('begin', begin)
     link.set('end', end)
-    @add(link)
-    $a.models.links().push(link)
     @_setUpEvents(link)
+    @add(link)
     link
   
   # This removes either the begin or end node from the link if the node
@@ -46,7 +45,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # removeLink removes the link from the collection and takes it off the 
   # map.
   removeLink: (linkID) ->
-    link = _.filter(@models, (link) -> link.cid is linkID)
+    link = @getByCid(linkID)
     @remove(link)
   
   # this method clears the collection upon a clear map as well shuts off the 
@@ -80,7 +79,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->
-    link.bind('remove', => @destroy)
+    link.bind('remove', => 
+                  link.remove()
+                  @destroy)
+    link.bind('add', -> link.add())
     bNode = link.begin_node()
     eNode = link.end_node()
     bNode.bind('remove', => @removeNode(link, 'begin'))
@@ -90,9 +92,5 @@ class window.beats.LinkListCollection extends Backbone.Collection
 
   # This method adds a sensor to the link id passed in
   addSensorToLink: (pos, cid) ->
-    link = @_getLink(cid)
+    link =  @getByCid(cid)
     $a.broker.trigger("sensors:add", pos, link)
-
-  # Find a link in the list by cid
-  _getLink : (cid) ->
-    @models.filter((link) -> link.cid is cid)[0]

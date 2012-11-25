@@ -1,6 +1,6 @@
 describe("LinkListView", function() {
   $a = window.beats;
-  var models, network, begin, end;
+  var models, network, begin, end, scen;
   
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
@@ -13,6 +13,7 @@ describe("LinkListView", function() {
     this.view = new $a.LinkListView(this.lColl, network);
     begin = models[0].begin_node();
     end = models[0].end_node();
+    scen = scenarioAndFriends();
   });
     
   describe("Instantiation", function() {
@@ -27,7 +28,7 @@ describe("LinkListView", function() {
         });
       
         it("should be watching createAndDrawLink", function() {
-          $a.broker.trigger('map:draw_link', models[0]);
+          $a.broker.trigger('map:draw_link', scen.link1);
           expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();
         });
         
@@ -43,7 +44,7 @@ describe("LinkListView", function() {
    
   describe("createAndDrawLink", function() {
     it("should create MapLinkViews for link", function() {
-      mlv = this.view.createAndDrawLink(models[0]);
+      mlv = this.view.createAndDrawLink(scen.link1);
       expect(mlv).not.toBeNull();
       expect(mlv.link.getMap()).toEqual($a.map);
     });
@@ -59,9 +60,10 @@ describe("LinkListView", function() {
   
   describe("removeLink", function() {
     it("should remove the MapLinkView from views array", function() {
+      this.view.createAndDrawLink(scen.link1);
       var lengthBefore = this.view.views.length;
-      this.view.removeLink(models[0]);
-      expect(this.view.views.length).toEqual(lengthBefore - 2);
+      this.view.removeLink(scen.link1);
+      expect(this.view.views.length).toEqual(lengthBefore - 1);
     });
   });
 });

@@ -27,3 +27,11 @@ window.beats.Link::begin_node = ->
 
 window.beats.Link::end_node = ->
   @get('end').get('node')
+  
+window.beats.Link::remove = ->
+  links = window.beats.models.links()
+  links = _.reject(links, (l) => l is @)
+  window.beats.models.set_links(links)
+
+window.beats.Link::add = ->
+  window.beats.models.links().push(@)
