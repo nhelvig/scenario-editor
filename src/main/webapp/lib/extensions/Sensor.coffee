@@ -91,7 +91,7 @@ window.beats.Sensor::updatePosition = (pos) ->
 
 window.beats.Sensor::remove = ->
   sensors = window.beats.models.sensors()
-  sensors = _.reject(window.beats.models.sensors(), (s) => s is @)
+  sensors = _.reject(sensors, (s) => s is @)
   window.beats.models.set_sensors(sensors)
 
 window.beats.Sensor::add = ->

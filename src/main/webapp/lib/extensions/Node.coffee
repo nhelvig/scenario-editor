@@ -38,5 +38,13 @@ window.beats.Node::updatePosition = (pos) ->
 
 window.beats.Node::position = ->
   @get('position').get('point')[0]
+  
+window.beats.Node::remove = ->
+  nodes = window.beats.models.nodes()
+  nodes = _.reject(nodes, (n) => n is @)
+  window.beats.models.set_sensors(nodes)
+
+window.beats.Node::add = ->
+  window.beats.models.nodes().push(@)
 
   

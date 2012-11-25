@@ -48,7 +48,10 @@ window.beats.Scenario::initialize = ->
   @set 'signallist', new window.beats.SignalList
 
 window.beats.Scenario::nodes = -> 
-  @get('networklist').get('network')[0].get('nodelist').get('node')
+  @network().get('nodelist').get('node')
+
+window.beats.Scenario::set_nodes = (list) ->
+  @network().get('nodelist')?.set('node', list)
 
 window.beats.Scenario::links = -> 
   @get('networklist').get('network')[0].get('linklist').get('link')

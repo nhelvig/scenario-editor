@@ -59,9 +59,8 @@ class window.beats.NodeListCollection extends Backbone.Collection
     p.get('point').push(pt)
     n.set('position', p)
     n.set('type', type || 'simple')
-    @add(n)
-    $a.models.nodes().push(n)
     @_setUpEvents(n)
+    @add(n)
     n
   
   # addLink is called from the conttext menus add Link item when there is
@@ -104,7 +103,11 @@ class window.beats.NodeListCollection extends Backbone.Collection
 
   # This method sets up the events each node should listen too
   _setUpEvents: (node) ->
-    node.bind('remove', => @destroy)
+    node.bind('remove', => 
+                node.remove()
+                @destroy)
+    node.bind('add', => node.add())
+                
     
   #this method clears the collection upon a clear map
   clear: ->

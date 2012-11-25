@@ -56,8 +56,8 @@ describe("ContextMenuHandler", function() {
        expect(this.items.length).toEqual(expectedLength);
      });
      it("Models node selected: return menu with standard and node selected actions", function(){
-       list = $a.models.nodes();
-       
+       scen = scenarioAndFriends()
+       list = scen.scenario.nodes();  
        $a.nodeList = new $a.NodeListCollection(list);
        $a.nodeList.models[0].set('selected',true);
        this.items = this.cmh._populateMenu({items:$a.main_context_menu});
