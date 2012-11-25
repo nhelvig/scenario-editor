@@ -35,22 +35,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # at position with no link attached; otherwise it attaches the link to the 
   # sensor
   addSensor: (position, link) ->
-    s = new $a.Sensor()
-    p = new $a.Position()
-    pt = new $a.Point()
-    pt.set(
-            { 
-              'lat':position.lat(),
-              'lng':position.lng(),
-              'elevation':NaN
-            }
-          )
-    p.set('point', []) 
-    p.get('point').push(pt)
-    s.set('display_position', p)
-    s.set('static_point')
-    s.set('link', link || null)
-    s.set('link_reference', new $a.Link_reference().set('id', link?.ident() || null))
+    s = new $a.Sensor().from_position(position, link)
     @add(s)
     $a.models.sensors().push(s)
     @_setUpEvents(s)

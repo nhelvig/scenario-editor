@@ -43,6 +43,25 @@ window.beats.Sensor::set_display_position = (pointField, val) ->
 window.beats.Sensor::initialize = ->
   @set('display_position', new window.beats.Position)
 
+window.beats.Sensor::from_position = (position, link) ->
+  s = new window.beats.Sensor
+  p = new $a.Position()
+  pt = new $a.Point()
+  pt.set(
+          { 
+            'lat':position.lat(),
+            'lng':position.lng(),
+            'elevation':NaN
+          }
+        )
+  p.set('point', []) 
+  p.get('point').push(pt)
+  s.set('display_position', p)
+  s.set('type', 'static_point')
+  s.set('link', link || null)
+  s.set('link_reference', new $a.Link_reference().set('id', link?.ident() || null))
+  s
+
 window.beats.Sensor::defaults =
   parameters: {}
 
