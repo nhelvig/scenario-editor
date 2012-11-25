@@ -14,10 +14,10 @@ class window.beats.SensorListCollection extends Backbone.Collection
   getBrowserColumnData: () ->
     @models.map((sensor) -> 
             [
-              sensor.get('id'), 
-              sensor.get('type'), 
-              sensor.get('link_type'),
-              sensor.get('link_reference')?.get('id') || ''
+              sensor.ident(), 
+              sensor.type(), 
+              sensor.link()?.type(),
+              sensor.link()?.ident() || ''
             ]
     )
   

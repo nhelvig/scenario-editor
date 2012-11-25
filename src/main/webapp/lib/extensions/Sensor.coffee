@@ -20,7 +20,10 @@ window.beats.Sensor::display_point = ->
   else
     @get('point')
 
+window.beats.Sensor::ident = -> @get('id')
+window.beats.Sensor::type = -> @get('type')
 window.beats.Sensor::link = -> @get('link')
+window.beats.Sensor::selected = -> @get('selected')
 window.beats.Sensor::lat = -> @get('point').get('lat')
 window.beats.Sensor::lng = -> @get('point').get('lng')
 window.beats.Sensor::elevation = -> @get('point').get('elevation')

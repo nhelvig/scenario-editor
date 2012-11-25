@@ -7,6 +7,8 @@ window.beats.Link::defaults =
 window.beats.Link::initialize = ->
   @set('dynamics', new window.beats.Dynamics())
 
+window.beats.Link::type = -> @get("type")
+window.beats.Link::ident = -> @get("id")
 window.beats.Link::parallel_links = ->
   begin_node = @get('begin').get('node')
   end_node = @get('end').get('node')
