@@ -31,7 +31,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # removeSensor removes this sensor from the collection and takes it off the 
   # map.
   removeSensor: (sID) ->
-    sensor = _.filter(@models, (s) -> s.cid is sID)
+    sensor = @getByCid(sID) 
     @remove(sensor)
     
   
@@ -43,9 +43,8 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # sensor
   addSensor: (position, link) ->
     s = new $a.Sensor().from_position(position, link)
-    @add(s)
-    $a.models.sensors().push(s)
     @_setUpEvents(s)
+    @add(s)
     s
     
   # This method sets up the events each sensor should listen too
@@ -54,6 +53,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
                             sensor.remove()
                             @destroy
                       )
+    sensor.bind('add', => sensor.add())
     sensor.set('selected', false)
   
   #this method clears the collection upon a clear map
