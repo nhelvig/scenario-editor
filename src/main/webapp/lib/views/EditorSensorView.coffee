@@ -36,8 +36,8 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
-    type = @models[0].get('type')
-    lType = @models[0].link()?.get('type')
+    type = @models[0].type()
+    lType = @models[0].link()?.type()
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
@@ -63,7 +63,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   # links are in the link_reference attribute
   saveLinks: (e) ->
     id = e.currentTarget.id
-    @models[0].get('link_reference').set('id', $("##{id}").val())
+    @models[0].set_link_reference($("##{id}").val())
   
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element

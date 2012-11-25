@@ -23,6 +23,7 @@ window.beats.Sensor::display_point = ->
 window.beats.Sensor::ident = -> @get('id')
 window.beats.Sensor::type = -> @get('type')
 window.beats.Sensor::link = -> @get('link')
+window.beats.Sensor::link_reference = -> @get('link_reference')
 window.beats.Sensor::selected = -> @get('selected')
 window.beats.Sensor::lat = -> @get('point').get('lat')
 window.beats.Sensor::lng = -> @get('point').get('lng')
@@ -31,6 +32,9 @@ window.beats.Sensor::display_lat = -> @display_point().get('lat')
 window.beats.Sensor::display_lng = -> @display_point().get('lng')
 window.beats.Sensor::display_elev = -> @display_point().get('elevation')
 window.beats.Sensor::road_names = -> @get('link')?.road_names() || ''
+
+window.beats.Sensor::set_link_reference = (id) -> 
+  @get('link_reference').set('id', id)
 
 # called by sensor editor to save individual lat, lng, elevation fields
 window.beats.Sensor::set_display_position = (pointField, val) -> 
