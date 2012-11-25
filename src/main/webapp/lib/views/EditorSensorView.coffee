@@ -49,10 +49,9 @@ class window.beats.EditorSensorView extends window.beats.EditorView
       elev: models[0].display_elev();
       url: ''
       url_desc: URL_DESC
-      links: _.map(models, (m) -> m.get('link_reference').get('id') if m.link()?).join('; ')
+      links: _.map(models, (m) -> m.link().ident() if m.link()?).join('; ')
     }
   
-
   # these are callback events for various elements in the interface
   # This is used to save the all the fields when focus is lost from
   # the element

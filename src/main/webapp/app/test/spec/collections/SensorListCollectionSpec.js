@@ -19,7 +19,7 @@ describe("SensorListCollection", function() {
       expect(arrSel.length).toEqual(this.sColl.length);
     });
     it("should be watching addSensor", function() {
-      this.sColl.trigger("sensors:add", new google.maps.LatLng(37,-122));
+      $a.broker.trigger("sensors:add", new google.maps.LatLng(37,-122));
       expect($a.SensorListCollection.prototype.addSensor).toHaveBeenCalled();
     });
   });

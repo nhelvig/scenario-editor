@@ -67,7 +67,8 @@ class window.beats.ContextMenuView extends google.maps.OverlayView
       @isVisible = true
 
   onAdd: () ->
-    _.each(@options.menuItems, (item) => 
+    _.each(@options.menuItems, (item) =>
+      item.model = @options.model
       item.view = new $a.ContextMenuItemView(@options.id, item, @position)
     )
 

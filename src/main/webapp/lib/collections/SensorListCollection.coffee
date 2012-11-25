@@ -7,7 +7,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   initialize:(@models) ->
     @models.forEach((sensor) => @_setUpEvents(sensor))
     $a.broker.on("map:clear_map", @clear, @)
-    @on('sensors:add', @addSensor, @)
+    $a.broker.on('sensors:add', @addSensor, @)
 
   
   # the sensor browser calls this to gets the column data for the table
@@ -28,10 +28,13 @@ class window.beats.SensorListCollection extends Backbone.Collection
       sensor.set('selected', true) if !sensor.get('selected')
     )
   
-  # addSensor creates a sensor of type and the at the position passed in and adds
+  # addSensor creates a sensor st the position passed in and adds
   # it to the collection as well as to the models schema. 
-  # It is called from the context menu's add sensor event
-  addSensor: (position, type) ->
+  # It is called from the context menu's add sensor event as well as triggered
+  # when a sensor is added to a link. If link is null it will add sensor
+  # at position with no link attached; otherwise it attaches the link to the 
+  # sensor
+  addSensor: (position, link) ->
     s = new $a.Sensor()
     p = new $a.Position()
     pt = new $a.Point()
@@ -45,7 +48,8 @@ class window.beats.SensorListCollection extends Backbone.Collection
     p.set('point', []) 
     p.get('point').push(pt)
     s.set('display_position', p)
-    s.set('type', type || 'static_point')
+    s.set('static_point')
+    s.set('link', link || null)
     @add(s)
     $a.models.sensors().push(s)
     @_setUpEvents(s)
