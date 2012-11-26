@@ -10,7 +10,8 @@
   
   collections_jasmine_specs = [
     'NodeListCollectionSpec', 'NodeListViewSpec', 'LinkListCollectionSpec',
-    'LinkListViewSpec', 'SensorListCollectionSpec', 'SensorListViewSpec'
+    'LinkListViewSpec', 'SensorListCollectionSpec', 'SensorListViewSpec',
+    'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];
   
   model_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'DemandProfileSpec', 

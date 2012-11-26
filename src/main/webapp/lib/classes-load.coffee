@@ -25,7 +25,8 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
   'Weavingfactors', 'WeavingFactorSet' ]
 
 $a.collections = ['NodeListCollection','NodeListView', 
-  'LinkListCollection', 'LinkListView', 'SensorListCollection', 'SensorListView'
+  'LinkListCollection', 'LinkListView', 'SensorListCollection', 'SensorListView',
+  'ControllerSetCollection', 'ControllerSetView'
 ]
 
 $a.map_views = [

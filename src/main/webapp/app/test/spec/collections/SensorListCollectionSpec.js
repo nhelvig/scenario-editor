@@ -1,6 +1,6 @@
 describe("SensorListCollection", function() {
   $a = window.beats;
-  var models, network, begin, end;
+  var models;
   
   beforeEach(function() {
     spyOn($a.SensorListCollection.prototype, 'addSensor').andCallThrough();

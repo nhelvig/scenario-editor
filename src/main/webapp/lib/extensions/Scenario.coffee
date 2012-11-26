@@ -65,6 +65,12 @@ window.beats.Scenario::sensors = ->
 window.beats.Scenario::set_sensors = (list) ->
   @get('sensorlist')?.set('sensor', list)
 
+window.beats.Scenario::controllers = ->
+  @get('controllerset')?.get('controller') || []
+
+window.beats.Scenario::set_controllers = (list) ->
+  @get('controllerset')?.set('controller', list)
+
 window.beats.Scenario::networklist = -> 
   @get('networklist')
    

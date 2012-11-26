@@ -108,6 +108,8 @@ beforeEach(function() {
     link3 = simpleLink(3, node3, node1);
     density = new window.beats.Density({id: 1});
     idp = new window.beats.InitialDensitySet({density: [density]});
+    c = new window.beats.Controller({id:1});
+    cs = new window.beats.ControllerSet({controller:[c]});
     cp = new window.beats.CapacityProfile({id: 1});
     cps = new window.beats.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
     dp = new window.beats.DemandProfile({id: 1});
@@ -125,6 +127,7 @@ beforeEach(function() {
     scenario = new window.beats.Scenario({
       id: 1,
       networklist: networkList,
+      controllerset: cs,
       initialdensityprofile: idp,
       downstreamboundarycapacityprofileset: cps,
       demandprofileset: dps,
@@ -145,6 +148,7 @@ beforeEach(function() {
       srps: srps,
       cps: cps,
       cp: cp,
+      controller: c,
       dps: dps,
       dp: dp,
       density: density
