@@ -5,7 +5,7 @@ class window.beats.ControllerSetView extends Backbone.Collection
   
   # render all the controllers upon map:init and set up the add and remove event
   # for the collection
-  initialize: (@collection, @network) ->
+  initialize: (@collection) ->
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:init', @render, @)
     @collection.on('add', @addControllerView, @)
@@ -14,7 +14,7 @@ class window.beats.ControllerSetView extends Backbone.Collection
   # create controller view object and render it when a new controller is 
   # added to the map
   addControllerView: (controller) ->
-    mcv = new $a.MapControllerView(controller, @network)
+    mcv = new $a.MapControllerView(controller)
     mcv.render()
     @views.push(mcv)
     mcv
