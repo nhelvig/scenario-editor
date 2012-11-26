@@ -6,7 +6,7 @@ describe("ControllerSetView", function() {
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
     sc = scenarioAndFriends()
-    models = sc.scen.controllers(); //$a.models.controllers();
+    models = sc.scenario.controllers(); 
     spyOn($a.ControllerSetView.prototype, 'addControllerView').andCallThrough();
     spyOn($a.ControllerSetView.prototype, 'render').andCallThrough();
     spyOn($a.ControllerSetView.prototype, 'removeController').andCallThrough();

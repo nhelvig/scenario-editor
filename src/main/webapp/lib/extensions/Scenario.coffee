@@ -44,6 +44,7 @@ window.beats.Scenario::initialize = ->
   @object_with_id = network: {}, node: {}, link: {}, path: {}, sensor: {}
   @set 'settings', new window.beats.Settings
   @set 'networklist', new window.beats.NetworkList
+  @set 'controllerset', new window.beats.ControllerSet
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
 
@@ -70,7 +71,7 @@ window.beats.Scenario::controllers = ->
 
 window.beats.Scenario::set_controllers = (list) ->
   @get('controllerset')?.set('controller', list)
-
+  
 window.beats.Scenario::networklist = -> 
   @get('networklist')
    

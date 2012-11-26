@@ -99,6 +99,17 @@ beforeEach(function() {
     var node1, node2, node3, link1, link2, link3;
     var sensor;
     var srps, cp, cps, dps, dp;
+    p = new window.beats.Position();
+    pt = new window.beats.Point();
+    pt.set(
+          { 
+            'lat':0,
+            'lng':0,
+            'elevation':NaN
+          }
+        );
+    p.set('point', []);
+    p.get('point').push(pt);
     node1 = new window.beats.Node({id: 1});
     node2 = new window.beats.Node({id: 2});
     node3 = new window.beats.Node({id: 3});
@@ -108,8 +119,8 @@ beforeEach(function() {
     link3 = simpleLink(3, node3, node1);
     density = new window.beats.Density({id: 1});
     idp = new window.beats.InitialDensitySet({density: [density]});
-    c = new window.beats.Controller({id:1});
-    cs = new window.beats.ControllerSet({controller:[c]});
+    c = new window.beats.Controller({id:1, display_position:p});
+    cs = new window.beats.ControllerSet();
     cp = new window.beats.CapacityProfile({id: 1});
     cps = new window.beats.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
     dp = new window.beats.DemandProfile({id: 1});
@@ -134,6 +145,7 @@ beforeEach(function() {
       splitratioprofileset: srps
     });
     scenario.set('networklist',networkList);
+    scenario.set('controllerset',cs);
     
     return {
       scenario: scenario,
