@@ -48,6 +48,11 @@ window.beats.Scenario::initialize = ->
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
 
+window.beats.Scenario::createEmptySets = ->
+  @set 'controllerset', new window.beats.ControllerSet if(!@get('controllerset')?)
+  @set 'sensorlist', new window.beats.SensorList if(!@get('sensorlist')?)
+  @set 'signallist', new window.beats.SignalList if(!@get('signallist')?)
+  
 window.beats.Scenario::nodes = -> 
   @network().get('nodelist').get('node')
 
@@ -61,7 +66,7 @@ window.beats.Scenario::set_links = (list) ->
   @network().get('linklist')?.set('link', list)
 
 window.beats.Scenario::sensors = ->
-  @get('sensorlist')?.get('sensor') || []
+  @get('sensorlist')?.get('sensor')
 
 window.beats.Scenario::set_sensors = (list) ->
   @get('sensorlist')?.set('sensor', list)

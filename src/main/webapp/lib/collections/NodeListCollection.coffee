@@ -112,3 +112,5 @@ class window.beats.NodeListCollection extends Backbone.Collection
   #this method clears the collection upon a clear map
   clear: ->
     $a.nodeList = {}
+    $a.broker.off('nodes:add')
+    @off(null, null, @)

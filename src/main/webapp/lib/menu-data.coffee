@@ -108,6 +108,17 @@ $a.sensor_context_menu = [
                     ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
 ]
 
+# Controller Context Menu
+$a.controller_context_menu = [
+  context_menu_item 'Edit this controller', noconfig
+  context_menu_item 'Remove this controller',
+                    ((e) -> $a.controllerSet.trigger("controllers:remove", e.currentTarget.id))
+  context_menu_item 'Select controller link',
+                    ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
+  context_menu_item 'Clear Selection',
+                    ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
+]
+
 # Signal Context Menu
 $a.signal_context_menu = [
   context_menu_item 'Select signal node',

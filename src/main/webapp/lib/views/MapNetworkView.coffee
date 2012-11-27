@@ -64,7 +64,7 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
 
   _drawSensors: (sensors) ->
-    _.each(sensors, (i) ->  new $a.MapSensorView(i))
+    $a.sensorListView = new $a.SensorListView($a.sensorList)
 
   _drawEvents: (events) ->
     _.each(events, (i) ->  new $a.MapEventView(i))

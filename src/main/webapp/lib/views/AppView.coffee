@@ -116,6 +116,7 @@ class window.beats.AppView extends Backbone.View
     catch error
       $a.broker.trigger("app:show_message:error", error)
     $a.models = $a.Scenario.from_xml($(xml).children())
+    $a.models.createEmptySets()
     new $a.MapNetworkView $a.models
 
   clearMap: ->

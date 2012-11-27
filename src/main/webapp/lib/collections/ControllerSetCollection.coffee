@@ -56,3 +56,6 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
   #this method clears the collection upon a clear map
   clear: ->
     $a.controllerSet = {}
+    @remove(@models)
+    $a.broker.off('controllers:add')
+    @off(null, null, @)
