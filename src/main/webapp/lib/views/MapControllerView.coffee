@@ -8,8 +8,10 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
 
   initialize: (model) ->
     super  model
+    @_contextMenu()
     $a.broker.on('map:hide_controller_layer', @hideMarker, @)
     $a.broker.on('map:show_controller_layer', @showMarker, @)
+    @model.on('remove', @removeElement, @)
 
   getIcon: ->
     super MapControllerView.ICON
@@ -35,7 +37,20 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
     else
       @_triggerClearSelectEvents()
       @clearSelected() #Shift key is down and you are deselecting yourself
-
+  
+  # Controllers have their own names as opposed to nodes and sensors 
+  _getTitle: ->
+    title = "Name: #{@model.name()}\n"
+    title += "Latitude: #{@latLng.lat()}\n"
+    title += "Longitude: #{@latLng.lng()}"
+    title
+  
+  # Context Menu
+  # Create the Controller Context Menu. Call the super class method to create the
+  # context menu
+  _contextMenu: () ->
+    super 'controller', $a.controller_context_menu
+  
   # This function triggers the events that make the selected tree and map 
   # items to de-selected
   _triggerClearSelectEvents: () ->

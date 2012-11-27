@@ -5,7 +5,7 @@ class window.beats.SensorListView extends Backbone.Collection
   
   # render all the sensors upon map:init and set up the add and remove event
   # for the collection
-  initialize: (@collection, @network) ->
+  initialize: (@collection) ->
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:init', @render, @)
     @collection.on('add', @addSensorView, @)
@@ -14,7 +14,7 @@ class window.beats.SensorListView extends Backbone.Collection
   # create sensor view object and render it when a new sensor is added to the
   # map
   addSensorView: (sensor) ->
-    msv = new $a.MapSensorView(sensor, @network)
+    msv = new $a.MapSensorView(sensor)
     msv.render()
     @views.push(msv)
     msv

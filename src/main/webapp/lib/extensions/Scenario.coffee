@@ -44,9 +44,15 @@ window.beats.Scenario::initialize = ->
   @object_with_id = network: {}, node: {}, link: {}, path: {}, sensor: {}
   @set 'settings', new window.beats.Settings
   @set 'networklist', new window.beats.NetworkList
+  @set 'controllerset', new window.beats.ControllerSet
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
 
+window.beats.Scenario::createEmptySets = ->
+  @set 'controllerset', new window.beats.ControllerSet if(!@get('controllerset')?)
+  @set 'sensorlist', new window.beats.SensorList if(!@get('sensorlist')?)
+  @set 'signallist', new window.beats.SignalList if(!@get('signallist')?)
+  
 window.beats.Scenario::nodes = -> 
   @network().get('nodelist').get('node')
 
@@ -60,11 +66,17 @@ window.beats.Scenario::set_links = (list) ->
   @network().get('linklist')?.set('link', list)
 
 window.beats.Scenario::sensors = ->
-  @get('sensorlist')?.get('sensor') || []
+  @get('sensorlist')?.get('sensor')
 
 window.beats.Scenario::set_sensors = (list) ->
   @get('sensorlist')?.set('sensor', list)
 
+window.beats.Scenario::controllers = ->
+  @get('controllerset')?.get('controller') || @createController()
+
+window.beats.Scenario::set_controllers = (list) ->
+  @get('controllerset')?.set('controller', list)
+  
 window.beats.Scenario::networklist = -> 
   @get('networklist')
    
@@ -157,3 +169,7 @@ window.beats.Scenario::encode_references = ->
               splitratioprofileset.set('splitratios', [])
             splitratioprofileset.get('splitratios').push(node.get('splitratios'))
       )
+
+window.beats.Scenario::createController = ->
+  @set('controllerset', new window.beats.ControllerSet)
+  @get('controllerset').get('controller')

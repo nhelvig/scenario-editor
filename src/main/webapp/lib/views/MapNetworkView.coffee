@@ -34,6 +34,8 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.linkList = new $a.LinkListCollection(list.get('link'))
     list = $a.models.get('sensorlist')
     $a.sensorList = new $a.SensorListCollection(list?.get('sensor') || [])
+    list = $a.models.get('controllerset')
+    $a.controllerSet = new $a.ControllerSetCollection(list?.get('controller') || [])
   
   _drawScenarioItems: () ->
     if @scenario.get('sensorlist')?
@@ -62,13 +64,13 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
 
   _drawSensors: (sensors) ->
-    _.each(sensors, (i) ->  new $a.MapSensorView(i))
+    $a.sensorListView = new $a.SensorListView($a.sensorList)
 
   _drawEvents: (events) ->
     _.each(events, (i) ->  new $a.MapEventView(i))
 
   _drawControllers: (controllers) ->
-    _.each(controllers, (i) -> new $a.MapControllerView(i))
+    $a.controllerSetView = new $a.ControllerSetView($a.controllerSet)
 
   _drawSignals: (signals) ->
     _.each(signals, (i) ->  new $a.MapSignalView(i) if $a.Util.getLatLng(i)?)

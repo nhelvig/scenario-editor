@@ -52,9 +52,9 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # events it is listening too.
   clear: ->
     $a.linkList = {}
-    $a.broker.off('map:redraw_link')
+    $a.broker.off("map:redraw_link")
     $a.broker.off('links_collection:add')
-    @off('links:remove')
+    @off(null, null, @)
   
   # This is called when a link browser is created in order to return
   # the desired column data for the table.
