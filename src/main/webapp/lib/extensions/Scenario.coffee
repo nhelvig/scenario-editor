@@ -45,6 +45,7 @@ window.beats.Scenario::initialize = ->
   @set 'settings', new window.beats.Settings
   @set 'networklist', new window.beats.NetworkList
   @set 'controllerset', new window.beats.ControllerSet
+  @get('controllerset').set 'controller', new window.beats.Controller
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
 
@@ -67,7 +68,7 @@ window.beats.Scenario::set_sensors = (list) ->
   @get('sensorlist')?.set('sensor', list)
 
 window.beats.Scenario::controllers = ->
-  @get('controllerset')?.get('controller') || []
+  @get('controllerset')?.get('controller') || @createController()
 
 window.beats.Scenario::set_controllers = (list) ->
   @get('controllerset')?.set('controller', list)
@@ -164,3 +165,8 @@ window.beats.Scenario::encode_references = ->
               splitratioprofileset.set('splitratios', [])
             splitratioprofileset.get('splitratios').push(node.get('splitratios'))
       )
+
+window.beats.Scenario::createController= ->
+  @set('controllerset', new window.beats.ControllerSet)
+  @get('controllerset').set('controller', [])
+  @get('controllerset').get('controller')

@@ -46,19 +46,17 @@ describe("ControllerSetCollection", function() {
     it("should create a new controller and add it to the collection", function() {
      var lengthBefore = cColl.length;
      var modelLengthBefore = $a.models.controllers().length;
-     console.log($a.models);
      cColl.addController(new google.maps.LatLng(37,-122));
      expect(lengthBefore + 1).toEqual(cColl.length);
      expect(modelLengthBefore + 1).toEqual($a.models.controllers().length);
     });
   });
-  // describe("removeController ", function() {
-  //   it("should remove it from collection and schema", function() {
-  //    controller = cColl.addController(new google.maps.LatLng(37,-122));
-  //    cColl.add(controller)
-  //    var lengthBefore = cColl.length;
-  //    cColl.removeController(controller.cid);
-  //    expect(lengthBefore - 1).toEqual(cColl.length);
-  //   });
-  // });
+  describe("removeController ", function() {
+    it("should remove it from collection and schema", function() {
+     controller = cColl.addController(new google.maps.LatLng(37,-122));
+     var lengthBefore = cColl.length;
+     cColl.removeController(controller.cid);
+     expect(lengthBefore - 1).toEqual(cColl.length);
+    });
+  });
 });
