@@ -125,3 +125,43 @@ class window.beats.BrowserSensorView extends  window.beats.BrowserView
     $a.sensorList.filter((sensor) ->
             sensor if _.include(selectedIds, sensor.get('id'))
         )
+
+# the browser view for the controllers
+class window.beats.BrowserControllerView extends  window.beats.BrowserView
+  $a = window.beats
+
+  # set up the change event for the controllers. If there is change to a node
+  # we re-populate the table  
+  initialize: ->
+    $a.controllerSet.forEach((controller) => controller.on('change', @rePopulateTable, @))
+    super {elem: 'controller'}
+  
+  # set up editor view for controller selected in the right pane
+  render:() ->
+    @$el.dialog({width:800})
+    super
+  
+  # set up editor view for controller selected in the right pane
+  renderEditor: (models) ->
+    models = [$a.controllerSet.at(0)] unless models?
+    super new $a.EditorControllerView(models: models, elem: @elem, width: 300)
+  
+  # grab the column data for the browser table  
+  _getData: () ->
+    $a.controllerSet.getBrowserColumnData()
+  
+  # set up columns and their titles for the browser
+  _getColumns: () ->
+    columns =  [
+            { "sTitle": "Id","bVisible": false},
+            { "sTitle": "Name","sWidth": "50%"},
+            { "sTitle": "Type","sWidth": "50%"},
+        ]
+  
+  # get the controller models of the items that are selected. Called by BrowserView
+  # in order to get the data for each selected model and render it in the
+  # editor
+  _configureSelectedElems: (selectedIds) ->
+    $a.controllerSet.filter((controller) ->
+            controller if _.include(selectedIds, controller.get('id'))
+        )

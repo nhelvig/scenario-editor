@@ -89,3 +89,10 @@ window.beats.Controller::remove = ->
 window.beats.Controller::add = ->
   window.beats.models.controllers().push(@)  
 
+# Return list of target elements
+window.beats.Controller::get_target_elements = ->
+  @get('targetelements')
+
+# Return list of feedback elements
+window.beats.Controller::get_feedback_elements = ->
+  @get('feedbackelements')

@@ -32,7 +32,7 @@ $a.collections = ['NodeListCollection','NodeListView',
 $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
-  'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
+  'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
   'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView',
   'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 
   'MapEventView', 'MapSignalView', 'MessagePanelView', 'TreeView',

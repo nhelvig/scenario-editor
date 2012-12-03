@@ -36,7 +36,7 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.sensorList = new $a.SensorListCollection(list?.get('sensor') || [])
     list = $a.models.get('controllerset')
     $a.controllerSet = new $a.ControllerSetCollection(list?.get('controller') || [])
-  
+    
   _drawScenarioItems: () ->
     if @scenario.get('sensorlist')?
       @_drawSensors @scenario.get('sensorlist').get('sensor')
