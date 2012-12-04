@@ -112,25 +112,26 @@ class window.beats.TreeView extends Backbone.View
   _createChildNodes: (params, type) ->
     _.each(params.parentList.get(params.modelListName), (e) =>
       targets = @_findTargetElements(e, params.attachId)
-      switch params.type
-        when 'link', 'node' then name = targets[0].road_names()
-        else name = targets[0].get('name')
+      if targets?
+        switch params.type
+          when 'link', 'node' then name = targets[0].road_names()
+          else name = targets[0].get('name')
   
-      # for OD Profiles
-      name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
-      attrs =
-        e: e
-        targets: targets
-        name: name
-        attach: params.attachId
+        # for OD Profiles
+        name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
+        attrs =
+          e: e
+          targets: targets
+          name: name
+          attach: params.attachId
 
-      # We create create link and node tree items by calling their
-      # respective tree view classes All others are just tree items
-      switch params.type
-        when 'link' then new $a.TreeChildItemLinkView(attrs)
-        when 'node' then new $a.TreeChildItemNodeView(attrs)
-        when 'network' then new $a.TreeChildItemNetworkView(attrs)
-        else new $a.TreeChildItemView(attrs)
+        # We create create link and node tree items by calling their
+        # respective tree view classes All others are just tree items
+        switch params.type
+          when 'link' then new $a.TreeChildItemLinkView(attrs)
+          when 'node' then new $a.TreeChildItemNodeView(attrs)
+          when 'network' then new $a.TreeChildItemNetworkView(attrs)
+          else new $a.TreeChildItemView(attrs)
     )
 
   # we case the type in order to appropriately access the node or link

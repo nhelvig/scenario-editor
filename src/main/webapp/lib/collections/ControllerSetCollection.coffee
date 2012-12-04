@@ -45,9 +45,8 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
   # removeController removes this controller from the collection and takes 
   # it off the map.
   removeController: (sID) ->
-    controller = @getByCid(sID) 
+    controller = @getByCid(sID)
     @remove(controller)
-    
   
   # addController creates a controller at the position passed in and adds
   # it to the collection as well as to the models schema. 
@@ -60,10 +59,12 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
     @_setUpEvents(c)
     @add(c)
     c
-    
+  
   # This method sets up the events each sensor should listen too
   _setUpEvents: (controller) ->
+    $a.c = controller
     controller.bind('remove', =>
+                            controller.off('add')
                             controller.remove()
                             @destroy
                       )
