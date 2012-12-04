@@ -14,4 +14,4 @@ all:
 	coffee -o ../app/js/models -c models
 	coffee -o ../app/js/util -c util
 	coffee -o ../app/js/views -c views
-	cp -r ../lib/vendor ../app/js/.
+	cp -r ../lib/vendor ../app/js/vendor/.
