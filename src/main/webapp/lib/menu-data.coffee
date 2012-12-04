@@ -25,7 +25,7 @@ $a.nav_bar_menu_items =
     'Link Browser': (-> $a.BrowserView.start('link'))
     'Path Browser': noconfig
     'Event Browser': noconfig
-    'Controller Browser': noconfig
+    'Controller Browser': (-> $a.BrowserView.start('controller'))
     'Sensor Browser': (-> $a.BrowserView.start('sensor'))
     'Network Properties': noconfig
   Tools:

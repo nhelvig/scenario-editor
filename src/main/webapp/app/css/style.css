@@ -321,5 +321,17 @@ hr {
                               }
 #browser_table_paginate a {margin-right: 0em;}
 
+.editor_table { 
+                width:100%;
+                color: #F58400;
+                font-size:1.1em;
+                padding: 1px;
+                }
+.editor_table th { color: #F58400; }
+.editor_table td { padding: 5px; }
+
+.editor-button { display: inline; float: right; }
+
 /* jQuery UI Hacks */
 .ui-widget-content-select { border: 1px solid #666666; background: #000000; color: #ffffff; }
+

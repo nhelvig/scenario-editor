@@ -6,6 +6,7 @@ window.beats.Network::defaults =
 window.beats.Network::initialize = ->
   @set 'nodelist', new window.beats.NodeList
   @set 'linklist', new window.beats.LinkList
+  @set 'controllerset', new window.beats.ControllerSet
   @set 'description', new window.beats.Description
   @set 'intersectioncache', new window.beats.IntersectionCache
   @set 'position', new window.beats.Position
