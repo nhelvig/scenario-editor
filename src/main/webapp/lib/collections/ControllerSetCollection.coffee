@@ -28,7 +28,8 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
   # removeController removes this controller from the collection and takes 
   # it off the map.
   removeController: (sID) ->
-    controller = @getByCid(sID) 
+    controller = @getByCid(sID)
+    controller.off("add")
     @remove(controller)
     
   
