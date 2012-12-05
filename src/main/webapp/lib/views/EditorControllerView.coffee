@@ -14,6 +14,11 @@ class window.beats.EditorControllerView extends window.beats.EditorView
   # create('controller')
   initialize: (options) ->
     options.templateData = @_getTemplateData(options.models)
+    # create target list of first selected controller
+    list = options.models[0].get_target_elements()
+    @targetList = new $a.ScenarioElementCollection(list?.get('scenarioElement') || [])
+    list = options.models[0].get_feedback_elements()
+    @feedbackList = new $a.ScenarioElementCollection(list?.get('scenarioElement') || [])
     super options
 
   # call the super class to set up the dialog box and then set select boxes
@@ -34,7 +39,7 @@ class window.beats.EditorControllerView extends window.beats.EditorView
   # Draw Table which lists target elements 
   renderTargetTable: ->
     @conTable = $('#controller-target-table').dataTable( {
-        "aaData": [["test", "test"]],
+        "aaData": @_getFeedbackData,
         "aoColumns": [
             { "sTitle": "Id","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
@@ -52,7 +57,7 @@ class window.beats.EditorControllerView extends window.beats.EditorView
   # Draw Controller Feedback Table 
   renderFeedbackTable: ->
     @feedbackTable = $('#controller-feedback-table').dataTable( {
-        "aaData": [["test", "test"]],
+        "aaData": @_getTargetData,
         "aoColumns": [
             { "sTitle": "Id","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
@@ -125,9 +130,13 @@ class window.beats.EditorControllerView extends window.beats.EditorView
     id = id[7...] if id.indexOf("controller") is 0
     id
   
-  # grab the column data for the browser table  
-  _getControllerData: () ->
-    $a.controllerSet.getEditorControllerColumnData
+  # grab the target table column data
+  _getTargetData: () ->
+    @targetList.getEditorColumnData()
+
+  # grab the feedback table column data for the 
+  _getFeedbackData: () ->
+    @feedbackList.getEditorColumnData()
 
   # grab the column data for the browser table  
   _getParameterData: () ->

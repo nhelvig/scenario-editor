@@ -16,7 +16,7 @@ class window.beats.MessagePanelView extends Backbone.View
   show: (message, type) ->
     @$el.addClass "#{type}"
     @$el.html(@template({message: message})) 
-    @$el.fadeIn(2000, () => @$el.fadeOut(2000))
+    @$el.fadeIn(3000, () => @$el.fadeOut(3000))
   
   success: (message) ->
     @show message, 'alert-success'

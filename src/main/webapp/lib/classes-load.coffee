@@ -26,7 +26,7 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
 
 $a.collections = ['NodeListCollection','NodeListView', 
   'LinkListCollection', 'LinkListView', 'SensorListCollection', 'SensorListView',
-  'ControllerSetCollection', 'ControllerSetView'
+  'ControllerSetCollection', 'ControllerSetView', 'ScenarioElementCollection'
 ]
 
 $a.map_views = [
