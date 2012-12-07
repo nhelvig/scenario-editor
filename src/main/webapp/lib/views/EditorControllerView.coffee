@@ -15,10 +15,15 @@ class window.beats.EditorControllerView extends window.beats.EditorView
   initialize: (options) ->
     options.templateData = @_getTemplateData(options.models)
     # create target list of first selected controller
-    list = options.models[0].get_target_elements()
-    @targetList = new $a.ScenarioElementCollection(list?.get('scenarioElement') || [])
-    list = options.models[0].get_feedback_elements()
-    @feedbackList = new $a.ScenarioElementCollection(list?.get('scenarioElement') || [])
+    # first check if a controller is defined
+    controller = options.models[0]
+    target = null
+    feedback = null
+    if controller
+      target = controller.get_target_elements()
+      feedback = controller.get_target_elements()
+    @targetList = new $a.ScenarioElementCollection(target?.get('scenarioElement') || [])
+    @feedbackList = new $a.ScenarioElementCollection(feedback?.get('scenarioElement') || [])
     super options
 
   # call the super class to set up the dialog box and then set select boxes
@@ -150,10 +155,23 @@ class window.beats.EditorControllerView extends window.beats.EditorView
     # Triggers event to minimize the editor or browser window 
     # to bottom of parent window
     $a.broker.trigger('app:minimize-dialog')
+    # clear all selected/highlighted scenario elements 
+    $a.broker.trigger('app:unselect_links')
+
+    # highlight selected scenario elements
+    _.each(@targetElements, (targetElement) ->
+      targetElement.selectScenarioElements()
+    )
+    # turn on event listener which adds elements when selected 
+    # and removed when not selected
+    
 
   # Edit Feedback Scenario Elements
   editFeedback: () ->
     # Triggers event to minimize the editor or browser window 
     # to bottom of parent window
     $a.broker.trigger('app:minimize-dialog')
+    # clear all selected/highlighted scenario elements 
+    $a.broker.trigger('app:unselect_links')
+    # highlight selected scenario elements
     

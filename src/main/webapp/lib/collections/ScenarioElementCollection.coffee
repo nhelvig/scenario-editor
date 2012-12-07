@@ -4,7 +4,6 @@ class window.beats.ScenarioElementCollection extends Backbone.Collection
   model: $a.ScenarioElement
   
   initialize:(@models) ->
-    alert("Initializing Scenario Element Collection")
   
   # An editor (right now just event and controller) calls this to gets the scenario column data for 
   # the target or feedback tables
@@ -12,7 +11,7 @@ class window.beats.ScenarioElementCollection extends Backbone.Collection
     @models.map((scenarioElement) -> 
             [
               scenarioElement.get('id'),
-              get.scenarioElement('type')
+              scenarioElement.get('type')
             ]
     )
 
@@ -26,3 +25,14 @@ class window.beats.ScenarioElementCollection extends Backbone.Collection
   removeScenarioElement: (id, type) ->
     element = _.filter(@models, (scenarioElement) -> scenarioElement.id is id)
     @remove(element)
+
+  # Selects (highlights) all scenario elements in collection on map
+  selectScenarioElements: () ->
+    # for each scenario element in the collection, get corresponding element's cid
+    # and trigger select_item event which will highlight it
+    @models.forEach((scenarioElement) ->
+      elementModel = null
+      switch scenarioElement.get('type')
+        when "link" then elementModel = $a.linkList.get(scenarioElement.get('id'))
+      $a.broker.trigger("map:select_item:#{elementModel.cid}")
+    )
