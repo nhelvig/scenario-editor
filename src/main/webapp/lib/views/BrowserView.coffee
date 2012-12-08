@@ -8,7 +8,8 @@ class window.beats.BrowserView extends Backbone.View
       when 'node' then new window.beats.BrowserNodeView()
       when 'link' then new window.beats.BrowserLinkView()
       when 'sensor' then new window.beats.BrowserSensorView()
-  
+      when 'controller' then new window.beats.BrowserControllerView()
+
   # The options hash contains the type of dialog(eg. 'node'), the model
   # associated with the dialoag, and templateData
   # used to inject into the html template
@@ -19,6 +20,10 @@ class window.beats.BrowserView extends Backbone.View
     @$el.attr 'id', "browser"
     @template = _.template($("#browser-window-template").html())
     @$el.html(@template())  
+    # Events Broker used to minimize or maximize browser box 
+    # based on triggered events
+    $a.broker.on('app:minimize-dialog', @minimize, @)
+    $a.broker.on('app:maximize-dialog', @maximize, @)
     @render()
 
   # render the dialog box. The calling function has responsability for appending
@@ -132,3 +137,35 @@ class window.beats.BrowserView extends Backbone.View
             self.dTable.fnUpdate(self.data[rowIndex],rowIndex)
           rowIndex++
     )
+
+  # Minimize the editor or browser window to bottom of parent window
+  minimize: () ->
+    #TODO: hard code these default dialog box settings/sizes within 
+    # the browser or editor class?
+    $('.ui-dialog').animate
+      height: '35px',
+      width: '200px',
+      top: $('#map_canvas').height() - 50
+
+    # Save all events on the Browser Dialog Box
+    @dialogEvents = $('.ui-dialog').data('events')
+    # Unbind all events which allow for dialog box to be resized or moved
+    $('.ui-dialog').unbind()
+    # Add on-click event to browser dialog header to maximize window
+    $('.ui-dialog-titlebar').on('click', ->
+                                  $a.broker.trigger('app:maximize-dialog'))
+    # Display message to 
+    $a.broker.trigger('app:show_message:info', "Select Scenario Elements... Click Editor Box when done." )
+
+  # Maximize the editor or browser window to orginal location
+  maximize: () ->
+    #TODO: hard code these default dialog box settings/sizes
+    # within the browser or editor class?
+    $('.ui-dialog').animate
+      height: '250px',
+      width: '800px',
+      top: '128px'
+
+    # Re-enable all browser dialog events to what it was before it was minimized
+    $('.ui-dialog').data('events', @dialogEvents)
+  

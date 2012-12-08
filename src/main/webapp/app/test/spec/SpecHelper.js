@@ -120,7 +120,7 @@ beforeEach(function() {
     density = new window.beats.Density({id: 1});
     idp = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});
-    cs = new window.beats.ControllerSet();
+    cs = new window.beats.ControllerSet({controller:[c]});
     cp = new window.beats.CapacityProfile({id: 1});
     cps = new window.beats.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
     dp = new window.beats.DemandProfile({id: 1});

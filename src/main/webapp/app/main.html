@@ -332,17 +332,73 @@
         </div>
     </script>
     <script type="text/template" id="browser-window-template">
-     <div id="wrapper">
+      <div id="wrapper">
         <div id="left">
           <table cellpadding="0" cellspacing="0" border="0" id="browser_table"></table>
         </div>
         <div id="right">
           <div id="resize">
-            <div id="handle"></div
+            <div id="handle"></div>
           </div>
         </div>
       </div>
-  </div>
+    </script>
+    <script type="text/template" id="controller-editor-dialog-template">
+      <ul>
+        <li><a href="#tabs-controller-1">Controller</a></li>
+        <li><a href="#tabs-controller-2">Target</a></li>
+        <li><a href="#tabs-controller-3">Feedback</a></li>
+        <li><a href="#tabs-controller-4">Parameters</a></li>
+      </ul>
+      <div id="tabs-controller-1">
+        <form>
+          <fieldset>
+            <label for="controller-type">Type</label>
+            <select id="controller_type" name ="controller-type" class="ui-widget-content ui-corner-all">
+              <option value=""></option>
+            </select><br/>
+            <label>Refresh Rate</label>
+            <label for="controller-hour" class="time">h</label>              
+            <input type="number"  id="controller_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dt['h']}}" />
+
+            <label for="controller-minute" class="time">: m</label>
+            <input type="number" id="controller_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['m']}}" />
+              
+            <label for="controller-second" class="time">:: s</label>
+            <input type="number" id="controller_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dt['s']}}" />
+          </fieldset>
+        </form>
+      </div>
+      <div id="tabs-controller-2">
+        <form>
+          <fieldset>
+            <label for="controller-target-table">
+              Target List<button id="target-editor" class="editor-button">Edit</button>
+            </label>
+            <table id="controller-target-table" class="editor_table" cellpadding="0" cellspacing="0" border="0">
+            </table>
+          </fieldset>
+        </form>      
+      </div>
+      <div id="tabs-controller-3">
+        <form>
+          <fieldset>
+            <label for="controller-feedback-table">
+              Feedback List<button id="feedback-editor" class="editor-button">Edit</button>
+            </label>
+            <table id="controller-feedback-table" class="editor_table" cellpadding="0" cellspacing="0" border="0">
+            </table>
+          </fieldset>
+        </form>      
+      </div>
+      <div id="tabs-controller-4">
+        <form>
+          <fieldset>
+            <table id="controller-parameter-table" class="editor_table" cellpadding="0" cellspacing="0" border="0">
+            </table>
+          </fieldset>
+        </form>
+      </div>
     </script>
   </body>
 </html>

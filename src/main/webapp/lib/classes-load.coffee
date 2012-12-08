@@ -26,13 +26,13 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
 
 $a.collections = ['NodeListCollection','NodeListView', 
   'LinkListCollection', 'LinkListView', 'SensorListCollection', 'SensorListView',
-  'ControllerSetCollection', 'ControllerSetView'
+  'ControllerSetCollection', 'ControllerSetView', 'ScenarioElementCollection'
 ]
 
 $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
-  'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
+  'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
   'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView',
   'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 
   'MapEventView', 'MapSignalView', 'MessagePanelView', 'TreeView',

@@ -9,7 +9,8 @@ class window.beats.EditorView extends Backbone.View
     @elem = @options.elem
     @models = @options.models
     title  = $a.Util.toStandardCasing(@elem)  # eg. node -> Node
-    @$el.attr 'title', "#{title} Editor: #{@models[0].road_names()}"
+    subtitle = if (typeof @models[0].road_names == 'function') then @models[0].road_names() else ""
+    @$el.attr 'title', "#{title} Editor: #{subtitle}"
     @$el.attr 'id', "#{@elem}-dialog-form-#{@models[0].cid}"
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(options.templateData))
@@ -23,4 +24,19 @@ class window.beats.EditorView extends Backbone.View
       modal: false,
       close: =>
         @$el.remove()
+    $a.broker.on('click', @minimize, @)
+    @ 
+
+  # Return the editor view DOM element
+  getEditorElement: ->
+    @$el
+
+    # Remove on-click event from browser header to maximize window
+    @$el.dialog.off('click')
+
+  # Called after edit button on target or feedback scenario element
+  # tables has been clicked - Allows for scenario elements to be
+  # added or deleted
+  editScenarioElements: () ->
+    @minimize()
     @

@@ -1,4 +1,4 @@
-describe("ControllerSetCollection", function() {
+  describe("ControllerSetCollection", function() {
   $a = window.beats;
   var models, cColl;
   
@@ -13,7 +13,6 @@ describe("ControllerSetCollection", function() {
     it("sets models to a collection of controllers", function() {
       expect(cColl.models).not.toBeNull();
     });
-    
     it("sets all its models selected attribute to false", function() {
       mod = cColl.models;
       arrSel = mod.filter(function(sens){ return sens.selected() == false});
@@ -24,7 +23,7 @@ describe("ControllerSetCollection", function() {
       expect($a.ControllerSetCollection.prototype.addController).toHaveBeenCalled();
     });
     it("should be watching removeController", function() {
-      cColl.trigger("controllers:remove", 1);
+      cColl.trigger("controllers:remove", cColl.models[0].cid);
       expect($a.ControllerSetCollection.prototype.removeController).toHaveBeenCalled();
     });
   });

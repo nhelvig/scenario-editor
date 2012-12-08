@@ -14,10 +14,27 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
   getBrowserColumnData: () ->
     @models.map((controller) -> 
             [
-
+              controller.get('id'),
+              controller.get('name'), 
+              controller.get('type')
             ]
     )
-  
+
+  # The controller target editor calls this to get the table column
+  # data for every target element of a particular controller
+  getEditorTargetColumnData: (controllers) ->
+    _.each(controllers, (controller) ->
+      controller.get_target_elements()
+      # Need to find way to add all target elements for selected controllers
+      # to scenario elements
+      #@models.map((controller.get_target_elements()) -> 
+      #        [
+      #          scenarioElement.get_target_elements.get('id'),
+      #          scenarioElement.get_target_elements.get('type')
+      #        ]
+      #)
+    )
+
   # this sets all the passed in controllers' selected field to true. It syncs
   # the map controllers selected with selected controllers in the table
   setSelected: (controllers) ->
@@ -28,9 +45,8 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
   # removeController removes this controller from the collection and takes 
   # it off the map.
   removeController: (sID) ->
-    controller = @getByCid(sID) 
+    controller = @getByCid(sID)
     @remove(controller)
-    
   
   # addController creates a controller at the position passed in and adds
   # it to the collection as well as to the models schema. 
@@ -43,10 +59,12 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
     @_setUpEvents(c)
     @add(c)
     c
-    
+  
   # This method sets up the events each sensor should listen too
   _setUpEvents: (controller) ->
+    $a.c = controller
     controller.bind('remove', =>
+                            controller.off('add')
                             controller.remove()
                             @destroy
                       )
