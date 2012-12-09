@@ -33,7 +33,6 @@ class window.beats.SensorListCollection extends Backbone.Collection
   removeSensor: (sID) ->
     sensor = @getByCid(sID) 
     @remove(sensor)
-    
   
   # addSensor creates a sensor st the position passed in and adds
   # it to the collection as well as to the models schema. 

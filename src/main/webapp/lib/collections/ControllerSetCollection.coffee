@@ -1,4 +1,4 @@
-# This class is used to manage our sensor models.
+# This class is used to manage our controller models.
 class window.beats.ControllerSetCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Controller
@@ -60,9 +60,8 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
     @add(c)
     c
   
-  # This method sets up the events each sensor should listen too
+  # This method sets up the events each controller should listen too
   _setUpEvents: (controller) ->
-    $a.c = controller
     controller.bind('remove', =>
                             controller.off('add')
                             controller.remove()

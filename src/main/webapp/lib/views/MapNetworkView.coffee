@@ -36,16 +36,14 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.sensorList = new $a.SensorListCollection(list?.get('sensor') || [])
     list = $a.models.get('controllerset')
     $a.controllerSet = new $a.ControllerSetCollection(list?.get('controller') || [])
+    list = $a.models.get('eventset')
+    $a.eventSet = new $a.EventSetCollection(list?.get('event') || [])
     
   _drawScenarioItems: () ->
-    if @scenario.get('sensorlist')?
-      @_drawSensors @scenario.get('sensorlist').get('sensor')
-    if @scenario.get('controllerset')?
-      @_drawControllers @scenario.get('controllerset').get('controller')
-    if @scenario.get('eventset')?
-      @_drawEvents  @scenario.get('eventset').get('event')
-    if @scenario.get('signallist')?
-      @_drawSignals @scenario.get('signallist').get('signal')
+    @_drawSensors()
+    @_drawControllers()
+    @_drawEvents()
+    #@_drawSignals()
     
   # _drawNetwork is organizing function calling all the methods that
   # instantiate the various elements of the network
@@ -63,13 +61,13 @@ class window.beats.MapNetworkView extends Backbone.View
   _drawNodes: (nodes, network) ->
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
 
-  _drawSensors: (sensors) ->
+  _drawSensors: ->
     $a.sensorListView = new $a.SensorListView($a.sensorList)
 
-  _drawEvents: (events) ->
-    _.each(events, (i) ->  new $a.MapEventView(i))
+  _drawEvents: ->
+    $a.eventListView = new $a.EventSetView($a.eventSet)
 
-  _drawControllers: (controllers) ->
+  _drawControllers: ->
     $a.controllerSetView = new $a.ControllerSetView($a.controllerSet)
 
   _drawSignals: (signals) ->

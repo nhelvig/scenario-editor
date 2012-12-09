@@ -112,7 +112,7 @@ class window.beats.TreeView extends Backbone.View
   _createChildNodes: (params, type) ->
     _.each(params.parentList.get(params.modelListName), (e) =>
       targets = @_findTargetElements(e, params.attachId)
-      if targets?
+      if targets? and !(targets.length is 0)
         switch params.type
           when 'link', 'node' then name = targets[0].road_names()
           else name = targets[0].get('name')
@@ -152,7 +152,10 @@ class window.beats.TreeView extends Backbone.View
       when 'split-ratio-profiles', 'signals'
         [element.get('node')]
       when 'sensors'
-        [element.get('link')]
+        arr = []
+        if element.get('link')? 
+          arr = [element.get('link')]
+        arr
   
   toggleTree: (display) =>
     # colled from collapse button rather then open/close scenario

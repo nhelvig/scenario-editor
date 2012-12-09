@@ -45,14 +45,10 @@ window.beats.Scenario::initialize = ->
   @set 'settings', new window.beats.Settings
   @set 'networklist', new window.beats.NetworkList
   @set 'controllerset', new window.beats.ControllerSet
+  @set 'eventset', new window.beats.EventSet
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
 
-window.beats.Scenario::createEmptySets = ->
-  @set 'controllerset', new window.beats.ControllerSet if(!@get('controllerset')?)
-  @set 'sensorlist', new window.beats.SensorList if(!@get('sensorlist')?)
-  @set 'signallist', new window.beats.SignalList if(!@get('signallist')?)
-  
 window.beats.Scenario::nodes = -> 
   @network().get('nodelist').get('node')
 
@@ -76,7 +72,13 @@ window.beats.Scenario::controllers = ->
 
 window.beats.Scenario::set_controllers = (list) ->
   @get('controllerset')?.set('controller', list)
-  
+
+window.beats.Scenario::events = ->
+  @get('eventset')?.get('event') || @createEvent()
+
+window.beats.Scenario::set_events = (list) ->
+  @get('eventset')?.set('event', list)
+
 window.beats.Scenario::networklist = -> 
   @get('networklist')
    
@@ -173,3 +175,7 @@ window.beats.Scenario::encode_references = ->
 window.beats.Scenario::createController = ->
   @set('controllerset', new window.beats.ControllerSet)
   @get('controllerset').get('controller')
+
+window.beats.Scenario::createEvent = ->
+  @set('eventset', new window.beats.EventSet)
+  @get('eventset').get('event')

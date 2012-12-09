@@ -89,7 +89,6 @@ class window.beats.MapLinkView extends Backbone.View
     contextMenuOptions.class = 'context_menu'
     contextMenuOptions.id = "context-menu-link-#{@model.cid}"
     contextMenu = new $a.ContextMenuView(contextMenuOptions)
-    $a.contextMenu = contextMenu
     google.maps.event.addListener(@link, 'rightclick', (mouseEvent) =>
       contextMenu.show mouseEvent.latLng
     )

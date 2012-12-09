@@ -82,7 +82,7 @@ $a.link_context_menu = [
                     ((e) -> $a.linkList.trigger("links:remove", e.currentTarget.id))
   {className:'context_menu_separator'}
   context_menu_item 'Add sensor to this link',
-                    ((e) -> $a.linkList.trigger("links:add_sensor", $a.contextMenu.position, e.currentTarget.id))
+                    ((e) -> $a.linkList.trigger("links:add_sensor", e.currentTarget.id))
   context_menu_item 'Add controller to this link',
                     ((e) -> $a.linkList.trigger("links:add_controller", e.currentTarget.id))
   context_menu_item 'Add event to this link',

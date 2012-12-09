@@ -11,6 +11,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     @on('links:add_sensor', @addSensorToLink, @)
+    @on('links:add_controller', @addControllerToLink, @)
+    @on('links:add_event', @addEventToLink, @)
     @on('links:remove', @removeLink, @)
     @forEach((link) =>  @_setUpEvents(link))
   
@@ -91,6 +93,19 @@ class window.beats.LinkListCollection extends Backbone.Collection
     eNode.position().on('change',(=> @reDrawLink(link)), @)
 
   # This method adds a sensor to the link id passed in
-  addSensorToLink: (pos, cid) ->
+  addSensorToLink: (cid) ->
     link =  @getByCid(cid)
+    pos = link.get('contextMenu').position
     $a.broker.trigger("sensors:add", pos, link)
+    
+  # This method adds a controller to the link id passed in
+  addControllerToLink: (cid) ->
+    link =  @getByCid(cid)
+    pos = link.get('contextMenu').position
+    $a.broker.trigger("controllers:add", pos, link)
+    
+  # This method adds an event to the link id passed in
+  addEventToLink: (cid) ->
+    link =  @getByCid(cid)
+    pos = link.get('contextMenu').position
+    $a.broker.trigger("events:add", pos, link)

@@ -8,10 +8,9 @@ window.beats.Controller::initialize = ->
 window.beats.Controller::selected = -> @get('selected')
 window.beats.Controller::name = -> @get('name')
 
-
 window.beats.Controller::from_position = (position, link) ->
   c = new window.beats.Controller
-  p = new window.beats.Position()
+  p = new window.beats.Display_position()
   pt = new window.beats.Point()
   pt.set(
           { 
@@ -25,12 +24,13 @@ window.beats.Controller::from_position = (position, link) ->
   c.set('display_position', p)
   c.set('type', '')
   if link?
-    s = new new window.beats.ScenarioElement({type:'link', id:link.ident()})
-    t = new window.beats.TargetElements({scenarioElement: [s]})
-    c.set('targetElements', t)
+    s = new window.beats.ScenarioElement({type:'link', id:link.ident()})
+    t = new window.beats.TargetElements({scenarioelement: [s]})
+    c.set('targetelements', t)
   c
 
 window.beats.Controller::display_point = ->
+  display_position = @get('display_position')
   if(not @has('display_position'))
     display_position = new $a.Display_position()
     @set 'display_position', display_position
@@ -54,25 +54,25 @@ window.beats.Controller::display_point = ->
       p.set 'lat', 0
       p.set 'lng', 0
 
-    display_position.get('point')[0]
+  display_position.get('point')[0]
 
 window.beats.Controller::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set 'id', @get('id')
     @set('targetreferences',[]);
-    _.each(@get('targetelements').get('scenarioelement'), (e) =>
-      switch e.get('type')
-        when 'link' then @get('targetreferences').push object_with_id.link[e.id]
-        when 'node' then @get('targetreferences').push object_with_id.node[e.id]
-        when 'controller' then @get('targetreferences').push object_with_id.controller[e.id]
-        when 'sensor' then @get('targetreferences').push object_with_id.sensor[e.id]
-        when 'event' then @get('targetreferences').push object_with_id.event[e.id]
-        when 'signal' then @get('targetreferences').push object_with_id.signal[e.id]
-    )
+    if @get('targetelements')?
+      _.each(@get('targetelements').get('scenarioelement'), (e) =>
+        switch e.get('type')
+          when 'link' then @get('targetreferences').push object_with_id.link[e.id]
+          when 'node' then @get('targetreferences').push object_with_id.node[e.id]
+          when 'controller' then @get('targetreferences').push object_with_id.controller[e.id]
+          when 'sensor' then @get('targetreferences').push object_with_id.sensor[e.id]
+          when 'event' then @get('targetreferences').push object_with_id.event[e.id]
+          when 'signal' then @get('targetreferences').push object_with_id.signal[e.id]
+      )
 
     # if @get('targetreferences').length == 0
     #    throw "Event must have target elements defined"
-
 
 window.beats.Controller::encode_references = ->
   # TODO : do we to encode references? All the data will be written back via 
@@ -82,7 +82,7 @@ window.beats.Controller::encode_references = ->
   # @set('network_id', @get('network').id) if @has('network')
 
 window.beats.Controller::remove = ->
-  controllers = window.beats.models.controllers()
+  controllers = window.beats.models.controllers() 
   controllers = _.reject(controllers, (c) => c is @)
   window.beats.models.set_controllers(controllers)
 
@@ -96,3 +96,6 @@ window.beats.Controller::get_target_elements = ->
 # Return list of feedback elements
 window.beats.Controller::get_feedback_elements = ->
   @get('feedbackelements')
+  
+window.beats.Controller::updatePosition = (pos) ->
+  @display_point().set({'lat':pos.lat(), 'lng':pos.lng()})
