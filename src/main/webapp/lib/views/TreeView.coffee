@@ -152,7 +152,10 @@ class window.beats.TreeView extends Backbone.View
       when 'split-ratio-profiles', 'signals'
         [element.get('node')]
       when 'sensors'
-        [element.get('link')]
+        arr = []
+        if element.get('link')? 
+          arr = [element.get('link')]
+        arr
   
   toggleTree: (display) =>
     # colled from collapse button rather then open/close scenario
