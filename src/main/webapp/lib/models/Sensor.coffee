@@ -10,7 +10,7 @@ class window.beats.Sensor extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Sensor()
-    display_position = xml.children('display_position')
+    display_position = xml.children('position')
     obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
     link_reference = xml.children('link_reference')
     obj.set('link_reference', $a.Link_reference.from_xml2(link_reference, deferred, object_with_id))

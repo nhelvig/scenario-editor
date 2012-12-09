@@ -12,7 +12,7 @@ class window.beats.Event extends Backbone.Model
     obj = new window.beats.Event()
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
-    display_position = xml.children('display_position')
+    display_position = xml.children('position')
     obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
     targetElements = xml.children('targetElements')
     obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id))

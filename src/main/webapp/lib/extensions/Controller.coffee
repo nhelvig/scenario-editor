@@ -30,6 +30,7 @@ window.beats.Controller::from_position = (position, link) ->
   c
 
 window.beats.Controller::display_point = ->
+  display_position = @get('display_position')
   if(not @has('display_position'))
     display_position = new $a.Display_position()
     @set 'display_position', display_position
@@ -53,25 +54,25 @@ window.beats.Controller::display_point = ->
       p.set 'lat', 0
       p.set 'lng', 0
 
-    display_position.get('point')[0]
+  display_position.get('point')[0]
 
 window.beats.Controller::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set 'id', @get('id')
     @set('targetreferences',[]);
-    _.each(@get('targetelements').get('scenarioelement'), (e) =>
-      switch e.get('type')
-        when 'link' then @get('targetreferences').push object_with_id.link[e.id]
-        when 'node' then @get('targetreferences').push object_with_id.node[e.id]
-        when 'controller' then @get('targetreferences').push object_with_id.controller[e.id]
-        when 'sensor' then @get('targetreferences').push object_with_id.sensor[e.id]
-        when 'event' then @get('targetreferences').push object_with_id.event[e.id]
-        when 'signal' then @get('targetreferences').push object_with_id.signal[e.id]
-    )
+    if @get('targetelements')?
+      _.each(@get('targetelements').get('scenarioelement'), (e) =>
+        switch e.get('type')
+          when 'link' then @get('targetreferences').push object_with_id.link[e.id]
+          when 'node' then @get('targetreferences').push object_with_id.node[e.id]
+          when 'controller' then @get('targetreferences').push object_with_id.controller[e.id]
+          when 'sensor' then @get('targetreferences').push object_with_id.sensor[e.id]
+          when 'event' then @get('targetreferences').push object_with_id.event[e.id]
+          when 'signal' then @get('targetreferences').push object_with_id.signal[e.id]
+      )
 
     # if @get('targetreferences').length == 0
     #    throw "Event must have target elements defined"
-
 
 window.beats.Controller::encode_references = ->
   # TODO : do we to encode references? All the data will be written back via 
@@ -95,3 +96,6 @@ window.beats.Controller::get_target_elements = ->
 # Return list of feedback elements
 window.beats.Controller::get_feedback_elements = ->
   @get('feedbackelements')
+  
+window.beats.Controller::updatePosition = (pos) ->
+  @display_point().set({'lat':pos.lat(), 'lng':pos.lng()})

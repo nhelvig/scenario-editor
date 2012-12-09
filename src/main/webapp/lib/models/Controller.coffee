@@ -10,7 +10,7 @@ class window.beats.Controller extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Controller()
-    display_position = xml.children('display_position')
+    display_position = xml.children('position')
     obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
     targetElements = xml.children('targetElements')
     obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id))
