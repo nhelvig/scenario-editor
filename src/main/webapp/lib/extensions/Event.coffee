@@ -19,8 +19,8 @@ window.beats.Event::from_position = (position, link) ->
   e.set('type', '')
   if link?
     s = new window.beats.ScenarioElement({type:'link', id:link.ident()})
-    t = new window.beats.TargetElements({scenarioElement: [s]})
-    e.set('targetElements', t)
+    t = new window.beats.TargetElements({scenarioelement: [s]})
+    e.set('targetelements', t)
   e
 
 window.beats.Event::display_point = ->
@@ -82,9 +82,6 @@ window.beats.Event::remove = ->
   events = window.beats.models.events()
   events = _.reject(events, (e) => e is @)
   window.beats.models.set_events(events)
-
-window.beats.Event::add = ->
-  window.beats.models.events().push(@)
 
 window.beats.Event::updatePosition = (pos) ->
   @display_point().set({'lat':pos.lat(), 'lng':pos.lng()})

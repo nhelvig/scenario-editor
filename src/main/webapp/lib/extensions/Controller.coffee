@@ -25,8 +25,8 @@ window.beats.Controller::from_position = (position, link) ->
   c.set('type', '')
   if link?
     s = new window.beats.ScenarioElement({type:'link', id:link.ident()})
-    t = new window.beats.TargetElements({scenarioElement: [s]})
-    c.set('targetElements', t)
+    t = new window.beats.TargetElements({scenarioelement: [s]})
+    c.set('targetelements', t)
   c
 
 window.beats.Controller::display_point = ->
