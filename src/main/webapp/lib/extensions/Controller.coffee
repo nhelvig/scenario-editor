@@ -10,7 +10,7 @@ window.beats.Controller::name = -> @get('name')
 
 window.beats.Controller::from_position = (position, link) ->
   c = new window.beats.Controller
-  p = new window.beats.Position()
+  p = new window.beats.Display_position()
   pt = new window.beats.Point()
   pt.set(
           { 

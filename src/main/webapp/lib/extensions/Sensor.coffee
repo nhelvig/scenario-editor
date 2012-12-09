@@ -41,11 +41,11 @@ window.beats.Sensor::set_display_position = (pointField, val) ->
   @get('display_position').get('point')[0].set(pointField, val)
 
 window.beats.Sensor::initialize = ->
-  @set('display_position', new window.beats.Position)
+  @set('display_position', new window.beats.Display_position)
 
 window.beats.Sensor::from_position = (position, link) ->
   s = new window.beats.Sensor
-  p = new window.beats.Position()
+  p = new window.beats.Display_position()
   pt = new window.beats.Point()
   pt.set(
           { 
