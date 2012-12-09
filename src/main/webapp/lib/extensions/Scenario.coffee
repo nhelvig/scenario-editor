@@ -76,7 +76,13 @@ window.beats.Scenario::controllers = ->
 
 window.beats.Scenario::set_controllers = (list) ->
   @get('controllerset')?.set('controller', list)
-  
+
+window.beats.Scenario::events = ->
+  @get('eventset')?.get('event') || @createEvent()
+
+window.beats.Scenario::set_events = (list) ->
+  @get('eventset')?.set('event', list)
+
 window.beats.Scenario::networklist = -> 
   @get('networklist')
    
@@ -173,3 +179,7 @@ window.beats.Scenario::encode_references = ->
 window.beats.Scenario::createController = ->
   @set('controllerset', new window.beats.ControllerSet)
   @get('controllerset').get('controller')
+
+window.beats.Scenario::createEvent = ->
+  @set('eventset', new window.beats.EventSet)
+  @get('eventset').get('event')

@@ -24,9 +24,12 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
   'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
   'Weavingfactors', 'WeavingFactorSet' ]
 
-$a.collections = ['NodeListCollection','NodeListView', 
-  'LinkListCollection', 'LinkListView', 'SensorListCollection', 'SensorListView',
-  'ControllerSetCollection', 'ControllerSetView', 'ScenarioElementCollection'
+$a.collections = ['LinkListCollection', 'LinkListView',
+  'ControllerSetCollection', 'ControllerSetView', 
+  'EventSetCollection', 'EventSetView',
+  'NodeListCollection','NodeListView', 
+  'SensorListCollection', 'SensorListView',
+  'ScenarioElementCollection'
 ]
 
 $a.map_views = [

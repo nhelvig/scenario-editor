@@ -1,3 +1,28 @@
+
+window.beats.Event::selected = -> @get('selected')
+window.beats.Event::name = -> @get('name')
+
+window.beats.Event::from_position = (position, link) ->
+  e = new window.beats.Event
+  p = new window.beats.Position()
+  pt = new window.beats.Point()
+  pt.set(
+          { 
+            'lat':position.lat(),
+            'lng':position.lng(),
+            'elevation':NaN
+          }
+        )
+  p.set('point', []) 
+  p.get('point').push(pt)
+  e.set('display_position', p)
+  e.set('type', '')
+  if link?
+    s = new window.beats.ScenarioElement({type:'link', id:link.ident()})
+    t = new window.beats.TargetElements({scenarioElement: [s]})
+    e.set('targetElements', t)
+  e
+
 window.beats.Event::display_point = ->
   display_position = @get('display_position')
   if not display_position
@@ -44,3 +69,18 @@ window.beats.Event::encode_references = ->
   # @set('node_id', @get('node').id) if @has('node')
   # @set('link_id', @get('link').id) if @has('link')
   # @set('network_id', @get('network').id) if @has('network')
+  
+# Return list of target elements
+window.beats.Event::get_target_elements = ->
+  @get('targetelements')
+
+window.beats.Event::add = ->
+  window.beats.models.events().push(@)  
+
+window.beats.Event::remove = ->
+  events = window.beats.models.events()
+  events = _.reject(events, (e) => e is @)
+  window.beats.models.set_events(events)
+
+window.beats.Event::add = ->
+  window.beats.models.events().push(@)

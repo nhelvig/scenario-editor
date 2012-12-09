@@ -106,6 +106,8 @@ class window.beats.AppView extends Backbone.View
     $a.sensorListView = new $a.SensorListView($a.sensorList, network)
     $a.controllerSet = new $a.ControllerSetCollection([])
     $a.controllerSetView = new $a.ControllerSetView($a.controllerSet, network)
+    $a.eventSet = new $a.EventSetCollection([])
+    $a.eventSetView = new $a.EventSetView($a.eventSet, network)
   
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView
@@ -120,7 +122,7 @@ class window.beats.AppView extends Backbone.View
     new $a.MapNetworkView $a.models
 
   clearMap: ->
-    $a.models = {}
+    #$a.models = {}
     $a.broker.trigger('map:toggle_tree', false)
     $a.broker.trigger('app:tree_clear')
     $a.broker.trigger('app:show_message:success', 'Cleared map')

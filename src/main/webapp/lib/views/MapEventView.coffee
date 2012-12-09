@@ -21,7 +21,14 @@ class window.beats.MapEventView extends window.beats.MapMarkerView
     $a.broker.off('map:hide_event_layer')
     $a.broker.off('map:show_event_layer')
     super
-    
+  
+  # Events have their own names as opposed to nodes and sensors 
+  _getTitle: ->
+    title = "Name: #{@model.name()}\n"
+    title += "Latitude: #{@latLng.lat()}\n"
+    title += "Longitude: #{@latLng.lng()}"
+    title
+     
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting 
   # or de-selecting and triggers appropriately 

@@ -8,7 +8,6 @@ window.beats.Controller::initialize = ->
 window.beats.Controller::selected = -> @get('selected')
 window.beats.Controller::name = -> @get('name')
 
-
 window.beats.Controller::from_position = (position, link) ->
   c = new window.beats.Controller
   p = new window.beats.Position()
@@ -25,7 +24,7 @@ window.beats.Controller::from_position = (position, link) ->
   c.set('display_position', p)
   c.set('type', '')
   if link?
-    s = new new window.beats.ScenarioElement({type:'link', id:link.ident()})
+    s = new window.beats.ScenarioElement({type:'link', id:link.ident()})
     t = new window.beats.TargetElements({scenarioElement: [s]})
     c.set('targetElements', t)
   c
@@ -82,7 +81,7 @@ window.beats.Controller::encode_references = ->
   # @set('network_id', @get('network').id) if @has('network')
 
 window.beats.Controller::remove = ->
-  controllers = window.beats.models.controllers()
+  controllers = window.beats.models.controllers() 
   controllers = _.reject(controllers, (c) => c is @)
   window.beats.models.set_controllers(controllers)
 
