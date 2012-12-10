@@ -8,6 +8,7 @@ class window.beats.MapEventView extends window.beats.MapMarkerView
 
   initialize: (model) ->
     super model
+    @_contextMenu()
     $a.broker.on('map:hide_event_layer', @hideMarker, @)
     $a.broker.on('map:show_event_layer', @showMarker, @)
 
@@ -48,6 +49,12 @@ class window.beats.MapEventView extends window.beats.MapMarkerView
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
 
+  # Context Menu
+  # Create the Event Context Menu. Call the super class method to create the
+  # context menu
+  _contextMenu: () ->
+    super 'event', $a.event_context_menu
+  
   # This method swaps the icon for the selected icon
   makeSelected: () ->
     _.each(@model.get('targetreferences'), (link) => 
