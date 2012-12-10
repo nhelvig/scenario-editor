@@ -8,7 +8,7 @@ class window.beats.ScenarioElementCollection extends Backbone.Collection
   # An editor (right now just event and controller) calls this to gets the scenario column data for 
   # the target or feedback tables
   getEditorColumnData: () ->
-    @models.map((scenarioElement) -> 
+    @models.map((scenarioElement) ->
             [
               scenarioElement.get('id'),
               scenarioElement.get('type')
@@ -36,3 +36,10 @@ class window.beats.ScenarioElementCollection extends Backbone.Collection
         when "link" then elementModel = $a.linkList.get(scenarioElement.get('id'))
       $a.broker.trigger("map:select_item:#{elementModel.cid}")
     )
+
+  # Clears map of Selected Scenario Elements
+  unselectScenarioElements: () ->
+    $a.broker.trigger('app:unselect_links')
+    $a.broker.trigger('app:unselect_nodes')
+    $a.broker.trigger('app:unselect_controllers')
+    $a.broker.trigger('app:unselect_events')

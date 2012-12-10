@@ -20,21 +20,6 @@ class window.beats.ControllerSetCollection extends Backbone.Collection
             ]
     )
 
-  # The controller target editor calls this to get the table column
-  # data for every target element of a particular controller
-  getEditorTargetColumnData: (controllers) ->
-    _.each(controllers, (controller) ->
-      controller.get_target_elements()
-      # Need to find way to add all target elements for selected controllers
-      # to scenario elements
-      #@models.map((controller.get_target_elements()) -> 
-      #        [
-      #          scenarioElement.get_target_elements.get('id'),
-      #          scenarioElement.get_target_elements.get('type')
-      #        ]
-      #)
-    )
-
   # this sets all the passed in controllers' selected field to true. It syncs
   # the map controllers selected with selected controllers in the table
   setSelected: (controllers) ->

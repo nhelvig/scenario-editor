@@ -21,9 +21,9 @@ class window.beats.EditorControllerView extends window.beats.EditorView
     feedback = null
     if controller
       target = controller.get_target_elements()
-      feedback = controller.get_target_elements()
-    @targetList = new $a.ScenarioElementCollection(target?.get('scenarioElement') || [])
-    @feedbackList = new $a.ScenarioElementCollection(feedback?.get('scenarioElement') || [])
+      feedback = controller.get_feedback_elements()
+    @targetList = new $a.ScenarioElementCollection(target?.get('scenarioelement') || [])
+    @feedbackList = new $a.ScenarioElementCollection(feedback?.get('scenarioelement') || [])
     super options
 
   # call the super class to set up the dialog box and then set select boxes
@@ -43,8 +43,8 @@ class window.beats.EditorControllerView extends window.beats.EditorView
 
   # Draw Table which lists target elements 
   renderTargetTable: ->
-    @conTable = $('#controller-target-table').dataTable( {
-        "aaData": @_getFeedbackData,
+    @targetTable = $('#controller-target-table').dataTable( {
+        "aaData": @_getTargetData(),
         "aoColumns": [
             { "sTitle": "Id","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
@@ -62,7 +62,7 @@ class window.beats.EditorControllerView extends window.beats.EditorView
   # Draw Controller Feedback Table 
   renderFeedbackTable: ->
     @feedbackTable = $('#controller-feedback-table').dataTable( {
-        "aaData": @_getTargetData,
+        "aaData": @_getFeedbackData(),
         "aoColumns": [
             { "sTitle": "Id","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
@@ -80,7 +80,7 @@ class window.beats.EditorControllerView extends window.beats.EditorView
   # Draw Controller Parameters Table 
   renderParameterTable: ->
     @paramTable = $('#controller-parameter-table').dataTable( {
-        "aaData": [["test", "test"]],
+        "aaData": @_getParameterData,
         "aoColumns": [
             { "sTitle": "Name","sWidth": "50%"},
             { "sTitle": "Value","sWidth": "50%"},
@@ -139,13 +139,14 @@ class window.beats.EditorControllerView extends window.beats.EditorView
   _getTargetData: () ->
     @targetList.getEditorColumnData()
 
+
   # grab the feedback table column data for the 
   _getFeedbackData: () ->
     @feedbackList.getEditorColumnData()
 
   # grab the column data for the browser table  
   _getParameterData: () ->
-    $a.controllerSet.getEditorParameterColumnData
+    #$a.controllerSet.getEditorParameterColumnData
 
   displayAtPos: (e) ->
     e.p#reventDefault()
@@ -156,14 +157,14 @@ class window.beats.EditorControllerView extends window.beats.EditorView
     # to bottom of parent window
     $a.broker.trigger('app:minimize-dialog')
     # clear all selected/highlighted scenario elements 
-    $a.broker.trigger('app:unselect_links')
+    $a.broker.trigger('map:clear_selected')
 
     # highlight selected scenario elements
-    _.each(@targetElements, (targetElement) ->
-      targetElement.selectScenarioElements()
-    )
+    @targetList.selectScenarioElements()
+
     # turn on event listener which adds elements when selected 
     # and removed when not selected
+    
     
 
   # Edit Feedback Scenario Elements
@@ -172,6 +173,11 @@ class window.beats.EditorControllerView extends window.beats.EditorView
     # to bottom of parent window
     $a.broker.trigger('app:minimize-dialog')
     # clear all selected/highlighted scenario elements 
-    $a.broker.trigger('app:unselect_links')
+    $a.broker.trigger('map:clear_selected')
+
     # highlight selected scenario elements
+    @feedbackList.selectScenarioElements()
+
+    # turn on event listener which adds elements when selected 
+    # and removed when not selected
     
