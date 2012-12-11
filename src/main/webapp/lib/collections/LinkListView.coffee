@@ -9,6 +9,7 @@ class window.beats.LinkListView extends Backbone.Collection
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:draw_link', @createAndDrawLink, @)
     $a.broker.on('map:unselect_links', @unSelectLinks, @)
+    $a.broker.on('links:check_proximinity', @checkSnap, @)
     @collection.on('add', @addAndRender, @)
     @collection.on('remove', @removeLink, @)
     @getLinkGeometry(@collection.models)
@@ -44,12 +45,23 @@ class window.beats.LinkListView extends Backbone.Collection
 
   # UnSelects (unhighlights all links)
   unSelectLinks: () ->
-    _each(@views, ->
+    _.each(@views, ->
                     @.clearSelected()
           )
 
   # Select (highlights) links
   selectLinks: (links) ->
-    _each(links, ->
+    _.each(links, ->
                     @.linkSelect()
       )
+      
+  checkSnap: (markerView) ->
+    geo = google.maps.geometry.poly
+    marker = markerView.marker
+    model = markerView.model
+    _.each(@views, (view) -> 
+            if geo.isLocationOnEdge(marker.getPosition(), view.link, 0.0006)
+                view.linkSelect()
+                model.set_link(view.model)
+                setTimeout (-> view.clearSelected()), 1000 
+          )

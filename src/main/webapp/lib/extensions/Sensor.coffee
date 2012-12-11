@@ -96,3 +96,8 @@ window.beats.Sensor::remove = ->
 
 window.beats.Sensor::add = ->
   window.beats.models.sensors().push(@)
+
+window.beats.Sensor::set_link = (link)->
+  @set('link_reference', link.id)
+  @set('link', link)
+  
