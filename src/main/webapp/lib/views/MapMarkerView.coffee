@@ -88,6 +88,8 @@ class window.beats.MapMarkerView extends Backbone.View
     )
     @model.set('contextMenu', @contextMenu)
 
+  # called by drag event to see if any link is within proximity and
+  # the marker should snap to it
   snapMarker: ->
     $a.broker.trigger("links:check_proximinity", @)
   

@@ -54,7 +54,9 @@ class window.beats.LinkListView extends Backbone.Collection
     _.each(links, ->
                     @.linkSelect()
       )
-      
+  
+  # tests to see if marker is close enough to snap, highlights it
+  # sets the link for the model
   checkSnap: (markerView) ->
     geo = google.maps.geometry.poly
     marker = markerView.marker
