@@ -11,7 +11,8 @@ class window.beats.MapEventView extends window.beats.MapMarkerView
     @_contextMenu()
     $a.broker.on('map:hide_event_layer', @hideMarker, @)
     $a.broker.on('map:show_event_layer', @showMarker, @)
-
+    @model.on('remove', @removeElement, @)
+  
   getIcon: ->
     super MapEventView.ICON
   
