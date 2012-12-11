@@ -59,9 +59,11 @@ class window.beats.LinkListView extends Backbone.Collection
     geo = google.maps.geometry.poly
     marker = markerView.marker
     model = markerView.model
-    _.each(@views, (view) -> 
+    _.each(@views, (view) ->
             if geo.isLocationOnEdge(marker.getPosition(), view.link, 0.0006)
                 view.linkSelect()
                 model.set_link(view.model)
-                setTimeout (-> view.clearSelected()), 1000 
+                setTimeout (-> view.clearSelected()), 1000
+            else
+                view.clearSelected()
           )
