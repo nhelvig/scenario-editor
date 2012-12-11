@@ -12,11 +12,23 @@
       <NodeList>
         <node type="simple">
           <position>
-            <point lat="37.86123423130523" lng="-122.28967666625977" elevation="NaN"/>
+            <point lat="37.86658733661197" lng="-122.29104995727539" elevation="NaN"/>
+          </position>
+        </node>
+        <node type="simple">
+          <position>
+            <point lat="37.861831977140696" lng="-122.27262702636722" elevation="NaN"/>
           </position>
         </node>
       </NodeList>
-      <LinkList/>
+      <LinkList>
+        <link lanes="1" lane_offset="0" type="ST" id="1">
+          <begin/>
+          <end/>
+          <dynamics type="CTM"/>
+          <shape>cxbfFn}kiV[aEYkE??fJiAbEg@~Ca@xASz@KnEg@??MoBK{AYoEIeAC_@QiCUgDMmBCc@Y{DUwDE]WaE[{EEu@WuD]cFCYYgE[_F??t@Ul@SXKl@KtDc@??a@mG</shape>
+        </link>
+      </LinkList>
       <IntersectionCache/>
     </network>
   </NetworkList>

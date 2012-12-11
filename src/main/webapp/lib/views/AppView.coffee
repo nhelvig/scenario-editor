@@ -115,9 +115,9 @@ class window.beats.AppView extends Backbone.View
     $a.broker.trigger("map:clear_map")
     try
       xml = $.parseXML(fileText)
+      $a.models = $a.Scenario.from_xml($(xml).children())
     catch error
-      $a.broker.trigger("app:show_message:error", error)
-    $a.models = $a.Scenario.from_xml($(xml).children())
+      $a.broker.trigger("app:show_message:error", "Data file is badly formatted.")
     new $a.MapNetworkView $a.models
 
   clearMap: ->
