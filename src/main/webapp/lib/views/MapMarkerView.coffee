@@ -10,7 +10,6 @@ class window.beats.MapMarkerView extends Backbone.View
     @latLng = $a.Util.getLatLng(@model)
     @draw()
     gevent = google.maps.event
-    gevent.addListener(@marker, 'drag', => @snapMarker())
     gevent.addListener(@marker, 'dragend', => @dragMarker())
     gevent.addListener(@marker, 'click', (event) => @manageMarkerSelect())
     gevent.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
@@ -87,11 +86,6 @@ class window.beats.MapMarkerView extends Backbone.View
       @contextMenu.show mouseEvent.latLng
     )
     @model.set('contextMenu', @contextMenu)
-
-  # called by drag event to see if any link is within proximity and
-  # the marker should snap to it
-  snapMarker: ->
-    $a.broker.trigger("links:check_proximinity", @)
   
   # events used to move the marker and update its position
   dragMarker: ->

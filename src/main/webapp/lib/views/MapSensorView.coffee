@@ -9,6 +9,8 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   initialize: (model) ->
     super model
     @_contextMenu()
+    gevent = google.maps.event
+    gevent.addListener(@marker, 'drag', => @snapMarker())
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:hide_sensor_layer', @hideMarker, @)
@@ -36,6 +38,11 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     $a.broker.off('map:show_sensor_layer')
     super
 
+  # called by drag event to see if any link is within proximity and
+  # the marker should snap to it
+  snapMarker: ->
+    $a.broker.trigger("links:check_proximinity", @)
+  
   # Context Menu
   # Create the Sensor Context Menu. Call the super class method to create the
   # context menu
