@@ -27,17 +27,11 @@ class window.beats.MapNetworkView extends Backbone.View
     @
   
   _initializeCollections: () ->
-    list = $a.models.get('networklist').get('network')[0].get('nodelist')
-    $a.nodeList = new $a.NodeListCollection(list.get('node'))
-    
-    list = $a.models.get('networklist').get('network')[0].get('linklist')
-    $a.linkList = new $a.LinkListCollection(list.get('link'))
-    list = $a.models.get('sensorlist')
-    $a.sensorList = new $a.SensorListCollection(list?.get('sensor') || [])
-    list = $a.models.get('controllerset')
-    $a.controllerSet = new $a.ControllerSetCollection(list?.get('controller') || [])
-    list = $a.models.get('eventset')
-    $a.eventSet = new $a.EventSetCollection(list?.get('event') || [])
+    $a.nodeList = new $a.NodeListCollection($a.models.nodes())
+    $a.linkList = new $a.LinkListCollection($a.models.links())
+    $a.sensorList = new $a.SensorListCollection($a.models.sensors())
+    $a.controllerSet = new $a.ControllerSetCollection($a.models.controllers())
+    $a.eventSet = new $a.EventSetCollection($a.models.events())
     
   _drawScenarioItems: () ->
     @_drawSensors()

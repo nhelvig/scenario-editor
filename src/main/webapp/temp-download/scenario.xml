@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario>
+  <settings>
+    <units/>
+  </settings>
+  <NetworkList>
+    <network dt="300">
+      <description/>
+      <position>
+        <point lat="0" lng="0" elevation="0"/>
+      </position>
+      <NodeList>
+        <node type="simple">
+          <position>
+            <point lat="37.86123423130523" lng="-122.28967666625977" elevation="NaN"/>
+          </position>
+        </node>
+      </NodeList>
+      <LinkList/>
+      <IntersectionCache/>
+    </network>
+  </NetworkList>
+  <SignalList/>
+  <SensorList/>
+  <EventSet/>
+  <ControllerSet/>
+</scenario>
