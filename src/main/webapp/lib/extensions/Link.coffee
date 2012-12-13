@@ -22,6 +22,16 @@ window.beats.Link::parallel_links = ->
 window.beats.Link::road_names = ->
   _.map(@get('roads')?.get('road'), (r) -> r.get('name')).join(", ")
 
+window.beats.Link::set_road_names = (name) ->
+  if !@get('roads')?
+    @set('roads', new window.beats.Roads)
+  if !@get('roads').get('road')?
+    @get('roads').set('road',[])
+  r = @get('roads').get('road')
+  if r.length == 0
+    r.push(new window.beats.Road())
+  r[0].set('name',name)
+
 window.beats.Link::begin_node = ->
   @get('begin').get('node')
 

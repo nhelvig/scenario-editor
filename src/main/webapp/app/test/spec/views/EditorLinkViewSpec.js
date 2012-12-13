@@ -3,13 +3,6 @@ describe("EditorLinkView", function() {
 
   var testsLinkGeo = [
       {
-        desc: "Link Tab: 'Name' field is saved",
-        id: "#link_name",
-        val: "changed",
-        type: "blur",
-        field: "name"
-      },
-      {
         desc: "Geo Tab: 'Lanes' field is saved",
         id: "#lanes",
         val: "changed",
@@ -129,6 +122,7 @@ describe("EditorLinkView", function() {
     spyOn($a.EditorLinkView.prototype, 'geomLine').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'geomRoad').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'save').andCallThrough();
+    spyOn($a.EditorLinkView.prototype, 'saveName').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveInSync').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveFD').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveDP').andCallThrough();
@@ -199,7 +193,7 @@ describe("EditorLinkView", function() {
       dp = model.get('demand') || null;
       
       var v = {
-        name: model.get('roads').get('road')[0].get('name'),
+        name: model.road_names(),
         lanes: model.get('lanes'),
         insync: model.get('in_sync'),
         laneOffset: model.get('lane_offset'),
@@ -262,7 +256,7 @@ describe("EditorLinkView", function() {
     describe("When fields handler fired", function() {
       it("Link Tab: 'Name' field calls save", function() { 
         $('#link_name').blur();
-        expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
+        expect($a.EditorLinkView.prototype.saveName).toHaveBeenCalled();
       });
       it("Link Tab: 'Type' field calls save", function() { 
         $('#link_type').blur();
@@ -428,16 +422,21 @@ describe("EditorLinkView", function() {
           expect(this.view.models[0].get(test.field)).toEqual(test.val);
         });
       });
-     it("Link Tab: 'Type' is saved", function() {
-       selected = $($(this.view.el)).find('#link_type option:selected')
+      it("Link Tab: 'Name' is saved", function() {
+        $("#link_name").val("changed");
+        $("#link_name").blur();      
+        expect(this.view.models[0].road_names()).toEqual("changed");
+      });
+      it("Link Tab: 'Type' is saved", function() {
+       selected = $($(this.view.el)).find('#link_name option:selected')
        $(selected).attr('selected', false);
        options = $(this.view.el).find("select option");
        $(options[1]).attr('selected', true);
        newSelectedValue = $(options[1]).val();
        $("#link_type").blur();
        expect(this.view.models[0].get("type")).toEqual(newSelectedValue);
-     });
-     _.each(testsFD, function(test) { 
+      });
+      _.each(testsFD, function(test) { 
        it(test.desc, function() {
          $(test.id).val(test.val);
          $(test.id).blur();

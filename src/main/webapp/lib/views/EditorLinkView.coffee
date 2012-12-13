@@ -2,7 +2,8 @@
 class window.beats.EditorLinkView extends window.beats.EditorView
   $a = window.beats
   events : {
-    'blur #link_name, #link_type' : 'save'
+    'blur #link_type' : 'save'
+    'blur #link_name' : 'saveName'
     'blur #lanes, #lane_offset, #length' : 'save'
     'blur #capacity,
       #critical_speed, 
@@ -116,6 +117,11 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     fieldId = id
     fieldId = id[5...] if id.indexOf("link") is 0
     _.each(@models, (m) -> m.set(fieldId, $("##{id}").val()))
+
+  # This saves the link name
+  saveName: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.set_road_names($("##{id}").val()))
 
   # This saves the checkbox indicating the link is in sync
   saveInSync: (e) ->
