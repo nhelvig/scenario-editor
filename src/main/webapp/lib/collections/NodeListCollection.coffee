@@ -2,6 +2,7 @@
 class window.beats.NodeListCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Node
+  nextID = 99
   
   # when initialized go through the models and set selected to false, and 
   # set up all the events need to add nodes to the collection.
@@ -57,6 +58,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
           )
     p.set('point', []) 
     p.get('point').push(pt)
+    n.set('id',nextID++)
     n.set('position', p)
     n.set('type', type || 'simple')
     @_setUpEvents(n)
