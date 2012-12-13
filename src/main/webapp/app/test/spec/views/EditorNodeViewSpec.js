@@ -80,7 +80,7 @@ describe("EditorNodeView", function() {
        it("name is saved", function() {     
          $('#name').val("Name Changed");
          $("#name").blur();
-         expect(this.view.models[0].get('name')).toEqual("Name Changed");
+         expect(this.view.models[0].road_names()).toEqual("Name Changed");
        });
        it("type is saved", function() {
          selected = $($(this.view.el)).find('#type option:selected')

@@ -2,7 +2,8 @@
 class window.beats.EditorNodeView extends window.beats.EditorView
   $a = window.beats
   events : {
-    'blur #name, #type' : 'save'
+    'blur #type' : 'save'
+    'blur #name' : 'saveName'
     'blur #lat, #lng, #elevation' : 'saveGeo'
     'click #lock' : 'saveLocked'
     'click #edit-signal' : 'signalEditor'
@@ -53,11 +54,18 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     lock: if models[0].has('lock') and models[0].get('lock') then 'checked' else ''
 
   # these are callback events for various elements in the interface
-  # This is used to save the name, type and description when focus is
+  # This is used to save the type and description when focus is
   # lost from the element
   save: (e) ->
     id = e.currentTarget.id
     _.each(@models, (m) -> m.set(id, $("##{id}").val()))
+
+  # This is used to save the name when focus is
+  # lost from the element
+  saveName: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.set_road_names($("##{id}").val()))
+  
   
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element

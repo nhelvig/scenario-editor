@@ -17,7 +17,17 @@ window.beats.Node::road_names = ->
     (marker) -> 
       marker?.get('name')
   ).join(", ") || "Name not defined"
-  
+
+window.beats.Node::set_road_names = (name) ->
+  if !@get('roadway_markers')?
+    @set('roadway_markers', new window.beats.Roadway_markers)
+  if !@get('roadway_markers').get('marker')?
+    @get('roadway_markers').set('marker',[])
+  m = @get('roadway_markers').get('marker')
+  if m.length == 0
+    m.push(new window.beats.Marker())
+  m[0].set('name',name)
+
 window.beats.Node::terminal = ->
   @get('type') is 'T'
 
