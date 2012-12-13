@@ -12,6 +12,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   initialize: (model, @network) ->
     super model
     @model.on('change:selected', @toggleSelected, @)
+    @model.on('change:type', @changeIconType, @)
     @model.on('remove', @removeElement, @)
     @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
@@ -127,7 +128,11 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   # This method swaps the icon for the de-selected icon
   clearSelected: () ->
     super @_getTypeIcon false
-
+  
+  # This method is called when the type attribute changes
+  changeIconType: ->
+    @marker.setIcon(@getMarkerImage(@_getTypeIcon @model.get('selected')))
+  
   # This returns the appropriate icon for terminals and selected or not
   _getTypeIcon : (selected) ->
     switch @model.get('type')
