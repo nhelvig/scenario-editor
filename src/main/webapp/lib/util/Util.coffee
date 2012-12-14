@@ -1,6 +1,12 @@
 # A class of static methods used to store general functions used by
 # many classes.
 window.beats.Util =
+
+  # Constants for Unit Names
+  UNITS_US: 'US'
+  UNITS_METRIC: 'Metric'
+  UNITS_SI: 'SI'
+
   _round_dec: (num,dec) ->
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
 
@@ -110,7 +116,18 @@ window.beats.Util =
     seconds += hms['s'] * 1
     seconds
 
-  
+  # Used to convert meters to km, since google API call only returns SI units
+  # Eventually conversions should be done elsewhere (server or DB)
+  convertSIToKilometers: (meters) ->
+    ret = meters/1000
+    ret
+
+  # Used to convert meters to miles, since google API call only returns SI units
+  # Eventually conversions should be done elsewhere (server or DB)
+  convertSIToMiles: (meters) ->
+    ret = meters/1609.34
+    ret
+
   # this method retrieves the geometry from the any model
   getGeometry: (opts) ->
     _.map(opts.models, (m) -> 
@@ -125,3 +142,4 @@ window.beats.Util =
       if test?.length == 0
         return id
       id++
+

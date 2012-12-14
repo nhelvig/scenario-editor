@@ -9,10 +9,13 @@ class window.beats.MapLinkView extends Backbone.View
   $a = window.beats
 
   initialize: (@model, @network) ->
+    # Gets the encoded path line string if it is not already been set
     if(@model.legs?)
       @_createEncodedPath @model.legs
       @_saveEncodedPath()
     @_drawLink()
+    if(!@model.length?)
+      @_saveLinkLength()
     @_contextMenu()
     @model.on('remove', @removeLink, @)
     $a.broker.on('map:init', @render, @)
@@ -191,3 +194,29 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
     $a.broker.trigger("app:tree_remove_highlight:#{beginNode.cid}")
     $a.broker.trigger("app:tree_remove_highlight:#{endNode.cid}")
+
+  # Calculates and returns Link Length, path must be set otherwise length is 0
+  # Length is always in meters
+  _calculateLinkLength: ->
+    length = 0
+    pathArr = @link.getPath().getArray()
+    try
+      length = google.maps.geometry.spherical.computeLength(pathArr)
+    catch error
+      # Display Error message to screen
+      $a.broker.trigger('app:show_message:info', "Error Calculating Link Length" )
+    length
+
+
+  # Saves Link Length Should be called when either:
+  # 1) link has no length attribute so on load it is added to model,
+  # 2) New link is added or 3) If link is changed
+  _saveLinkLength: ->
+    # get length in meters of link
+    length = @_calculateLinkLength()
+    # convert to units set in settings files if in miles of km
+    if $a.models.settings().get_units_text() == $a.Util.UNITS_US
+      length = $a.Util.convertSIToMiles(length)
+    else if $a.models.settings().get_units_text() == $a.Util.UNITS_METRIC
+      length = $a.Util.convertSIToKilometers(length)
+    @model.set_length(length)
