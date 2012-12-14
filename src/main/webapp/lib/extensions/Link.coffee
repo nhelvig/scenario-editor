@@ -1,13 +1,19 @@
 window.beats.Link::defaults =
-  type: 'ST'
+  type: ''
   lanes: 1
   lane_offset: 0
   record: true
+  in_sync: true
 
 window.beats.Link::initialize = ->
   @set('dynamics', new window.beats.Dynamics())
+  @set('roads', new window.beats.Roads)
 
 window.beats.Link::type = -> @get("type")
+window.beats.Link::set_generic = (id, val) -> 
+                                  @set(id, val)
+                                  @defaults[id] = val
+                                  
 window.beats.Link::ident = -> @get("id")
 window.beats.Link::parallel_links = ->
   begin_node = @get('begin').get('node')
@@ -31,6 +37,8 @@ window.beats.Link::set_road_names = (name) ->
   if r.length == 0
     r.push(new window.beats.Road())
   r[0].set('name',name)
+  r[0].defaults.name = name
+  console.log r[0].defaults.name
 
 window.beats.Link::begin_node = ->
   @get('begin').get('node')

@@ -67,7 +67,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     disable.push(5)
     @$el.tabs({ disabled: disable })
 
-  # if in browser we diable some fields from being editted
+  # if in browser we disable some fields from being editted
   _checkDisableFields: ->
     if (@models.length > 1)
       $('#link_name').attr("disabled", true)
@@ -116,7 +116,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     id = e.currentTarget.id
     fieldId = id
     fieldId = id[5...] if id.indexOf("link") is 0
-    _.each(@models, (m) -> m.set(fieldId, $("##{id}").val()))
+    _.each(@models, (m) -> m.set_generic(fieldId,$("##{id}").val()))
 
   # This saves the link name
   saveName: (e) ->
@@ -126,7 +126,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   # This saves the checkbox indicating the link is in sync
   saveInSync: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set(id, $("##{id}").prop('checked')))
+    _.each(@models, (m) -> m.set_generic(id, $("##{id}").prop('checked')))
 
   # this saves fields in the fundamental diagram
   saveFD: (e) ->

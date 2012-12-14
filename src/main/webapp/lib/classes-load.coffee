@@ -5,9 +5,9 @@ $a.models_with_extensions = [ 'Begin', 'CapacityProfile',
   'Density', 'Display_position', 'Dynamics', 'End', 'Event', 'EventSet',
   'FundamentalDiagramProfile', 'Input', 'Intersection', 'Link', 'LinkList',
   'Network', 'NetworkList', 'Node', 'NodeList', 'Output',
-  'Phase', 'Plan', 'PlanList', 'PlanSequence', 'Point', 'Position',  'Scenario',
-  'Sensor', 'SensorList', 'Settings', 'Signal', 'SignalList',
-  'Splitratio', 'SplitratioProfile'
+  'Phase', 'Plan', 'PlanList', 'PlanSequence', 'Point', 'Position', 'Road', 
+  'Roads', 'Scenario', 'Sensor', 'SensorList', 'Settings', 'Signal',
+  'SignalList', 'Splitratio', 'SplitratioProfile'
 ]
 
 $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
@@ -18,7 +18,7 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
   'IntersectionCache', 'Interval', 'Link_reference', 'Link_references', 
   'Linkpair', 'Marker', 'NetworkConnections', 'Networkpair', 'Outputs',
   'Parameter', 'Parameters', 'Plan_reference', 'Queue_controller', 
-  'Road', 'Roads', 'Roadway_markers', 'Route', 'Routes', 'Row'
+  'Roadway_markers', 'Route', 'Routes', 'Row'
   'ScenarioElement', 'Shape', 'SplitratioEvent',
   'SplitRatioProfileSet', 'Stage', 'Table', 'TargetElements', 'Units',
   'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
