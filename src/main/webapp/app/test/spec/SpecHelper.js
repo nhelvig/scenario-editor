@@ -118,7 +118,7 @@ beforeEach(function() {
     link2 = simpleLink(2,node2, node3);
     link3 = simpleLink(3, node3, node1);
     density = new window.beats.Density({id: 1});
-    idp = new window.beats.InitialDensitySet({density: [density]});
+    ids = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});
     cs = new window.beats.ControllerSet({controller:[c]});
     cp = new window.beats.CapacityProfile({id: 1});
@@ -139,7 +139,7 @@ beforeEach(function() {
       id: 1,
       networklist: networkList,
       controllerset: cs,
-      initialdensityprofile: idp,
+      initialdensityset: ids,
       downstreamboundarycapacityprofileset: cps,
       demandprofileset: dps,
       splitratioprofileset: srps

@@ -129,10 +129,10 @@ describe("Scenario", function() {
       var scenario = sAndFriends.scenario;
       var link1 = sAndFriends.link1;
 
-      scenario.get('initialdensityprofile').set('density',[]);
+      scenario.get('initialdensityset').set('density',[]);
       link1.set('density', sAndFriends.density);
       scenario.encode_references();
-      expect(scenario.get('initialdensityprofile').get('density')).toContain(sAndFriends.density);
+      expect(scenario.get('initialdensityset').get('density')).toContain(sAndFriends.density);
     });
 
     it("handles capacity profile", function() {
