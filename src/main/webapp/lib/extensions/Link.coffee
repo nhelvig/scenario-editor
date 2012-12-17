@@ -37,7 +37,7 @@ window.beats.Link::set_road_names = (name) ->
   if r.length == 0
     r.push(new window.beats.Road())
   r[0].set('name',name)
-  r[0].defaults.name = name
+  r[0].defaults["name"] = name
   console.log r[0].defaults.name
 
 window.beats.Link::begin_node = ->

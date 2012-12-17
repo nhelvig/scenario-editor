@@ -1,2 +1,2 @@
-window.beats.Link::initialize = ->
+window.beats.Roads::initialize = ->
   @set('road',[new window.beats.Road])
