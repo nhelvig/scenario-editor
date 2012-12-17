@@ -2,7 +2,7 @@
 class window.beats.EditorNodeView extends window.beats.EditorView
   $a = window.beats
   events : {
-    'blur #type' : 'save'
+    'blur #type' : 'saveType'
     'blur #name' : 'saveName'
     'blur #lat, #lng, #elevation' : 'saveGeo'
     'click #lock' : 'saveLocked'
@@ -27,8 +27,8 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # if tab doesn't have one of the profiles disable it
   _checkDisableTabs: ->
     # disabled until we implement
-    $('#edit-signal').attr("disabled", true)
-    $('#edit-signal').addClass('ui-state-disabled')
+    $('body').find('#edit-signal').attr("disabled", true)
+    $('body').find('#edit-signal').addClass('ui-state-disabled')
     disable = [2]
     @$el.tabs({ disabled: disable })
   
@@ -42,7 +42,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   
   #set selected type element
   _setSelectedType: ->
-    type = @models[0].get('type');
+    type = @models[0].type();
     $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
   
   # creates a hash of values taken from the model for the html template
@@ -51,14 +51,14 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     lat: $a.Util.getGeometry({models:models, geom:'lat'})
     lng: $a.Util.getGeometry({models:models, geom:'lng'})
     elevation: $a.Util.getGeometry({models:models, geom:'elevation'})
-    lock: if models[0].has('lock') and models[0].get('lock') then 'checked' else ''
+    lock: if models[0].locked() then 'checked' else ''
 
   # these are callback events for various elements in the interface
-  # This is used to save the type and description when focus is
+  # This is used to save the type when focus is
   # lost from the element
-  save: (e) ->
+  saveType: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set(id, $("##{id}").val()))
+    _.each(@models, (m) -> m.set_type($("##{id}").val()))
 
   # This is used to save the name when focus is
   # lost from the element
@@ -76,7 +76,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # This saves the checkbox indicating the node is locked
   saveLocked: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set(id, $("##{id}").prop('checked')))
+    _.each(@models, (m) -> m.set_locked($("##{id}").prop('checked')))
 
   # These three methods below will be configured to launch various
   # editors in future phases

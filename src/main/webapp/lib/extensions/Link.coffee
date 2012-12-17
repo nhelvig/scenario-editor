@@ -11,8 +11,8 @@ window.beats.Link::initialize = ->
 
 window.beats.Link::type = -> @get("type")
 window.beats.Link::set_generic = (id, val) -> 
-                                  @set(id, val)
-                                  @defaults[id] = val
+  @set(id, val)
+  @defaults[id] = val
                                   
 window.beats.Link::ident = -> @get("id")
 window.beats.Link::parallel_links = ->
@@ -38,7 +38,6 @@ window.beats.Link::set_road_names = (name) ->
     r.push(new window.beats.Road())
   r[0].set('name',name)
   r[0].defaults["name"] = name
-  console.log r[0].defaults.name
 
 window.beats.Link::begin_node = ->
   @get('begin').get('node')

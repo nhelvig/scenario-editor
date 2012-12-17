@@ -60,7 +60,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     p.get('point').push(pt)
     n.set('id',nextID++)
     n.set('position', p)
-    n.set('type', type || 'simple')
+    n.set('type', type) if type?
     @_setUpEvents(n)
     @add(n)
     n

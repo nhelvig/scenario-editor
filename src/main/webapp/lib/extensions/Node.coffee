@@ -1,3 +1,21 @@
+window.beats.Node::defaults =
+  type: ''
+  lock: false
+
+window.beats.Node::initialize = ->
+  @set('roadway_markers', new window.beats.Roadway_markers)
+
+window.beats.Node::type = -> @get("type")
+
+window.beats.Node::set_type = (val) -> 
+  @set('type', val)
+  @defaults['type'] = val
+
+window.beats.Node::locked = -> @get("lock")? and @get("lock") is true
+window.beats.Node::set_locked = (val) -> 
+  @set("lock", val)
+  @defaults['lock'] = val
+
 window.beats.Node::input_indexes = (other_node) ->
   _.map(@get('inputs').get('input'),
     (input, idx) ->
@@ -27,6 +45,7 @@ window.beats.Node::set_road_names = (name) ->
   if m.length == 0
     m.push(new window.beats.Marker())
   m[0].set('name',name)
+  m[0].defaults['name'] = name
 
 window.beats.Node::terminal = ->
   @get('type') is 'T'
