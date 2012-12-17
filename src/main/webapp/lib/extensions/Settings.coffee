@@ -1,2 +1,2 @@
-window.beats.Settings::initialize = ->
-  @set('units', new window.beats.Units())
+window.beats.Settings::get_units_text = -> 
+  @get('units')?.get('text') || ""

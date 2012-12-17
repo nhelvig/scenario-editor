@@ -23,12 +23,12 @@ window.beats.Scenario.from_xml = (xml) ->
     )
     sc.get('capacityprofileset').set('capacity', [])
 
-  if sc.has('initialdensityprofile')
-    _.each(sc.get('initialdensityprofile').get('density'),
+  if sc.has('initialdensityset')
+    _.each(sc.get('initialdensityset').get('density'),
            (density) ->
              density.get('link').set('density',density)
     )
-    sc.get('initialdensityprofile').set('density', [])
+    sc.get('initialdensityset').set('density', [])
 
   if sc.has('splitratioprofileset')
     _.each(sc.get('splitratioprofileset').get('splitratioprofile'),
@@ -85,6 +85,9 @@ window.beats.Scenario::networklist = ->
 window.beats.Scenario::network = -> 
   @get('networklist').get('network')[0]
 
+window.beats.Scenario::settings = -> 
+  @get('settings')
+
 window.beats.Scenario::network_with_id = (id) ->
   @object_with_id.network[id]
 
@@ -118,7 +121,7 @@ window.beats.Scenario::stampSchemaVersion = ->
 window.beats.Scenario::encode_references = ->
   demandprofileset = @get('demandprofileset')
   capacityprofileset = @get('downstreamboundarycapacityprofileset')
-  initialdensityprofile = @get('initialdensityprofile')
+  initialdensityset = @get('initialdensityset')
   splitratioprofileset = @get('splitratioprofileset')
   network = @network()
   linklist = network.get('linklist') if network
@@ -130,8 +133,8 @@ window.beats.Scenario::encode_references = ->
   if capacityprofileset && capacityprofileset.has('capacity')
     capacityprofileset.set('capacity', [])
 
-  if initialdensityprofile && initialdensityprofile.has('density')
-    initialdensityprofile.set('density', [])
+  if initialdensityset && initialdensityset.has('density')
+    initialdensityset.set('density', [])
 
   if splitratioprofileset && splitratioprofileset.has('splitratios')
     splitratioprofileset.set('splitratios', [])
@@ -154,11 +157,11 @@ window.beats.Scenario::encode_references = ->
               capacityprofileset.get('capacityprofile').push(link.get('capacity'))
 
             if link.has('density')
-              if(!initialdensityprofile)
-                @set('initialdensityprofile', new window.beats.InitialDensityProfile())
-              if(!initialdensityprofile.has('density'))
-                initialdensityprofile.set('density', [])
-              initialdensityprofile.get('density').push(link.get('density'))
+              if(!initialdensityset)
+                @set('initialdensityset', new window.beats.InitialDensitySet())
+              if(!initialdensityset.has('density'))
+                initialdensityset.set('density', [])
+              initialdensityset.get('density').push(link.get('density'))
     )
 
     if nodelist and nodelist.has('node')

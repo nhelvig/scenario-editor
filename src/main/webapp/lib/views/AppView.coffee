@@ -108,6 +108,7 @@ class window.beats.AppView extends Backbone.View
     $a.controllerSetView = new $a.ControllerSetView($a.controllerSet, network)
     $a.eventSet = new $a.EventSetCollection([])
     $a.eventSetView = new $a.EventSetView($a.eventSet, network)
+    $a.settings = new $a.Settings()
   
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView

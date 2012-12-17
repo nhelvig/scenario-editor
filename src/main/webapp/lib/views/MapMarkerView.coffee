@@ -37,6 +37,7 @@ class window.beats.MapMarkerView extends Backbone.View
 
   _getTitle: ->
     title = "Name: #{@model.road_names()}\n"
+    title += "Id: #{@model.id}\n"
     title += "Latitude: #{@latLng.lat()}\n"
     title += "Longitude: #{@latLng.lng()}"
     title

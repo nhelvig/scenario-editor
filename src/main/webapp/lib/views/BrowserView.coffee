@@ -154,8 +154,9 @@ class window.beats.BrowserView extends Backbone.View
     # Add on-click event to browser dialog header to maximize window
     $('.ui-dialog-titlebar').on('click', ->
                                   $a.broker.trigger('app:maximize-dialog'))
-    # Display message to 
-    $a.broker.trigger('app:show_message:info', "Select Scenario Elements... Click Editor Box when done." )
+    # Display message to screen 
+    $a.broker.trigger('app:show_message:info', """Select Scenario Elements... 
+      Click Editor Box when done.""" )
 
   # Maximize the editor or browser window to orginal location
   maximize: () ->

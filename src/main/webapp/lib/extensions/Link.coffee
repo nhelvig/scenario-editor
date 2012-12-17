@@ -52,3 +52,9 @@ window.beats.Link::remove = ->
 
 window.beats.Link::add = ->
   window.beats.models.links().push(@)
+
+window.beats.Link::set_length = (length) ->
+  @set('length', length)
+
+window.beats.Link::get_length = ->
+  @get('length')
