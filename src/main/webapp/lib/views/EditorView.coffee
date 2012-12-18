@@ -6,6 +6,7 @@ class window.beats.EditorView extends Backbone.View
   # associated with the dialoag, and templateData
   # used to inject into the html template
   initialize: (@options) ->
+    $a.broker.on('map:clear_map', @close, @)
     @elem = @options.elem
     @models = @options.models
     title  = $a.Util.toStandardCasing(@elem)  # eg. node -> Node
@@ -26,6 +27,10 @@ class window.beats.EditorView extends Backbone.View
         @$el.remove()
     $a.broker.on('click', @minimize, @)
     @ 
+
+  # This method removes the dialog box from the map when clear:map is triggered
+  close: ->
+     @$el.remove()
 
   # Return the editor view DOM element
   getEditorElement: ->

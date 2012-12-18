@@ -24,6 +24,7 @@ class window.beats.BrowserView extends Backbone.View
     # based on triggered events
     $a.broker.on('app:minimize-dialog', @minimize, @)
     $a.broker.on('app:maximize-dialog', @maximize, @)
+    $a.broker.on('map:clear_map', @close, @)
     @render()
 
   # render the dialog box. The calling function has responsability for appending
@@ -44,7 +45,11 @@ class window.beats.BrowserView extends Backbone.View
     @attachRowSelection()
     @_firstRowSelected()
     @
-    
+  
+  # This method removes the dialog box from the map when clear:map is triggered
+  close: ->
+     @$el.remove()
+  
   # render the editor for the right pane
   renderEditor: (@nev) ->
     @nev.render()
