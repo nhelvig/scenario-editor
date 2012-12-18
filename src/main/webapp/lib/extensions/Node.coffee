@@ -5,6 +5,7 @@ window.beats.Node::defaults =
 window.beats.Node::initialize = ->
   @set('roadway_markers', new window.beats.Roadway_markers)
 
+window.beats.Node::ident = -> @get("id")
 window.beats.Node::type = -> @get("type")
 
 window.beats.Node::set_type = (val) -> 
@@ -67,13 +68,11 @@ window.beats.Node::updatePosition = (pos) ->
 
 window.beats.Node::position = ->
   @get('position').get('point')[0]
-  
+
 window.beats.Node::remove = ->
   nodes = window.beats.models.nodes()
   nodes = _.reject(nodes, (n) => n is @)
-  window.beats.models.set_sensors(nodes)
+  window.beats.models.set_nodes(nodes)
 
 window.beats.Node::add = ->
   window.beats.models.nodes().push(@)
-
-  

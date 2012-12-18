@@ -52,10 +52,26 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @remove(link)
   
   # splitLink splits the link into a series of nodes
-  splitLink: (linkID) ->
+  splitLink: (linkID, numLinks) ->
+    numLinks = 5
     link = @getByCid(linkID)
-    
-    
+    linkGeom = link.get('shape').get('text')
+    path = google.maps.geometry.encoding.decodePath linkGeom
+    numPoints = path.length
+    args = {}
+    args.begin = link.begin_node()
+    beginIndex = Math.floor(numPoints/numLinks)
+    for index in [beginIndex..numPoints-1] by (beginIndex)
+      endLatLng  = path[index]
+      endNode = $a.nodeList.addNode(endLatLng)
+      args.end = endNode
+      @addLink(args)
+      args.begin = endNode
+    args.end = link.end_node()
+    @addLink(args)
+    link.end_node().remove()
+    @removeLink(linkID)
+  
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.
   clear: ->
