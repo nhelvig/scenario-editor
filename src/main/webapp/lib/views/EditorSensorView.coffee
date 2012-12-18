@@ -58,7 +58,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   save: (e) ->
     id = e.currentTarget.id
     fieldId = @_getFieldId(id)
-    _.each(@models, (m) -> m.set(fieldId, $("##{id}").val()))
+    _.each(@models, (m) -> m.set_generic(fieldId, $("##{id}").val()))
   
   # links are in the link_reference attribute
   saveLinks: (e) ->

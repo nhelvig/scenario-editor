@@ -1,3 +1,6 @@
+window.beats.Sensor::defaults =
+  type: ''
+
 window.beats.Sensor::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     link = object_with_id.link[@get('link_reference').get('id')]
@@ -57,7 +60,6 @@ window.beats.Sensor::from_position = (position, link) ->
   p.set('point', []) 
   p.get('point').push(pt)
   s.set('display_position', p)
-  s.set('type', 'static_point')
   s.set('link', link || null)
   id = link?.ident() || null
   s.set('link_reference', new window.beats.Link_reference().set('id', id))
@@ -100,4 +102,7 @@ window.beats.Sensor::add = ->
 window.beats.Sensor::set_link = (link)->
   @set('link_reference', link.id)
   @set('link', link)
-  
+
+window.beats.Sensor::set_generic = (id, val) -> 
+  @set(id, val)
+  @defaults[id] = val
