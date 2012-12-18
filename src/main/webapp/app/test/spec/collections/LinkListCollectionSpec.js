@@ -7,6 +7,7 @@ describe("LinkListCollection", function() {
     models = network.get('linklist').get('link');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'splitLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
@@ -31,6 +32,11 @@ describe("LinkListCollection", function() {
       this.lColl.trigger("links:remove", models[0].cid);
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
+    it("should be watching splitLink", function() {
+      this.lColl.trigger("links:split", models[0].cid);
+      expect($a.LinkListCollection.prototype.splitLink).toHaveBeenCalled();
+    });
+
     it("should be watching reDrawLink", function() {
       $a.broker.trigger("map:redraw_link", begin.get('node'));
       expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();

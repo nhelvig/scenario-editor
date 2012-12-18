@@ -14,6 +14,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @on('links:add_controller', @addControllerToLink, @)
     @on('links:add_event', @addEventToLink, @)
     @on('links:remove', @removeLink, @)
+    @on('links:split', @splitLink, @)
     @forEach((link) =>  @_setUpEvents(link))
   
   # addLink takes the begin node and end node ids, sets up the appropriate
@@ -50,6 +51,11 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link = @getByCid(linkID)
     @remove(link)
   
+  # splitLink splits the link into a series of nodes
+  splitLink: (linkID) ->
+    link = @getByCid(linkID)
+    
+    
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.
   clear: ->

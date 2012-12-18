@@ -90,6 +90,9 @@ $a.link_context_menu = [
   {className:'context_menu_separator'}
   context_menu_item  'Clear Selection',
                       ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
+  {className:'context_menu_separator'}
+  context_menu_item  'Split link with nodes',
+                      ((e) -> $a.linkList.trigger("links:split", e.currentTarget.id))
 ]
 
 $a.link_context_menu_demand_item = [
