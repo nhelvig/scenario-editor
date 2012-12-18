@@ -6,14 +6,21 @@ class window.beats.GoogleMapRouteHandler
   rate = 100
   
   constructor: (@links) ->
+    @stop = false
+    $a.broker.on('map:clear_map', @stopDrawing, @)
     @directionsService = new google.maps.DirectionsService()
     @_requestLinks(@links.length - 1)
   
+  # this sets a flag that gets flipped when clear:map is triggered during the
+  # link request process
+  stopDrawing: ->
+    @stop = true
+     
   # recursive method used to grab the Google route for every link
   # indexOfLink starts at the end of the link list and is decreased 
   # on each recursive call. If geometry exists we just draw the link
   _requestLinks: (indexOfLink) ->
-    if indexOfLink > -1
+    if indexOfLink > -1  and !@stop
       link = @links[indexOfLink]
       if(@_geomDoesNotExist(link))
         link.index = indexOfLink
@@ -68,7 +75,7 @@ class window.beats.GoogleMapRouteHandler
             $a.broker.trigger('app:show_message:info', msg)
           if link?
             link.legs = rte.legs 
-            $a.broker.trigger('map:draw_link', link)
+            $a.broker.trigger('map:draw_link', link) if !@stop
             if(rate > 200)
               rate -= 100
             setTimeout (() =>  @_requestLinks(link.index - 1)), rate
