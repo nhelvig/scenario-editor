@@ -49,8 +49,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # map.
   removeLink: (linkID) ->
     link = @getByCid(linkID)
-    bNode.position().off('change')
-    eNode.position().off('change')
+    link.begin_node().position().off('change')
+    link.end_node().position().off('change')
     @remove(link)
   
   # splitLink splits the link into a series of nodes
@@ -61,7 +61,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     path = google.maps.geometry.encoding.decodePath linkGeom
     numPoints = path.length
     args = {}
-    args.begin = link.begin_node()
+    bLL = $a.Util.getLatLng(link.begin_node())
+    args.begin = $a.nodeList.addNode(bLL,link.begin_node().type())
     beginIndex = Math.floor(numPoints/numLinks)
     for index in [beginIndex..numPoints-1] by (beginIndex)
       endLatLng  = path[index]
@@ -69,9 +70,11 @@ class window.beats.LinkListCollection extends Backbone.Collection
       args.end = endNode
       @addLink(args)
       args.begin = endNode
-    args.end = link.end_node()
+    eLL = $a.Util.getLatLng(link.end_node())
+    args.end = $a.nodeList.addNode(eLL,link.end_node().type())
     @addLink(args)
-    link.end_node().remove()
+    $a.nodeList.trigger("nodes:remove",link.end_node())
+    $a.nodeList.trigger("nodes:remove",link.begin_node())
     @removeLink(linkID)
   
   # this method clears the collection upon a clear map as well shuts off the 
