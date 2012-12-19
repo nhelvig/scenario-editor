@@ -7,7 +7,7 @@ class window.beats.ContextMenuHandler
   # right-click
   constructor: (args) ->
     google.maps.event.addListener(
-                      $a.map,
+                      args.element,
                       'rightclick',
                       (mouseEvent) => @_createMenu(args, mouseEvent.latLng)
                     )
@@ -15,10 +15,12 @@ class window.beats.ContextMenuHandler
   # sets up the options on the context menu and then populates the menu
   # latlng is used to place the menu
   _createMenu: (args, latLng) ->
-    contextMenuOptions = {}
+    contextMenuOptions = args.options
     contextMenuOptions.menuItems= @_populateMenu(args)
-    contextMenuOptions.id='main-context-menu'
-    contextMenuOptions.class='context_menu'
+    if args.model?
+      # pass the cid as id for the select item so we know what event handler to call
+      # since they can be referenced by a models cid
+      _.each(contextMenuOptions.menuItems, (item) => item.id = "#{args.model.cid}")
     $a.contextMenu = new $a.ContextMenuView(contextMenuOptions)
     $a.contextMenu.show latLng
     
@@ -28,4 +30,5 @@ class window.beats.ContextMenuHandler
     items = {}
     items = args.items
     items = _.union(items, $a.node_selected) if $a.nodeList? and $a.nodeList.isOneSelected()
+    items = _.union(items, $a.node_selected_node_clicked) if $a.nodeList? and $a.nodeList.isOneSelected() and args.model?
     items

@@ -77,16 +77,12 @@ class window.beats.MapMarkerView extends Backbone.View
     @contextMenuOptions =
       class: 'context_menu'
       id: "context-menu-#{type}-#{@model.id}"
-      menuItems: $a.Util.copy(menuItems)
-
-    #set this id for the select item so we know what event to call
-    _.each(@contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
-
-    @contextMenu = new $a.ContextMenuView(@contextMenuOptions)
-    google.maps.event.addListener(@marker, 'rightclick', (mouseEvent) =>
-      @contextMenu.show mouseEvent.latLng
-    )
-    @model.set('contextMenu', @contextMenu)
+    args = 
+      element: @marker
+      items: $a.Util.copy(menuItems)
+      options: @contextMenuOptions 
+      model:@model
+    new $a.ContextMenuHandler(args)
   
   # events used to move the marker and update its position
   dragMarker: ->
