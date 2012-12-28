@@ -33,6 +33,8 @@ describe("LinkListCollection", function() {
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
     it("should be watching splitLink", function() {
+      scen = scenarioAndFriends();
+      models[0].set('shape', scen.link1.get('shape'));
       this.lColl.trigger("links:split", models[0].cid);
       expect($a.LinkListCollection.prototype.splitLink).toHaveBeenCalled();
     });
@@ -72,6 +74,17 @@ describe("LinkListCollection", function() {
       var lengthBefore = this.lColl.length;
       this.lColl.removeLink(models[0].cid);
       expect(lengthBefore - 1).toEqual(this.lColl.length);
+    });
+  });
+  describe("splitLink ", function() {
+    it("should split a link from the collection", function() {
+      scen = scenarioAndFriends();
+      models[0].set('shape', scen.link1.get('shape'));
+      var lengthBefore = this.lColl.length;
+      numLinks = 2;
+      newLength = lengthBefore + numLinks - 1;
+      this.lColl.splitLink(models[0].cid, numLinks);
+      expect(newLength).toEqual(this.lColl.length);
     });
   });
   

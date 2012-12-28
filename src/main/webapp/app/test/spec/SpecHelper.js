@@ -70,7 +70,7 @@ beforeEach(function() {
     link.set('roads', new window.beats.Roads());
     link.get('roads').set('road', [road,road2]);
     var shape = new window.beats.Shape();
-    shape.set('text', '');  
+    shape.set('text', 'khdfFrvliVvD{@??k@{E??lDw@pDy@xFoA`GoAPCpD}@bAWrBc@jDw@`JqB`E}@|Cq@~IqBhDu@tDy@dDw@l@Ml@MrA[tA[dAUbAUPEFABAB?B?DANA`GsAjBa@jDy@jBc@bDs@rA[pAYfAYvA[jAYHALEl@KHAFC~Bi@dCi@hAQpAYZGn@W|@Q??GWWwDWqD??rDc@fAO');  
     link.set('shape', shape);
     
     if(!node1.has('outputs')) {
