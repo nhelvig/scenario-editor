@@ -14,6 +14,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @on('links:add_controller', @addControllerToLink, @)
     @on('links:add_event', @addEventToLink, @)
     @on('links:remove', @removeLink, @)
+    @on('links:split', @splitLink, @)
     @forEach((link) =>  @_setUpEvents(link))
   
   # addLink takes the begin node and end node ids, sets up the appropriate
@@ -48,8 +49,33 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # map.
   removeLink: (linkID) ->
     link = @getByCid(linkID)
+    link.begin_node().position().off('change')
+    link.end_node().position().off('change')
     @remove(link)
   
+  # splitLink splits the link into a series of nodes
+  splitLink: (linkID, numLinks) ->
+    link = @getByCid(linkID)
+    @removeLink(linkID)
+    linkGeom = link.get('shape').get('text')
+    path = google.maps.geometry.encoding.decodePath linkGeom
+    numPoints = path.length
+    args = {}
+    args.begin = link.begin_node()
+    beginIndex = Math.floor(numPoints/numLinks)
+    index = beginIndex
+    while numLinks > 1
+      endLatLng  = path[index]
+      endNode = $a.nodeList.addNode(endLatLng)
+      args.end = endNode
+      @addLink(args)
+      args.begin = endNode
+      index += beginIndex
+      numLinks--
+    args.end = link.end_node()
+    @addLink(args)
+
+
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.
   clear: ->

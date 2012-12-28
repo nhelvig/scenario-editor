@@ -2,7 +2,7 @@
 class window.beats.NodeListCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Node
-  nextID = 99
+  nextID = 9999
   
   # when initialized go through the models and set selected to false, and 
   # set up all the events need to add nodes to the collection.
@@ -67,7 +67,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     @add(n)
     n
   
-  # addLink is called from the conttext menus add Link item when there is
+  # addLink is called from the context menus add Link item when there is
   # one other node selected. It adds a node at the position where the event
   # occurred, finds the other selected node, and then creates the link
   # via the triggering of the link_coll:add method
