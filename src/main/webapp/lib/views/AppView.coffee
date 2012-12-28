@@ -54,7 +54,14 @@ class window.beats.AppView extends Backbone.View
   # of the application.Currently we have zoom in and zoom out as well as center
   # the map.
   _contextMenu: () ->
-    new $a.ContextMenuHandler({items: $a.main_context_menu})
+    contextMenuOptions =
+      class: 'context_menu'
+      id: "main-context-menu"
+    args = 
+      element: $a.map 
+      items: $a.main_context_menu
+      options: contextMenuOptions
+    new $a.ContextMenuHandler(args)
 
   # This creates the main navigation bar menu
   _navBar: () ->

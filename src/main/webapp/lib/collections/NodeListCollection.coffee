@@ -12,6 +12,8 @@ class window.beats.NodeListCollection extends Backbone.Collection
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('nodes:add', @addNode, @)
     @on('nodes:add_link', @addLink, @)
+    @on('nodes:add_connecting_link_orig', @addConnectingLinkOrigin, @)
+    @on('nodes:add_connecting_link_dest', @addConnectingLinkDest, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
     @on('nodes:add_dest', @addLinkDest, @)
     @on('nodes:remove', @removeNode, @)
@@ -88,6 +90,18 @@ class window.beats.NodeListCollection extends Backbone.Collection
     selNode = @_getSelectedNode()
     $a.broker.trigger('links_collection:add', {begin:selNode[0], end:node})
   
+  # Adds a link from the node at left clicked to the selected node
+  addConnectingLinkOrigin: (nodeID) ->
+    clickedNode = _.filter(@models, (node) -> node.cid is nodeID)
+    selNode = @_getSelectedNode()
+    $a.broker.trigger('links_collection:add', {begin:clickedNode[0], end:selNode[0]})
+
+  # Adds a link to the node at left clicked from the selected node
+  addConnectingLinkDest: (nodeID) ->
+    clickedNode = _.filter(@models, (node) -> node.cid is nodeID)
+    selNode = @_getSelectedNode()
+    $a.broker.trigger('links_collection:add', {begin:selNode[0], end:clickedNode[0]})
+
   # this returns true if exactly one node is selected. It is called by
   # the context menu handleer to ensure the appropriate items are added
   # to the context menu if one node is selected

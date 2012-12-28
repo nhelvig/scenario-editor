@@ -88,6 +88,9 @@ window.beats.Scenario::network = ->
 window.beats.Scenario::settings = -> 
   @get('settings')
 
+window.beats.Scenario::units_text = -> 
+  @get('settings')?.get('units')?.get('text') || '' 
+
 window.beats.Scenario::network_with_id = (id) ->
   @object_with_id.network[id]
 

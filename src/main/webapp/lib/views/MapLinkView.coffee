@@ -215,8 +215,9 @@ class window.beats.MapLinkView extends Backbone.View
     # get length in meters of link
     length = @_calculateLinkLength()
     # convert to units set in settings files if in miles of km
-    if $a.models.settings().get_units_text() == $a.Util.UNITS_US
+    units = $a.models.units_text()
+    if units == $a.Util.UNITS_US
       length = $a.Util.convertSIToMiles(length)
-    else if $a.models.settings().get_units_text() == $a.Util.UNITS_METRIC
+    else if units == $a.Util.UNITS_METRIC
       length = $a.Util.convertSIToKilometers(length)
     @model.set_length(length)

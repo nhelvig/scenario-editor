@@ -72,6 +72,15 @@ $a.node_selected = [
                     (-> $a.nodeList.trigger("nodes:add_dest", $a.contextMenu.position))
 ]
 
+# Addition to context menu, to be added when a node is selected and another
+# node is click on
+$a.node_selected_node_clicked = [
+  context_menu_item 'Add link to this node', 
+                    ( (e) -> $a.nodeList.trigger("nodes:add_connecting_link_dest", e.currentTarget.id))
+  context_menu_item 'Add link from this node', 
+                    ( (e) -> $a.nodeList.trigger("nodes:add_connecting_link_orig", e.currentTarget.id))
+]
+
 # Link Context Menu
 $a.link_context_menu = [
   context_menu_item 'Edit this link',
