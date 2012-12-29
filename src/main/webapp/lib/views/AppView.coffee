@@ -103,7 +103,7 @@ class window.beats.AppView extends Backbone.View
   newScenario: ->
     $a.broker.trigger('map:clear_map')
     $a.models = new $a.Scenario()
-    $a.models.networklist().set('network',[new $a.Network])
+    $a.models.networklist().set('network',[new $a.Network()])
     network = $a.models.network()
     $a.nodeList = new $a.NodeListCollection([])
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)

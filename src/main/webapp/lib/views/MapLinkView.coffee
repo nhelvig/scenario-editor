@@ -28,7 +28,6 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
     $a.broker.on('map:clear_selected', @clearSelected, @)
-    $a.broker.on("map:clear_map", @removeLink, @)
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
     $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)

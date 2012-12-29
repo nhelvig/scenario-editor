@@ -57,6 +57,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   
   #this method clears the collection upon a clear map
   clear: ->
+    @remove(@models)
     $a.sensorList = {}
     $a.broker.off('sensors:add')
     @off(null, null, @)
