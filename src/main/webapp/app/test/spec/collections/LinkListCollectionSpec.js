@@ -11,7 +11,7 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
-    spyOn($a.LinkListCollection.prototype, 'removeNode').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'joinLink').andCallThrough();
     
     this.lColl= new $a.LinkListCollection(models);
     begin = models[0].begin_node();
@@ -46,6 +46,10 @@ describe("LinkListCollection", function() {
     it("should be watching clear", function() {
       $a.broker.trigger("map:clear_map");
       expect($a.LinkListCollection.prototype.clear).toHaveBeenCalled();
+    });
+    it("should be watching joinLink", function() {
+      $a.broker.trigger("links_collection:join");
+      expect($a.LinkListCollection.prototype.joinLink).toHaveBeenCalled();
     });
     it("should call _setUpEvents", function() {
       expect($a.LinkListCollection.prototype._setUpEvents).toHaveBeenCalled();
@@ -101,9 +105,9 @@ describe("LinkListCollection", function() {
     })
   });
   
-  describe("removeNode ", function() {
+  describe("removeNodeReference", function() {
     it("should remove the begin or end node from link", function() {
-      this.lColl.removeNode(this.lColl.models[0],'end');
+      this.lColl.removeNodeReference(this.lColl.models[0],'end');
       expect(this.lColl.models[0].get('end').get('node')).toBeNull();
       models[0].get('end').set('node', end)
     });

@@ -9,14 +9,14 @@ class window.beats.NodeListCollection extends Backbone.Collection
   initialize:(@models) ->
     @clearSelected()
     @forEach((node) => @_setUpEvents(node))
-    $a.broker.on("map:clear_map", @clear, @)
+    $a.broker.on('map:clear_map', @clear, @)
     $a.broker.on('nodes:add', @addNode, @)
+    $a.broker.on('nodes:remove', @removeNode, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_connecting_link_orig', @addConnectingLinkOrigin, @)
     @on('nodes:add_connecting_link_dest', @addConnectingLinkDest, @)
     @on('nodes:add_origin', @addLinkOrigin, @)
     @on('nodes:add_dest', @addLinkDest, @)
-    @on('nodes:remove', @removeNode, @)
   
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
@@ -38,11 +38,15 @@ class window.beats.NodeListCollection extends Backbone.Collection
   clearSelected: ->
     @forEach((node) -> node.set('selected', false))
   
-  # removeNode removes this node from the collection and takes it off the 
-  # map.
-  removeNode: (nodeID) ->
+  # removeNode removes this node, joins any links that may be connected via
+  # this node, removes the node from the collection and takes it off the 
+  # map. 
+  removeNode: (nodeID, linksJoined) ->
     node = _.filter(@models, (node) -> node.cid is nodeID)
-    @remove(node)
+    if linksJoined? and linksJoined
+      @remove(node)
+    else
+      $a.broker.trigger("links_collection:join", node[0])
   
   # addNode creates a node of the type and at the position passed in and adds
   # it to the collection as well as to the models schema. 

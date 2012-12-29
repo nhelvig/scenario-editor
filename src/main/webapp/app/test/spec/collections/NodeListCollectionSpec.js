@@ -43,7 +43,7 @@ describe("NodeListCollection", function() {
          expect($a.NodeListCollection.prototype.addLinkDest).toHaveBeenCalled();
        });
        it("should be watching removeNode", function() {
-         this.nCollect.trigger("nodes:remove", new google.maps.LatLng(37,-122));
+         $a.broker.trigger("nodes:remove", 1);
          expect($a.NodeListCollection.prototype.removeNode).toHaveBeenCalled();
        });
   });

@@ -101,4 +101,3 @@ class window.beats.GoogleMapRouteHandler
   #checks to see if we are over the google query limit
   _isOverQuery: (status) ->
     status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT
-  
