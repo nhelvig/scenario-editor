@@ -75,10 +75,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
     args.end = link.end_node()
     @addLink(args)
 
-
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.
   clear: ->
+    @remove(@models)
     $a.linkList = {}
     $a.broker.off("map:redraw_link")
     $a.broker.off('links_collection:add')

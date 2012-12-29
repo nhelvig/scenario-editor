@@ -73,6 +73,7 @@ window.beats.Node::remove = ->
   nodes = window.beats.models.nodes()
   nodes = _.reject(nodes, (n) => n is @)
   window.beats.models.set_nodes(nodes)
+  @stopListening
 
 window.beats.Node::add = ->
   window.beats.models.nodes().push(@)

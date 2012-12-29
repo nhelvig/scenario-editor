@@ -21,7 +21,7 @@ class window.beats.NodeListView extends Backbone.Collection
   
   #this method clears the collection upon a clear map
   clear: ->
-    $a.linkListView = {}
+    $a.nodeListView = {}
   
   # renders all the nodes in the collection by calling addNodeView
   render: ->
