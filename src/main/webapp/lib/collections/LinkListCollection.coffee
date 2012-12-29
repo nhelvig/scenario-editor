@@ -92,7 +92,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
         link2 = links[linkIndex2]
         @_joinMatchingNodes(link, link2)
         linkIndex2++
-    _.each((links), (link) =>  @removeLink(link))
+    _.each((links), (link) =>  @remove(link))
     $a.broker.trigger('nodes:remove', node.cid, true)
   
   _joinMatchingNodes: (link, link2) ->
@@ -110,6 +110,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     ePath = google.maps.geometry.encoding.decodePath eLink.geometry()
     cPath = _.union(bPath,ePath)
     path = google.maps.geometry.encoding.encodePath cPath
+    bLink.begin_node().position().off()
+    eLink.end_node().position().off()
     @addLink({begin: bLink.begin_node(), end: eLink.end_node(), path: path})
     
   # this method clears the collection upon a clear map as well shuts off the 
@@ -144,9 +146,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->
-    link.bind('remove', => 
-                  link.remove()
-                  @destroy)
+    link.bind('remove', -> link.remove())
     link.bind('add', -> link.add())
     bNode = link.begin_node()
     eNode = link.end_node()
