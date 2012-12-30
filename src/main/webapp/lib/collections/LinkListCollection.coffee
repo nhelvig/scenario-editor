@@ -97,22 +97,22 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   _joinMatchingNodes: (link, link2) ->
     if(link.begin_node() is link2.end_node())
-        @_join(link2, link)
+        @_join(link2, link, link2.begin_node(), link.end_node())
     else if(link.end_node() is link2.begin_node())
-        @_join(link, link2)
+        @_join(link, link2, link.begin_node(), link2.end_node())
     else if(link.end_node() is link2.end_node())
-        @_join(link, link2)
+        @_join(link, link2, link.begin_node(), link2.begin_node())
     else if(link.begin_node() is link2.begin_node())
-        @_join(link, link2)
+        @_join(link, link2, link.end_node(), link2.end_node())
 
-  _join: (bLink, eLink) ->
+  _join: (bLink, eLink, bNode, eNode) ->
     bPath = google.maps.geometry.encoding.decodePath bLink.geometry() 
     ePath = google.maps.geometry.encoding.decodePath eLink.geometry()
     cPath = _.union(bPath,ePath)
     path = google.maps.geometry.encoding.encodePath cPath
     bLink.begin_node().position().off()
     eLink.end_node().position().off()
-    @addLink({begin: bLink.begin_node(), end: eLink.end_node(), path: path})
+    @addLink({begin: bNode, end: eNode, path: path})
     
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.

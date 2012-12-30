@@ -119,7 +119,16 @@ describe("LinkListCollection", function() {
       expect(links.length > 0).toBeTruthy();
     });
   });
-  
+  describe("joinLink ", function() {
+    it("should join links when node is removed", function() {
+      scen = scenarioAndFriends()
+      linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
+      links = linkColl.models
+      lBefore = links.length
+      $a.broker.trigger("links_collection:join", scen.node2);
+      expect(lBefore - 1).toEqual(linkColl.models.length);
+    });
+  });
   describe("clear ", function() {
     beforeEach(function() {
       this.lColl.clear();
