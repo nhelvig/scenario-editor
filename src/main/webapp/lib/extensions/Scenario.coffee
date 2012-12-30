@@ -49,6 +49,9 @@ window.beats.Scenario::initialize = ->
   @set 'sensorlist', new window.beats.SensorList
   @set 'signallist', new window.beats.SignalList
 
+window.beats.Scenario::set_position = (lat, lng) ->
+  @network().set_position(lat, lng)
+
 window.beats.Scenario::nodes = -> 
   @network().get('nodelist')?.get('node') || []
 

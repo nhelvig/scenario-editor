@@ -17,3 +17,8 @@ window.beats.Network::description_text = ->
 
 window.beats.Network::set_description_text = (s) ->
   @get('description').set('text',s)
+
+window.beats.Network::set_position = (lat,lng) ->
+  @get('position').get('point')[0].set('lat', lat)
+  @get('position').get('point')[0].set('lng', lng)
+  

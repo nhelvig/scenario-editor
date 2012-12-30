@@ -91,6 +91,8 @@ class window.beats.AppView extends Backbone.View
   saveScenario: ->
     if $a.models?
         doc = document.implementation.createDocument(null, null, null)
+        center = $a.map.getCenter()
+        $a.models.set_position(center.lat(), center.lng())
         attrs =
           xml: $a.models.to_xml(doc)
         $a.Util.writeAndDownloadXML(attrs)

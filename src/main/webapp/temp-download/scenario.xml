@@ -5,7 +5,7 @@
     <network dt="300">
       <description/>
       <position>
-        <point lat="0" lng="0" elevation="0"/>
+        <point lat="37.864113784111474" lng="-122.27680206298828" elevation="0"/>
       </position>
       <NodeList>
         <node type="" id="9999">
@@ -13,89 +13,11 @@
             <marker name="" postmile="0"/>
           </roadway_markers>
           <position>
-            <point lat="37.88291529325509" lng="-122.29448318481445" elevation="NaN"/>
-          </position>
-        </node>
-        <node type="" id="10000">
-          <roadway_markers>
-            <marker name="" postmile="0"/>
-          </roadway_markers>
-          <position>
-            <point lat="37.85987304457994" lng="-122.29426971435544" elevation="NaN"/>
-          </position>
-        </node>
-        <node type="" id="10001">
-          <roadway_markers>
-            <marker name="" postmile="0"/>
-          </roadway_markers>
-          <position>
-            <point lat="37.8436814502461" lng="-122.27474212646484" elevation="NaN"/>
-          </position>
-        </node>
-        <node type="" id="10002">
-          <roadway_markers>
-            <marker name="" postmile="0"/>
-          </roadway_markers>
-          <position>
-            <point lat="37.870584971740065" lng="-122.2628116607666" elevation="NaN"/>
-          </position>
-        </node>
-        <node type="" id="10003">
-          <roadway_markers>
-            <marker name="" postmile="0"/>
-          </roadway_markers>
-          <position>
-            <point lat="37.853876041506666" lng="-122.26114087829592" elevation="NaN"/>
+            <point lat="37.87593739726171" lng="-122.28014945983887" elevation="NaN"/>
           </position>
         </node>
       </NodeList>
-      <LinkList>
-        <link lanes="1" lane_offset="0" length="3056.8719951271255" type="" id="9999" in_sync="true">
-          <begin node_id="9999"/>
-          <end node_id="10000"/>
-          <roads>
-            <road name=""/>
-          </roads>
-          <dynamics type="CTM"/>
-          <shape>{~efFxtliVn@ObJqB??^fD`@fDDX??hCk@hCm@fAUlFkAjFiA`FkALCxIoBlDw@pDy@xFoA`GoAPCpD}@bAWrBc@jDw@`JqB`E}@|Cq@~IqB??j@~Ej@xEl@`FVpBRjBL`A</shape>
-        </link>
-        <link lanes="1" lane_offset="0" length="3764.31982076752" type="" id="10000" in_sync="true">
-          <begin node_id="10000"/>
-          <end node_id="10001"/>
-          <roads>
-            <road name=""/>
-          </roads>
-          <dynamics type="CTM"/>
-          <shape>ypafFzrliVMaASkBWqBm@aFk@yEk@_F??hDu@tDy@dDw@l@Ml@MrA[tA[dAUbAUPEFABAB?B?DANA`GsAjBa@jDy@jBc@bDs@rA[pAYfAYvA[jAYHALEl@KHAFC~Bi@dCi@hAQpAYZGn@W|@QrA[xA[JAdASLIdDu@bAUfAUbCi@bAUdBa@fB_@zBg@rA[VG??EUkD}KeC{Hg@}A[cA}BkHSm@]eAy@eC}@uB??nAc@zCc@??CSyB\</shape>
-        </link>
-        <link lanes="1" lane_offset="0" length="3538.213027700872" type="" id="10001" in_sync="true">
-          <begin node_id="10000"/>
-          <end node_id="10002"/>
-          <roads>
-            <road name=""/>
-          </roads>
-          <dynamics type="CTM"/>
-          <shape>ypafFzrliVMaASkBWqBm@aFk@yEk@_FCYSoCUoDMoBK{AYoEIeAC_@QiCUgDMmBCc@Y{DUwDE]WaE[{EEu@WuD]cFCYYgE[_F]aF_@kF??uDRsDTkJf@gJf@??AWIuAEw@a@{G]eFa@{FC_@o@gJEi@@W??KCKAI?k@DW@??GaBCa@S{AGc@CIQq@WkACMMeA??Mu@Ka@</shape>
-        </link>
-        <link lanes="1" lane_offset="0" length="4026.9780343081584" type="" id="10002" in_sync="true">
-          <begin node_id="10003"/>
-          <end node_id="10000"/>
-          <roads>
-            <road name=""/>
-          </roads>
-          <dynamics type="CTM"/>
-          <shape>}i`fFpbfiVXE??R~CFl@??uFp@{APaBJ??ZpEXpETvDZpEThDTbDDf@@F@BJTf@hA\n@FPFRBTHn@Dv@ZjEDXVjEANV|DXlEdAxO\dFTlDDVBrB@`A@dB@fA@lBzAlMtBdQ@XVnBb@pDZfCPbBXzAVfAJ\?Bx@pC??aBXcBb@i@PoB`@gAVcATeARqDx@sBd@oAVmAXmDt@aFlAeATyAXaCh@q@RqAX??L`A</shape>
-        </link>
-        <link lanes="1" lane_offset="0" length="4026.9780343081584" type="" id="10002" in_sync="true">
-          <begin node_id="10003"/>
-          <end node_id="10000"/>
-          <roads>
-            <road name=""/>
-          </roads>
-          <dynamics type="CTM"/>
-          <shape>}i`fFpbfiVXE??R~CFl@??uFp@{APaBJ??ZpEXpETvDZpEThDTbDDf@@F@BJTf@hA\n@FPFRBTHn@Dv@ZjEDXVjEANV|DXlEdAxO\dFTlDDVBrB@`A@dB@fA@lBzAlMtBdQ@XVnBb@pDZfCPbBXzAVfAJ\?Bx@pC??aBXcBb@i@PoB`@gAVcATeARqDx@sBd@oAVmAXmDt@aFlAeATyAXaCh@q@RqAX??L`A</shape>
-        </link>
-      </LinkList>
+      <LinkList/>
       <IntersectionCache/>
     </network>
   </NetworkList>
