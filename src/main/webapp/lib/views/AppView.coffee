@@ -39,7 +39,7 @@ class window.beats.AppView extends Backbone.View
   _initializeMap: ->
     mapOpts = {
       center: new google.maps.LatLng(37.85794730789898, -122.29954719543457)
-      zoom: 14
+      zoom: 12
       mapTypeId: google.maps.MapTypeId.ROADMAP
       mapTypeControl: false
       zoomControl: true
@@ -102,6 +102,7 @@ class window.beats.AppView extends Backbone.View
   
   newScenario: ->
     $a.broker.trigger('map:clear_map')
+    $a.map.setZoom(12)
     $a.models = new $a.Scenario()
     $a.models.networklist().set('network',[new $a.Network()])
     network = $a.models.network()
