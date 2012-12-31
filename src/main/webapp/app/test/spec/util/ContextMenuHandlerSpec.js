@@ -25,7 +25,8 @@ describe("ContextMenuHandler", function() {
    describe("createMenu", function (){
      beforeEach(function() {
        latLng = new google.maps.LatLng(370, -122)
-       this.cmh._createMenu({items:$a.main_context_menu,  options:{class: 'context_menu', id: "main-context-menu"}},latLng );
+       opt = {class: 'context_menu', id: "main-context-menu"}
+       this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
      });
      it("should create the menu", function(){
         expect($a.contextMenu).not.toBeNull();
