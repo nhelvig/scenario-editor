@@ -42,11 +42,11 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # this node, removes the node from the collection and takes it off the 
   # map. 
   removeNode: (nodeID, linksJoined) ->
-    node = _.filter(@models, (node) -> node.cid is nodeID)
+    node = @getByCid(nodeID)
     if linksJoined? and linksJoined
       @remove(node)
     else
-      $a.broker.trigger("links_collection:join", node[0])
+      $a.broker.trigger("links_collection:join", node)
   
   # addNode creates a node of the type and at the position passed in and adds
   # it to the collection as well as to the models schema. 
