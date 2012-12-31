@@ -5,6 +5,7 @@
 class window.beats.MapLinkView extends Backbone.View
   @LINK_COLOR: 'blue'
   @SELECTED_LINK_COLOR: 'red'
+  @PARALLEL_COLOR: 'green'
 
   $a = window.beats
 
@@ -17,6 +18,7 @@ class window.beats.MapLinkView extends Backbone.View
     if(!@model.length?)
       @_saveLinkLength()
     @_contextMenu()
+    @_setMouseEvents()
     @model.on('remove', @removeLink, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
@@ -62,13 +64,14 @@ class window.beats.MapLinkView extends Backbone.View
     @link = new google.maps.Polyline({
       path: google.maps.geometry.encoding.decodePath linkGeom
       map: $a.map
-      strokeColor: MapLinkView.LINK_COLOR
+      strokeColor: @_getStrokeColor()
       icons: [{
           icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
           fillColor: 'blue'
           offset: '50%'
           scale: 0.5
         }]
+      zIndex: @_getZIndex()
       strokeOpacity: 0.6
       strokeWeight: 4
     })
@@ -96,6 +99,21 @@ class window.beats.MapLinkView extends Backbone.View
     )
     @model.set('contextMenu', contextMenu)
 
+  _getStrokeColor: ->
+    strokeColor = MapLinkView.LINK_COLOR
+    strokeColor = MapLinkView.PARALLEL_COLOR if @model.parallel? is true
+    strokeColor
+
+  _getZIndex: ->
+    z = 1
+    z = 9999 if @model.parallel? is true
+    z
+  
+  _setMouseEvents: ->
+    google.maps.event.addListener(@link, 'mousedown', (mouseEvent) =>
+      console.log "here"
+    ) if @model.parallel? is true
+  
   # creates the editor for a link
   _editor: (evt) ->
     env = new $a.EditorLinkView(elem: 'link', models: [@model], width: 375)

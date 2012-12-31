@@ -102,6 +102,9 @@ $a.link_context_menu = [
   {className:'context_menu_separator'}
   context_menu_item  'Split link with nodes',
                       ((e) -> $a.linkList.trigger("links:split", e.currentTarget.id, 2))
+  context_menu_item  'Create parallel link',
+                      ((e) -> $a.linkList.trigger("links:parallel", e.currentTarget.id))
+
 ]
 
 $a.link_context_menu_demand_item = [

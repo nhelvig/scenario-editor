@@ -11,6 +11,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
+    @on('links:parallel', @parallelLink, @)
     @on('links:add_sensor', @addSensorToLink, @)
     @on('links:add_controller', @addControllerToLink, @)
     @on('links:add_event', @addEventToLink, @)
@@ -27,6 +28,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     id = $a.Util.getNewElemId($a.models.links())
     link.set('id', id)
     link.set_geometry args.path if args.path?
+    link.set_parallel args.parallel if args.parallel?
     
     begin = new window.beats.Begin()
     begin.set('node_id', args.begin.get('id'))
@@ -54,6 +56,16 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.begin_node().position().off('change')
     link.end_node().position().off('change')
     @remove(link)
+  
+  # creates a parallel link to the one passed in
+  parallelLink: (linkID) ->
+    link = @getByCid(linkID)
+    args = {}
+    args.begin = link.begin_node()
+    args.end = link.end_node()
+    args.path = link.geometry()
+    args.parallel = true
+    link = @addLink(args)
   
   # splitLink splits the link into a series of nodes
   splitLink: (linkID, numLinks) ->
