@@ -2,4 +2,5 @@ window.beats.LinkList::defaults =
   link: []
   
 window.beats.LinkList::initialize = ->
-  @set 'link', []
+  @set 'link', [] if link?
+  
