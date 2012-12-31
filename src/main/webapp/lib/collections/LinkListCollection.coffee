@@ -60,12 +60,18 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # creates a parallel link to the one passed in
   parallelLink: (linkID) ->
     link = @getByCid(linkID)
+    path = google.maps.geometry.encoding.decodePath(link.geometry())
+    paths = $a.Util.parallelLines(path, $a.map.getProjection(), 7, 4);
     args = {}
     args.begin = link.begin_node()
     args.end = link.end_node()
-    args.path = link.geometry()
+    args.path = google.maps.geometry.encoding.encodePath paths.path1
     args.parallel = true
-    link = @addLink(args)
+    args.strokeWeight = 1
+    @addLink(args)
+    args.path = google.maps.geometry.encoding.encodePath paths.path2
+    @remove(link)
+    @addLink(args)
   
   # splitLink splits the link into a series of nodes
   splitLink: (linkID, numLinks) ->

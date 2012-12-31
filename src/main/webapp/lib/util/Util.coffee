@@ -1,7 +1,9 @@
 # A class of static methods used to store general functions used by
 # many classes.
-window.beats.Util =
+$a = window.beats
 
+window.beats.Util =
+  
   # Constants for Unit Names
   UNITS_US: 'US'
   UNITS_METRIC: 'Metric'
@@ -142,3 +144,140 @@ window.beats.Util =
       if test?.length == 0
         return id
       id++
+  
+  #parallel lines
+  parallelLines: (points, prj, gapPx, weight) ->
+    zoom = $a.map.getZoom()
+
+    #left and right swapped throughout!
+    pts1 = [] #left side of center
+    pts2 = [] #right side of center
+
+    #shift the pts array away from the centre-line by half the gap + half the line width
+    o = (gapPx + weight)/2
+    thetam1 = -9999
+    for i in [1..points.length-1]
+      p1 = prj.fromLatLngToPoint(points[i-1])
+      p2 = prj.fromLatLngToPoint(points[i])
+      theta = Math.atan2(p1.x-p2.x,p1.y-p2.y) + (Math.PI/2)
+      theta -= Math.PI*2 if(theta > Math.PI)
+      dl = Math.sqrt(((p1.x-p2.x)*(p1.x-p2.x))+((p1.y-p2.y)*(p1.y-p2.y)))
+      dx = Math.round(o * Math.sin(theta))
+      dy = Math.round(o * Math.cos(theta))
+
+      p1l = new google.maps.Point(p1.x+dx,p1.y+dy)
+      p1r = new google.maps.Point(p1.x-dx,p1.y-dy)
+      p2l = new google.maps.Point(p2.x+dx,p2.y+dy)
+      p2r = new google.maps.Point(p2.x-dx,p2.y-dy)
+
+      if(i==1) #first point
+        pts1.push(prj.fromPointToLatLng(p1l))
+        pts2.push(prj.fromPointToLatLng(p1r))        
+      else #mid points
+        if(theta == thetam1)
+          #adjacent segments in a straight line
+          pts1.push(prj.fromPointToLatLng(p1l))
+          pts2.push(prj.fromPointToLatLng(p1r))
+        else
+          pli = @intersect(p1lm1,p2lm1,p1l,p2l)
+          pri = @intersect(p1rm1,p2rm1,p1r,p2r)
+
+          dlxi = (pli.x-p1.x)
+          dlyi = (pli.y-p1.y)
+          drxi = (pri.x-p1.x)
+          dryi = (pri.y-p1.y)
+          di = Math.sqrt((drxi*drxi)+(dryi*dryi))
+          s = o / di
+
+          dTheta = theta - thetam1
+          if(dTheta < (Math.PI*2))
+            dTheta += Math.PI*2
+          if(dTheta > (Math.PI*2))
+            dTheta -= Math.PI*2
+
+          if(dTheta < Math.PI)
+            #intersect point on outside bend
+            pts1.push(prj.fromPointToLatLng(p2lm1))
+            pts1.push(prj.fromPointToLatLng(new google.maps.Point(p1.x+(s*dlxi),p1.y+(s*dlyi)),zoom))
+            pts1.push(prj.fromPointToLatLng(p1l))
+          else if (di < dl)
+            pts1.push(prj.fromPointToLatLng(pli))
+          else
+            pts1.push(prj.fromPointToLatLng(p2lm1))
+            pts1.push(prj.fromPointToLatLng(p1l))
+
+          dxi = (pri.x-p1.x)*(pri.x-p1.x)
+          dyi = (pri.y-p1.y)*(pri.y-p1.y)
+          if(dTheta > Math.PI)
+            #intersect point on outside bend
+            pts2.push(prj.fromPointToLatLng(p2rm1))
+            pts2.push(prj.fromPointToLatLng(new google.maps.Point(p1.x+(s*drxi),p1.y+(s*dryi)),zoom))
+            pts2.push(prj.fromPointToLatLng(p1r))
+          else if(di<dl)
+    	      pts2.push(prj.fromPointToLatLng(pri))
+          else
+            pts2.push(prj.fromPointToLatLng(p2rm1))
+            pts2.push(prj.fromPointToLatLng(p1r))
+
+      p1lm1 = p1l
+      p1rm1 = p1r
+      p2lm1 = p2l
+      p2rm1 = p2r
+      thetam1 = theta
+
+    #final point
+    pts1.push(prj.fromPointToLatLng(p2l))
+    pts2.push(prj.fromPointToLatLng(p2r))
+    
+    {
+      path1: pts1,
+      path2: pts2
+    }
+
+  # this function computes the intersection of the sent lines p0-p1 and p2-p3
+  # and returns the intersection point,
+  intersect: (p0, p1, p2, p3) ->
+    # a1 b1 c1 a2 b2 c2 # constants of linear equations
+    # det_inv  # the inverse of the determinant of the coefficient matrix
+    # m1 m2    # the slopes of each line
+
+    x0 = p0.x;
+    y0 = p0.y;
+    x1 = p1.x;
+    y1 = p1.y;
+    x2 = p2.x;
+    y2 = p2.y;
+    x3 = p3.x;
+    y3 = p3.y;
+
+    # compute slopes, note the cludge for infinity, however, this will
+    # be close enough
+
+    if ((x1-x0)!=0)
+      m1 = (y1-y0)/(x1-x0)
+    else
+      m1 = 1e+10   # close enough to infinity
+
+    if ((x3-x2)!=0)
+      m2 = (y3-y2)/(x3-x2)
+    else
+      m2 = 1e+10   # close enough to infinity
+
+    #compute constants
+    a1 = m1
+    a2 = m2
+
+    b1 = -1
+    b2 = -1
+
+    c1 = (y0-m1*x0)
+    c2 = (y2-m2*x2)
+
+    #compute the inverse of the determinate
+    det_inv = 1/(a1*b2 - a2*b1)
+
+    # use Kramers rule to compute xi and yi
+    xi=((b1*c2 - b2*c1)*det_inv)
+    yi=((a2*c1 - a1*c2)*det_inv)
+
+    return new google.maps.Point(Math.round(xi),Math.round(yi))

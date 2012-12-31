@@ -36,7 +36,7 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
-  
+    
   render: ->
     @link.setMap($a.map)
     @
@@ -73,7 +73,7 @@ class window.beats.MapLinkView extends Backbone.View
         }]
       zIndex: @_getZIndex()
       strokeOpacity: 0.6
-      strokeWeight: 4
+      strokeWeight: @_getStrokeWeight()
     })
 
   # Context Menu
@@ -104,6 +104,11 @@ class window.beats.MapLinkView extends Backbone.View
     strokeColor = MapLinkView.PARALLEL_COLOR if @model.parallel? is true
     strokeColor
 
+  _getStrokeWeight: ->
+    w = 4
+    w = 4 if @model.parallel? is true
+    w
+    
   _getZIndex: ->
     z = 1
     z = 9999 if @model.parallel? is true
@@ -111,7 +116,7 @@ class window.beats.MapLinkView extends Backbone.View
   
   _setMouseEvents: ->
     google.maps.event.addListener(@link, 'mousedown', (mouseEvent) =>
-      console.log "here"
+      @link
     ) if @model.parallel? is true
   
   # creates the editor for a link
@@ -154,6 +159,7 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.off("map:clear_network:#{@network.cid}")
     $a.broker.off("map:open_editor:#{@model.cid}")
     $a.broker.off("link:view_demands:#{@model.cid}")
+    google.maps.event.removeListener(@zoomListener);
     @hideLink() if @link
     @link = null
     
