@@ -9,7 +9,7 @@ describe("Util", function() {
   describe("getNewElemId", function() {
     it("should get a unique id that is not contained in collection", function() {
       id  = $a.Util.getNewElemId(this.linkList)
-      expect(id).toEqual(4);
+      expect(id).toEqual(9999);
     });
   });
   
