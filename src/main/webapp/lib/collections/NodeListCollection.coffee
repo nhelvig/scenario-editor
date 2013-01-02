@@ -125,8 +125,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   _setUpEvents: (node) ->
     node.bind('remove', => node.remove())
     node.bind('add', => node.add())
-                
-    
+  
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)

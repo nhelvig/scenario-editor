@@ -9,7 +9,6 @@
      function runner() {
         xml = $.parseXML($a.fileText);
         $a.models = $a.Scenario.from_xml($(xml).children());
-        $a.modelsOrig = jQuery.extend(true, {}, $a.models);
         _.templateSettings = {interpolate : /\{\{(.+?)\}\}/g }
         var jasmineEnv = jasmine.getEnv();
         jasmineEnv.updateInterval = 1000;

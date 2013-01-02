@@ -5,7 +5,6 @@
 class window.beats.MapLinkView extends Backbone.View
   @LINK_COLOR: 'blue'
   @SELECTED_LINK_COLOR: 'red'
-
   $a = window.beats
 
   initialize: (@model, @network) ->
@@ -34,7 +33,7 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
-  
+
   render: ->
     @link.setMap($a.map)
     @
@@ -64,13 +63,12 @@ class window.beats.MapLinkView extends Backbone.View
       map: $a.map
       strokeColor: MapLinkView.LINK_COLOR
       icons: [{
-          icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
+          icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW }
           fillColor: 'blue'
-          offset: '50%'
-          scale: 0.5
+          offset: '60%'
         }]
       strokeOpacity: 0.6
-      strokeWeight: 4
+      strokeWeight: $a.Util.getLinkStrokeWeight()
     })
 
   # Context Menu

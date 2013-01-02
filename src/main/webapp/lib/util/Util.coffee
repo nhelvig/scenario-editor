@@ -1,11 +1,17 @@
 # A class of static methods used to store general functions used by
 # many classes.
+$a = window.beats
 window.beats.Util =
 
   # Constants for Unit Names
   UNITS_US: 'US'
   UNITS_METRIC: 'Metric'
   UNITS_SI: 'SI'
+  
+  STROKE_WEIGHT_THICKER: 4
+  STROKE_WEIGHT_THICK: 3
+  STROKE_WEIGHT_THIN: 2
+  STROKE_WEIGHT_THINNER: 1
 
   _round_dec: (num,dec) ->
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
@@ -142,3 +148,16 @@ window.beats.Util =
       if test?.length == 0
         return id
       id++
+  
+  # determine strokeweight for zoom
+  getLinkStrokeWeight: ->
+    zoomLevel = $a.map.getZoom()
+    if (zoomLevel >= 18)
+      newZoom = $a.Util.STROKE_WEIGHT_THICKER
+    else if (zoomLevel >= 17)
+      newZoom = $a.Util.STROKE_WEIGHT_THICK
+    else if (zoomLevel >= 16)
+      newZoom = $a.Util.STROKE_WEIGHT_THIN
+    else
+      newZoom = $a.Util.STROKE_WEIGHT_THINNER
+    newZoom
