@@ -117,20 +117,29 @@ class window.beats.BrowserView extends Backbone.View
   # the click event for each row. Every row clicked triggers a rendering
   # of the editor in the right pane
   attachRowSelection: () ->
-    $('#browser_table tbody').click( (event) =>
-        $(event.target.parentNode).toggleClass('row_selected')
-        selectedIds = []
-        $(@dTable.fnSettings().aoData).each( (data) ->  
-          if($(this.nTr).hasClass('row_selected'))
-            selectedIds.push @_aData[0]
-        )
-        selectedModels = @_configureSelectedElems(selectedIds)
-        tabSelected = $(@nev.el).tabs().tabs('option', 'selected')
-        $('#right [id*="dialog-form"]').remove()
-        @renderEditor(selectedModels) unless _.isEmpty(selectedIds)
-        $(@nev.el).tabs("select", tabSelected)
+    #handles the row selection
+    $("#browser_table tbody tr").click( ->
+      if $(this).hasClass('row_selected')
+        $(this).removeClass('row_selected')
+      else
+        $('#browser_table tbody tr.row_selected').removeClass('row_selected');
+        $(this).addClass('row_selected');
     )
 
+    #handles the editor rendering 
+    $('#browser_table tbody').click( (event) =>
+      selectedIds = []
+      $(@dTable.fnSettings().aoData).each((data) ->  
+        if($(this.nTr).hasClass('row_selected'))
+          selectedIds.push @_aData[0]
+      )
+      selectedModels = @_configureSelectedElems(selectedIds)
+      tabSelected = $(@nev.el).tabs().tabs('option', 'selected')
+      $('#right [id*="dialog-form"]').remove()
+      @renderEditor(selectedModels) unless _.isEmpty(selectedIds)
+      $(@nev.el).tabs("select", tabSelected)
+    )
+  
   # if any change in the editor is made the table itself is rendered again
   # to make sure the state is synchronized
   rePopulateTable: () ->
@@ -174,4 +183,3 @@ class window.beats.BrowserView extends Backbone.View
 
     # Re-enable all browser dialog events to what it was before it was minimized
     $('.ui-dialog').data('events', @dialogEvents)
-  
