@@ -17,6 +17,7 @@ class window.beats.MapLinkView extends Backbone.View
       @_saveLinkLength()
     @_contextMenu()
     @model.on('remove', @removeLink, @)
+    @model.on('change:selected', @toggleSelected, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
     $a.broker.on('map:show_link_layer', @showLink, @)
@@ -165,6 +166,13 @@ class window.beats.MapLinkView extends Backbone.View
   # This method swaps the icon for the de-selected color
   clearSelected: ->
     @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
+
+  # This method toggles the selection of the node
+  toggleSelected: () ->
+    if(@model.get('selected') is true)
+      @linkSelect()
+    else
+      @clearSelected()
 
   # This method is called from the context menu and selects itself and all
   # the links nodes as the higlighted tree items

@@ -10,9 +10,9 @@ class window.beats.EditorView extends Backbone.View
     @elem = @options.elem
     @models = @options.models
     title  = $a.Util.toStandardCasing(@elem)  # eg. node -> Node
-    subtitle = if (typeof @models[0].road_names == 'function') then @models[0].road_names() else ""
+    subtitle = if (@models[0]? and typeof @models[0].road_names == 'function') then @models[0].road_names() else ""
     @$el.attr 'title', "#{title} Editor: #{subtitle}"
-    @$el.attr 'id', "#{@elem}-dialog-form-#{@models[0].cid}"
+    @$el.attr 'id', "#{@elem}-dialog-form-#{@models[0].cid}" if @models[0]?
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(options.templateData))
 

@@ -6,7 +6,7 @@ class window.beats.BrowserNodeView extends  window.beats.BrowserView
   # we re-opulate the table
   initialize: ->
     $a.nodeList.forEach((node) => node.on('change', @rePopulateTable, @))
-    super {elem: 'node'}
+    super @_getTemplateData()
   
   # set up width for dialog box and let BrowserView render it
   render:() ->
@@ -30,6 +30,13 @@ class window.beats.BrowserNodeView extends  window.beats.BrowserView
             { "sTitle": "Type","sWidth": "50%"},
         ]
   
+  # creates a hash of values taken from the model for the html template
+  _getTemplateData: ->
+    {
+      elem: 'node'
+      browser_table_id: 'node_browser'
+    }
+  
   # get the node models of the items that are selected. Called by BrowserView
   # in order to get the data for each selected model and render it in the
   # editor, this also clears and sets the nodes on the map
@@ -49,7 +56,7 @@ class window.beats.BrowserLinkView extends  window.beats.BrowserView
   # we re-opulate the table
   initialize: ->
     $a.linkList.forEach((link) => link.on('change', @rePopulateTable, @))
-    super {elem: 'link'}
+    super @_getTemplateData()
   
   # set up editor view for links selected in the right pane
   render:() ->
@@ -75,14 +82,23 @@ class window.beats.BrowserLinkView extends  window.beats.BrowserView
             { "sTitle": "Begin","sWidth": "16%"},
             { "sTitle": "End","sWidth": "16%"},
         ]
+  # creates a hash of values taken from the model for the html template
+  _getTemplateData: ->
+    {
+      elem: 'link'
+      browser_table_id: 'link_browser'
+    }
   
   # get the link models of the items that are selected. Called by BrowserView
   # in order to get the data for each selected model and render it in the
   # editor
   _configureSelectedElems: (selectedIds) ->
-    $a.linkList.filter((link) ->
-            link if _.include(selectedIds, link.get('id'))
-        )
+    selectedLinks = $a.linkList.filter((link) ->
+      link if _.include(selectedIds, link.get('id'))
+    )
+    $a.linkList.clearSelected()
+    $a.linkList.setSelected(selectedLinks)
+    selectedLinks
 
 # the browser view for the sensors
 class window.beats.BrowserSensorView extends  window.beats.BrowserView
@@ -92,7 +108,7 @@ class window.beats.BrowserSensorView extends  window.beats.BrowserView
   # we re-opulate the table  
   initialize: ->
     $a.sensorList.forEach((sensor) => sensor.on('change', @rePopulateTable, @))
-    super {elem: 'sensor'}
+    super @_getTemplateData()
   
   # set up editor view for sensors selected in the right pane
   render:() ->
@@ -107,6 +123,13 @@ class window.beats.BrowserSensorView extends  window.beats.BrowserView
   # grab the column data for the browser table  
   _getData: () ->
     $a.sensorList.getBrowserColumnData()
+  
+  # creates a hash of values taken from the model for the html template
+  _getTemplateData: ->
+    {
+      elem: 'sensor'
+      browser_table_id: 'sensor_browser'
+    }
   
   # set up columns and their titles for the browser
   _getColumns: () ->
@@ -134,7 +157,7 @@ class window.beats.BrowserControllerView extends  window.beats.BrowserView
   # we re-populate the table  
   initialize: ->
     $a.controllerSet.forEach((controller) => controller.on('change', @rePopulateTable, @))
-    super {elem: 'controller'}
+    super @_getTemplateData()
   
   # set up editor view for controller selected in the right pane
   render:() ->
@@ -157,6 +180,13 @@ class window.beats.BrowserControllerView extends  window.beats.BrowserView
             { "sTitle": "Name","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
         ]
+        
+  # creates a hash of values taken from the model for the html template
+  _getTemplateData: ->
+    {
+      elem: 'controller'
+      browser_table_id: 'controller_browser'
+    }
   
   # get the controller models of the items that are selected. Called by BrowserView
   # in order to get the data for each selected model and render it in the

@@ -303,14 +303,14 @@ hr {
 .odd { background-color:#BBB;}
 .even { background-color:#DDD;}
 .row_selected { background-color:#000;}
-#browser_table { 
+.browser_table { 
                 width:100%;
                 color: #F58400;
                 font-size:1.1em;
                 padding: 1px;
                 }
-#browser_table th { color: #F58400; }
-#browser_table td { padding: 5px; }
+.browser_table th { color: #F58400; }
+.browser_table td { padding: 5px; }
 #browser_table_length label {color:white;
                              padding-top: 5px;
                              padding-left: 10px;

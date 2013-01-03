@@ -42,6 +42,20 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @add(link)
     link
   
+  # this function sets all the links passed in selected field to true. It is
+  # called by the BrowserTypeView for links in order to sync the view state
+  # between the browser and the map -- if selected in browser it will select
+  # it on the map
+  setSelected: (links) ->
+    _.each(links, (link) ->
+      link.set('selected', true) if !link.get('selected')
+    )
+
+  # set selected to false for all links. It is triggered
+  # when the link browser closes as well as when we initialize the collection
+  clearSelected: ->
+    @forEach((link) -> link.set('selected', false))
+  
   # This removes either the begin or end node from the link if the node
   # itself has been removed from the node collection
   removeNodeReference: (link, type) ->

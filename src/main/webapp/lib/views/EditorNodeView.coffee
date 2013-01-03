@@ -51,7 +51,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     lat: $a.Util.getGeometry({models:models, geom:'lat'})
     lng: $a.Util.getGeometry({models:models, geom:'lng'})
     elevation: $a.Util.getGeometry({models:models, geom:'elevation'})
-    lock: if models[0].locked() then 'checked' else ''
+    lock: if models[0]? and models[0].locked() then 'checked' else '' 
 
   # these are callback events for various elements in the interface
   # This is used to save the type when focus is
