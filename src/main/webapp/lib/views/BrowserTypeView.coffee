@@ -80,9 +80,12 @@ class window.beats.BrowserLinkView extends  window.beats.BrowserView
   # in order to get the data for each selected model and render it in the
   # editor
   _configureSelectedElems: (selectedIds) ->
-    $a.linkList.filter((link) ->
-            link if _.include(selectedIds, link.get('id'))
-        )
+    selectedLinks = $a.linkList.filter((link) ->
+      link if _.include(selectedIds, link.get('id'))
+    )
+    $a.linkList.clearSelected()
+    $a.linkList.setSelected(selectedLinks)
+    selectedLinks
 
 # the browser view for the sensors
 class window.beats.BrowserSensorView extends  window.beats.BrowserView
