@@ -5,7 +5,7 @@ window.beats.Node::defaults =
 window.beats.Node::initialize = ->
   @set('roadway_markers', new window.beats.Roadway_markers)
 
-window.beats.Node::ident = -> @get("id")
+window.beats.Node::ident = -> Number(@get("id"))
 window.beats.Node::type = -> @get("type")
 
 window.beats.Node::set_type = (val) -> 

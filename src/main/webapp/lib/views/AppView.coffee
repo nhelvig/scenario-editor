@@ -4,7 +4,7 @@
 class window.beats.AppView extends Backbone.View
   $a = window.beats
   $evt = google.maps.event
-  @INITIAL_ZOOM_LEVEL = 12
+  @INITIAL_ZOOM_LEVEL = 17
 
   @start: ->
     new window.beats.AppView().render()
