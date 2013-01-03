@@ -13,3 +13,12 @@
 <script type="text/template" id="message-panel-template">
   {{message}} 
 </script>
+<script type="text/template" id="parent-item-tree-template">
+  <label for='{{textLower}}'>{{text}}</label>
+  <input type='checkbox' id='check-{{textLower}}' class="expand-tree" />
+  <label for='CB1'>&nbsp;</label>
+  <ol id='tree-parent-{{textLower}}' ></ol>
+</script>
+<script type="text/template" id="toggle-tree-button-template">
+  <button id="collapseTree"> < </button> 
+</script>
