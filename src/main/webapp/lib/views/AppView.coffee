@@ -24,6 +24,7 @@ class window.beats.AppView extends Backbone.View
     @_layersMenu()
     @_messagePanel()
     @newScenario()
+    @_displayMap($a.fileText) 
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
