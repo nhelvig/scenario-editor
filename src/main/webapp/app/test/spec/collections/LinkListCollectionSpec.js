@@ -49,7 +49,9 @@ describe("LinkListCollection", function() {
       expect($a.LinkListCollection.prototype.joinLink).toHaveBeenCalled();
     });
     it("should be watching parallelLink", function() {
-      this.lColl.trigger("links:parallel", 1);
+      scen = scenarioAndFriends()
+      this.lColl.models[0].set_geometry(scen.link1.geometry())
+      this.lColl.trigger("links:parallel", models[0].cid);
       expect($a.LinkListCollection.prototype.parallelLink).toHaveBeenCalled();
     });
     it("should call _setUpEvents", function() {
@@ -144,9 +146,11 @@ describe("LinkListCollection", function() {
   });
   describe("parallelLink ", function() {
     it("should create parallel link", function() {
-      lengthBefore = this.lColl.model.length
-      link =  this.lColl.models[0]
-      this.lColl.trigger("links:parallel", link);
+      scen = scenarioAndFriends();
+      lengthBefore = this.lColl.models.length
+      link =  this.lColl.models[0];
+      link.set_geometry(scen.link1.geometry());
+      this.lColl.trigger("links:parallel", link.cid);
       expect(lengthBefore + 1).toEqual(this.lColl.models.length);
     });
   });

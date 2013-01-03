@@ -5,8 +5,7 @@ describe("menu-data", function() {
     googleMap();
     spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     models = $a.models.nodes();
-    $a.nodeList = new $a.NodeListCollection(models);
-    
+    $a.nodeList = new $a.NodeListCollection(models);   
   });
   
   describe("Main Context Menu Events", function() {
@@ -36,7 +35,7 @@ describe("menu-data", function() {
   });
   describe("Link Context Menu Events", function() {
     it("should contain 11 items", function() {
-      expect($a.link_context_menu.length).toEqual(11);
+      expect($a.link_context_menu.length).toEqual(12);
     });
   });
 });

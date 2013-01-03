@@ -29,6 +29,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.set('id', id)
     link.set_geometry args.path if args.path?
     link.set_parallel args.parallel if args.parallel?
+    link.legs = [] if args.parallel?
     
     begin = new window.beats.Begin()
     begin.set('node_id', args.begin.get('id'))

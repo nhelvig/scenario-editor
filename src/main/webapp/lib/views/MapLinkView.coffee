@@ -11,7 +11,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   initialize: (@model, @network) ->
     # Gets the encoded path line string if it is not already been set
-    if(@model.legs?)
+    if(@model.legs? and @model.legs.length > 0)
       @_createEncodedPath @model.legs
       @_saveEncodedPath()
     @_drawLink()
