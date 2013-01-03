@@ -122,8 +122,9 @@ class window.beats.BrowserView extends Backbone.View
       if $(this).hasClass('row_selected')
         $(this).removeClass('row_selected')
       else
-        $('#browser_table tbody tr.row_selected').removeClass('row_selected');
-        $(this).addClass('row_selected');
+        rows = $('#browser_table tbody tr.row_selected')
+        rows.removeClass('row_selected') unless $a.SHIFT_DOWN
+        $(this).addClass('row_selected')
     )
 
     #handles the editor rendering 
