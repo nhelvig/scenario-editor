@@ -8,6 +8,11 @@ window.beats.Util =
   UNITS_US: 'US'
   UNITS_METRIC: 'Metric'
   UNITS_SI: 'SI'
+  
+  STROKE_WEIGHT_THICKER: 4
+  STROKE_WEIGHT_THICK: 3
+  STROKE_WEIGHT_THIN: 2
+  STROKE_WEIGHT_THINNER: 1
 
   _round_dec: (num,dec) ->
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
@@ -138,12 +143,12 @@ window.beats.Util =
   
   # this returns a new id that is not taken from the collection passed in
   getNewElemId: (collection) ->
-    id = 9999
+    newId = 9999
     while(true)
-      test = collection.filter((elem) -> elem.ident() is id)
+      test = _.filter(collection, (elem) -> elem.ident() is newId)
       if test?.length == 0
-        return id
-      id++
+        return newId
+      newId++
   
   #parallel lines
   parallelLines: (points, prj, gapPx, weight) ->
@@ -281,3 +286,16 @@ window.beats.Util =
     yi=((a2*c1 - a1*c2)*det_inv)
 
     return new google.maps.Point(Math.round(xi),Math.round(yi))
+
+  # determine strokeweight for zoom
+  getLinkStrokeWeight: ->
+    zoomLevel = $a.map.getZoom()
+    if (zoomLevel >= 18)
+      newZoom = $a.Util.STROKE_WEIGHT_THICKER
+    else if (zoomLevel >= 17)
+      newZoom = $a.Util.STROKE_WEIGHT_THICK
+    else if (zoomLevel >= 16)
+      newZoom = $a.Util.STROKE_WEIGHT_THIN
+    else
+      newZoom = $a.Util.STROKE_WEIGHT_THINNER
+    newZoom

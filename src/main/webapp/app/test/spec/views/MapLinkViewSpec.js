@@ -140,12 +140,6 @@ describe("MapLinkView", function() {
           expect(this.view.link.strokeColor).toEqual(expectedColor);
         });
       });
-      describe("When removeLink called:", function() {
-        it("triggered by map:clear_map", function() {
-            $a.broker.trigger("map:clear_map")
-            expect(this.view.link).toEqual(null);
-        });
-      });
       describe("When selectSelfandMyNodes called", function() {
         it("should have been triggered map:select_neighbors:#{@model.cid}", function() {
             $a.broker.trigger("map:select_neighbors:" + model.cid)

@@ -121,7 +121,7 @@ describe("NodeListCollection", function() {
        scen = scenarioAndFriends()
        this.nCollect.add(scen.node1)
        var lengthBefore = this.nCollect.length;
-       this.nCollect.removeNode(scen.node1.cid);
+       this.nCollect.removeNode(scen.node1.cid, true);
        expect(lengthBefore - 1).toEqual(this.nCollect.length);
      });
    });

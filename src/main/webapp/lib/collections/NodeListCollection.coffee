@@ -2,7 +2,6 @@
 class window.beats.NodeListCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Node
-  nextID = 9999
   
   # when initialized go through the models and set selected to false, and 
   # set up all the events need to add nodes to the collection.
@@ -21,8 +20,8 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
     @models.map((node) -> 
-                  [node.get('id'),node.road_names(),node.get('type')]
-                  )
+      [node.get('id'), node.road_names(), node.get('type')]
+    )
   
   # this function sets all the nodes passed in selected field to true. It is
   # called by the BrowserTypeView for nodes in order to sync the view state
@@ -42,11 +41,11 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # this node, removes the node from the collection and takes it off the 
   # map. 
   removeNode: (nodeID, linksJoined) ->
-    node = _.filter(@models, (node) -> node.cid is nodeID)
+    node = @getByCid(nodeID)
     if linksJoined? and linksJoined
       @remove(node)
     else
-      $a.broker.trigger("links_collection:join", node[0])
+      $a.broker.trigger("links_collection:join", node)
   
   # addNode creates a node of the type and at the position passed in and adds
   # it to the collection as well as to the models schema. 
@@ -64,7 +63,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
           )
     p.set('point', []) 
     p.get('point').push(pt)
-    n.set('id',nextID++)
+    n.set('id', $a.Util.getNewElemId($a.models.nodes()))
     n.set('position', p)
     n.set('type', type) if type?
     @_setUpEvents(n)
@@ -125,8 +124,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   _setUpEvents: (node) ->
     node.bind('remove', => node.remove())
     node.bind('add', => node.add())
-                
-    
+  
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)

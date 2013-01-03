@@ -20,6 +20,7 @@ class window.beats.MapLinkView extends Backbone.View
     @_contextMenu()
     @_setMouseEvents()
     @model.on('remove', @removeLink, @)
+    @model.on('change:selected', @toggleSelected, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
     $a.broker.on('map:show_link_layer', @showLink, @)
@@ -36,7 +37,7 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
-    
+
   render: ->
     @link.setMap($a.map)
     @
@@ -66,14 +67,13 @@ class window.beats.MapLinkView extends Backbone.View
       map: $a.map
       strokeColor: @_getStrokeColor()
       icons: [{
-          icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
+          icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW }
           fillColor: 'blue'
-          offset: '50%'
-          scale: 0.5
+          offset: '60%'
         }]
       zIndex: @_getZIndex()
       strokeOpacity: 0.6
-      strokeWeight: @_getStrokeWeight()
+      strokeWeight: $a.Util.getLinkStrokeWeight()
     })
 
   # Context Menu
@@ -191,6 +191,13 @@ class window.beats.MapLinkView extends Backbone.View
   # This method swaps the icon for the de-selected color
   clearSelected: ->
     @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
+
+  # This method toggles the selection of the node
+  toggleSelected: () ->
+    if(@model.get('selected') is true)
+      @linkSelect()
+    else
+      @clearSelected()
 
   # This method is called from the context menu and selects itself and all
   # the links nodes as the higlighted tree items

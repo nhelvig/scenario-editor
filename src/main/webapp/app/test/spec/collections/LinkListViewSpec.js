@@ -9,6 +9,7 @@ describe("LinkListView", function() {
     spyOn($a.LinkListView.prototype, 'addAndRender').andCallThrough();
     spyOn($a.LinkListView.prototype, 'createAndDrawLink').andCallThrough();
     spyOn($a.LinkListView.prototype, 'removeLink').andCallThrough();
+    spyOn($a.LinkListView.prototype, 'setStrokeWeight').andCallThrough();
     this.lColl = new $a.LinkListCollection(models);
     this.view = new $a.LinkListView(this.lColl, network);
     begin = models[0].begin_node();
@@ -36,7 +37,10 @@ describe("LinkListView", function() {
           this.lColl.trigger('remove', models[0]);
           expect($a.LinkListView.prototype.removeLink).toHaveBeenCalled();
         });
-        
+        it("should be watching setStrokeWeight", function() {
+          $a.map.setZoom(9)
+          expect($a.LinkListView.prototype.setStrokeWeight).toHaveBeenCalled();
+        });
         it("should call getLinkGeometry, create GoogleRouteHandler", function() {
           expect(this.view.routeHandler).not.toBeNull();
         });
@@ -66,4 +70,13 @@ describe("LinkListView", function() {
       expect(this.view.views.length).toEqual(lengthBefore - 1);
     });
   });
+   describe("setStrokeWeight", function() {
+    it("should set link stroke weight dependent on zoom level", function() {
+      this.view.createAndDrawLink(scen.link1);
+      $a.map.setZoom(16)
+      this.view.setStrokeWeight();
+      weight  = this.view.views[0].link.get('strokeWeight');
+      expect(weight).toEqual($a.Util.STROKE_WEIGHT_THIN);
+    });
+  }); 
 });

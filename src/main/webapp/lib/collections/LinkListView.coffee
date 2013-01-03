@@ -10,6 +10,7 @@ class window.beats.LinkListView extends Backbone.Collection
     $a.broker.on('map:draw_link', @createAndDrawLink, @)
     $a.broker.on('map:unselect_links', @unSelectLinks, @)
     $a.broker.on('links:check_proximinity', @checkSnap, @)
+    google.maps.event.addListener($a.map, 'zoom_changed', => @setStrokeWeight())
     @collection.on('add', @addAndRender, @)
     @collection.on('remove', @removeLink, @)
     @getLinkGeometry(@collection.models)
@@ -69,3 +70,10 @@ class window.beats.LinkListView extends Backbone.Collection
             else
                 view.clearSelected()
           )
+  
+  # set the strokeweight of all polyline based on the zoom level
+  setStrokeWeight: ->
+    newZoom = $a.Util.getLinkStrokeWeight()
+    _.each(@views, (view) -> 
+      view.link.setOptions(strokeWeight:newZoom) if view.link?
+    )

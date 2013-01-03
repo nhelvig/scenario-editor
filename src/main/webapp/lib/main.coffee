@@ -38,6 +38,7 @@ load_beats_classes = (after) ->
 window.load_beats = ->
     head.js "js/models/Beats.js",
             'js/menu-data.js',
+            'js/vendor/simple-xml.js',
             'js/classes-load.js', ->
               load_beats_classes ->
                 # load the application

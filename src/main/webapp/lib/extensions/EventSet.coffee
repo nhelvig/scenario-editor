@@ -2,4 +2,4 @@ window.beats.EventSet::defaults =
   event: []
 
 window.beats.EventSet::initialize = ->
-  @set 'event', []
+  @set 'event', [] if event?

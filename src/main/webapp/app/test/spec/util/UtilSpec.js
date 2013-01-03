@@ -9,7 +9,14 @@ describe("Util", function() {
   describe("getNewElemId", function() {
     it("should get a unique id that is not contained in collection", function() {
       id  = $a.Util.getNewElemId(this.linkList)
-      expect(id).toEqual(4);
+      expect(id).toEqual(9999);
+    });
+  });
+  describe("getLinkStrokeWeight", function() {
+    it("should return stroke weight dependent on zoom level", function() {
+      $a.map.setZoom(18)
+      zoom  = $a.Util.getLinkStrokeWeight()
+      expect(zoom).toEqual($a.Util.STROKE_WEIGHT_THICKER);
     });
   });
   

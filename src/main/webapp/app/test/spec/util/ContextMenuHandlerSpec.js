@@ -7,10 +7,9 @@ describe("ContextMenuHandler", function() {
       spyOn($a.ContextMenuView.prototype, 'show').andCallThrough();
       this.cmh = new $a.ContextMenuHandler({  
                                               items:$a.main_context_menu,
-                                              map: $a.map != null
+                                              element: $a.map,
                                           });
     });
-    
     describe("Instantiation", function() {
       it("should create the handler", function() {
         expect(this.cmh).not.toBeNull();
@@ -26,7 +25,8 @@ describe("ContextMenuHandler", function() {
    describe("createMenu", function (){
      beforeEach(function() {
        latLng = new google.maps.LatLng(370, -122)
-       this.cmh._createMenu({items:$a.main_context_menu},latLng );
+       opt = {class: 'context_menu', id: "main-context-menu"}
+       this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
      });
      it("should create the menu", function(){
         expect($a.contextMenu).not.toBeNull();

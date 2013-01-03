@@ -110,9 +110,9 @@ beforeEach(function() {
         );
     p.set('point', []);
     p.get('point').push(pt);
-    node1 = new window.beats.Node({id: 1});
-    node2 = new window.beats.Node({id: 2});
-    node3 = new window.beats.Node({id: 3});
+    node1 = new window.beats.Node({id: 1, position: p});
+    node2 = new window.beats.Node({id: 2, position: p});
+    node3 = new window.beats.Node({id: 3, position: p});
     sensor = new window.beats.Sensor({id:1});
     link1 = simpleLink(1,node1, node2);
     link2 = simpleLink(2,node2, node3);

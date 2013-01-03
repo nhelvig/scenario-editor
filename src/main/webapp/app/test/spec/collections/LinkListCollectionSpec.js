@@ -16,7 +16,7 @@ describe("LinkListCollection", function() {
 
     this.lColl= new $a.LinkListCollection(models);
   });
-  
+
   describe("Instantiation", function() {
     it("sets models to a collection of links", function() {
       expect(this.lColl.models).not.toBeNull();
@@ -39,17 +39,13 @@ describe("LinkListCollection", function() {
       this.lColl.trigger("links:split", models[0].cid);
       expect($a.LinkListCollection.prototype.splitLink).toHaveBeenCalled();
     });
-
     it("should be watching reDrawLink", function() {
-      $a.broker.trigger("map:redraw_link", begin.get('node'));
+      $a.broker.trigger("map:redraw_link", begin);
       expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();
     });
-    it("should be watching clear", function() {
-      $a.broker.trigger("map:clear_map");
-      expect($a.LinkListCollection.prototype.clear).toHaveBeenCalled();
-    });
     it("should be watching joinLink", function() {
-      $a.broker.trigger("links_collection:join");
+      scen = scenarioAndFriends()
+      $a.broker.trigger("links_collection:join", scen.node2);
       expect($a.LinkListCollection.prototype.joinLink).toHaveBeenCalled();
     });
     it("should be watching parallelLink", function() {
@@ -58,6 +54,13 @@ describe("LinkListCollection", function() {
     });
     it("should call _setUpEvents", function() {
       expect($a.LinkListCollection.prototype._setUpEvents).toHaveBeenCalled();
+    });
+    it("should be watching clear", function() {
+      $a.broker.trigger("map:clear_map");
+      this.after(function() { 
+        $a.models = $a.Scenario.from_xml($(xml).children()); 
+      });
+      expect($a.LinkListCollection.prototype.clear).toHaveBeenCalled();
     });
   });
     
@@ -150,6 +153,9 @@ describe("LinkListCollection", function() {
   describe("clear ", function() {
     beforeEach(function() {
       this.lColl.clear();
+    });
+    afterEach(function() {
+      $a.models = $a.Scenario.from_xml($(xml).children());
     });
     it("should de-reference $a.linkList", function() {
       expect($a.linkList).toEqual({});

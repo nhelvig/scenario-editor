@@ -23,7 +23,7 @@ window.beats.Link::set_generic = (id, val) ->
   @set(id, val)
   @defaults[id] = val
                                   
-window.beats.Link::ident = -> @get("id")
+window.beats.Link::ident = -> Number(@get("id"))
 window.beats.Link::parallel_links = ->
   begin_node = @get('begin').get('node')
   end_node = @get('end').get('node')
