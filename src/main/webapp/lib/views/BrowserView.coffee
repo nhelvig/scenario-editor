@@ -11,15 +11,16 @@ class window.beats.BrowserView extends Backbone.View
       when 'controller' then new window.beats.BrowserControllerView()
 
   # The options hash contains the type of dialog(eg. 'node'), the model
-  # associated with the dialoag, and templateData
+  # associated with the dialog, and templateData
   # used to inject into the html template
   initialize: (@options) ->
     @elem = @options.elem
+    @browser_table_id = "#" + @options.browser_table_id
     title  = $a.Util.toStandardCasing(@elem)  # eg. node -> Node
     @$el.attr 'title', "#{title} Browser"
     @$el.attr 'id', "browser"
     @template = _.template($("#browser-window-template").html())
-    @$el.html(@template())  
+    @$el.html(@template(@options))  
     # Events Broker used to minimize or maximize browser box 
     # based on triggered events
     $a.broker.on('app:minimize-dialog', @minimize, @)
@@ -58,7 +59,7 @@ class window.beats.BrowserView extends Backbone.View
   
   # render the table in the left pane
   renderTable: () ->
-    @dTable = $('#browser_table').dataTable( {
+    @dTable = $(@browser_table_id).dataTable( {
         "aaData": @_getData(),
         "aoColumns": @_getColumns(),
         "aaSorting": [[ 0, "desc" ]]
@@ -73,7 +74,7 @@ class window.beats.BrowserView extends Backbone.View
   
   # upon redering make sure first row is selected
   _firstRowSelected: () ->
-    nTop = $('#browser_table tbody tr')[0]
+    nTop = $(@browser_table_id + ' tbody tr')[0]
     $(nTop).addClass('row_selected')
     $('#browser_table tbody').click()
   
@@ -118,17 +119,17 @@ class window.beats.BrowserView extends Backbone.View
   # of the editor in the right pane
   attachRowSelection: () ->
     #handles the row selection
-    $("#browser_table tbody tr").click( ->
+    $(@browser_table_id + " tbody tr").click( ->
       if $(this).hasClass('row_selected')
         $(this).removeClass('row_selected')
       else
-        rows = $('#browser_table tbody tr.row_selected')
+        rows = $(@browser_table_id + ' tbody tr.row_selected')
         rows.removeClass('row_selected') unless $a.SHIFT_DOWN
         $(this).addClass('row_selected')
     )
 
     #handles the editor rendering 
-    $('#browser_table tbody').click( (event) =>
+    $(@browser_table_id + ' tbody').click( (event) =>
       selectedIds = []
       $(@dTable.fnSettings().aoData).each((data) ->  
         if($(this.nTr).hasClass('row_selected'))

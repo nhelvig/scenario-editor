@@ -6,7 +6,7 @@ class window.beats.BrowserNodeView extends  window.beats.BrowserView
   # we re-opulate the table
   initialize: ->
     $a.nodeList.forEach((node) => node.on('change', @rePopulateTable, @))
-    super {elem: 'node'}
+    super @_getTemplateData()
   
   # set up width for dialog box and let BrowserView render it
   render:() ->
@@ -29,6 +29,13 @@ class window.beats.BrowserNodeView extends  window.beats.BrowserView
             { "sTitle": "Name","sWidth": "50%"},
             { "sTitle": "Type","sWidth": "50%"},
         ]
+  
+  # creates a hash of values taken from the model for the html template
+  _getTemplateData: ->
+    {
+      elem: 'node'
+      browser_table_id: 'node_browser'
+    }
   
   # get the node models of the items that are selected. Called by BrowserView
   # in order to get the data for each selected model and render it in the
