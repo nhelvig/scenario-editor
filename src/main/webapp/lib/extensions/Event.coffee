@@ -10,7 +10,7 @@ window.beats.Event::from_position = (position, link) ->
           { 
             'lat':position.lat(),
             'lng':position.lng(),
-            'elevation':NaN
+            'elevation':''
           }
         )
   p.set('point', []) 

@@ -119,9 +119,10 @@ describe("NodeListCollection", function() {
    describe("removeNode ", function() {
      it("should find the correct node by id and remove it", function() {
        scen = scenarioAndFriends()
-       this.nCollect.add(scen.node1)
+       scen.node3.set('id', 234234)
+       this.nCollect.add(scen.node3)
        var lengthBefore = this.nCollect.length;
-       this.nCollect.removeNode(scen.node1.cid, true);
+       this.nCollect.removeNode(scen.node3.cid, true);
        expect(lengthBefore - 1).toEqual(this.nCollect.length);
      });
    });
