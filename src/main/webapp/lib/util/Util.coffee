@@ -143,7 +143,7 @@ window.beats.Util =
   
   # this returns a new id that is not taken from the collection passed in
   getNewElemId: (collection) ->
-    newId = 9999
+    newId = 1
     while(true)
       test = _.filter(collection, (elem) -> elem.ident() is newId)
       if test?.length == 0

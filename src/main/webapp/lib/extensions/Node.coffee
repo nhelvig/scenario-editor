@@ -1,6 +1,7 @@
 window.beats.Node::defaults =
   type: ''
   lock: false
+  elevation: ''
 
 window.beats.Node::initialize = ->
   @set('roadway_markers', new window.beats.Roadway_markers)

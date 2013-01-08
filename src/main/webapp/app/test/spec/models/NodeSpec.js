@@ -8,7 +8,7 @@ describe("Node", function() {
     pt = new window.beats.Point()
     pt.set('lat',0)
     pt.set('lng',0)
-    pt.set('elevation', NaN)
+    pt.set('elevation', '')
     p = new window.beats.Position()
     p.get('point').push(pt)
     testNode1 = new window.beats.Node({id: testNodeId, position: p});

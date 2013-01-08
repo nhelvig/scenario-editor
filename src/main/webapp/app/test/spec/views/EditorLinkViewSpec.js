@@ -183,7 +183,7 @@ describe("EditorLinkView", function() {
     });
     
     //checks that template was created correctly
-    //Note: the lane_offset check cvalls toString to force NaN to a string
+    //Note: the lane_offset check calls toString to force NaN to a string
     it("has the correct text content", function() {
       var count = 0;
       var model = this.view.models[0];

@@ -58,7 +58,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
             { 
               'lat':position.lat(),
               'lng':position.lng(),
-              'elevation':NaN
+              'elevation':''
             }
           )
     p.set('point', []) 

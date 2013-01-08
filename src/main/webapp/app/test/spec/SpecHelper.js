@@ -105,7 +105,7 @@ beforeEach(function() {
           { 
             'lat':0,
             'lng':0,
-            'elevation':NaN
+            'elevation':''
           }
         );
     p.set('point', []);
