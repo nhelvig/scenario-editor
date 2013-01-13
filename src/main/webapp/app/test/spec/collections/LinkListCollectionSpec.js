@@ -3,6 +3,10 @@ describe("LinkListCollection", function() {
   var models, network, begin, end;
   
   beforeEach(function() {
+    loadFixtures('main.canvas.view.fixture.html');
+    //needs the map in order to test parallel
+    new $a.AppView()._initializeMap();
+
     network = $a.models.get('networklist').get('network')[0];
     models = network.get('linklist').get('link');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
@@ -23,8 +27,8 @@ describe("LinkListCollection", function() {
     });
     
     it("should be watching addLink", function() {
-        begin = models[0].begin_node();
-        end = models[0].end_node();
+      begin = models[0].begin_node();
+      end = models[0].end_node();
       $a.broker.trigger("links_collection:add", {begin:begin,end:end});
       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
     });
@@ -150,7 +154,7 @@ describe("LinkListCollection", function() {
       lengthBefore = this.lColl.models.length
       link =  this.lColl.models[0];
       link.set_geometry(scen.link1.geometry());
-      this.lColl.trigger("links:parallel", link.cid);
+      this.lColl.parallelLink(link.cid);
       expect(lengthBefore + 1).toEqual(this.lColl.models.length);
     });
   });

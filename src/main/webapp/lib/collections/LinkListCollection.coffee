@@ -78,7 +78,9 @@ class window.beats.LinkListCollection extends Backbone.Collection
   parallelLink: (linkID) ->
     link = @getByCid(linkID)
     path = google.maps.geometry.encoding.decodePath(link.geometry())
-    pPath = $a.Util.parallelLines(path, $a.map.getProjection());
+    # for testing - specs fail if the map is not loaded in time - this prevents
+    if $a.map.getProjection()?
+      pPath = $a.Util.parallelLines(path, $a.map.getProjection()) 
     args = {}
     args.begin = link.begin_node()
     args.end = link.end_node()

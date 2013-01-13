@@ -110,7 +110,8 @@ beforeEach(function() {
         );
     p.set('point', []);
     p.get('point').push(pt);
-    node1 = new window.beats.Node({id: 1, position: p});
+    
+    node1 = new window.beats.Node({id: 1, position: p, type: 'freeway'});
     node2 = new window.beats.Node({id: 2, position: p});
     node3 = new window.beats.Node({id: 3, position: p});
     sensor = new window.beats.Sensor({id:1});
