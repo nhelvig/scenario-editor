@@ -36,9 +36,10 @@ class window.beats.LinkListView extends Backbone.Collection
   # because if the shape exists it has been moved on the map or we have a new 
   # node that wants a link
   addAndRender: (link) ->
-    console.log link
-    #link.set('shape', null)
-    @routeHandler.requestLink(link)
+    if link.geometry is ''
+      @routeHandler.requestLink(link)
+    else
+      @createAndDrawLink(link)
     link
   
   # this removes the link from the views array upon removal from collection

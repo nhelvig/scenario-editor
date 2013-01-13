@@ -61,7 +61,7 @@ class window.beats.MapLinkView extends Backbone.View
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
   _drawLink: ->
-    linkGeom = @model.get('shape').get('text')
+    linkGeom = @model.geometry()
     @link = new google.maps.Polyline({
       path: google.maps.geometry.encoding.decodePath linkGeom
       map: $a.map

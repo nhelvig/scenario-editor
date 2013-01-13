@@ -27,9 +27,11 @@ class window.beats.LinkListCollection extends Backbone.Collection
     
     id = $a.Util.getNewElemId($a.models.links())
     link.set('id', id)
-    link.set_geometry args.path if args.path?
-    link.set_parallel args.parallel if args.parallel?
-    link.legs = [] if args.parallel?
+    
+    if args.parallel?
+      link.set_geometry args.path
+      link.set_parallel args.parallel
+      link.legs = []
     
     begin = new window.beats.Begin()
     begin.set('node_id', args.begin.get('id'))
@@ -76,16 +78,13 @@ class window.beats.LinkListCollection extends Backbone.Collection
   parallelLink: (linkID) ->
     link = @getByCid(linkID)
     path = google.maps.geometry.encoding.decodePath(link.geometry())
-    paths = $a.Util.parallelLines(path, $a.map.getProjection(), 7, 4);
+    pPath = $a.Util.parallelLines(path, $a.map.getProjection());
     args = {}
     args.begin = link.begin_node()
     args.end = link.end_node()
-    args.path = google.maps.geometry.encoding.encodePath paths.path1
+    args.path = google.maps.geometry.encoding.encodePath pPath
     args.parallel = true
     args.strokeWeight = 1
-    @addLink(args)
-    args.path = google.maps.geometry.encoding.encodePath paths.path2
-    @remove(link)
     @addLink(args)
   
   # splitLink splits the link into a series of nodes

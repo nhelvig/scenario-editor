@@ -9,10 +9,10 @@ window.beats.Util =
   UNITS_METRIC: 'Metric'
   UNITS_SI: 'SI'
   
-  STROKE_WEIGHT_THICKER: 4
-  STROKE_WEIGHT_THICK: 3
-  STROKE_WEIGHT_THIN: 2
-  STROKE_WEIGHT_THINNER: 1
+  STROKE_WEIGHT_THICKER: 11
+  STROKE_WEIGHT_THICK: 10
+  STROKE_WEIGHT_THIN: 9
+  STROKE_WEIGHT_THINNER: 8
 
   _round_dec: (num,dec) ->
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
@@ -151,93 +151,25 @@ window.beats.Util =
       newId++
   
   #parallel lines
-  parallelLines: (points, prj, gapPx, weight) ->
-    zoom = $a.map.getZoom()
+  parallelLines: (points, prj) ->
+    pPts = [] #left side of center
 
-    #left and right swapped throughout!
-    pts1 = [] #left side of center
-    pts2 = [] #right side of center
-
-    #shift the pts array away from the centre-line by half the gap + half the line width
-    o = (gapPx + weight)/2
-    thetam1 = -9999
+    #shift the pts array away from the road
+    #o = (gapPx + weight)/2
+    offset = 0.00005
     for i in [1..points.length-1]
       p1 = prj.fromLatLngToPoint(points[i-1])
       p2 = prj.fromLatLngToPoint(points[i])
       theta = Math.atan2(p1.x-p2.x,p1.y-p2.y) + (Math.PI/2)
       theta -= Math.PI*2 if(theta > Math.PI)
-      dl = Math.sqrt(((p1.x-p2.x)*(p1.x-p2.x))+((p1.y-p2.y)*(p1.y-p2.y)))
-      dx = Math.round(o * Math.sin(theta))
-      dy = Math.round(o * Math.cos(theta))
-
+      dx = offset * Math.sin(theta)
+      dy = offset * Math.cos(theta)
       p1l = new google.maps.Point(p1.x+dx,p1.y+dy)
-      p1r = new google.maps.Point(p1.x-dx,p1.y-dy)
       p2l = new google.maps.Point(p2.x+dx,p2.y+dy)
-      p2r = new google.maps.Point(p2.x-dx,p2.y-dy)
+      pPts.push(prj.fromPointToLatLng(p1l))
 
-      if(i==1) #first point
-        pts1.push(prj.fromPointToLatLng(p1l))
-        pts2.push(prj.fromPointToLatLng(p1r))        
-      else #mid points
-        if(theta == thetam1)
-          #adjacent segments in a straight line
-          pts1.push(prj.fromPointToLatLng(p1l))
-          pts2.push(prj.fromPointToLatLng(p1r))
-        else
-          pli = @intersect(p1lm1,p2lm1,p1l,p2l)
-          pri = @intersect(p1rm1,p2rm1,p1r,p2r)
-
-          dlxi = (pli.x-p1.x)
-          dlyi = (pli.y-p1.y)
-          drxi = (pri.x-p1.x)
-          dryi = (pri.y-p1.y)
-          di = Math.sqrt((drxi*drxi)+(dryi*dryi))
-          s = o / di
-
-          dTheta = theta - thetam1
-          if(dTheta < (Math.PI*2))
-            dTheta += Math.PI*2
-          if(dTheta > (Math.PI*2))
-            dTheta -= Math.PI*2
-
-          if(dTheta < Math.PI)
-            #intersect point on outside bend
-            pts1.push(prj.fromPointToLatLng(p2lm1))
-            pts1.push(prj.fromPointToLatLng(new google.maps.Point(p1.x+(s*dlxi),p1.y+(s*dlyi)),zoom))
-            pts1.push(prj.fromPointToLatLng(p1l))
-          else if (di < dl)
-            pts1.push(prj.fromPointToLatLng(pli))
-          else
-            pts1.push(prj.fromPointToLatLng(p2lm1))
-            pts1.push(prj.fromPointToLatLng(p1l))
-
-          dxi = (pri.x-p1.x)*(pri.x-p1.x)
-          dyi = (pri.y-p1.y)*(pri.y-p1.y)
-          if(dTheta > Math.PI)
-            #intersect point on outside bend
-            pts2.push(prj.fromPointToLatLng(p2rm1))
-            pts2.push(prj.fromPointToLatLng(new google.maps.Point(p1.x+(s*drxi),p1.y+(s*dryi)),zoom))
-            pts2.push(prj.fromPointToLatLng(p1r))
-          else if(di<dl)
-    	      pts2.push(prj.fromPointToLatLng(pri))
-          else
-            pts2.push(prj.fromPointToLatLng(p2rm1))
-            pts2.push(prj.fromPointToLatLng(p1r))
-
-      p1lm1 = p1l
-      p1rm1 = p1r
-      p2lm1 = p2l
-      p2rm1 = p2r
-      thetam1 = theta
-
-    #final point
-    pts1.push(prj.fromPointToLatLng(p2l))
-    pts2.push(prj.fromPointToLatLng(p2r))
-    
-    {
-      path1: pts1,
-      path2: pts2
-    }
+    pPts.push(prj.fromPointToLatLng(p2l)) #last point
+    pPts
 
   # this function computes the intersection of the sent lines p0-p1 and p2-p3
   # and returns the intersection point,
