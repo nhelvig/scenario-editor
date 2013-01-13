@@ -9,6 +9,9 @@ window.beats.Link::initialize = ->
   @set('dynamics', new window.beats.Dynamics())
   @set('roads', new window.beats.Roads)
 
+window.beats.Link::set_parallel = ->
+  @parallel = true
+
 window.beats.Link::set_geometry = (text) ->
   sh = new window.beats.Shape()
   sh.set('text', text)

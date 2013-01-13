@@ -3,7 +3,9 @@ describe("EditorNodeView", function() {
   
   beforeEach(function() {
     loadFixtures('editor.node.view.fixture.html');
-    model = $a.models.nodes()[0];
+    scen = scenarioAndFriends();
+    model = scen.node1
+    //model = $a.models.nodes()[0];
     spyOn($a.EditorNodeView.prototype, 'signalEditor').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'chooseName').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'removeJoinLinks').andCallThrough();
@@ -34,14 +36,12 @@ describe("EditorNodeView", function() {
       title = "Node Editor: " + this.view.models[0].road_names();
       expect(this.view.el.title).toEqual(title);
     });
-    
-  
   });
   
   describe("Rendering", function() {
     beforeEach(function() {
               this.v = this.view.render();
-            });
+    });
     it("returns the view object", function() {
       expect(this.v).toEqual(this.view);
     });
@@ -58,8 +58,7 @@ describe("EditorNodeView", function() {
     //checks that template was created correctly
     //Note: the elevation check force NaN to a string
     it("has the correct text content", function() {
-      name = model.get('roadway_markers').get('marker')[0].get('name')
-      expect(this.view.$('#name')).toHaveValue(name);
+      expect(this.view.$('#name')).toHaveValue('Name not defined');
       expect(this.view.$('#descripton')).toHaveValue(model.get('description'));
       lat = model.get('position').get('point')[0].get('lat');
       expect(this.view.$('#lat')).toHaveValue(lat);

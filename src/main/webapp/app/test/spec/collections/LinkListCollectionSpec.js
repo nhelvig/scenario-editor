@@ -3,6 +3,10 @@ describe("LinkListCollection", function() {
   var models, network, begin, end;
   
   beforeEach(function() {
+    loadFixtures('main.canvas.view.fixture.html');
+    //needs the map in order to test parallel
+    new $a.AppView()._initializeMap();
+
     network = $a.models.get('networklist').get('network')[0];
     models = network.get('linklist').get('link');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
@@ -12,9 +16,9 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'joinLink').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'parallelLink').andCallThrough();
+
     this.lColl= new $a.LinkListCollection(models);
-    begin = models[0].begin_node();
-    end = models[0].end_node();
   });
 
   describe("Instantiation", function() {
@@ -23,6 +27,8 @@ describe("LinkListCollection", function() {
     });
     
     it("should be watching addLink", function() {
+      begin = models[0].begin_node();
+      end = models[0].end_node();
       $a.broker.trigger("links_collection:add", {begin:begin,end:end});
       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
     });
@@ -45,6 +51,12 @@ describe("LinkListCollection", function() {
       scen = scenarioAndFriends()
       $a.broker.trigger("links_collection:join", scen.node2);
       expect($a.LinkListCollection.prototype.joinLink).toHaveBeenCalled();
+    });
+    it("should be watching parallelLink", function() {
+      scen = scenarioAndFriends()
+      this.lColl.models[0].set_geometry(scen.link1.geometry())
+      this.lColl.trigger("links:parallel", models[0].cid);
+      expect($a.LinkListCollection.prototype.parallelLink).toHaveBeenCalled();
     });
     it("should call _setUpEvents", function() {
       expect($a.LinkListCollection.prototype._setUpEvents).toHaveBeenCalled();
@@ -95,6 +107,10 @@ describe("LinkListCollection", function() {
   });
   
   describe("addLink ", function() {
+    beforeEach(function() {
+      begin = models[0].begin_node();
+      end = models[0].end_node();
+    });
     it("should create a new link and add it to the collection", function() {
       var lengthBefore = this.lColl.length;
       this.lColl.addLink({begin:begin,end:end});
@@ -117,6 +133,7 @@ describe("LinkListCollection", function() {
   
   describe("reDrawLink ", function() {
     it("should find links connected to the node and redraw them", function() {
+      begin = models[0].begin_node();
       links = this.lColl.reDrawLink(begin);
       expect(links.length > 0).toBeTruthy();
     });
@@ -129,6 +146,16 @@ describe("LinkListCollection", function() {
       lBefore = links.length
       $a.broker.trigger("links_collection:join", scen.node2);
       expect(lBefore - 1).toEqual(linkColl.models.length);
+    });
+  });
+  describe("parallelLink ", function() {
+    it("should create parallel link", function() {
+      scen = scenarioAndFriends();
+      lengthBefore = this.lColl.models.length
+      link =  this.lColl.models[0];
+      link.set_geometry(scen.link1.geometry());
+      this.lColl.parallelLink(link.cid);
+      expect(lengthBefore + 1).toEqual(this.lColl.models.length);
     });
   });
   describe("clear ", function() {

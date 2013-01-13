@@ -24,7 +24,8 @@ describe("LinkListView", function() {
         });
         
         it("should be watching addAndRender", function() {
-          this.lColl.addLink({begin:begin,end:end});
+          l = scen.link1
+          this.lColl.addLink({begin:l.begin_node(),end:l.end_node(), path:l.geometry(), parallel:true});
           expect($a.LinkListView.prototype.addAndRender).toHaveBeenCalled();
         });
       
