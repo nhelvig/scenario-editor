@@ -22,6 +22,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     
   # creates the editor for this marker
   _editor: ->
+    @makeSelected()
     env = new $a.EditorSensorView(elem: 'sensor', models: [@model], width: 300)
     $('body').append(env.el)
     env.render()
@@ -55,7 +56,6 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
     if iconName == "#{MapSensorView.ICON}.png"
       @_triggerClearSelectEvents()
-      $a.broker.trigger("app:tree_highlight:#{@model.get('link')?.cid}") if @model.get('link')?
       @makeSelected()
     else
       @_triggerClearSelectEvents()
@@ -85,6 +85,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
  
   # This method swaps the icon for the selected icon
   makeSelected: () ->
+    $a.broker.trigger("app:tree_highlight:#{@model.get('link')?.cid}") if @model.get('link')?
     super MapSensorView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon

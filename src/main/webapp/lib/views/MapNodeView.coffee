@@ -38,6 +38,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
 
   # creates the editor for this marker
   _editor: ->
+    @makeSelected()
     env = new $a.EditorNodeView(elem: 'node', models: [@model], width: 300)
     $('body').append(env.el)
     env.render()
@@ -68,7 +69,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     iconName = MapNodeView.__super__._getIconName.apply(@, [])
     if iconName == "#{@_getTypeIcon(false)}.png"
       @_triggerClearSelectEvents()
-      $a.broker.trigger("app:tree_highlight:#{@model.cid}")
       @makeSelected()
     else
       @_triggerClearSelectEvents()
@@ -123,6 +123,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   
   # This method swaps the icon for the selected icon
   makeSelected: () ->
+    $a.broker.trigger("app:tree_highlight:#{@model.cid}")
     super @_getTypeIcon true
 
   # This method swaps the icon for the de-selected icon

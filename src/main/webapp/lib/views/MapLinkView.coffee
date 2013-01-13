@@ -121,6 +121,7 @@ class window.beats.MapLinkView extends Backbone.View
   
   # creates the editor for a link
   _editor: (evt) ->
+    @linkSelect()
     env = new $a.EditorLinkView(elem: 'link', models: [@model], width: 375)
     $('body').append(env.el)
     env.render()
@@ -172,7 +173,6 @@ class window.beats.MapLinkView extends Backbone.View
   manageLinkSelect: ->
     if @link.get('strokeColor') == MapLinkView.LINK_COLOR
       @_triggerClearSelectEvents()
-      $a.broker.trigger("app:tree_highlight:#{@model.cid}")
       @linkSelect()
     else
       @_triggerClearSelectEvents()
@@ -186,6 +186,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method swaps the icon for the selected color
   linkSelect: ->
+    $a.broker.trigger("app:tree_highlight:#{@model.cid}")
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
   # This method swaps the icon for the de-selected color
