@@ -93,11 +93,11 @@ class window.beats.MapLinkView extends Backbone.View
     _.each(contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
     contextMenuOptions.class = 'context_menu'
     contextMenuOptions.id = "context-menu-link-#{@model.cid}"
-    contextMenu = new $a.ContextMenuView(contextMenuOptions)
+    $a.contextMenu = new $a.ContextMenuView(contextMenuOptions)
     google.maps.event.addListener(@link, 'rightclick', (mouseEvent) =>
-      contextMenu.show mouseEvent.latLng
+      $a.contextMenu.show mouseEvent.latLng
     )
-    @model.set('contextMenu', contextMenu)
+    @model.set('contextMenu', $a.contextMenu)
 
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR
@@ -161,7 +161,7 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.off("map:open_editor:#{@model.cid}")
     $a.broker.off("link:view_demands:#{@model.cid}")
     google.maps.event.removeListener(@zoomListener);
-    @hideLink() if @link
+    @hideLink() if @link?
     @link = null
     
   # Select events for link

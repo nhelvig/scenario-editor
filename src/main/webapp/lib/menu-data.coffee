@@ -100,6 +100,8 @@ $a.link_context_menu = [
   context_menu_item  'Clear Selection',
                       ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
   {className:'context_menu_separator'}
+  context_menu_item  'Split link, add node here',
+                      ((e) -> $a.linkList.trigger("links:split_add_node", e.currentTarget.id, $a.contextMenu.position))
   context_menu_item  'Split link with nodes',
                       ((e) -> $a.linkList.trigger("links:split", e.currentTarget.id, 2))
   context_menu_item  'Create parallel link',

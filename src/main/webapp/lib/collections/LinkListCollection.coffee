@@ -17,6 +17,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @on('links:add_event', @addEventToLink, @)
     @on('links:remove', @removeLink, @)
     @on('links:split', @splitLink, @)
+    @on('links:split_add_node', @splitLinkAddNode, @)
     @forEach((link) =>  @_setUpEvents(link))
   
   # addLink takes the begin node and end node ids, sets up the appropriate
@@ -87,6 +88,22 @@ class window.beats.LinkListCollection extends Backbone.Collection
     args.path = google.maps.geometry.encoding.encodePath pPath
     args.parallel = true
     args.strokeWeight = 1
+    @addLink(args)
+
+  # splitLink splits the link in to two links and creates a node at the 
+  # position
+  splitLinkAddNode: (linkID, pos) ->
+    link = @getByCid(linkID)
+    begin  = link.begin_node()
+    end = link.end_node()
+    @removeLink(linkID)
+    newNode = $a.nodeList.addNode(pos)
+    args = {}
+    args.begin = begin
+    args.end = newNode
+    @addLink(args)
+    args.begin = newNode
+    args.end = end
     @addLink(args)
   
   # splitLink splits the link into a series of nodes
