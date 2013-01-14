@@ -12,6 +12,7 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLink').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'splitLinkAddNode').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
@@ -42,6 +43,12 @@ describe("LinkListCollection", function() {
       models[0].set('shape', scen.link1.get('shape'));
       this.lColl.trigger("links:split", models[0].cid);
       expect($a.LinkListCollection.prototype.splitLink).toHaveBeenCalled();
+    });
+    it("should be watching splitLinkAddNode", function() {
+      scen = scenarioAndFriends();
+      models[0].set('shape', scen.link1.get('shape'));
+      this.lColl.trigger("links:split_add_node", models[0].cid, new google.maps.LatLng(0,0));
+      expect($a.LinkListCollection.prototype.splitLinkAddNode).toHaveBeenCalled();
     });
     it("should be watching reDrawLink", function() {
       $a.broker.trigger("map:redraw_link", begin);
@@ -87,14 +94,14 @@ describe("LinkListCollection", function() {
      });
    });
   
-  describe("removeLink ", function() {
+  describe("removeLink", function() {
     it("should remove a link from the collection", function() {
       var lengthBefore = this.lColl.length;
       this.lColl.removeLink(models[0].cid);
       expect(lengthBefore - 1).toEqual(this.lColl.length);
     });
   });
-  describe("splitLink ", function() {
+  describe("splitLink", function() {
     it("should split a link from the collection", function() {
       scen = scenarioAndFriends();
       models[0].set('shape', scen.link1.get('shape'));
@@ -105,7 +112,15 @@ describe("LinkListCollection", function() {
       expect(newLength).toEqual(this.lColl.length);
     });
   });
-  
+  describe("splitLinkAddNode", function() {
+    it("should split a link add one node at position", function() {
+      scen = scenarioAndFriends();
+      linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
+      var lengthBefore = linkColl.length;
+      linkColl.splitLinkAddNode(scen.link1.cid, new google.maps.LatLng(0,0));
+      expect(lengthBefore + 1).toEqual(linkColl.length);
+    });
+  });
   describe("addLink ", function() {
     beforeEach(function() {
       begin = models[0].begin_node();
@@ -144,7 +159,7 @@ describe("LinkListCollection", function() {
       linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
       links = linkColl.models
       lBefore = links.length
-      $a.broker.trigger("links_collection:join", scen.node2);
+      linkColl.joinLink(scen.node2);
       expect(lBefore - 1).toEqual(linkColl.models.length);
     });
   });

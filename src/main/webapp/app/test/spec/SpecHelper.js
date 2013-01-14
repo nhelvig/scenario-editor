@@ -115,9 +115,9 @@ beforeEach(function() {
     node2 = new window.beats.Node({id: 2, position: p});
     node3 = new window.beats.Node({id: 3, position: p});
     sensor = new window.beats.Sensor({id:1});
-    link1 = simpleLink(1,node1, node2);
-    link2 = simpleLink(2,node2, node3);
-    link3 = simpleLink(3, node3, node1);
+    link1 = simpleLink(99,node1, node2);
+    link2 = simpleLink(100,node2, node3);
+    link3 = simpleLink(101, node3, node1);
     density = new window.beats.Density({id: 1});
     ids = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});

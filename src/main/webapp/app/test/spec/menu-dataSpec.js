@@ -34,8 +34,8 @@ describe("menu-data", function() {
     });
   });
   describe("Link Context Menu Events", function() {
-    it("should contain 11 items", function() {
-      expect($a.link_context_menu.length).toEqual(12);
+    it("should contain 13 items", function() {
+      expect($a.link_context_menu.length).toEqual(13);
     });
   });
 });
