@@ -231,3 +231,61 @@ window.beats.Util =
     else
       newZoom = $a.Util.STROKE_WEIGHT_THINNER
     newZoom
+
+  # Function to convert XML to JSON 
+  # Reference: http://goessner.net/download/prj/jsonxml/
+  json2xml: (json, tab) ->
+    # Recursive function to transveres through child JSON objects
+    toXml: (v, name, ind) ->
+      # define XML variable to be global
+      $a.xml = "";
+      # If JSON element is an Array
+      if v instanceof Array 
+        for elm in v
+          $a.xml += ind + toXml(elm, name, ind+"\t") + "\n"
+
+      # If JSON element is an object 
+      else if typeof(v) == "object" 
+        hasChild = false
+        $a.xml += ind + "<" + name
+        for key in v
+          # If element has "@" character at beginning it is an attribute
+          if key.charAt(0) == "@"
+            $a.xml += " " + key.substr(1) + "=\"" + v[key].toString() + "\""
+          # Otherwise element is a tag
+          else
+            hasChild = true
+        # Close brace dependent if it has children    
+        $a.xml += if hasChild then ">" else "/>"
+        
+        # Continue on if JSON element has child elements
+        if hasChild
+          for key in v
+            # If element key is of type text (no XML tag created)
+            if key == "#text"
+              $a.xml += v[key]
+            else if key == "#cdata"
+              $a.xml += "<![CDATA[" + v[key] + "]]>"
+            # Else if element is not an XML attribute it has children
+            else if key.charAt(0) != "@"
+              $a.xml += toXml v[key], m, ind+"\t"
+            
+          # Add indentation for new element if it is on a new line 
+          if $a.xml.charAt($a.xml.length-1) == "\n"
+            $a.xml += ind + "</" + name + ">"
+          else
+            $a.xml += "</" + name + ">"
+      
+      # If JSON element is just a string value
+      else
+         $a.xml += ind + "<" + name + ">" + v.toString() +  "</" + name + ">"
+      $a.xml
+
+    for elm in json
+      xml += toXml(json[elm], elm, "");
+    if tab? 
+      xml.replace(/\t/g, tab)
+    else
+      xml.replace(/\t|\n/g, "")
+    # return xml
+    xml
