@@ -235,8 +235,9 @@ window.beats.Util =
   # Function to convert XML to JSON 
   # Reference: http://goessner.net/download/prj/jsonxml/
   json2xml: (json, tab) ->
+    xml = ""
     # Recursive function to transveres through child JSON objects
-    toXml: (v, name, ind) ->
+    toXml = (v, name, ind) ->
       # define XML variable to be global
       $a.xml = "";
       # If JSON element is an Array
@@ -248,7 +249,7 @@ window.beats.Util =
       else if typeof(v) == "object" 
         hasChild = false
         $a.xml += ind + "<" + name
-        for key in v
+        for key of v
           # If element has "@" character at beginning it is an attribute
           if key.charAt(0) == "@"
             $a.xml += " " + key.substr(1) + "=\"" + v[key].toString() + "\""
@@ -260,15 +261,15 @@ window.beats.Util =
         
         # Continue on if JSON element has child elements
         if hasChild
-          for key in v
+          for key of v
             # If element key is of type text (no XML tag created)
-            if key == "#text"
+            if key == "#text" or key == "$"
               $a.xml += v[key]
-            else if key == "#cdata"
+            else if key == "#cdata" 
               $a.xml += "<![CDATA[" + v[key] + "]]>"
             # Else if element is not an XML attribute it has children
             else if key.charAt(0) != "@"
-              $a.xml += toXml v[key], m, ind+"\t"
+              $a.xml += toXml v[key], key, ind+"\t"
             
           # Add indentation for new element if it is on a new line 
           if $a.xml.charAt($a.xml.length-1) == "\n"
@@ -278,11 +279,11 @@ window.beats.Util =
       
       # If JSON element is just a string value
       else
-         $a.xml += ind + "<" + name + ">" + v.toString() +  "</" + name + ">"
+         $a.xml += ind + "<" + name + ">" + v?.toString() +  "</" + name + ">"
       $a.xml
 
-    for elm in json
-      xml += toXml(json[elm], elm, "");
+    for key of json
+      xml += toXml(json[key], key, "");
     if tab? 
       xml.replace(/\t/g, tab)
     else
