@@ -75,7 +75,8 @@ class window.beats.MapLinkView extends Backbone.View
       strokeOpacity: 0.6
       strokeWeight: $a.Util.getLinkStrokeWeight()
     })
-
+    @applyOffset()
+  
   # Context Menu
   # Create the link Context Menu. The menu items are stored with their events
   # in an array and con be configired in the menu-data.coffee file.  We create
@@ -129,6 +130,35 @@ class window.beats.MapLinkView extends Backbone.View
     $(env.el).dialog('open')
     evt?.stop()
 
+  # this method offsets from the original polyline
+  applyOffset: ->
+    offset = @model.get('lane_offset')
+    prj = $a.map.getProjection()
+    if offset == 0 then return
+      
+    vertices = @link.path
+    for i in [1..vertices.length-1]
+      cv = vertices[i]
+      vBehind = if i is 0 then null else vertices[i-1]
+      vFront = if i is vertices.length-1 then null else vertices[i+1]
+      @_vertexOffset(cv, offset, vBehind, vFront, prj)
+  
+  _vertexOffset: (cv, offset, v0, v1, prj) -> 
+    cp = prj.fromLatLngToPoint(cv)
+    p0 = @_subtract(prj.fromLatLngToPoint(v0), cp) if v0 is not null
+    p1 = @_subtract(prj.fromLatLngToPoint(v2), cp) if v1 is not null
+    p0 = new google.maps.Point(-p1.x, -p1.y) if v0 is null
+    p1 = new google.maps.Point(-p0.x, -p0.y) if v0 is null
+    p0 = _normalize(p0)
+    p1 = _normalize(p1)
+      
+  _subtract: (p1, p2) -> 
+    new google.maps.Point(p1.x - p2.x, p1.y - p2.y)
+  
+  _normalize: (p) ->
+    unitDistance = Math.sqrt(Math.pow(p.x,2) + Math.pow(p.y,2)) 
+    new google.maps.Point(p.x/unitDistance, p.y/unitDistance)
+    
   viewDemands: () ->
     dv = new $a.DemandVisualizer(@model.get('demand'))
     $('body').append(dv.el)
@@ -186,7 +216,6 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method swaps the icon for the selected color
   linkSelect: ->
-    console.log @model.cid
     $a.broker.trigger("app:tree_highlight:#{@model.cid}")
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 

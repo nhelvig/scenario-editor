@@ -104,8 +104,8 @@ $a.link_context_menu = [
                       ((e) -> $a.linkList.trigger("links:split_add_node", e.currentTarget.id, $a.contextMenu.position))
   context_menu_item  'Split link with nodes',
                       ((e) -> $a.linkList.trigger("links:split", e.currentTarget.id, 2))
-  context_menu_item  'Create parallel link',
-                      ((e) -> $a.linkList.trigger("links:parallel", e.currentTarget.id))
+  context_menu_item  'Duplicate link',
+                      ((e) -> $a.linkList.trigger("links:duplicate", e.currentTarget.id))
 
 ]
 

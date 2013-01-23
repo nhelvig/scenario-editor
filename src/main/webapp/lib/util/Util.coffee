@@ -155,7 +155,6 @@ window.beats.Util =
     pPts = [] #left side of center
 
     #shift the pts array away from the road
-    #o = (gapPx + weight)/2
     offset = 0.00005
     for i in [1..points.length-1]
       p1 = prj.fromLatLngToPoint(points[i-1])
