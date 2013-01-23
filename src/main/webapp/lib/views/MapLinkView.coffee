@@ -186,6 +186,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method swaps the icon for the selected color
   linkSelect: ->
+    console.log @model.cid
     $a.broker.trigger("app:tree_highlight:#{@model.cid}")
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 

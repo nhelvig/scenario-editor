@@ -70,6 +70,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # removeLink removes the link from the collection and takes it off the 
   # map.
   removeLink: (linkID) ->
+    console.log linkID
     link = @getByCid(linkID)
     link.begin_node().position().off('change')
     link.end_node().position().off('change')
@@ -96,15 +97,16 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link = @getByCid(linkID)
     begin  = link.begin_node()
     end = link.end_node()
-    @removeLink(linkID)
     newNode = $a.nodeList.addNode(pos)
     args = {}
     args.begin = begin
     args.end = newNode
     @addLink(args)
+    args = {}
     args.begin = newNode
     args.end = end
     @addLink(args)
+    @removeLink(linkID)
   
   # splitLink splits the link into a series of nodes
   splitLink: (linkID, numLinks) ->

@@ -9,10 +9,10 @@ window.beats.Util =
   UNITS_METRIC: 'Metric'
   UNITS_SI: 'SI'
   
-  STROKE_WEIGHT_THICKER: 11
-  STROKE_WEIGHT_THICK: 10
-  STROKE_WEIGHT_THIN: 9
-  STROKE_WEIGHT_THINNER: 8
+  STROKE_WEIGHT_THICKER: 8
+  STROKE_WEIGHT_THICK: 7
+  STROKE_WEIGHT_THIN: 6
+  STROKE_WEIGHT_THINNER: 5
 
   _round_dec: (num,dec) ->
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
