@@ -42,7 +42,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
         </node>\
       </NodeList>\
       <LinkList>\
-        <link lanes="1" lane_offset="0" length="1916.4512171408285" type="" id="9999" in_sync="true">\
+        <link lanes="1" lane_offset="3" length="1916.4512171408285" type="" id="9999" in_sync="true">\
           <begin node_id="10001"/>\
           <end node_id="10000"/>\
           <roads>\
@@ -51,7 +51,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <dynamics type="CTM"/>\
           <shape>_{~eF``liVkATy@PwCl@mEbAeAXo@JG@G?EAKAICOC??QqAk@sE??cBZq@Li@JaBXcBb@i@PoB`@gAVcATeARqDx@sBd@oAVmAXmDt@aFlAeATyAXaCh@q@RqAX??Of@_@dAe@rAIPIPGJMR??kDr@</shape>\
         </link>\
-        <link lanes="1" lane_offset="0" length="724.8395315693305" type="" id="10000" in_sync="true">\
+        <link lanes="1" lane_offset="3" length="724.8395315693305" type="" id="10000" in_sync="true">\
           <begin node_id="10000"/>\
           <end node_id="10002"/>\
           <roads>\
@@ -60,7 +60,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <dynamics type="CTM"/>\
           <shape>szafFrzliVIBaJpBqE`AkAZ_ATkAVuE`AyDbAy@RKB</shape>\
         </link>\
-        <link lanes="1" lane_offset="0" length="366.7504885192787" type="" id="10001" in_sync="true">\
+        <link lanes="1" lane_offset="3" length="366.7504885192787" type="" id="10001" in_sync="true">\
           <begin node_id="10002"/>\
           <end node_id="9999"/>\
           <roads>\

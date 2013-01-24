@@ -62,8 +62,11 @@ class window.beats.MapLinkView extends Backbone.View
   # The Polyline map attribute will be null until render is called
   _drawLink: ->
     linkGeom = @model.geometry()
+    enc = google.maps.geometry.encoding
+    pathVertices = @applyOffset(enc.decodePath(linkGeom))
+    oldPathVertices = enc.decodePath(linkGeom)
     @link = new google.maps.Polyline({
-      path: google.maps.geometry.encoding.decodePath linkGeom
+      path: pathVertices
       map: $a.map
       strokeColor: @_getStrokeColor()
       icons: [{
@@ -75,7 +78,7 @@ class window.beats.MapLinkView extends Backbone.View
       strokeOpacity: 0.6
       strokeWeight: $a.Util.getLinkStrokeWeight()
     })
-    @applyOffset()
+    
   
   # Context Menu
   # Create the link Context Menu. The menu items are stored with their events
@@ -131,32 +134,56 @@ class window.beats.MapLinkView extends Backbone.View
     evt?.stop()
 
   # this method offsets from the original polyline
-  applyOffset: ->
-    offset = @model.get('lane_offset')
+  applyOffset: (vertices) ->
+    offset = @model.get('lane_offset') || 0
     prj = $a.map.getProjection()
-    if offset == 0 then return
-      
-    vertices = @link.path
-    for i in [1..vertices.length-1]
+    if offset is 0 then return vertices
+    
+    newPts = [] 
+    for i in [0..vertices.length-1]
       cv = vertices[i]
       vBehind = if i is 0 then null else vertices[i-1]
       vFront = if i is vertices.length-1 then null else vertices[i+1]
-      @_vertexOffset(cv, offset, vBehind, vFront, prj)
-  
+      v = @_vertexOffset(cv, offset, vBehind, vFront, prj)
+      newPts.push v
+    newPts
+    
   _vertexOffset: (cv, offset, v0, v1, prj) -> 
     cp = prj.fromLatLngToPoint(cv)
-    p0 = @_subtract(prj.fromLatLngToPoint(v0), cp) if v0 is not null
-    p1 = @_subtract(prj.fromLatLngToPoint(v2), cp) if v1 is not null
+    p0 = @_subtract(prj.fromLatLngToPoint(v0), cp) if not(v0 is null)
+    p1 = @_subtract(prj.fromLatLngToPoint(v1), cp) if not(v1 is null)
     p0 = new google.maps.Point(-p1.x, -p1.y) if v0 is null
-    p1 = new google.maps.Point(-p0.x, -p0.y) if v0 is null
-    p0 = _normalize(p0)
-    p1 = _normalize(p1)
+    p1 = new google.maps.Point(-p0.x, -p0.y) if v1 is null
+    p0 = @_normalize(p0) if p0.x != 0 and p0.y != 0
+    p1 = @_normalize(p1) if p1.x != 0 and p1.y != 0
+    det = p0.x * p1.y - p1.x * p0.y
+    if det is 0
+      x2 = -p0.y
+      y2 = p0.x
+    else
+      detSign = det / Math.abs(det)
+      x2 = detSign * (p0.x + p1.x) / 2
+      y2 = detSign * (p0.y + p1.y) / 2
+    p2 = new google.maps.Point(x2,y2)
+    v2 = prj.fromPointToLatLng(@_add(p2, cp))
+    d2 = google.maps.geometry.spherical.computeDistanceBetween(cv, v2)
+    dist = offset * 3.0
+    k = dist/d2
+    p3 = new google.maps.Point(k * x2,k * y2)
+    v = prj.fromPointToLatLng(@_add(p3, cp))
+    v
+  
+  _distance: (p1, p2) ->
+    Math.sqrt(Math.pow(p1.x - p2.x,2) + Math.pow(p1.y - p2.y,2)) 
+  
+  _add: (p1, p2) -> 
+    new google.maps.Point(p1.x + p2.x, p1.y + p2.y)
       
   _subtract: (p1, p2) -> 
     new google.maps.Point(p1.x - p2.x, p1.y - p2.y)
   
   _normalize: (p) ->
-    unitDistance = Math.sqrt(Math.pow(p.x,2) + Math.pow(p.y,2)) 
+    unitDistance = @_distance(p, new google.maps.Point(0,0))
     new google.maps.Point(p.x/unitDistance, p.y/unitDistance)
     
   viewDemands: () ->
