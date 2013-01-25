@@ -6,6 +6,9 @@ class window.beats.MapLinkView extends Backbone.View
   @LINK_COLOR: 'blue'
   @SELECTED_LINK_COLOR: 'red'
 
+  @STROKE_WEIGHT_THIN: 2
+  @STROKE_WEIGHT_THINNER: 1
+
   $a = window.beats
 
   initialize: (@model, @network) ->
@@ -61,7 +64,7 @@ class window.beats.MapLinkView extends Backbone.View
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
   _drawLink: ->
-    @hideLink() if @link?
+    @hideLink() if @link? #if you are applying offset to existing line
     linkGeom = @model.geometry()
     enc = google.maps.geometry.encoding
     pathVertices = @applyOffset(enc.decodePath(linkGeom))
@@ -75,7 +78,7 @@ class window.beats.MapLinkView extends Backbone.View
           offset: '60%'
         }]
       strokeOpacity: 0.6
-      strokeWeight: $a.Util.getLinkStrokeWeight()
+      strokeWeight: @getLinkStrokeWeight()
     })
   
   # Context Menu
@@ -108,7 +111,7 @@ class window.beats.MapLinkView extends Backbone.View
   
   _setStrokeWeight: ->
     nLanes = @model.get('lanes')
-    @link.setOptions(options: {strokeWeight:$a.Util.getLinkStrokeWeight(nLanes)})
+    @link.setOptions(options: {strokeWeight: @getLinkStrokeWeight(nLanes)})
   
   # creates the editor for a link
   _editor: (evt) ->
@@ -290,6 +293,19 @@ class window.beats.MapLinkView extends Backbone.View
     v = prj.fromPointToLatLng(@_add(p3, cp))
     v
   
+  # determine strokeweight for zoom based both on number of lines and the
+  # zoom level
+  getLinkStrokeWeight: ()->
+    numLines = @model.lanes()
+    zoomLevel = $a.map.getZoom()
+    if (zoomLevel >= 17)
+      lineWidth = if numLines > 5 then 5 else numLines
+    else if (zoomLevel >= 16)
+      lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
+    else
+      lineWidth = $a.MapLinkView.STROKE_WEIGHT_THINNER
+    lineWidth
+  
   # these 4 methods are all used to deal with the lane offset
   _distance: (p1, p2) ->
     Math.sqrt(Math.pow(p1.x - p2.x,2) + Math.pow(p1.y - p2.y,2)) 
@@ -304,3 +320,5 @@ class window.beats.MapLinkView extends Backbone.View
   _normalize: (p) ->
     unitDist = @_distance(p, new google.maps.Point(0,0))
     new google.maps.Point(p.x/unitDist, p.y/unitDist)
+    
+  

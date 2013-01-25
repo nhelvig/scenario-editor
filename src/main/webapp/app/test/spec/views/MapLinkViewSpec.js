@@ -6,7 +6,7 @@ describe("MapLinkView", function() {
     loadFixtures('context.menu.view.fixture.html');
     network = $a.models.get('networklist').get('network')[0];
     model = network.get('linklist').get('link')[0];
-
+  
     expectedEncodedPath = "}r}eF`bmiVuGn@c@DwIhAiBT";
     model.legs = [
       {
@@ -28,9 +28,7 @@ describe("MapLinkView", function() {
     spyOn($a.MapLinkView.prototype, '_triggerClearSelectEvents').andCallThrough();
     spyOn($a.MapLinkView.prototype, 'linkSelect').andCallThrough();
     
-    mapOpts = {mapTypeId: google.maps.MapTypeId.ROADMAP};
-    loadFixtures('main.canvas.view.fixture.html');
-    $a.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
+    googleMap()
     this.view = new $a.MapLinkView(model, network);
   });
   
@@ -47,12 +45,12 @@ describe("MapLinkView", function() {
       lg = this.view.model.get('shape').get('text');
       expect(lg).toEqual(expectedEncodedPath);
     });
-
+  
     it("should have made polyline object", function() {
       link = this.view.link
       expect(link).not.toBe(null);
     });
-
+  
     it("should have made context menu for itself", function() {
       cm = model.get('contextMenu');
       expect(cm).not.toBe(null);
@@ -77,7 +75,7 @@ describe("MapLinkView", function() {
   });
   
   describe("Events", function() {
-
+  
       describe("When map:init fired -> render sets map of link", function() {
         beforeEach(function() {
           googleMap(); 
@@ -164,5 +162,13 @@ describe("MapLinkView", function() {
             expect($a.MapLinkView.prototype.applyOffset).toHaveBeenCalled();
         });
       });
+  });
+  
+  describe("getLinkStrokeWeight", function() {
+    it("should return stroke weight based on zoom level and num lanes", function() {
+      $a.map.setZoom(18)
+      zoom  = this.view.getLinkStrokeWeight()
+      expect(zoom).toEqual(this.view.model.lanes());
+    });
   });
 });

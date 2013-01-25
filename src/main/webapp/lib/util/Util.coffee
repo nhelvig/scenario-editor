@@ -8,11 +8,6 @@ window.beats.Util =
   UNITS_US: 'US'
   UNITS_METRIC: 'Metric'
   UNITS_SI: 'SI'
-  
-  STROKE_WEIGHT_THICKER: 6
-  STROKE_WEIGHT_THICK: 5
-  STROKE_WEIGHT_THIN: 2
-  STROKE_WEIGHT_THINNER: 1
 
   _round_dec: (num,dec) ->
     Math.round(num * Math.pow(10,dec)) / Math.pow(10,dec)
@@ -149,19 +144,3 @@ window.beats.Util =
       if test?.length == 0
         return newId
       newId++
-
-  # determine stroke for zoom
-  getLineWidth: (numLines) ->
-    numLines = 5 if numLines > 5
-    numLines
-  
-  # determine strokeweight for zoom
-  getLinkStrokeWeight: (numLines)->
-    zoomLevel = $a.map.getZoom()
-    if (zoomLevel >= 17)
-      lineWidth = @getLineWidth(numLines)
-    else if (zoomLevel >= 16)
-      lineWidth = $a.Util.STROKE_WEIGHT_THIN
-    else
-      lineWidth = $a.Util.STROKE_WEIGHT_THINNER
-    lineWidth

@@ -12,11 +12,5 @@ describe("Util", function() {
       expect(id).toEqual(1);
     });
   });
-  describe("getLinkStrokeWeight", function() {
-    it("should return stroke weight dependent on zoom level", function() {
-      $a.map.setZoom(18)
-      zoom  = $a.Util.getLinkStrokeWeight()
-      expect(zoom).toEqual($a.Util.STROKE_WEIGHT_THICKER);
-    });
-  });
+
 });

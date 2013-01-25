@@ -35,6 +35,7 @@ describe("SensorListView", function() {
     it("should be watching removeSensor", function() {
       this.sCollect.trigger('remove', models[0]);
       expect($a.SensorListView.prototype.removeSensor).toHaveBeenCalled();
+      this.sCollect.addSensor(new google.maps.LatLng(0,0));
     });
   });
 
@@ -57,7 +58,7 @@ describe("SensorListView", function() {
     it("should remove the MapSensorView from views array", function() {
       var lengthBefore = this.view.views.length;
       this.view.removeSensor(models[0]);
-      expect(this.view.views.length).toEqual(lengthBefore - 1);
+      expect(this.view.views.length).toEqual(lengthBefore - 2);
     });
   });
 });

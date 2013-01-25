@@ -74,10 +74,12 @@ describe("LinkListView", function() {
    describe("setStrokeWeight", function() {
     it("should set link stroke weight dependent on zoom level", function() {
       this.view.createAndDrawLink(scen.link1);
-      $a.map.setZoom(16)
+      googleMap();
+      $a.map.setZoom(18);
       this.view.setStrokeWeight();
-      weight  = this.view.views[0].link.get('strokeWeight');
-      expect(weight).toEqual($a.Util.STROKE_WEIGHT_THIN);
+      var l =  this.view.views[0].link
+      var weight  = l.get('strokeWeight');
+      expect(weight).toEqual(3);
     });
   }); 
 });
