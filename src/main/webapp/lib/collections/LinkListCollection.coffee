@@ -188,6 +188,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # link from the map and re-add the new link to the collection which 
   # triggers the creation of view
   reDrawLink: (link) ->
+    link.set_geometry ''
     @remove(link)
     @add(link)
   
