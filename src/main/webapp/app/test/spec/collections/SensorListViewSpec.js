@@ -57,7 +57,7 @@ describe("SensorListView", function() {
     it("should remove the MapSensorView from views array", function() {
       var lengthBefore = this.view.views.length;
       this.view.removeSensor(models[0]);
-      expect(this.view.views.length).toEqual(lengthBefore - 2);
+      expect(this.view.views.length).toEqual(lengthBefore - 1);
     });
   });
 });

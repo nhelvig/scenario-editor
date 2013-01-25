@@ -117,7 +117,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     fieldId = id
     fieldId = id[5...] if id.indexOf("link") is 0
     _.each(@models, (m) -> m.set_generic(fieldId,$("##{id}").val()))
-
+  
   # This saves the link name
   saveName: (e) ->
     id = e.currentTarget.id

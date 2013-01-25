@@ -24,8 +24,13 @@ describe("MapLinkView", function() {
       }
     ]
     spyOn($a.MapLinkView.prototype, 'clearSelected').andCallThrough();
+    spyOn($a.MapLinkView.prototype, 'applyOffset').andCallThrough();
     spyOn($a.MapLinkView.prototype, '_triggerClearSelectEvents').andCallThrough();
     spyOn($a.MapLinkView.prototype, 'linkSelect').andCallThrough();
+    
+    mapOpts = {mapTypeId: google.maps.MapTypeId.ROADMAP};
+    loadFixtures('main.canvas.view.fixture.html');
+    $a.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
     this.view = new $a.MapLinkView(model, network);
   });
   
@@ -151,6 +156,12 @@ describe("MapLinkView", function() {
         it("triggered by map:clear_neighbors:#{@model.cid}", function() {
             $a.broker.trigger("map:clear_neighbors:" + model.cid);
             expect($a.MapLinkView.prototype.clearSelected).toHaveBeenCalled();
+        });
+      });
+      describe("When model's lane_offset field called", function() {
+        it("should trigger a call to applyOffset", function() {
+            model.set('lane_offset', 10);
+            expect($a.MapLinkView.prototype.applyOffset).toHaveBeenCalled();
         });
       });
   });

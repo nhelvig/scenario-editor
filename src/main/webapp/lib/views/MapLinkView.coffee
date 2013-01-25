@@ -21,6 +21,7 @@ class window.beats.MapLinkView extends Backbone.View
     @_setMouseEvents()
     @model.on('remove', @removeLink, @)
     @model.on('change:selected', @toggleSelected, @)
+    @model.on('change:lane_offset', @_drawLink, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
     $a.broker.on('map:show_link_layer', @showLink, @)
@@ -61,10 +62,10 @@ class window.beats.MapLinkView extends Backbone.View
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
   _drawLink: ->
+    @hideLink() if @link?
     linkGeom = @model.geometry()
     enc = google.maps.geometry.encoding
     pathVertices = @applyOffset(enc.decodePath(linkGeom))
-    oldPathVertices = enc.decodePath(linkGeom)
     @link = new google.maps.Polyline({
       path: pathVertices
       map: $a.map
@@ -78,7 +79,6 @@ class window.beats.MapLinkView extends Backbone.View
       strokeOpacity: 0.6
       strokeWeight: $a.Util.getLinkStrokeWeight()
     })
-    
   
   # Context Menu
   # Create the link Context Menu. The menu items are stored with their events
@@ -106,6 +106,7 @@ class window.beats.MapLinkView extends Backbone.View
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR
     strokeColor = MapLinkView.PARALLEL_COLOR if @model.parallel? is true
+    strokeColor = MapLinkView.SELECTED_LINK_COLOR if @model.selected? is true
     strokeColor
 
   _getStrokeWeight: ->
@@ -133,59 +134,6 @@ class window.beats.MapLinkView extends Backbone.View
     $(env.el).dialog('open')
     evt?.stop()
 
-  # this method offsets from the original polyline
-  applyOffset: (vertices) ->
-    offset = @model.get('lane_offset') || 0
-    prj = $a.map.getProjection()
-    if offset is 0 then return vertices
-    
-    newPts = [] 
-    for i in [0..vertices.length-1]
-      cv = vertices[i]
-      vBehind = if i is 0 then null else vertices[i-1]
-      vFront = if i is vertices.length-1 then null else vertices[i+1]
-      v = @_vertexOffset(cv, offset, vBehind, vFront, prj)
-      newPts.push v
-    newPts
-    
-  _vertexOffset: (cv, offset, v0, v1, prj) -> 
-    cp = prj.fromLatLngToPoint(cv)
-    p0 = @_subtract(prj.fromLatLngToPoint(v0), cp) if not(v0 is null)
-    p1 = @_subtract(prj.fromLatLngToPoint(v1), cp) if not(v1 is null)
-    p0 = new google.maps.Point(-p1.x, -p1.y) if v0 is null
-    p1 = new google.maps.Point(-p0.x, -p0.y) if v1 is null
-    p0 = @_normalize(p0) if p0.x != 0 and p0.y != 0
-    p1 = @_normalize(p1) if p1.x != 0 and p1.y != 0
-    det = p0.x * p1.y - p1.x * p0.y
-    if det is 0
-      x2 = -p0.y
-      y2 = p0.x
-    else
-      detSign = det / Math.abs(det)
-      x2 = detSign * (p0.x + p1.x) / 2
-      y2 = detSign * (p0.y + p1.y) / 2
-    p2 = new google.maps.Point(x2,y2)
-    v2 = prj.fromPointToLatLng(@_add(p2, cp))
-    d2 = google.maps.geometry.spherical.computeDistanceBetween(cv, v2)
-    dist = offset * 3.0
-    k = dist/d2
-    p3 = new google.maps.Point(k * x2,k * y2)
-    v = prj.fromPointToLatLng(@_add(p3, cp))
-    v
-  
-  _distance: (p1, p2) ->
-    Math.sqrt(Math.pow(p1.x - p2.x,2) + Math.pow(p1.y - p2.y,2)) 
-  
-  _add: (p1, p2) -> 
-    new google.maps.Point(p1.x + p2.x, p1.y + p2.y)
-      
-  _subtract: (p1, p2) -> 
-    new google.maps.Point(p1.x - p2.x, p1.y - p2.y)
-  
-  _normalize: (p) ->
-    unitDistance = @_distance(p, new google.maps.Point(0,0))
-    new google.maps.Point(p.x/unitDistance, p.y/unitDistance)
-    
   viewDemands: () ->
     dv = new $a.DemandVisualizer(@model.get('demand'))
     $('body').append(dv.el)
@@ -243,6 +191,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method swaps the icon for the selected color
   linkSelect: ->
+    @model.selected = true
     $a.broker.trigger("app:tree_highlight:#{@model.cid}")
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
@@ -295,7 +244,6 @@ class window.beats.MapLinkView extends Backbone.View
       $a.broker.trigger('app:show_message:info', "Error Calculating Link Length" )
     length
 
-
   # Saves Link Length Should be called when either:
   # 1) link has no length attribute so on load it is added to model,
   # 2) New link is added or 3) If link is changed
@@ -309,3 +257,64 @@ class window.beats.MapLinkView extends Backbone.View
     else if units == $a.Util.UNITS_METRIC
       length = $a.Util.convertSIToKilometers(length)
     @model.set_length(length)
+  
+  # this method offsets this link from the original(center) polyline
+  # the offset is determined by user setting the lane_offset attribute
+  # of the link -- this can be modified in the editor
+  applyOffset: (vertices) ->
+    offset = @model.get('lane_offset') || 0
+    prj = $a.map.getProjection()
+    if offset is 0 then return vertices
+    
+    newPts = [] 
+    for i in [0..vertices.length-1]
+      cv = vertices[i]
+      vBehind = if i is 0 then null else vertices[i-1]
+      vFront = if i is vertices.length-1 then null else vertices[i+1]
+      vBehind = vertices[i-2] if(vBehind? and vBehind.equals(cv))   
+      vFront = vertices[i+2] if(vFront? and vFront.equals(cv))   
+      v = @_vertexOffset(cv, offset, vBehind, vFront, prj)
+      newPts.push v
+    newPts
+  
+  # we call this method above for every vertex along the polyline path
+  # offsetting the origin point(cv) by the offset indicated
+  _vertexOffset: (cv, offset, v0, v1, prj) -> 
+    cp = prj.fromLatLngToPoint(cv)
+    p0 = @_subtract(prj.fromLatLngToPoint(v0), cp) if not(v0 is null)
+    p1 = @_subtract(prj.fromLatLngToPoint(v1), cp) if not(v1 is null)
+    p0 = new google.maps.Point(-p1.x, -p1.y) if v0 is null
+    p1 = new google.maps.Point(-p0.x, -p0.y) if v1 is null
+    p0 = @_normalize(p0)
+    p1 = @_normalize(p1)
+    det = p0.x * p1.y - p1.x * p0.y
+    if det is 0
+      x2 = -p0.y
+      y2 = p0.x
+    else
+      detSign = det / Math.abs(det)
+      x2 = detSign * (p0.x + p1.x) / 2
+      y2 = detSign * (p0.y + p1.y) / 2
+    p2 = new google.maps.Point(x2,y2)
+    v2 = prj.fromPointToLatLng(@_add(p2, cp))
+    d2 = google.maps.geometry.spherical.computeDistanceBetween(cv, v2)
+    dist = offset * 3.0
+    k = dist/d2
+    p3 = new google.maps.Point(k * x2,k * y2)
+    v = prj.fromPointToLatLng(@_add(p3, cp))
+    v
+  
+  # these 4 methods are all used to deal with the lane offset
+  _distance: (p1, p2) ->
+    Math.sqrt(Math.pow(p1.x - p2.x,2) + Math.pow(p1.y - p2.y,2)) 
+  
+  _add: (p1, p2) -> 
+    new google.maps.Point(p1.x + p2.x, p1.y + p2.y)
+      
+  _subtract: (p1, p2) -> 
+    new google.maps.Point(p1.x - p2.x, p1.y - p2.y)
+  
+  # we normalize to a unit length(1)
+  _normalize: (p) ->
+    unitDist = @_distance(p, new google.maps.Point(0,0))
+    new google.maps.Point(p.x/unitDist, p.y/unitDist)

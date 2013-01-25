@@ -78,8 +78,8 @@
   window.loadApp = function(after) {
     return head.js("../js/models/Beats.js", '../js/menu-data.js', 'scenario-xml.js', function() {
       return load_app_classes(function() {
-          return load_jasmine_specs_templates(after);
-        });
+            return load_jasmine_specs_templates(after);
+      });
     });
   };
 
