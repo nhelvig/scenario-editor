@@ -46,6 +46,7 @@ beforeEach(function() {
       }
     }
     window.beats.map = new google.maps.Map($("#map_canvas")[0], mapOpts);
+
   }
   
   modelSetUp = function() {
@@ -72,6 +73,7 @@ beforeEach(function() {
     var shape = new window.beats.Shape();
     shape.set('text', 'khdfFrvliVvD{@??k@{E??lDw@pDy@xFoA`GoAPCpD}@bAWrBc@jDw@`JqB`E}@|Cq@~IqBhDu@tDy@dDw@l@Ml@MrA[tA[dAUbAUPEFABAB?B?DANA`GsAjBa@jDy@jBc@bDs@rA[pAYfAYvA[jAYHALEl@KHAFC~Bi@dCi@hAQpAYZGn@W|@Q??GWWwDWqD??rDc@fAO');  
     link.set('shape', shape);
+    link.set('lanes', 3);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];

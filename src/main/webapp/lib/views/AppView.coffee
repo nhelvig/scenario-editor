@@ -24,7 +24,12 @@ class window.beats.AppView extends Backbone.View
     @_layersMenu()
     @_messagePanel()
     @newScenario()
-    @_displayMap($a.fileText) 
+    # Wait for idle map so that we can get projection
+    google.maps.event.addListener($a.map, 'idle', =>
+      @_displayMap($a.fileText)
+      google.maps.event.clearListeners($a.map, 'idle')
+    )
+    
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())

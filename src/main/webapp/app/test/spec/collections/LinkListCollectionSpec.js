@@ -17,7 +17,7 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'joinLink').andCallThrough();
-    spyOn($a.LinkListCollection.prototype, 'parallelLink').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'duplicateLink').andCallThrough();
 
     this.lColl= new $a.LinkListCollection(models);
   });
@@ -59,11 +59,11 @@ describe("LinkListCollection", function() {
       $a.broker.trigger("links_collection:join", scen.node2);
       expect($a.LinkListCollection.prototype.joinLink).toHaveBeenCalled();
     });
-    it("should be watching parallelLink", function() {
+    it("should be watching duplicateLink", function() {
       scen = scenarioAndFriends()
       this.lColl.models[0].set_geometry(scen.link1.geometry())
-      this.lColl.trigger("links:parallel", models[0].cid);
-      expect($a.LinkListCollection.prototype.parallelLink).toHaveBeenCalled();
+      this.lColl.trigger("links:duplicate", models[0].cid);
+      expect($a.LinkListCollection.prototype.duplicateLink).toHaveBeenCalled();
     });
     it("should call _setUpEvents", function() {
       expect($a.LinkListCollection.prototype._setUpEvents).toHaveBeenCalled();
@@ -163,13 +163,13 @@ describe("LinkListCollection", function() {
       expect(lBefore - 1).toEqual(linkColl.models.length);
     });
   });
-  describe("parallelLink ", function() {
-    it("should create parallel link", function() {
+  describe("duplicateLink ", function() {
+    it("should create duplicate link", function() {
       scen = scenarioAndFriends();
       lengthBefore = this.lColl.models.length
       link =  this.lColl.models[0];
       link.set_geometry(scen.link1.geometry());
-      this.lColl.parallelLink(link.cid);
+      this.lColl.duplicateLink(link.cid);
       expect(lengthBefore + 1).toEqual(this.lColl.models.length);
     });
   });

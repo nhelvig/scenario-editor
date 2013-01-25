@@ -9,9 +9,6 @@ window.beats.Link::initialize = ->
   @set('dynamics', new window.beats.Dynamics())
   @set('roads', new window.beats.Roads)
 
-window.beats.Link::set_parallel = ->
-  @parallel = true
-
 window.beats.Link::set_geometry = (text) ->
   sh = new window.beats.Shape()
   sh.set('text', text)
@@ -19,6 +16,7 @@ window.beats.Link::set_geometry = (text) ->
 
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::type = -> @get("type")
+window.beats.Link::lanes = -> @get("lanes")
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
   @defaults[id] = val

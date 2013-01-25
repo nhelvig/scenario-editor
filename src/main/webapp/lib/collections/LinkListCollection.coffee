@@ -11,7 +11,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
-    @on('links:parallel', @parallelLink, @)
+    @on('links:duplicate', @duplicateLink, @)
     @on('links:add_sensor', @addSensorToLink, @)
     @on('links:add_controller', @addControllerToLink, @)
     @on('links:add_event', @addEventToLink, @)
@@ -29,9 +29,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     id = $a.Util.getNewElemId($a.models.links())
     link.set('id', id)
     
-    if args.parallel?
+    if args.duplicate?
       link.set_geometry args.path
-      link.set_parallel args.parallel
       link.legs = []
     
     begin = new window.beats.Begin()
@@ -70,24 +69,19 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # removeLink removes the link from the collection and takes it off the 
   # map.
   removeLink: (linkID) ->
-    console.log linkID
     link = @getByCid(linkID)
     link.begin_node().position().off('change')
     link.end_node().position().off('change')
     @remove(link)
   
-  # creates a parallel link to the one passed in
-  parallelLink: (linkID) ->
+  # creates a duplicate link to the one passed in
+  duplicateLink: (linkID) ->
     link = @getByCid(linkID)
-    path = google.maps.geometry.encoding.decodePath(link.geometry())
-    # for testing - specs fail if the map is not loaded in time - this prevents
-    if $a.map.getProjection()?
-      pPath = $a.Util.parallelLines(path, $a.map.getProjection()) 
     args = {}
     args.begin = link.begin_node()
     args.end = link.end_node()
-    args.path = google.maps.geometry.encoding.encodePath pPath
-    args.parallel = true
+    args.path = link.geometry()
+    args.duplicate = true
     args.strokeWeight = 1
     @addLink(args)
 
