@@ -23,7 +23,7 @@ class window.beats.MapLinkView extends Backbone.View
     @model.on('remove', @removeLink, @)
     @model.on('change:selected', @toggleSelected, @)
     @model.on('change:lane_offset', @_drawLink, @)
-    @model.on('change:lanes', @_setStrokeWeight, @)
+    #@model.on('change:lanes', @_setStrokeWeight, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
     $a.broker.on('map:show_link_layer', @showLink, @)
