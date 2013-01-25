@@ -149,16 +149,19 @@ window.beats.Util =
       if test?.length == 0
         return newId
       newId++
+
+  # determine stroke for zoom
+  getLineWidth: (numLines) ->
+    numLines = 5 if numLines > 5
+    numLines
   
   # determine strokeweight for zoom
-  getLinkStrokeWeight: ->
+  getLinkStrokeWeight: (numLines)->
     zoomLevel = $a.map.getZoom()
-    if (zoomLevel >= 18)
-      newZoom = $a.Util.STROKE_WEIGHT_THICKER
-    else if (zoomLevel >= 17)
-      newZoom = $a.Util.STROKE_WEIGHT_THICK
+    if (zoomLevel >= 17)
+      lineWidth = @getLineWidth(numLines)
     else if (zoomLevel >= 16)
-      newZoom = $a.Util.STROKE_WEIGHT_THIN
+      lineWidth = $a.Util.STROKE_WEIGHT_THIN
     else
-      newZoom = $a.Util.STROKE_WEIGHT_THINNER
-    newZoom
+      lineWidth = $a.Util.STROKE_WEIGHT_THINNER
+    lineWidth

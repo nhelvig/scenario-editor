@@ -5,7 +5,6 @@
 class window.beats.MapLinkView extends Backbone.View
   @LINK_COLOR: 'blue'
   @SELECTED_LINK_COLOR: 'red'
-  @PARALLEL_COLOR: 'green'
 
   $a = window.beats
 
@@ -18,10 +17,10 @@ class window.beats.MapLinkView extends Backbone.View
     if(!@model.length?)
       @_saveLinkLength()
     @_contextMenu()
-    @_setMouseEvents()
     @model.on('remove', @removeLink, @)
     @model.on('change:selected', @toggleSelected, @)
     @model.on('change:lane_offset', @_drawLink, @)
+    @model.on('change:lanes', @_setStrokeWeight, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on('map:hide_link_layer', @hideLink, @)
     $a.broker.on('map:show_link_layer', @showLink, @)
@@ -75,7 +74,6 @@ class window.beats.MapLinkView extends Backbone.View
           fillColor: 'blue'
           offset: '60%'
         }]
-      zIndex: @_getZIndex()
       strokeOpacity: 0.6
       strokeWeight: $a.Util.getLinkStrokeWeight()
     })
@@ -102,27 +100,15 @@ class window.beats.MapLinkView extends Backbone.View
       $a.contextMenu.show mouseEvent.latLng
     )
     @model.set('contextMenu', $a.contextMenu)
-
+  
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR
-    strokeColor = MapLinkView.PARALLEL_COLOR if @model.parallel? is true
     strokeColor = MapLinkView.SELECTED_LINK_COLOR if @model.selected? is true
     strokeColor
-
-  _getStrokeWeight: ->
-    w = 4
-    w = 4 if @model.parallel? is true
-    w
-    
-  _getZIndex: ->
-    z = 1
-    z = 9999 if @model.parallel? is true
-    z
   
-  _setMouseEvents: ->
-    google.maps.event.addListener(@link, 'mousedown', (mouseEvent) =>
-      @link
-    ) if @model.parallel? is true
+  _setStrokeWeight: ->
+    nLanes = @model.get('lanes')
+    @link.setOptions(options: {strokeWeight:$a.Util.getLinkStrokeWeight(nLanes)})
   
   # creates the editor for a link
   _editor: (evt) ->

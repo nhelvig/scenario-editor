@@ -29,9 +29,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     id = $a.Util.getNewElemId($a.models.links())
     link.set('id', id)
     
-    if args.parallel?
+    if args.duplicate?
       link.set_geometry args.path
-      link.set_parallel args.parallel
       link.legs = []
     
     begin = new window.beats.Begin()
@@ -82,7 +81,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     args.begin = link.begin_node()
     args.end = link.end_node()
     args.path = link.geometry()
-    args.parallel = true
+    args.duplicate = true
     args.strokeWeight = 1
     @addLink(args)
 
