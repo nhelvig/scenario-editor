@@ -22,7 +22,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # addLink takes the begin node and end node ids, sets up the appropriate
   # begin and end node objects, creates the link, adds it to the collection
-  # and adds it to the schema
+  # and the schema and then sets this link to the output and input fields
+  # of the appropriate nodes
   addLink: (args) ->
     link = new window.beats.Link()
     
@@ -45,6 +46,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.set('end', end)
     @_setUpEvents(link)
     @add(link)
+    args.begin.outputs().push new window.beats.Output({link: link})
+    args.end.inputs().push new window.beats.Input({link: link})
     link
   
   # this function sets all the links passed in selected field to true. It is
