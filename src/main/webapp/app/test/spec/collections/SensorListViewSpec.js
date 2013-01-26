@@ -6,12 +6,13 @@ describe("SensorListView", function() {
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
     network = $a.models.network();
-    models = $a.models.sensors();
     spyOn($a.SensorListView.prototype, 'addSensorView').andCallThrough();
     spyOn($a.SensorListView.prototype, 'render').andCallThrough();
     spyOn($a.SensorListView.prototype, 'removeSensor').andCallThrough();
    
-    this.sCollect = new $a.SensorListCollection(models);
+    scen = scenarioAndFriends();
+    sA = [scen.sensor1, scen.sensor2, scen.sensor3, scen.sensor4]
+    this.sCollect = new $a.SensorListCollection(sA);
     this.view = new $a.SensorListView(this.sCollect, network);
     
   });
@@ -33,9 +34,8 @@ describe("SensorListView", function() {
     });
     
     it("should be watching removeSensor", function() {
-      this.sCollect.trigger('remove', models[0]);
+      this.sCollect.trigger('remove', scen.sensor1);
       expect($a.SensorListView.prototype.removeSensor).toHaveBeenCalled();
-      this.sCollect.addSensor(new google.maps.LatLng(0,0));
     });
   });
 
@@ -49,7 +49,7 @@ describe("SensorListView", function() {
   
   describe("addSensorView", function() {
     it("should create a MapSensorView for a Sensor model", function() {
-      this.view.addSensorView(models[0]);
+      this.view.addSensorView(this.sCollect.models[0]);
       expect(this.view.msv).not.toBeNull();
     });
   });
@@ -57,8 +57,8 @@ describe("SensorListView", function() {
   describe("removeSensor", function() {
     it("should remove the MapSensorView from views array", function() {
       var lengthBefore = this.view.views.length;
-      this.view.removeSensor(models[0]);
-      expect(this.view.views.length).toEqual(lengthBefore - 2);
+      this.view.removeSensor(scen.sensor2);
+      expect(this.view.views.length).toEqual(lengthBefore - 1);
     });
   });
 });

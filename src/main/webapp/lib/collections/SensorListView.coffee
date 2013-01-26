@@ -30,4 +30,4 @@ class window.beats.SensorListView extends Backbone.Collection
   
   # this removes the sensor from the views array upon removal from collection
   removeSensor: (sensor) ->
-    @views = _.reject(@views, (view) => view.model is sensor)
+    @views = _.reject(@views, (view) => view.model.id is sensor.id)

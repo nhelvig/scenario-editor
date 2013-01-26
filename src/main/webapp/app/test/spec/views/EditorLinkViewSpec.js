@@ -270,7 +270,7 @@ describe("EditorLinkView", function() {
         $('#lane_offset').blur();
         expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
       });
-      it("Geo Tab: 'Length' field calls save", function() { 
+      it("Geo Tab: 'Length' field calls save", function() {
         $('#length').blur();
         expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
       });

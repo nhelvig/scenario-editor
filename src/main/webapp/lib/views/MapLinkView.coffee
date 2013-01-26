@@ -17,8 +17,7 @@ class window.beats.MapLinkView extends Backbone.View
       @_createEncodedPath @model.legs
       @_saveEncodedPath()
     @_drawLink()
-    if(!@model.length?)
-      @_saveLinkLength()
+    @_saveLinkLength()
     @_contextMenu()
     @model.on('remove', @removeLink, @)
     @model.on('change:selected', @toggleSelected, @)
@@ -320,5 +319,3 @@ class window.beats.MapLinkView extends Backbone.View
   _normalize: (p) ->
     unitDist = @_distance(p, new google.maps.Point(0,0))
     new google.maps.Point(p.x/unitDist, p.y/unitDist)
-    
-  

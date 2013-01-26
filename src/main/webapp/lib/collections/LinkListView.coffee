@@ -76,5 +76,5 @@ class window.beats.LinkListView extends Backbone.Collection
   # set the strokeweight of all polyline based on the zoom level
   setStrokeWeight: ->
     _.each(@views, (view) -> 
-      view.link.setOptions(strokeWeight:view.getLinkStrokeWeight()) if view.link?
+      view.link.setOptions(strokeWeight:view.getLinkStrokeWeight())
     )

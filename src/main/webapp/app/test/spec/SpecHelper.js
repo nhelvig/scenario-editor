@@ -116,10 +116,17 @@ beforeEach(function() {
     node1 = new window.beats.Node({id: 1, position: p, type: 'freeway'});
     node2 = new window.beats.Node({id: 2, position: p});
     node3 = new window.beats.Node({id: 3, position: p});
-    sensor = new window.beats.Sensor({id:1});
+    node4 = new window.beats.Node({id: 4, position: p});
+    node5 = new window.beats.Node({id: 5, position: p});
+    sensor = new window.beats.Sensor({id:1, position: p});
+    sensor1 = new window.beats.Sensor({id:1, position: p});
+    sensor2 = new window.beats.Sensor({id:2, position: p});
+    sensor3 = new window.beats.Sensor({id:3, position: p});
+    sensor4 = new window.beats.Sensor({id:4, position: p});
     link1 = simpleLink(99,node1, node2);
     link2 = simpleLink(100,node2, node3);
     link3 = simpleLink(101, node3, node1);
+    link4 = simpleLink(102, node4, node5);
     density = new window.beats.Density({id: 1});
     ids = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});
@@ -130,6 +137,7 @@ beforeEach(function() {
     dps = new window.beats.DemandProfileSet({demandprofile: [dp]});
     srp = new window.beats.SplitratioProfile({id: 1});
     srps = new window.beats.SplitRatioProfileSet({splitratioprofile: [srp]});
+    sensorList = new window.beats.SensorList({sensor: [sensor1, sensor2, sensor3, sensor4]});
     linkList = new window.beats.LinkList({link: [link1, link2, link3]});
     nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
     network = new window.beats.Network({id: 1});
@@ -145,7 +153,8 @@ beforeEach(function() {
       initialdensityset: ids,
       downstreamboundarycapacityprofileset: cps,
       demandprofileset: dps,
-      splitratioprofileset: srps
+      splitratioprofileset: srps,
+      sensorlist: sensorList 
     });
     scenario.set('networklist',networkList);
     scenario.set('controllerset',cs);
@@ -158,7 +167,12 @@ beforeEach(function() {
       link1: link1,
       link2: link2,
       link3: link3,
+      link4: link4,
       sensor: sensor,
+      sensor1: sensor1,
+      sensor2: sensor2,
+      sensor3: sensor3,
+      sensor4: sensor4,
       srp: srp,
       srps: srps,
       cps: cps,
