@@ -40,12 +40,9 @@ class window.beats.NodeListCollection extends Backbone.Collection
     @forEach((node) -> node.set('selected', false))
   
   # removes the node from the collection and takes it off the map. 
-  removeNode: (nodeID, linksJoined) ->
+  removeNode: (nodeID) ->
     node = @getByCid(nodeID)
-    #if linksJoined? and linksJoined
     @remove(node)
-    #else
-    #  $a.broker.trigger("links_collection:join", node)
   
   # removes the node plus any links it is associated with. 
   removeNodeAndLinks: (nodeID) ->
@@ -57,8 +54,11 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # removes the node and joins any links whose begin node is this node and
   # the another whose end node is this node.
   removeNodeAndJoinLinks: (nodeID) ->
-    console.log "here"
-  
+    n = @getByCid(nodeID)
+    args = {out:n.outputs(), in:n.inputs(), nodeId: n.id}
+    $a.broker.trigger("links_collection:join", args)
+    @removeNode(nodeID)
+
   # addNode creates a node of the type and at the position passed in and adds
   # it to the collection as well as to the models schema. 
   # It is called from the context menu's add node event

@@ -39,6 +39,9 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <roadway_markers>\
             <marker name="" postmile="0"/>\
           </roadway_markers>\
+          <inputs>\
+            <input link_id="10001"/>\
+          </inputs>\
           <outputs>\
             <output link_id="10000"/>\
           </outputs>\
