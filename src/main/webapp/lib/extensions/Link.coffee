@@ -54,7 +54,7 @@ window.beats.Link::end_node = ->
   
 window.beats.Link::remove = ->
   links = window.beats.models.links()
-  links = _.reject(links, (l) => l is @)
+  links = _.reject(links, (l) => l.id is @.id)
   window.beats.models.set_links(links)
 
 window.beats.Link::add = ->

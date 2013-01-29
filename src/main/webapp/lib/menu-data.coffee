@@ -88,7 +88,7 @@ $a.link_context_menu = [
   context_menu_item  'Select Link and its Nodes',
                       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Remove this link',
-                    ((e) -> $a.linkList.trigger("links:remove", e.currentTarget.id))
+                    ((e) -> $a.broker.trigger("links:remove", e.currentTarget.id))
   {className:'context_menu_separator'}
   context_menu_item 'Add sensor to this link',
                     ((e) -> $a.linkList.trigger("links:add_sensor", e.currentTarget.id))
@@ -161,6 +161,10 @@ $a.node_context_menu = [
                     ((e) -> $a.broker.trigger("map:open_editor:#{e.currentTarget.id}"))
   context_menu_item 'Remove this node',
                     ((e) -> $a.broker.trigger("nodes:remove", e.currentTarget.id))
+  context_menu_item 'Remove this node and its links',
+                    ((e) -> $a.broker.trigger("nodes:remove_and_links", e.currentTarget.id))
+  context_menu_item 'Remove this node and join links',
+                    ((e) -> $a.broker.trigger("nodes:remove_and_join", e.currentTarget.id))
   context_menu_item 'Select node and its links',
                     ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Select Outgoing links',

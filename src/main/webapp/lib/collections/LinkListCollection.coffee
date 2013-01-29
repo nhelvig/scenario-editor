@@ -11,6 +11,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
+    $a.broker.on('links:remove', @removeLink, @)
     @on('links:duplicate', @duplicateLink, @)
     @on('links:add_sensor', @addSensorToLink, @)
     @on('links:add_controller', @addControllerToLink, @)
@@ -22,7 +23,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # addLink takes the begin node and end node ids, sets up the appropriate
   # begin and end node objects, creates the link, adds it to the collection
-  # and adds it to the schema
+  # and the schema and then sets this link to the output and input fields
+  # of the appropriate nodes
   addLink: (args) ->
     link = new window.beats.Link()
     
@@ -45,6 +47,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.set('end', end)
     @_setUpEvents(link)
     @add(link)
+    args.begin.outputs().push new window.beats.Output({link: link})
+    args.end.inputs().push new window.beats.Input({link: link})
     link
   
   # this function sets all the links passed in selected field to true. It is
@@ -125,41 +129,25 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @addLink(args)
 
   # joins links when a connecting node is removed
-  joinLink: (node) ->
-    nid = node.id
-    links = _.filter(@models, (link) -> 
-                                  endId = link.end_node().id
-                                  beginId = link.begin_node().id
-                                  beginId is nid or  endId is nid
-                    )
-    for linkIndex in [0..links.length - 1]
-      link = links[linkIndex]
-      linkIndex2 = linkIndex + 1
-      while linkIndex2 < links.length
-        link2 = links[linkIndex2]
-        @_joinMatchingNodes(link, link2)
-        linkIndex2++
-    _.each((links), (link) =>  @remove(link))
-    $a.broker.trigger('nodes:remove', node.cid, true)
-  
-  _joinMatchingNodes: (link, link2) ->
-    if(link.begin_node() is link2.end_node())
-        @_join(link2, link, link2.begin_node(), link.end_node())
-    else if(link.end_node() is link2.begin_node())
-        @_join(link, link2, link.begin_node(), link2.end_node())
-    else if(link.end_node() is link2.end_node())
-        @_join(link, link2, link.begin_node(), link2.begin_node())
-    else if(link.begin_node() is link2.begin_node())
-        @_join(link, link2, link.end_node(), link2.end_node())
+  joinLink: (args) ->
+    _.each(args.in, (i) =>
+      _.each(args.out, (o) =>
+        @_join(i.link(), o.link())
+      )
+    )
+    _.each(args.in, (i) => @remove(i.link()))
+    _.each(args.out, (o) => @remove(o.link()))
 
-  _join: (bLink, eLink, bNode, eNode) ->
+  # join the two links passed in by combining paths and setting the begin and
+  # end node
+  _join: (bLink, eLink) ->
     bPath = google.maps.geometry.encoding.decodePath bLink.geometry() 
     ePath = google.maps.geometry.encoding.decodePath eLink.geometry()
-    cPath = _.union(bPath,ePath)
+    cPath = _.union(bPath, ePath)
     path = google.maps.geometry.encoding.encodePath cPath
     bLink.begin_node().position().off()
     eLink.end_node().position().off()
-    @addLink({begin: bNode, end: eNode, path: path})
+    @addLink({begin: bLink.begin_node(), end: eLink.end_node(), path: path})
     
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.

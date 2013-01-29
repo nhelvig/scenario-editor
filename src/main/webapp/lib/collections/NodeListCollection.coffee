@@ -11,6 +11,8 @@ class window.beats.NodeListCollection extends Backbone.Collection
     $a.broker.on('map:clear_map', @clear, @)
     $a.broker.on('nodes:add', @addNode, @)
     $a.broker.on('nodes:remove', @removeNode, @)
+    $a.broker.on('nodes:remove_and_links', @removeNodeAndLinks, @)
+    $a.broker.on('nodes:remove_and_join', @removeNodeAndJoinLinks, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_connecting_link_orig', @addConnectingLinkOrigin, @)
     @on('nodes:add_connecting_link_dest', @addConnectingLinkDest, @)
@@ -37,16 +39,26 @@ class window.beats.NodeListCollection extends Backbone.Collection
   clearSelected: ->
     @forEach((node) -> node.set('selected', false))
   
-  # removeNode removes this node, joins any links that may be connected via
-  # this node, removes the node from the collection and takes it off the 
-  # map. 
-  removeNode: (nodeID, linksJoined) ->
+  # removes the node from the collection and takes it off the map. 
+  removeNode: (nodeID) ->
     node = @getByCid(nodeID)
-    if linksJoined? and linksJoined
-      @remove(node)
-    else
-      $a.broker.trigger("links_collection:join", node)
+    @remove(node)
   
+  # removes the node plus any links it is associated with. 
+  removeNodeAndLinks: (nodeID) ->
+    n = @getByCid(nodeID)
+    _.each(n.outputs(), (o) -> $a.broker.trigger('links:remove', o.link().cid))
+    _.each(n.inputs(), (i) -> $a.broker.trigger('links:remove', i.link().cid))
+    @removeNode(nodeID)
+  
+  # removes the node and joins any links whose begin node is this node and
+  # the another whose end node is this node.
+  removeNodeAndJoinLinks: (nodeID) ->
+    n = @getByCid(nodeID)
+    args = {out:n.outputs(), in:n.inputs(), nodeId: n.id}
+    $a.broker.trigger("links_collection:join", args)
+    @removeNode(nodeID)
+
   # addNode creates a node of the type and at the position passed in and adds
   # it to the collection as well as to the models schema. 
   # It is called from the context menu's add node event

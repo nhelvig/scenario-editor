@@ -3,3 +3,6 @@ window.beats.Output::resolve_references =
 
 window.beats.Output::encode_references = ->
   @set('link_id', @get('link').id)
+
+window.beats.Output::link = ->
+  @get('link')

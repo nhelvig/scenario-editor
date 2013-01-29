@@ -5,6 +5,8 @@ window.beats.Node::defaults =
 
 window.beats.Node::initialize = ->
   @set('roadway_markers', new window.beats.Roadway_markers)
+  @set('outputs', new window.beats.Outputs({output: []}))
+  @set('inputs', new window.beats.Inputs({input: []}))
 
 window.beats.Node::ident = -> Number(@get("id"))
 window.beats.Node::type = -> @get("type")
@@ -56,9 +58,13 @@ window.beats.Node::signalized = ->
   @get('type') is 'S'
 
 window.beats.Node::inputs = ->
+  if(!@has('inputs'))
+    @set('inputs', new window.beats.Inputs({input: []}))
   @get('inputs').get('input')
 
 window.beats.Node::outputs = ->
+  if(!@has('outputs'))
+    @set('outputs', new window.beats.Outputs({output: []}))
   @get('outputs').get('output')
 
 window.beats.Node::ios = ->

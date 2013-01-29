@@ -32,7 +32,7 @@ describe("LinkListCollection", function() {
     });
 
     it("should be watching removeLink", function() {
-      this.lColl.trigger("links:remove", scen.link1.cid);
+      $a.broker.trigger("links:remove", scen.link1.cid);
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
     it("should be watching splitLink", function() {
@@ -115,16 +115,22 @@ describe("LinkListCollection", function() {
       begin = scen.link1.begin_node();
       end = scen.link1.end_node();
     });
-    it("should create a new link and add it to the collection", function() {
+    var itMsg = "should create a new link and add it to the collection, schema";
+    itMsg += " and update the begin and end nodes output and input fields";
+    it(itMsg, function() {
       var lengthBefore = this.lColl.length;
-      this.lColl.addLink({begin:begin,end:end});
+      var schemaLength = $a.models.links().length
+      link = this.lColl.addLink({begin:begin,end:end});
+      outputs = link.begin_node().outputs()
+      inputs = link.end_node().inputs()
+      oLink = _.find(outputs, function(out){return out.link().id === link.id});
+      iLink = _.find(inputs, function(inp){return inp.link().id === link.id});
+
       expect(lengthBefore + 1).toEqual(this.lColl.length);
+      expect(schemaLength + 1).toEqual($a.models.links().length);
+      expect(oLink).not.toBeNull();
+      expect(iLink).not.toBeNull();
     });
-    it("should create a new link and add it to the schema", function() {
-      var lengthBefore = $a.models.links().length;
-      this.lColl.addLink({begin:begin,end:end});
-      expect(lengthBefore + 1).toEqual($a.models.links().length);
-    })
   });
   
   describe("removeNodeReference", function() {
