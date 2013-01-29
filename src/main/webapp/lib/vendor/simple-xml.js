@@ -12,6 +12,9 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <roadway_markers>\
             <marker name="" postmile="0"/>\
           </roadway_markers>\
+          <inputs>\
+            <input link_id="10000"/>\
+          </inputs>\
           <position>\
             <point lat="37.87119153073403" lng="-122.29870384788512" elevation="NaN"/>\
           </position>\
@@ -36,6 +39,9 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <roadway_markers>\
             <marker name="" postmile="0"/>\
           </roadway_markers>\
+          <outputs>\
+            <output link_id="10000"/>\
+          </outputs>\
           <position>\
             <point lat="37.868030000000005" lng="-122.29771000000001" elevation="NaN"/>\
           </position>\

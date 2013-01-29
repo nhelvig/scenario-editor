@@ -32,7 +32,7 @@ describe("LinkListCollection", function() {
     });
 
     it("should be watching removeLink", function() {
-      this.lColl.trigger("links:remove", scen.link1.cid);
+      $a.broker.trigger("links:remove", scen.link1.cid);
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
     it("should be watching splitLink", function() {

@@ -11,6 +11,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
+    $a.broker.on('links:remove', @removeLink, @)
     @on('links:duplicate', @duplicateLink, @)
     @on('links:add_sensor', @addSensorToLink, @)
     @on('links:add_controller', @addControllerToLink, @)

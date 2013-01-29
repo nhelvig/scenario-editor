@@ -4,135 +4,151 @@ describe("NodeListCollection", function() {
   var network;
   
   beforeEach(function() {
-   
-    models = $a.models.nodes();
     spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'addLinkOrigin').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'addLinkDest').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'removeNode').andCallThrough();
+    spyOn($a.NodeListCollection.prototype, 'removeNodeAndLinks').andCallThrough();
+    spyOn($a.NodeListCollection.prototype, 'removeNodeAndJoinLinks').andCallThrough();
     
-    this.nCollect = new $a.NodeListCollection(models);
+    scen = scenarioAndFriends()
+    this.nColl = new $a.NodeListCollection([scen.node1, scen.node2, scen.node3]);
   });
   
   describe("Instantiation", function() {
        it("sets models to a collection of nodes", function() {
-         expect(this.nCollect.models).not.toBeNull();
+         expect(this.nColl.models).not.toBeNull();
        });
-     
        it("sets all its models selected attribute to false", function() {
-         mod = this.nCollect.models;
+         mod = this.nColl.models;
          arrSel = mod.filter(function(node){ return node.get('selected') == false});
-         expect(arrSel.length).toEqual(this.nCollect.length);
+         expect(arrSel.length).toEqual(this.nColl.length);
        });
-       
        it("should be watching addNode", function() {
-         $a.broker.trigger("nodes:add", new google.maps.LatLng(37,-122));
+         $a.broker.trigger("nodes:add", new google.maps.LatLng(35,-122));
          expect($a.NodeListCollection.prototype.addNode).toHaveBeenCalled();
        });
        it("should be watching addLink", function() {
-         this.nCollect.trigger("nodes:add_link", new google.maps.LatLng(37,-122));
+         this.nColl.trigger("nodes:add_link", new google.maps.LatLng(37,-123));
          expect($a.NodeListCollection.prototype.addLink).toHaveBeenCalled();
        });
        it("should be watching addLinkOrigin", function() {
-         this.nCollect.trigger("nodes:add_origin", new google.maps.LatLng(37,-122));
+         this.nColl.trigger("nodes:add_origin", new google.maps.LatLng(37,-125));
          expect($a.NodeListCollection.prototype.addLinkOrigin).toHaveBeenCalled();
        });
        it("should be watching addLinkDest", function() {
-         this.nCollect.trigger("nodes:add_dest", new google.maps.LatLng(37,-122));
+         this.nColl.trigger("nodes:add_dest", new google.maps.LatLng(36,-122));
          expect($a.NodeListCollection.prototype.addLinkDest).toHaveBeenCalled();
        });
        it("should be watching removeNode", function() {
-         $a.broker.trigger("nodes:remove", 1);
+         $a.broker.trigger("nodes:remove", scen.node1.cid);
          expect($a.NodeListCollection.prototype.removeNode).toHaveBeenCalled();
+       });
+       it("should be watching removeNodeAndJoinLinks", function() {
+         $a.broker.trigger("nodes:remove_and_join", scen.node1.cid);
+         expect($a.NodeListCollection.prototype.removeNodeAndJoinLinks).toHaveBeenCalled();
+       });
+       it("should be watching removeNodeAndLinks", function() {
+         $a.broker.trigger("nodes:remove_and_links", scen.node1.cid);
+         expect($a.NodeListCollection.prototype.removeNodeAndLinks).toHaveBeenCalled();
        });
   });
      
   describe("getBrowserColumnData", function() {
      it("should return id, name, type for editor browser table", function() {
-       arrColumnsData = this.nCollect.getBrowserColumnData();
-       expect(arrColumnsData[0][0]).toEqual(this.nCollect.models[0].get('id'));
-       expect(arrColumnsData[0][1]).toEqual(this.nCollect.models[0].road_names());
-       expect(arrColumnsData[0][2]).toEqual(this.nCollect.models[0].get('type'));
+       arrColumnsData = this.nColl.getBrowserColumnData();
+       expect(arrColumnsData[0][0]).toEqual(this.nColl.models[0].get('id'));
+       expect(arrColumnsData[0][1]).toEqual(this.nColl.models[0].road_names());
+       expect(arrColumnsData[0][2]).toEqual(this.nColl.models[0].get('type'));
      });
   });
      
   describe("setSelected ", function() {
      it("should sets the select field to true", function() {
-       mod = this.nCollect.models;
-       this.nCollect.setSelected(mod);
+       mod = this.nColl.models;
+       this.nColl.setSelected(mod);
        arrSel = mod.filter(function(node){ return node.get('selected') == true});
-       expect(arrSel.length).toEqual(this.nCollect.length);
-       this.nCollect.clearSelected();
+       expect(arrSel.length).toEqual(this.nColl.length);
+       this.nColl.clearSelected();
      });
   });
      
   describe("clearSelected ", function() {
      it("should sets the select field to false", function() {
-       mod = this.nCollect.models;
-       this.nCollect.clearSelected();
+       mod = this.nColl.models;
+       this.nColl.clearSelected();
        arrSel = mod.filter(function(node){ return node.get('selected') == false});
-       expect(arrSel.length).toEqual(this.nCollect.length);
+       expect(arrSel.length).toEqual(this.nColl.length);
      });
   });
      
   describe("addNode ", function() {
     it("should create a new node and add it to the collection", function() {
-     var lengthBefore = this.nCollect.length;
-     this.nCollect.addNode(new google.maps.LatLng(37,-122));
-     expect(lengthBefore + 1).toEqual(this.nCollect.length);
+     var lengthBefore = this.nColl.length;
+     this.nColl.addNode(new google.maps.LatLng(37,-122));
+     expect(lengthBefore + 1).toEqual(this.nColl.length);
     });
     it("should create a new node and add it to the models schema", function() {
      var lengthBefore = $a.models.nodes().length;
-     this.nCollect.addNode(new google.maps.LatLng(37,-122));
+     this.nColl.addNode(new google.maps.LatLng(37,-122));
      expect(lengthBefore + 1).toEqual($a.models.nodes().length);
     });
   });
 
    describe("addLink ", function() {
      it("should create a new node and trigger an add link", function() {
-       var lengthBefore = this.nCollect.length;
-       this.nCollect.models[0].set('selected', true)
-       this.nCollect.addLink(new google.maps.LatLng(37,-122));
-       expect(lengthBefore + 1).toEqual(this.nCollect.length);
+       var lengthBefore = this.nColl.length;
+       this.nColl.models[0].set('selected', true)
+       this.nColl.addLink(new google.maps.LatLng(37,-122));
+       expect(lengthBefore + 1).toEqual(this.nColl.length);
      });
    });
    
    describe("addLinkOrigin ", function() {
      it("should create a new orgin node and trigger an add link", function() {
-       var lengthBefore = this.nCollect.length;
-       this.nCollect.models[0].set('selected', true)
-       this.nCollect.addLinkOrigin(new google.maps.LatLng(37,-122), 'terminal');
-       expect(lengthBefore + 1).toEqual(this.nCollect.length);
+       var lengthBefore = this.nColl.length;
+       this.nColl.models[0].set('selected', true)
+       this.nColl.addLinkOrigin(new google.maps.LatLng(37,-122), 'terminal');
+       expect(lengthBefore + 1).toEqual(this.nColl.length);
      });
    });
    
    describe("addLinkDest ", function() {
      it("should create a new dest node and trigger an add link", function() {
-       var lengthBefore = this.nCollect.length;
-       this.nCollect.models[0].set('selected', true)
-       this.nCollect.addLink(new google.maps.LatLng(37,-122), 'terminal');
-       expect(lengthBefore + 1).toEqual(this.nCollect.length);
+       var lengthBefore = this.nColl.length;
+       this.nColl.models[0].set('selected', true)
+       this.nColl.addLink(new google.maps.LatLng(37,-122), 'terminal');
+       expect(lengthBefore + 1).toEqual(this.nColl.length);
      });
    });
    
    describe("removeNode ", function() {
      it("should find the correct node by id and remove it", function() {
-       scen = scenarioAndFriends()
-       scen.node3.set('id', 234234)
-       this.nCollect.add(scen.node3)
-       var lengthBefore = this.nCollect.length;
-       this.nCollect.removeNode(scen.node3.cid, true);
-       expect(lengthBefore - 1).toEqual(this.nCollect.length);
+       var lengthBefore = this.nColl.length;
+       this.nColl.removeNode(scen.node3.cid, true);
+       expect(lengthBefore - 1).toEqual(this.nColl.length);
+     });
+   });
+   
+  describe("removeNodeAndLinks ", function() {
+     it("should remove node and its links", function() {
+       nodesLengthBefore = this.nColl.length;
+       linksLengthBefore = scen.scenario.links().length
+       this.nColl.removeNodeAndLinks(scen.node3.cid, true);
+       linksLengthAfter = scen.scenario.links().length
+       nodesLengthAfter = this.nColl.length;
+       expect(nodesLengthBefore - 1).toEqual(this.nColl.length);
+       expect(linksLengthBefore - 2).toEqual(linksLengthAfter);
      });
    });
    
    describe("isOneSelected ", function() {
      it("should return true if one node is selected", function() {
-       expect(this.nCollect.isOneSelected()).not.toBeTruthy();
-       this.nCollect.models[0].set('selected', true);
-       expect(this.nCollect.isOneSelected()).toBeTruthy();
-       this.nCollect.clearSelected();
+       expect(this.nColl.isOneSelected()).not.toBeTruthy();
+       this.nColl.models[0].set('selected', true);
+       expect(this.nColl.isOneSelected()).toBeTruthy();
+       this.nColl.clearSelected();
      });
    });
 });
