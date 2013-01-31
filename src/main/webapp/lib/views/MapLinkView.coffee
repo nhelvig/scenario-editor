@@ -256,13 +256,14 @@ class window.beats.MapLinkView extends Backbone.View
     prj = $a.map.getProjection()
     if offset is 0 then return vertices
     
-    newPts = [] 
-    for i in [0..vertices.length-1]
-      cv = vertices[i]
-      vBehind = if i is 0 then null else vertices[i-1]
-      vFront = if i is vertices.length-1 then null else vertices[i+1]
-      vBehind = vertices[i-2] if(vBehind? and vBehind.equals(cv))   
-      vFront = vertices[i+2] if(vFront? and vFront.equals(cv))   
+    newPts = []
+    verts = vertices
+    for i in [0..verts.length-1]
+      cv = verts[i]
+      vBehind = if i is 0 then null else verts[i-1]
+      vFront = if i is verts.length-1 then null else verts[i+1]
+      vBehind = verts[i-2] if(vBehind? and vBehind.equals(cv) and i-2 >= 0)
+      vFront = verts[i+2] if(vFront? and vFront.equals(cv) and i+2 < verts.length)
       v = @_vertexOffset(cv, offset, vBehind, vFront, prj)
       newPts.push v
     newPts
