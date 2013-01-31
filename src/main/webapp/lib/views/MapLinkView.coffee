@@ -37,9 +37,7 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
     $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
-    google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
-    google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
-
+  
   render: ->
     @link.setMap($a.map)
     @
@@ -62,6 +60,8 @@ class window.beats.MapLinkView extends Backbone.View
   
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute will be null until render is called
+  # We set listeners up in drawLink because they need to be re-attached anytime
+  # the link is re-drawn
   _drawLink: ->
     @hideLink() if @link? #if you are applying offset to existing line
     linkGeom = @model.geometry()
@@ -79,7 +79,9 @@ class window.beats.MapLinkView extends Backbone.View
       strokeOpacity: 0.6
       strokeWeight: @getLinkStrokeWeight()
     })
-  
+    google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
+    google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
+
   # Context Menu
   # Create the link Context Menu. The menu items are stored with their events
   # in an array and con be configired in the menu-data.coffee file.  We create
