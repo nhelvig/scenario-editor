@@ -4,7 +4,6 @@
 class window.beats.AppView extends Backbone.View
   $a = window.beats
   $evt = google.maps.event
-  @DEV = true
   @INITIAL_ZOOM_LEVEL = 17
 
   @start: ->
@@ -24,10 +23,10 @@ class window.beats.AppView extends Backbone.View
     @_contextMenu()
     @_layersMenu()
     @_messagePanel()
-    @newScenario() if $a.AppView.DEV is false
+    @newScenario() if $a.Environment.DEV is false
     # Wait for idle map so that we can get projection
     google.maps.event.addListener($a.map, 'idle', =>
-      @_displayMap($a.fileText) if $a.AppView.DEV is true
+      @_displayMap($a.fileText) if $a.Environment.DEV is true
       google.maps.event.clearListeners($a.map, 'idle')
     )
     

@@ -11,7 +11,7 @@ $a.models_with_extensions = [ 'Begin', 'CapacityProfile',
 ]
 
 $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
-  'Column', 'Column_name', 'Column_names', 'DemandProfileSet', 'Description', 
+  'Column', 'Column_name', 'Column_names', 'DemandProfileSet', 'Description',
   'DestinationNetworks', 'DownstreamBoundaryCapacityProfileSet',
   'FeedbackElements', 'FundamentalDiagram', 'FundamentalDiagramProfileSet',
   'InitialDensitySet', 'Inputs', 'IntersectionCacheEntry',
@@ -34,15 +34,15 @@ $a.collections = ['LinkListCollection', 'LinkListView',
 $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
-  'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 'FileUploadView',
-  'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 'MapMarkerView',
-  'MapNetworkView', 'MapNodeView', 'MapSensorView', 'MapControllerView', 
-  'MapEventView', 'MapSignalView', 'MessagePanelView', 'TreeView',
-  'TreeParentItemView', 'TreeChildItemView',
+  'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 
+  'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 
+  'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
+  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 
+  'TreeView', 'TreeParentItemView', 'TreeChildItemView',
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.utils= ['ArrayText',  'ContextMenuHandler', 'GoogleMapRouteHandler', 
-  'ReferenceHelper', 'Util'
+$a.utils= ['ArrayText',  'ContextMenuHandler', 'Environment',
+  'GoogleMapRouteHandler', 'ReferenceHelper', 'Util'
 ]
