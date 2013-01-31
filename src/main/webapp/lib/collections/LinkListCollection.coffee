@@ -71,23 +71,36 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.get(type).set('node', null)
   
   # removeLink removes the link from the collection and takes it off the 
-  # map.
+  # map, turns off the begin and end node position change and then
+  # re-instante position change for all of each nodes inputs and outputs
   removeLink: (linkID) ->
     link = @getByCid(linkID)
-    b = link.begin_node()
-    b.position().off('change')
-    e = link.end_node()
-    e.position().off('change')
+    begin = link.begin_node()
+    begin.position().off('change')
+    end = link.end_node()
+    end.position().off('change')
     @remove(link)
-    ########  use inputs and outputs
-    @.forEach((link) => 
-      if link.begin_node().id is b.id or link.begin_node().id is e.id
-        link.begin_node().position().on('change',(=> @reDrawLink(link)), @)
-      if link.end_node().id is b.id or link.end_node().id is e.id
-        link.end_node().position().on('change',(=> @reDrawLink(link)), @)
-    )
-
-
+    @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
+    @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
+    @_turnOnNodePostionChange(end.inputs(), end.id, link)
+    @_turnOnNodePostionChange(end.outputs(), end.id, link)
+  
+  # helper method for removeLink. It turns on the begin and node position 
+  # change event for all links that are not the removed link on the begin 
+  # and end nodes of the link that was removed. We tried to stop the removed
+  # link from responding to the node position change event it was attached too
+  # but we could not get the correct context.
+  # It appears future backbone releases will have a method to accomplish
+  # just this.
+  _turnOnNodePostionChange: (elements, nID, removedLink) ->
+    _.each(elements, (element) =>
+      link = element.link()
+      if(not(link.id is removedLink.id))
+        begin = link.begin_node()
+        end = link.end_node()
+        end.position().on('change',(=> @reDrawLink(link)), @) if end.id is nID
+        begin.position().on('change',(=> @reDrawLink(link)), @) if begin.id is nID
+    ) 
   
   # creates a duplicate link to the one passed in
   duplicateLink: (linkID) ->
