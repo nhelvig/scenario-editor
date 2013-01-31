@@ -11,8 +11,7 @@ describe("NodeListCollection", function() {
     spyOn($a.NodeListCollection.prototype, 'removeNode').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'removeNodeAndLinks').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'removeNodeAndJoinLinks').andCallThrough();
-    
-    scen = scenarioAndFriends()
+    scen = scenarioAndFriends(); 
     this.nColl = new $a.NodeListCollection([scen.node1, scen.node2, scen.node3]);
   });
   
@@ -134,12 +133,9 @@ describe("NodeListCollection", function() {
   describe("removeNodeAndLinks ", function() {
      it("should remove node and its links", function() {
        nodesLengthBefore = this.nColl.length;
-       linksLengthBefore = scen.scenario.links().length
-       this.nColl.removeNodeAndLinks(scen.node3.cid, true);
-       linksLengthAfter = scen.scenario.links().length
+       this.nColl.removeNodeAndLinks(scen.node3.cid);
        nodesLengthAfter = this.nColl.length;
        expect(nodesLengthBefore - 1).toEqual(this.nColl.length);
-       expect(linksLengthBefore - 2).toEqual(linksLengthAfter);
      });
    });
    

@@ -155,7 +155,9 @@ describe("LinkListCollection", function() {
       linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
       links = linkColl.models
       lBefore = links.length
-      linkColl.joinLink(scen.node2);
+      n = scen.node2
+      args = {out:n.outputs(), in:n.inputs(), nodeId: n.id}
+      linkColl.joinLink(args);
       expect(lBefore - 1).toEqual(linkColl.models.length);
     });
   });
