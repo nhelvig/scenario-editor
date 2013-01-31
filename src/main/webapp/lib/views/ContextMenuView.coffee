@@ -74,6 +74,6 @@ class window.beats.ContextMenuView extends google.maps.OverlayView
 
   onRemove: () ->
     $("##{@options.id}").remove()
-
+  
   getVisible: () ->
     @isVisible

@@ -74,9 +74,20 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # map.
   removeLink: (linkID) ->
     link = @getByCid(linkID)
-    link.begin_node().position().off('change')
-    link.end_node().position().off('change')
+    b = link.begin_node()
+    b.position().off('change')
+    e = link.end_node()
+    e.position().off('change')
     @remove(link)
+    ########  use inputs and outputs
+    @.forEach((link) => 
+      if link.begin_node().id is b.id or link.begin_node().id is e.id
+        link.begin_node().position().on('change',(=> @reDrawLink(link)), @)
+      if link.end_node().id is b.id or link.end_node().id is e.id
+        link.end_node().position().on('change',(=> @reDrawLink(link)), @)
+    )
+
+
   
   # creates a duplicate link to the one passed in
   duplicateLink: (linkID) ->

@@ -87,21 +87,21 @@ class window.beats.MapLinkView extends Backbone.View
   # this. I also add the contextMenu itself to the model so the same menu can
   # be added to the tree items for this link
   _contextMenu: ->
-    contextMenuOptions = {}
     menuItems = $a.Util.copy($a.link_context_menu)
     #if it has demand profile then we push the Visualize demand item
     if @model.get('demand')?
       menuItems.push $a.Util.copy($a.link_context_menu_demand_item)[0]
-    contextMenuOptions.menuItems = menuItems
-    #set this id for the select item so we know what event to call
-    _.each(contextMenuOptions.menuItems, (item) => item.id = "#{@model.cid}")
-    contextMenuOptions.class = 'context_menu'
-    contextMenuOptions.id = "context-menu-link-#{@model.cid}"
-    $a.contextMenu = new $a.ContextMenuView(contextMenuOptions)
-    google.maps.event.addListener(@link, 'rightclick', (mouseEvent) =>
-      $a.contextMenu.show mouseEvent.latLng
-    )
-    @model.set('contextMenu', $a.contextMenu)
+
+    @contextMenuOptions =
+      class: 'context_menu'
+      id: "context-menu-link-#{@model.id}"
+    args = 
+      element: @link
+      items: $a.Util.copy(menuItems)
+      options: @contextMenuOptions 
+      model:@model
+    new $a.ContextMenuHandler(args)
+    #@model.set('contextMenu', $a.contextMenu)
   
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR
