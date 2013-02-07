@@ -285,4 +285,3 @@ window.beats.Util =
       xml.replace(/\t|\n/g, "")
     # return xml
     xml
-
