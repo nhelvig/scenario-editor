@@ -176,3 +176,16 @@ class window.beats.AppView extends Backbone.View
     $('.container').fadeIn(200)
     $('#lh').fadeIn(200)
     $('#mh').fadeIn(200)
+
+    # This creates the log in Screen
+  _logIn: () ->
+    # disable the main screen and create login pop up
+    $('#main-container').css('disable')
+    attrs = { title : "Log In"}
+    @login = new $a.LogInView(attrs)
+
+  # Open new Network
+  _openNetworkBrowser: () ->
+    # open network browser
+    options = { title: 'Network List'}
+    @networkbrowser = new $a.NetworkBrowserView(options) 
