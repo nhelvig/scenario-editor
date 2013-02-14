@@ -15,6 +15,8 @@ class window.beats.TreeView extends Backbone.View
     $a.broker.on("map:clear_map", @clearMap, @)
     $a.broker.on("map:toggle_tree", @toggleTree, @)
     $a.broker.on('app:main_tree', @render, @)
+    $(window).bind("resize", @positionHandle);
+
 
   # Attach itself as well as trigger events for the parent and child
   # nodes to be rendered
@@ -51,11 +53,38 @@ class window.beats.TreeView extends Backbone.View
     @_createLinkChildren(@parentNodes[10])
     @_createNodeChildren(@parentNodes[11])
 
+  # this method sets up the tree and all the events related opening and
+  # closing the tree view.
   _setUpToggleAndExpand: () ->
-    $("#map_canvas").append $('#toggle-tree-button-template').html()
+    $("#right_tree").prepend $('#toggle-tree-handle-template').html()
     
-    $('#collapseTree').click( ->
+    @positionHandle()
+    $('#tree-handle').click( ->
       $a.broker.trigger('map:toggle_tree')
+    )
+    
+    prevPos = 0
+    $('#tree-resize').draggable({
+      axis : 'x',
+      start: (e) ->
+        prevPos = e.pageX
+      drag: (e) =>
+        right = "#right_tree"
+        left = "#map_canvas"
+        lWidth = $(left).width()
+        rWidth = $(right).width()
+        total = lWidth + rWidth
+        delta = (prevPos - e.pageX)
+        prevPos = e.pageX
+        divLeftWidth = lWidth - delta
+        divRightWidth = rWidth + delta
+        if divRightWidth / total >= 0.22
+          divRightWidth = total * .22
+          divLeftWidth = total - divRightWidth
+        $(left).css('width', divLeftWidth/total * 100  + '%')
+        $(right).css('width', divRightWidth/total * 100 + '%')
+        $("#tree-resize").css('position', '')
+      }
     )
     
     $('#expand-all').click( ->
@@ -69,6 +98,13 @@ class window.beats.TreeView extends Backbone.View
         btn.innerHTML = '+'
     )
   
+  # this is called when the window resizes in order to position the handle
+  # in the center of the bar
+  positionHandle: ->
+    height = $("#right_tree").height() - 3
+    handleTop = height / 2 - 25
+    $("#tree-handle").css('margin-top', "#{handleTop}px")
+
   # Creates all the parents nodes and prepares them for rendering
   _createParentNodes: (list) ->
     _.each list, (e) ->  new $a.TreeParentItemView(e)
@@ -162,19 +198,17 @@ class window.beats.TreeView extends Backbone.View
     if !display?
       display = not @treeOpen
       
-    button = $('#collapseTree')[0]
     if display
       @treeOpen = true
-      button.innerHTML = ' > '
+      $('#right_tree').css('width', '22%')
       $('#right_tree').show(200)
-      align = right: '22%'
-      $('#collapseTree').animate(align, 200)
+      $('#tree_view').show(200)
+      $('#map_canvas').css('width', '78.2%')
     else
       @treeOpen = false
-      button.innerHTML = ' < '
-      $('#right_tree').hide(200)
-      align = right: '0%'
-      $('#collapseTree').animate(align, 200)
+      $('#tree_view').hide(200)
+      $('#right_tree').css('width', '1%')
+      $('#map_canvas').css('width', '99.2%')
   
   _setUpTreeData: ->   
     @parentNodes = [
