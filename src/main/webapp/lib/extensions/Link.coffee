@@ -15,6 +15,7 @@ window.beats.Link::set_geometry = (text) ->
   @set('shape', sh)
 
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
+window.beats.Link::id = -> @get("id")
 window.beats.Link::type = -> @get("type")
 window.beats.Link::lanes = -> @get("lanes")
 window.beats.Link::set_generic = (id, val) -> 
