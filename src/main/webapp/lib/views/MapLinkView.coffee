@@ -81,7 +81,26 @@ class window.beats.MapLinkView extends Backbone.View
     })
     google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
     google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
-
+    
+    iWindow = new google.maps.InfoWindow()
+    google.maps.event.addListener(@link, 'mouseover', (e) =>
+      iWindow.setContent(@getLinkRollOverInfo())
+      iWindow.setPosition(e.latLng)
+      setTimeout(iWindow.open($a.map), 500)
+    );
+    google.maps.event.addListener(@link, 'mouseout', => 
+      setTimeout(iWindow.close(), 500)
+    );
+  
+  # this information is displays when you mouse over a polyline
+  getLinkRollOverInfo: () ->
+    str = "Id: " + @model.id + "</br>"
+    str += "Name: " + @model.road_names() + "</br>"
+    str += "Type: " + @model.type() + "</br>"
+    str += "Number of Lanes: " + @model.lanes() + "</br>"
+    str += "Length: " + @model.get_length()
+    str
+     
   # Context Menu
   # Create the link Context Menu. The menu items are stored with their events
   # in an array and con be configired in the menu-data.coffee file.  We create
