@@ -51,8 +51,16 @@
       </div>
     </div>
     <div id="map_canvas" class="map_canvas_narrow"></div>
+
     <div id="right_tree">
-      <label for="right tree heading">Scenario<button class="btn" id="expand-all">+</button></label>
+      <script type="text/template" id="toggle-tree-handle-template">
+      <div id="tree-resize">
+          <div id="tree-handle"></div>
+      </div>
+      </script>
+      <div id="tree_view">
+        <label for="right tree heading">Scenario<button class="btn" id="expand-all">+</button></label>
+      </div>
         <script type="text/template" id="parent-item-tree-template">
           <label for='{{textLower}}'>{{text}}</label>
           <input type='checkbox' id='check-{{textLower}}' class="expand-tree" />
@@ -67,9 +75,7 @@
     <script type="text/template" id="message-panel-template">
       {{message}} 
     </script>
-    <script type="text/template" id="toggle-tree-button-template">
-      <button id="collapseTree"> < </button> 
-    </script>
+
     <script type="text/template" id="sensor-editor-dialog-template">
       <ul>
         <li><a href="#tabs-sensor-1">Sensor</a></li>

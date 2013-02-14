@@ -18,7 +18,7 @@ class window.beats.MapNetworkView extends Backbone.View
     @_drawScenarioItems()
     
     # This class creates the tree view of all the elements of the scenario
-    $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#right_tree"})
+    $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
     @render()
   
   render: ->
