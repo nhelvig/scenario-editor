@@ -98,7 +98,7 @@ class window.beats.MapLinkView extends Backbone.View
     str += "Name: " + @model.road_names() + "</br>"
     str += "Type: " + @model.type() + "</br>"
     str += "Number of Lanes: " + @model.lanes() + "</br>"
-    str += "Length: " + @model.get_length()
+    str += "Length: " + @model.length()
     str
      
   # Context Menu
@@ -259,7 +259,7 @@ class window.beats.MapLinkView extends Backbone.View
   _saveLinkLength: ->
     # get length in meters of link
     length = @_calculateLinkLength()
-    # convert to units set in settings files if in miles of km
+    # convert to units set in settings files if in miles or km
     units = $a.models.units_text()
     if units == $a.Util.UNITS_US
       length = $a.Util.convertSIToMiles(length)

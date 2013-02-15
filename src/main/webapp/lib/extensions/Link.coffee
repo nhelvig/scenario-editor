@@ -8,6 +8,7 @@ window.beats.Link::defaults =
 window.beats.Link::initialize = ->
   @set('dynamics', new window.beats.Dynamics())
   @set('roads', new window.beats.Roads)
+  @set('subdivide', false)
 
 window.beats.Link::set_geometry = (text) ->
   sh = new window.beats.Shape()
@@ -21,7 +22,12 @@ window.beats.Link::lanes = -> @get("lanes")
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
   @defaults[id] = val
-                                  
+
+window.beats.Link::subdivide = -> @get("subdivide")
+
+window.beats.Link::set_subdivide = (val) ->
+  @set("subdivide", val)
+
 window.beats.Link::ident = -> Number(@get("id"))
 window.beats.Link::parallel_links = ->
   begin_node = @get('begin').get('node')
@@ -64,5 +70,5 @@ window.beats.Link::add = ->
 window.beats.Link::set_length = (length) ->
   @set('length', length)
 
-window.beats.Link::get_length = ->
+window.beats.Link::length = ->
   @get('length')
