@@ -58,7 +58,7 @@ beforeEach(function() {
     $a.linkListView = new $a.LinkListView($a.linkList, network)
   }
   
-  simpleLink = function(id, node1, node2) {
+  simpleLink = function(id, node1, node2, fps, dp) {
     var begin = new window.beats.Begin({node: node1});
     var end = new window.beats.End({node: node2});
     var link = new window.beats.Link({id: id,begin: begin, end: end});
@@ -74,6 +74,10 @@ beforeEach(function() {
     shape.set('text', 'khdfFrvliVvD{@??k@{E??lDw@pDy@xFoA`GoAPCpD}@bAWrBc@jDw@`JqB`E}@|Cq@~IqBhDu@tDy@dDw@l@Ml@MrA[tA[dAUbAUPEFABAB?B?DANA`GsAjBa@jDy@jBc@bDs@rA[pAYfAYvA[jAYHALEl@KHAFC~Bi@dCi@hAQpAYZGn@W|@Q??GWWwDWqD??rDc@fAO');  
     link.set('shape', shape);
     link.set('lanes', 3);
+    link.set('subdivide', 0);
+    link.set('type','electric_toll');
+    link.set('fundamentaldiagramprofile', fps);
+    link.set('demand', dp);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
@@ -123,10 +127,6 @@ beforeEach(function() {
     sensor2 = new window.beats.Sensor({id:2, position: p});
     sensor3 = new window.beats.Sensor({id:3, position: p});
     sensor4 = new window.beats.Sensor({id:4, position: p});
-    link1 = simpleLink(99,node1, node2);
-    link2 = simpleLink(100,node2, node3);
-    link3 = simpleLink(101, node3, node1);
-    link4 = simpleLink(102, node4, node5);
     density = new window.beats.Density({id: 1});
     ids = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});
@@ -135,8 +135,15 @@ beforeEach(function() {
     cps = new window.beats.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
     dp = new window.beats.DemandProfile({id: 1});
     dps = new window.beats.DemandProfileSet({demandprofile: [dp]});
+    fp = new window.beats.FundamentalDiagramProfile({id: 1});
+    fps = new window.beats.FundamentalDiagramProfileSet({fundamentaldiagram: [fp]});
     srp = new window.beats.SplitratioProfile({id: 1});
     srps = new window.beats.SplitRatioProfileSet({splitratioprofile: [srp]});
+    link1 = simpleLink(99,node1, node2, fps, dp);
+    link2 = simpleLink(100,node2, node3);
+    link3 = simpleLink(101, node3, node1);
+    link4 = simpleLink(102, node4, node5);
+
     sensorList = new window.beats.SensorList({sensor: [sensor1, sensor2, sensor3, sensor4]});
     linkList = new window.beats.LinkList({link: [link1, link2, link3]});
     nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
@@ -153,6 +160,7 @@ beforeEach(function() {
       initialdensityset: ids,
       downstreamboundarycapacityprofileset: cps,
       demandprofileset: dps,
+      fundamentalprofileset: fps,
       splitratioprofileset: srps,
       sensorlist: sensorList 
     });

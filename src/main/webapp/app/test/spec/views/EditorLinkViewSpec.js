@@ -130,9 +130,10 @@ describe("EditorLinkView", function() {
     spyOn($a.EditorLinkView.prototype, 'saveDPTime').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveCPTime').andCallThrough();
     
+    scen = scenarioAndFriends();
     this.view = new $a.EditorLinkView({
       elem: 'link', 
-      models: [model]
+      models: [scen.link1]
     });
   });
 
@@ -197,8 +198,8 @@ describe("EditorLinkView", function() {
         lanes: model.get('lanes'),
         insync: model.get('in_sync'),
         laneOffset: model.get('lane_offset'),
-        length: model.get('length'),
-        freeFlowSpeed: fd.get('free_flow_speed'),
+        length: model.get('length') || '',
+        freeFlowSpeed: fd.get('free_flow_speed') || '',
         criticalSpeed: fd.get('critical_speed') || '',
         capacity: fd.get('capacity') || '',
         jamDensity: fd.get('jam_density') || '',
@@ -425,7 +426,7 @@ describe("EditorLinkView", function() {
       it("Link Tab: 'Name' is saved", function() {
         $("#link_name").val("changed");
         $("#link_name").blur();      
-        expect(this.view.models[0].road_names()).toEqual("changed");
+        expect(this.view.models[0].road_names()).toEqual("changed, name2");
       });
       it("Link Tab: 'Type' is saved", function() {
        selected = $($(this.view.el)).find('#link_name option:selected')

@@ -64,9 +64,8 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     disable.push(2) if !@models[0].get('fundamentaldiagramprofile')?
     disable.push(3) if !@models[0].get('demand')? or @models.length > 1
     disable.push(4) if !@models[0].get('capacityprofile')? or @models.length > 1
-    disable.push(5)
     @$el.tabs({ disabled: disable })
-
+  
   # if in browser we disable some fields from being editted
   _checkDisableFields: ->
     if (@models.length > 1)
@@ -189,6 +188,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     e.preventDefault()
 
   subDivide: (e) ->
+    @models[0].set_subdivide($("#subdivide").val())
     e.preventDefault()
 
   addLeftTurn: (e) ->

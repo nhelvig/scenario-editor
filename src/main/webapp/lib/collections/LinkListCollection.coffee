@@ -130,6 +130,16 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @addLink(args)
     @removeLink(linkID)
   
+  # splits the link by the distance indicated in the subdivide field. The field
+  # is set in the link editor tools tab. When the sub-divide is clicked we take
+  # the number in the distance text box and set it to the model's subdivide
+  # field which triggers this method
+  splitLinkByDistance: (link) ->
+    distance = link.subdivide()
+    length = $a.Util.convertSIToMiles(link.length())
+    numLinks = Math.floor(length / distance)
+    @splitLink(link.cid, numLinks)
+  
   # splitLink splits the link into a series of nodes
   splitLink: (linkID, numLinks) ->
     link = @getByCid(linkID)
@@ -206,6 +216,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->
+    link.on('change:subdivide', => @splitLinkByDistance(link))
     link.bind('remove', -> link.remove())
     link.bind('add', -> link.add())
     bNode = link.begin_node()

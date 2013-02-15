@@ -9,6 +9,7 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLinkAddNode').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'splitLinkByDistance').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
@@ -38,6 +39,10 @@ describe("LinkListCollection", function() {
     it("should be watching splitLink", function() {
       this.lColl.trigger("links:split", scen.link1.cid);
       expect($a.LinkListCollection.prototype.splitLink).toHaveBeenCalled();
+    });
+    it("should be watching splitLinkByDistance", function() {
+      scen.link1.set_subdivide(3);
+      expect($a.LinkListCollection.prototype.splitLinkByDistance).toHaveBeenCalled();
     });
     it("should be watching splitLinkAddNode", function() {
       this.lColl.trigger("links:split_add_node", scen.link1.cid, new google.maps.LatLng(0,0));
