@@ -115,6 +115,15 @@ describe("LinkListCollection", function() {
       expect(lengthBefore + 1).toEqual(linkColl.length);
     });
   });
+  describe("splitLinkByDistance", function() {
+    it("should split a link by the distance", function() {
+      scen = scenarioAndFriends();
+      linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
+      var lengthBefore = linkColl.length;
+      linkColl.splitLinkByDistance(scen.link1);
+      expect(lengthBefore + 2).toEqual(linkColl.length);
+    });
+  });
   describe("addLink ", function() {
     beforeEach(function() {
       begin = scen.link1.begin_node();

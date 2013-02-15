@@ -74,7 +74,8 @@ beforeEach(function() {
     shape.set('text', 'khdfFrvliVvD{@??k@{E??lDw@pDy@xFoA`GoAPCpD}@bAWrBc@jDw@`JqB`E}@|Cq@~IqBhDu@tDy@dDw@l@Ml@MrA[tA[dAUbAUPEFABAB?B?DANA`GsAjBa@jDy@jBc@bDs@rA[pAYfAYvA[jAYHALEl@KHAFC~Bi@dCi@hAQpAYZGn@W|@Q??GWWwDWqD??rDc@fAO');  
     link.set('shape', shape);
     link.set('lanes', 3);
-    link.set('subdivide', 0);
+    link.set('length', 10000);
+    link.set('subdivide', 2);
     link.set('type','electric_toll');
     link.set('fundamentaldiagramprofile', fps);
     link.set('demand', dp);

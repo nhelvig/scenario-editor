@@ -111,8 +111,6 @@ describe("EditorLinkView", function() {
   
   beforeEach(function() {
     loadFixtures('editor.link.view.fixture.html');
-    network = $a.models.get('networklist').get('network')[0];
-    model = _.find(network.get('linklist').get('link'), function(m) { return m.get('demand') != undefined; });
     spyOn($a.EditorLinkView.prototype, 'doSplit').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'subDivide').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'addLeftTurn').andCallThrough();
