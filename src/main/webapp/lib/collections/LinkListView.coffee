@@ -8,7 +8,6 @@ class window.beats.LinkListView extends Backbone.Collection
   initialize: (@collection, @network) ->
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:draw_link', @createAndDrawLink, @)
-    $a.broker.on('map:unselect_links', @unSelectLinks, @)
     $a.broker.on('links:check_proximinity', @checkSnap, @)
     google.maps.event.addListener($a.map, 'zoom_changed', => @setStrokeWeight())
     @collection.on('add', @addAndRender, @)
@@ -45,12 +44,6 @@ class window.beats.LinkListView extends Backbone.Collection
   # this removes the link from the views array upon removal from collection
   removeLink: (link) ->
     @views = _.reject(@views, (view) => view.model is link)
-
-  # UnSelects (unhighlights all links)
-  unSelectLinks: () ->
-    _.each(@views, ->
-                    @.clearSelected()
-          )
 
   # Select (highlights) links
   selectLinks: (links) ->
