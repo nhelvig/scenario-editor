@@ -24,15 +24,19 @@ class window.beats.NetworkBrowserView extends Backbone.View
       open: ->
         $('.ui-state-default').blur() #hack to get ui dialog focus bug
       close: =>
-        @$el.remove()
+        @close()
     @$el.dialog('open')
     @renderTable()
+    @
+    
+
 
   # Using data tables framework render Network list within data tables
   renderTable: () ->
     $a.networkcollection = new $a.NetworkCollection()
     $a.networkcollection.fetch()
   
+  # populates table of list of networks on ajax callback
   networkListCallback: ->
     tabledata = $a.networkcollection.map((network) -> 
         [
@@ -40,7 +44,7 @@ class window.beats.NetworkBrowserView extends Backbone.View
           if network.get('name')? then network.get('name') else ''
         ]
       )
-    @dTable = $('#network-browser-table').dataTable( {
+    $a.networkbrowser.dTable = $('#network-browser-table').dataTable( {
         "aaData": tabledata,
         "aoColumns": $a.networkbrowser._getColumns(),
         "aaSorting": [[ 0, "desc" ]]
@@ -52,10 +56,20 @@ class window.beats.NetworkBrowserView extends Backbone.View
         "bAutoWidth": false,
         "bJQueryUI": true,
     })
+    $a.networkbrowser.addLoadNetworkListener()
+    
 
   # This method removes the dialog box from the map when clear:map is triggered
+  # And completely destroys the view
   close: ->
     @$el.remove()
+    @undelegateEvents()
+    @$el.removeData().unbind()
+    
+    # Remove view from DOM
+    @remove();  
+    Backbone.View.prototype.remove.call(this);
+    
 
   # set up columns and their titles for the browser
   _getColumns: () ->
@@ -63,3 +77,24 @@ class window.beats.NetworkBrowserView extends Backbone.View
             { "sTitle": "Id","bVisible": false},
             { "sTitle": "Network Name","sWidth": "100%"}
         ]
+
+  # the click event for any row triggers an event to load the specified network
+  addLoadNetworkListener: () ->
+    #handles the row selection
+    $("#network-browser-table tbody").on("click", "tr", ->
+      $(this).addClass('row_selected')
+    )
+    networkId = null
+
+    # Finds selected row triggers event to load this network
+    $("#network-browser-table tbody").on("click", "tr", ->
+      $($a.networkbrowser.dTable.fnSettings().aoData).each((data) ->  
+        if($(this.nTr).hasClass('row_selected'))
+          networkId =  @_aData[0]
+      )
+      # Try and load network and display message
+      $a.broker.trigger("app:load_network", networkId)
+      $a.broker.trigger("app:show_message:info", "Loading Network...")
+      # close network and disable screen while loading
+      $a.networkbrowser.close()
+    )

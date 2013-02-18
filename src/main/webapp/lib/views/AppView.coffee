@@ -41,6 +41,7 @@ class window.beats.AppView extends Backbone.View
     $a.broker.on("map:alert", @showAlert, @)
     $a.broker.on("app:login", @_login, @)
     $a.broker.on("app:open_network_browser", @_openNetworkBrowser, @)
+    $a.broker.on("app:load_network", @_loadNetwork, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -129,9 +130,9 @@ class window.beats.AppView extends Backbone.View
     $a.eventSetView = new $a.EventSetView($a.eventSet, network)
     $a.settings = new $a.Settings()
 
+  # Creates Log in screen
   _login: () ->
-    # disable the main screen and create login pop up
-    $('#main-container').css('disable')
+    # Create login pop up
     attrs = { title : "Log In"}
     @login = new $a.LogInView(attrs)
 
@@ -186,15 +187,31 @@ class window.beats.AppView extends Backbone.View
     $('#lh').fadeIn(200)
     $('#mh').fadeIn(200)
 
-    # This creates the log in Screen
-  _logIn: () ->
-    # disable the main screen and create login pop up
-    $('#main-container').css('disable')
-    attrs = { title : "Log In"}
-    @login = new $a.LogInView(attrs)
-
-  # Open new Network
+  # Open network browser to choose newtork to load from DB
   _openNetworkBrowser: () ->
     # open network browser
     options = { title: 'Network List' }
-    $a.networkbrowser = new $a.NetworkBrowserView(options) 
+    if not $a.newtorkbrowser? then $a.networkbrowser = new $a.NetworkBrowserView(options) 
+
+  # Load Network
+  _loadNetwork: (networkId) ->
+    $('body').attr('disabled', true)
+    # one off ajax request to get network from DB in XML form
+    # TODO: Implement backbone parse in each model to cascade model creadtion 
+    # and pass in JSON instead of XML
+    $.ajax(
+      url: "/via-rest-api/project/1/scenario/1/network/" + networkId
+      type: 'GET'
+      beforeSend: (xhrObj) ->
+        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+      success: (data) =>
+        $('body').css('disabled', false)
+        # Hack to get XML data loaded
+        beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkList>'
+        data = data.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
+        end = '</NetworkList> <SignalList/> <SensorList/> <EventSet/> <ControllerSet/> </scenario>'
+        data = data + end
+        @_displayMap(data)
+      dataType: 'text'
+    )
+
