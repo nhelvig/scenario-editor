@@ -20,12 +20,13 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
   'Parameter', 'Parameters', 'Plan_reference', 'Queue_controller', 
   'Route', 'Routes', 'Row', 'ScenarioElement', 'Shape', 'SplitratioEvent',
   'SplitRatioProfileSet', 'Stage', 'Table', 'TargetElements', 'Units',
-  'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
-  'Weavingfactors', 'WeavingFactorSet' ]
+  'UserSession', 'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
+  'Weavingfactors', 'WeavingFactorSet' 
+  ]
 
 $a.collections = ['LinkListCollection', 'LinkListView',
   'ControllerSetCollection', 'ControllerSetView', 
-  'EventSetCollection', 'EventSetView',
+  'EventSetCollection', 'EventSetView', 'NetworkCollection'
   'NodeListCollection','NodeListView', 
   'SensorListCollection', 'SensorListView',
   'ScenarioElementCollection'
@@ -35,14 +36,16 @@ $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
   'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 
-  'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 
-  'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
-  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 
-  'TreeView', 'TreeParentItemView', 'TreeChildItemView',
+  'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'LogInView'
+  'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
+  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView',
+  'NetworkBrowserView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.utils= ['ArrayText',  'ContextMenuHandler', 'Environment',
+$a.utils = ['ArrayText',  'ContextMenuHandler', 'Constants', 'Environment',
   'GoogleMapRouteHandler', 'ReferenceHelper', 'Util'
 ]
+
+$a.overrides = [ 'Sync' ]
