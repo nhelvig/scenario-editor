@@ -23,9 +23,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @on('links:split', @splitLink, @)
     @on('links:split_add_node', @splitLinkAddNode, @)
     @on('links:open_editor', @showEditor, @)
-       # $a.broker.on("map:links:show_#{@model.get('type')}", @showLink, @)
-       # $a.broker.on("map:links:hide_#{@model.get('type')}", @hideLink, @)
-       #  
+ 
     @forEach((link) =>  @_setUpEvents(link))
   
   # addLink takes the begin node and end node ids, sets up the appropriate

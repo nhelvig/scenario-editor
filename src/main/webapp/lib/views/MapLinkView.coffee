@@ -21,7 +21,7 @@ class window.beats.MapLinkView extends Backbone.View
   
   broker_events: {
     #'map:init', 'render'
-    'map:clear_selected', 'clearSelected'
+    #'map:clear_selected', 'clearSelected'
   }
 
   initialize: (@model, @network) ->
@@ -33,15 +33,11 @@ class window.beats.MapLinkView extends Backbone.View
     @_saveLinkLength()
     @_contextMenu()
     @_publishEvents();
-    # $a.broker.on("map:links:show_#{@model.get('type')}", @showLink, @)
-    #  $a.broker.on("map:links:hide_#{@model.get('type')}", @hideLink, @)
-    $a.broker.on("map:select_item:#{@model.cid}", @linkSelect, @)
-    $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
-    $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
-    $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
-    $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
-    $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-    $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
+    # $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
+    # $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
+    # $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
+    # $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
+    # $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
   
   render: ->
     @link.setMap($a.map)
@@ -90,7 +86,7 @@ class window.beats.MapLinkView extends Backbone.View
         @model.set_editor_show(true)
         evt.stop()
       )
-    gme.addListener(@link, 'click', (evt) => @manageLinkSelect())
+    gme.addListener(@link, 'click', =>  @model.toggle_selected())
     
     iWindow = new google.maps.InfoWindow()
     google.maps.event.addListener(@link, 'mouseover', (e) =>
@@ -132,11 +128,10 @@ class window.beats.MapLinkView extends Backbone.View
       options: @contextMenuOptions 
       model:@model
     new $a.ContextMenuHandler(args)
-    #@model.set('contextMenu', $a.contextMenu)
   
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR
-    strokeColor = MapLinkView.SELECTED_LINK_COLOR if @model.selected? is true
+    strokeColor = MapLinkView.SELECTED_LINK_COLOR if @model.selected()? is true
     strokeColor
   
   _setStrokeWeight: ->
@@ -217,7 +212,6 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method swaps the icon for the selected color
   linkSelect: ->
-    @model.selected = true
     $a.broker.trigger("app:tree_highlight:#{@model.cid}")
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
@@ -227,7 +221,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method toggles the selection of the node
   toggleSelected: () ->
-    if(@model.get('selected') is true)
+    if(@model.selected() is true)
       @linkSelect()
     else
       @clearSelected()

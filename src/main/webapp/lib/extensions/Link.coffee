@@ -1,4 +1,5 @@
 window.beats.Link::defaults =
+  select: false
   type: ''
   lanes: 1
   lane_offset: 0
@@ -78,6 +79,15 @@ window.beats.Link::set_view = (view) ->
   
 window.beats.Link::view = ->
   @get('view')
+
+window.beats.Link::toggle_selected =  ->
+  if(@selected() is true) 
+    @set('selected', false) 
+  else 
+    @set('selected', true)
+   
+window.beats.Link::selected = ->
+  @get('selected')
 
 window.beats.Link::set_editor_show = (flag) ->
   @set('editor_show', flag)
