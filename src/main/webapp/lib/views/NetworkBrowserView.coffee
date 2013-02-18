@@ -34,15 +34,13 @@ class window.beats.NetworkBrowserView extends Backbone.View
     $a.networkcollection.fetch()
   
   networkListCallback: ->
-    alert("callback")
     tabledata = $a.networkcollection.map((network) -> 
         [
           network.get('id'),
-          network.get('name'), 
-          network.get('description')
+          if network.get('name')? then network.get('name') else ''
         ]
       )
-    @dTable = $('#browser-table').dataTable( {
+    @dTable = $('#network-browser-table').dataTable( {
         "aaData": tabledata,
         "aoColumns": $a.networkbrowser._getColumns(),
         "aaSorting": [[ 0, "desc" ]]
@@ -63,6 +61,5 @@ class window.beats.NetworkBrowserView extends Backbone.View
   _getColumns: () ->
     columns =  [
             { "sTitle": "Id","bVisible": false},
-            { "sTitle": "Network Name","sWidth": "50%"},
-            { "sTitle": "Description","sWidth": "50%"},
+            { "sTitle": "Network Name","sWidth": "100%"}
         ]

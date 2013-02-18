@@ -332,6 +332,8 @@ hr {
 
 .editor-button { display: inline; float: right; }
 
+#user-login-error { color:red; }
+
 /* jQuery UI Hacks */
 .ui-widget-content-select { border: 1px solid #666666; background: #000000; color: #ffffff; }
 
