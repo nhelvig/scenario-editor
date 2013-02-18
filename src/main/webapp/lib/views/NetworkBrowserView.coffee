@@ -1,5 +1,5 @@
 # This creates the Network browser view window
-class window.beats.NewtorkBrowserView extends Backbone.View
+class window.beats.NetworkBrowserView extends Backbone.View
   $a = window.beats
 
   # The options hash contains the the model
@@ -12,7 +12,7 @@ class window.beats.NewtorkBrowserView extends Backbone.View
     @template = _.template($("#network-browser-template").html())
     @$el.html(@template())  
     # Events Broker used to populate browser table on callback
-    $a.broker.on("app:newtorkListCallback", @networkListCallback)
+    $a.broker.on("app:networkListCallback", @networkListCallback)
     @render()
 
   # render the dialog box.
@@ -30,19 +30,21 @@ class window.beats.NewtorkBrowserView extends Backbone.View
 
   # Using data tables framework render Network list within data tables
   renderTable: () ->
-    $networkcollection.fetch()
+    $a.networkcollection = new $a.NetworkCollection()
+    $a.networkcollection.fetch()
   
   networkListCallback: ->
+    alert("callback")
     tabledata = $a.networkcollection.map((network) -> 
         [
-          newtork.get('id'),
+          network.get('id'),
           network.get('name'), 
           network.get('description')
         ]
       )
     @dTable = $('#browser-table').dataTable( {
         "aaData": tabledata,
-        "aoColumns": networkbrowser._getColumns(),
+        "aoColumns": $a.networkbrowser._getColumns(),
         "aaSorting": [[ 0, "desc" ]]
         "bPaginate": true,
         "bLengthChange": true,
@@ -61,6 +63,6 @@ class window.beats.NewtorkBrowserView extends Backbone.View
   _getColumns: () ->
     columns =  [
             { "sTitle": "Id","bVisible": false},
-            { "sTitle": "Newtork Name","sWidth": "50%"},
+            { "sTitle": "Network Name","sWidth": "50%"},
             { "sTitle": "Description","sWidth": "50%"},
         ]

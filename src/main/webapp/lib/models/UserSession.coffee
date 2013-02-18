@@ -1,4 +1,4 @@
-class window.via.UserSession extends Backbone.Model
+class window.beats.UserSession extends Backbone.Model
     
   $a = window.beats
 
@@ -10,7 +10,7 @@ class window.via.UserSession extends Backbone.Model
     authenticated: false
 
   # Url to post to try and validate user 
-  url: "via-rest-api/login" 
+  url: "/via-rest-api/login" 
 
   # Override fetch function to trigger login view changes
   fetch: (options) ->

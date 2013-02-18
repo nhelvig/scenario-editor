@@ -39,6 +39,8 @@ class window.beats.AppView extends Backbone.View
     $a.broker.on('app:open_scenario', @openScenario, @)
     $a.broker.on("app:save_scenario", @saveScenario, @)
     $a.broker.on("map:alert", @showAlert, @)
+    $a.broker.on("app:login", @_login, @)
+    $a.broker.on("app:open_network_browser", @_openNetworkBrowser, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -126,6 +128,13 @@ class window.beats.AppView extends Backbone.View
     $a.eventSet = new $a.EventSetCollection([])
     $a.eventSetView = new $a.EventSetView($a.eventSet, network)
     $a.settings = new $a.Settings()
+
+  _login: () ->
+    # disable the main screen and create login pop up
+    $('#main-container').css('disable')
+    attrs = { title : "Log In"}
+    @login = new $a.LogInView(attrs)
+
   
   # displayMap takes the uploaded file data parses the xml into the model
   # objects, and creates the MapNetworkView
@@ -187,5 +196,5 @@ class window.beats.AppView extends Backbone.View
   # Open new Network
   _openNetworkBrowser: () ->
     # open network browser
-    options = { title: 'Network List'}
-    @networkbrowser = new $a.NetworkBrowserView(options) 
+    options = { title: 'Network List' }
+    $a.networkbrowser = new $a.NetworkBrowserView(options) 
