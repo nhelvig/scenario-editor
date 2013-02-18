@@ -5,6 +5,7 @@
 class window.beats.LayersMenuView extends Backbone.View
   $a = window.beats
   tagName : 'ul'
+  
   # used to create hover effects on the submenus
   events : {
       "mouseenter .submenu"   : "hoverSubOn",
@@ -14,7 +15,7 @@ class window.beats.LayersMenuView extends Backbone.View
   }
   
   # crete itself, render it and then iterate to create its menu items
-  initialize: (@options) ->
+  initialize: (@options)->
     @menuItems = @options.menuItems
     @$el.attr 'class', @options.className if @options.className
     @$el.attr 'id', @options.id if @options.id

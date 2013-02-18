@@ -72,3 +72,15 @@ window.beats.Link::set_length = (length) ->
 
 window.beats.Link::length = ->
   @get('length')
+
+window.beats.Link::set_view = (view) ->
+  @set('view', view)
+  
+window.beats.Link::view = ->
+  @get('view')
+
+window.beats.Link::set_editor_show = (flag) ->
+  @set('editor_show', flag)
+
+window.beats.Link::editor_show = ->
+  @get('editor_show')

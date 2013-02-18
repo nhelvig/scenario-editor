@@ -10,6 +10,19 @@ class window.beats.MapLinkView extends Backbone.View
   @STROKE_WEIGHT_THINNER: 1
 
   $a = window.beats
+  model_events : {
+    'remove': 'removeLink'
+    'change:selected': 'toggleSelected'
+    'change:lane_offset': '_drawLink'
+    'change:lanes': '_setStrokeWeight'
+    'change:view': 'hideShowLink'
+    'change:editor_show': '_editor'
+  }
+  
+  broker_events: {
+    #'map:init', 'render'
+    'map:clear_selected', 'clearSelected'
+  }
 
   initialize: (@model, @network) ->
     # Gets the encoded path line string if it is not already been set
@@ -19,24 +32,16 @@ class window.beats.MapLinkView extends Backbone.View
     @_drawLink()
     @_saveLinkLength()
     @_contextMenu()
-    @model.on('remove', @removeLink, @)
-    @model.on('change:selected', @toggleSelected, @)
-    @model.on('change:lane_offset', @_drawLink, @)
-    @model.on('change:lanes', @_setStrokeWeight, @)
-    $a.broker.on('map:init', @render, @)
-    $a.broker.on('map:hide_link_layer', @hideLink, @)
-    $a.broker.on('map:show_link_layer', @showLink, @)
-    $a.broker.on("map:links:show_#{@model.get('type')}", @showLink, @)
-    $a.broker.on("map:links:hide_#{@model.get('type')}", @hideLink, @)
+    @_publishEvents();
+    # $a.broker.on("map:links:show_#{@model.get('type')}", @showLink, @)
+    #  $a.broker.on("map:links:hide_#{@model.get('type')}", @hideLink, @)
     $a.broker.on("map:select_item:#{@model.cid}", @linkSelect, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
-    $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
     $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
-    $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
   
   render: ->
     @link.setMap($a.map)
@@ -59,7 +64,8 @@ class window.beats.MapLinkView extends Backbone.View
     @model.set('shape', new $a.Shape().set('text', @encodedPath))
   
   # Creates the Polyline to rendered on the map
-  # The Polyline map attribute will be null until render is called
+  # The Polyline map attribute is set immediately so the user can see that the
+  # lines are being drawn
   # We set listeners up in drawLink because they need to be re-attached anytime
   # the link is re-drawn
   _drawLink: ->
@@ -79,17 +85,21 @@ class window.beats.MapLinkView extends Backbone.View
       strokeOpacity: 0.6
       strokeWeight: @getLinkStrokeWeight()
     })
-    google.maps.event.addListener(@link, 'dblclick', (evt) => @_editor(evt))
-    google.maps.event.addListener(@link, 'click', (evt) => @manageLinkSelect())
+    gme = google.maps.event
+    gme.addListener(@link, 'dblclick', (evt) => 
+        @model.set_editor_show(true)
+        evt.stop()
+      )
+    gme.addListener(@link, 'click', (evt) => @manageLinkSelect())
     
     iWindow = new google.maps.InfoWindow()
     google.maps.event.addListener(@link, 'mouseover', (e) =>
       iWindow.setContent(@getLinkRollOverInfo())
       iWindow.setPosition(e.latLng)
-      setTimeout(iWindow.open($a.map), 500)
+      setTimeout((() -> iWindow.open($a.map)), 1000)
     );
     google.maps.event.addListener(@link, 'mouseout', => 
-      setTimeout(iWindow.close(), 500)
+      setTimeout((()-> iWindow.close()), 1000)
     );
   
   # this information is displays when you mouse over a polyline
@@ -134,14 +144,14 @@ class window.beats.MapLinkView extends Backbone.View
     @link.setOptions(options: {strokeWeight: @getLinkStrokeWeight(nLanes)})
   
   # creates the editor for a link
-  _editor: (evt) ->
-    @linkSelect()
-    env = new $a.EditorLinkView(elem: 'link', models: [@model], width: 375)
-    $('body').append(env.el)
-    env.render()
-    $(env.el).tabs()
-    $(env.el).dialog('open')
-    evt?.stop()
+  _editor:  ->
+    if @model.editor_show() is true
+      @linkSelect()
+      env = new $a.EditorLinkView(elem: 'link', models: [@model], width: 375)
+      $('body').append(env.el)
+      env.render()
+      $(env.el).tabs()
+      $(env.el).dialog('open')
 
   viewDemands: () ->
     dv = new $a.DemandVisualizer(@model.get('demand'))
@@ -150,6 +160,13 @@ class window.beats.MapLinkView extends Backbone.View
     $(dv.el).dialog('open')
 
   # The following handles the show/hide of links and arrow heads
+  # hideShow is called when a change to view state on model occurs
+  hideShowLink: ->
+    if(@model.view() is 'hide')
+      @hideLink()
+    else
+      @showLink()
+    
   hideLink: ->
     @link.setMap(null)
 
@@ -240,6 +257,14 @@ class window.beats.MapLinkView extends Backbone.View
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
     $a.broker.trigger("app:tree_remove_highlight:#{beginNode.cid}")
     $a.broker.trigger("app:tree_remove_highlight:#{endNode.cid}")
+
+  # these events are set up during initialization of the object
+  _publishEvents: () ->
+    for key, value of @model_events
+      @model.on(key, @[value], @)
+    
+    # for key, value of @broker_events
+    #  $a.broker.on(key, @[value], @)
 
   # Calculates and returns Link Length, path must be set otherwise length is 0
   # Length is always in meters

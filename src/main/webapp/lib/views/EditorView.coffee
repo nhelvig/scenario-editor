@@ -24,6 +24,7 @@ class window.beats.EditorView extends Backbone.View
       width: @options.width,
       modal: false,
       close: =>
+        _.each(@models, (model) -> model.set_editor_show(false))
         @$el.remove()
     $a.broker.on('click', @minimize, @)
     @ 

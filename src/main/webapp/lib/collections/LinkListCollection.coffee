@@ -12,6 +12,9 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
     $a.broker.on('links:remove', @removeLink, @)
+    
+    @on('links:hide_link_layer', @hideLinkLayer, @)
+    @on('links:show_link_layer', @showLinkLayer, @)
     @on('links:duplicate', @duplicateLink, @)
     @on('links:add_sensor', @addSensorToLink, @)
     @on('links:add_controller', @addControllerToLink, @)
@@ -19,6 +22,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @on('links:remove', @removeLink, @)
     @on('links:split', @splitLink, @)
     @on('links:split_add_node', @splitLinkAddNode, @)
+    @on('links:open_editor', @showEditor, @)
+       # $a.broker.on("map:links:show_#{@model.get('type')}", @showLink, @)
+       # $a.broker.on("map:links:hide_#{@model.get('type')}", @hideLink, @)
+       #  
     @forEach((link) =>  @_setUpEvents(link))
   
   # addLink takes the begin node and end node ids, sets up the appropriate
@@ -225,6 +232,19 @@ class window.beats.LinkListCollection extends Backbone.Collection
     eNode.bind('remove', => @removeNodeReference(link, 'end')) 
     bNode.position().on('change',(=> @reDrawLink(link)), @)
     eNode.position().on('change',(=> @reDrawLink(link)), @)
+  
+  #show editor for the link passed in
+  showEditor: (cid) ->
+    link =  @getByCid(cid)
+    link.set_editor_show(true)
+  
+  # hide links
+  hideLinkLayer: (type) =>
+    @forEach((link) -> link.set_view('hide') if !type? or type is link.type())
+  
+  # show links
+  showLinkLayer: (type) =>
+    @forEach((link) -> link.set_view('show') if !type? or type is link.type())
 
   # This method adds a sensor to the link id passed in
   addSensorToLink: (cid) ->

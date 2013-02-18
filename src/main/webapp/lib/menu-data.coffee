@@ -84,7 +84,7 @@ $a.node_selected_node_clicked = [
 # Link Context Menu
 $a.link_context_menu = [
   context_menu_item 'Edit this link',
-                    ((e) -> $a.broker.trigger("map:open_editor:#{e.currentTarget.id}"))
+          ((e) -> $a.linkList.trigger('links:open_editor', e.currentTarget.id))
   context_menu_item  'Select Link and its Nodes',
                       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
   context_menu_item 'Remove this link',
@@ -218,58 +218,80 @@ $a.layers_link_type_list = [
   {
     label: 'Elec. toll coll. lanes'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_electric_toll"
-    triggerHide: "map:links:hide_electric_toll" }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
+    collection: '$a.linkList'
+    param: 'electric_toll'  }
   {
     label: 'Freeway mainlines'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_freeway"
-    triggerHide: "map:links:hide_freeway"  }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'freeway' }
   {
     label: 'Highway mainlines'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_highway"
-    triggerHide: "map:links:hide_highway"  }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'highway'  }
   {
     label: 'Heavy vehicle lanes'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_heavy_vehicle"
-    triggerHide: "map:links:hide_heavy_vehicle" }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'heavy_vehicle' }
   {
     label: 'HOV lanes'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_hov"
-    triggerHide: "map:links:hide_hov"  }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'hov' }
   {
     label: 'HOT lanes'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_hot"
-    triggerHide: "map:links:hide_hot"  }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'hot'  }
   {
     label: 'Interconnects'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_freeway_connector"
-    triggerHide: "map:links:hide_freeway_connector" }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'freeway_connector'}
   {
     label: 'Intersection Approach'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_intersection_approach"
-    triggerHide: "map:links:hide_intersection_approach" }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'intersection_approach' }
   {
     label: 'On-ramps'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_onramp"
-    triggerHide: "map:links:hide_onramp"  }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'onramp'  }
   {
     label: 'Off-ramps'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_offramp"
-    triggerHide: "map:links:hide_offramp"  }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'offramp'  }
   {
     label: 'Streets'
     event: 'toggleVisible'
-    triggerShow: "map:links:show_street"
-    triggerHide: "map:links:hide_street"  }
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:show_link_layer"
+    collection: '$a.linkList'
+    param: 'streets'  }
 ]
 
 $a.layers_menu = [
@@ -284,14 +306,15 @@ $a.layers_menu = [
     className: 'dropdown submenu'
     link: 'nodeTypeList'
     href: '#nodeTypeList'
+    collection: '$a.nodeList'
     items: $a.layers_node_type_list }
   { className: 'divider' }
   {
     label: 'Show all links'
-    event: ((e) -> $a.broker.trigger('map:show_link_layer')) }
+    event: ((e) -> $a.linkList.trigger('links:show_link_layer')) }
   {
     label: 'Hide all links'
-    event: ((e) -> $a.broker.trigger('map:hide_link_layer')) }
+    event: ((e) -> $a.linkList.trigger('links:hide_link_layer')) }
   {
     label: 'Links'
     className: 'dropdown submenu'
@@ -303,7 +326,7 @@ $a.layers_menu = [
     label: 'Events'
     event: 'toggleVisible'
     triggerShow: "map:show_event_layer"
-    triggerHide: "map:hide_event_layer" }
+    triggerHide: "map:hide_event_layer"}
   {
     label: 'Controllers'
     event: 'toggleVisible'
