@@ -52,7 +52,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # save the encoded path to the model
   _saveEncodedPath: ->
-    @model.set('shape', new $a.Shape().set('text', @encodedPath))
+    @model.set_geometry @encodedPath
   
   # Creates the Polyline to rendered on the map
   # The Polyline map attribute is set immediately so the user can see that the
@@ -76,6 +76,11 @@ class window.beats.MapLinkView extends Backbone.View
       strokeOpacity: 0.6
       strokeWeight: @getLinkStrokeWeight()
     })
+    @_publishGoogleEvents()
+    @_createInfoWindow()
+
+  # publish polyline google events
+  _publishGoogleEvents: ->
     gme = google.maps.event
     gme.addListener(@link, 'dblclick', (evt) => 
         @model.set_editor_show(true)
@@ -83,6 +88,8 @@ class window.beats.MapLinkView extends Backbone.View
       )
     gme.addListener(@link, 'click', =>  @model.toggle_selected())
     
+  # this is the rollover window for the link
+  _createInfoWindow: ->
     iWindow = new google.maps.InfoWindow()
     google.maps.event.addListener(@link, 'mouseover', (e) =>
       iWindow.setContent(@getLinkRollOverInfo())
@@ -130,7 +137,7 @@ class window.beats.MapLinkView extends Backbone.View
     strokeColor
   
   _setStrokeWeight: ->
-    nLanes = @model.get('lanes')
+    nLanes = @model.lanes()
     @link.setOptions(options: {strokeWeight: @getLinkStrokeWeight(nLanes)})
   
   # creates the editor for a link
