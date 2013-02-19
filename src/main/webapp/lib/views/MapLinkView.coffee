@@ -29,7 +29,7 @@ class window.beats.MapLinkView extends Backbone.View
     if(@model.legs? and @model.legs.length > 0)
       @_createEncodedPath @model.legs
       @_saveEncodedPath()
-    @_drawLink()
+    @drawLink()
     @_saveLinkLength()
     @_contextMenu()
     @_publishEvents();
@@ -133,7 +133,7 @@ class window.beats.MapLinkView extends Backbone.View
   
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR
-    strokeColor = MapLinkView.SELECTED_LINK_COLOR if @model.selected()? is true
+    strokeColor = MapLinkView.SELECTED_LINK_COLOR if @model.selected() is true
     strokeColor
   
   setStrokeWeight: ->

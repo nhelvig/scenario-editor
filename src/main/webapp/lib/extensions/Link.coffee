@@ -1,4 +1,5 @@
 window.beats.Link::defaults =
+  selected : false
   type: ''
   lanes: 1
   lane_offset: 0
