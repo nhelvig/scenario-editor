@@ -35,7 +35,7 @@ class window.beats.MapLinkView extends Backbone.View
     @_publishEvents();
   
   render: ->
-    @link.setMap($a.map)
+    @link.setMap($a.map) if @link?
     @
 
   # this method reads the path of points contained in the legs, joins them
