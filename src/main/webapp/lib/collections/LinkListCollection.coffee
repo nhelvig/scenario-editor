@@ -89,7 +89,9 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # set selected to false for all links. It is triggered
   # when the link browser closes as well as when we initialize the collection
   clearSelected: ->
-    @forEach((link) -> link.set('selected', false)) unless $a.SHIFT_DOWN
+    @forEach((link) -> 
+      link.set('selected', false) if link.selected() is true
+    ) unless $a.SHIFT_DOWN
   
   # This removes either the begin or end node from the link if the node
   # itself has been removed from the node collection

@@ -83,10 +83,13 @@ class window.beats.MapLinkView extends Backbone.View
   _publishGoogleEvents: ->
     gme = google.maps.event
     gme.addListener(@link, 'dblclick', (evt) => 
-        @model.set_editor_show(true)
-        evt.stop()
-      )
-    gme.addListener(@link, 'click', =>  @model.toggle_selected())
+      @model.set_editor_show(true)
+      evt.stop()
+    )
+    gme.addListener(@link, 'click', =>  
+      $a.broker.trigger('map:clear_selected') # this could also go in the model?
+      @model.toggle_selected()
+    )
     
   # this is the rollover window for the link
   _createInfoWindow: ->
@@ -94,10 +97,10 @@ class window.beats.MapLinkView extends Backbone.View
     google.maps.event.addListener(@link, 'mouseover', (e) =>
       iWindow.setContent(@getLinkRollOverInfo())
       iWindow.setPosition(e.latLng)
-      setTimeout((() -> iWindow.open($a.map)), 1000)
+      setTimeout((() -> iWindow.open($a.map)), 2000)
     );
     google.maps.event.addListener(@link, 'mouseout', => 
-      setTimeout((()-> iWindow.close()), 1000)
+      setTimeout((()-> iWindow.close()), 2000)
     );
   
   # this information is displays when you mouse over a polyline
