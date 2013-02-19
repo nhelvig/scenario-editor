@@ -11,7 +11,7 @@ class window.beats.LayersMenuView extends Backbone.View
       "mouseenter .submenu"   : "hoverSubOn",
       "mouseleave .submenu"   : "hoverSubOff",
       "mouseleave"            : "displayOff",
-      "mouseenter"            : "displayOn",
+      "mouseenter"            : "displayOn"
   }
   
   # crete itself, render it and then iterate to create its menu items
@@ -24,6 +24,7 @@ class window.beats.LayersMenuView extends Backbone.View
   
   render: ->
     $("##{@options.parentId}").append(@el)
+    $("##{@options.parentId}").click( => @$el.toggleClass "open")
     @
   
   #these open and close the Layers Menu itself

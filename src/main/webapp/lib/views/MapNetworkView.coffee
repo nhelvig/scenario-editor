@@ -17,6 +17,7 @@ class window.beats.MapNetworkView extends Backbone.View
     _.each(@networks, (network) => @_drawNetwork(network))
     @_drawScenarioItems()
     @_layersMenu()
+    @_modeMenu() 
     
     # This class creates the tree view of all the elements of the scenario
     $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
@@ -43,6 +44,16 @@ class window.beats.MapNetworkView extends Backbone.View
       menuItems: $a.layers_menu
     }
     @lmenu = new $a.LayersMenuView(attrs)
+  
+    # This creates the layers menu bar
+  _modeMenu: () ->
+    attrs = {
+      className: 'dropdown-menu bottom-up'
+      id: 'm_list'
+      parentId: 'mh'
+      menuItems: $a.mode_menu
+    }
+    @mmenu = new $a.LayersMenuView(attrs)
   
   _drawScenarioItems: () ->
     @_drawSensors()

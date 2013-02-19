@@ -343,3 +343,12 @@ $a.layers_menu = [
     triggerShow: "map:show_demand_layer"
     triggerHide: "map:hide_demand_layer" }
 ]
+
+$a.mode_menu = [
+  {
+    label: 'Network Edit Mode'
+    event: ((e) -> $a.broker.trigger('map:network_mode')) }
+  {
+    label: 'Scenario Edit Mode'
+    event: ((e) -> $a.broker.trigger('map:scenario_mode')) }
+]
