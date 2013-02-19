@@ -10,9 +10,18 @@ class window.beats.MapNetworkView extends Backbone.View
   $a = window.beats
   WARNING_MSG = 'Directions API Warning(s):'
   ERROR_MSG = 'Directions API Error: Could not render link :'
-    
+  NETWORK_EDIT_MSG : 'Network Editting Mode'
+  SCENARIO_EDIT_MSG : 'Scenario Editting Mode'
+  
+  broker_events: {
+    'map:open_network_mode' : 'networkModeConfig'
+    'map:open_scenario_mode' : 'scenarioModeConfig'
+    'map:close_network_mode' : 'closeNetworkModeConfig'
+    'map:close_scenario_mode' : 'closeScenarioModeConfig'
+  }
+  
   initialize: (@scenario) ->
-    @networks =  @scenario.get('networklist').get('network')
+    @networks =  @scenario.networks()
     @_initializeCollections()
     _.each(@networks, (network) => @_drawNetwork(network))
     @_drawScenarioItems()
@@ -22,12 +31,25 @@ class window.beats.MapNetworkView extends Backbone.View
     # This class creates the tree view of all the elements of the scenario
     $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
     @render()
+    $a.Util.publishEvents($a.broker, @broker_events, @)
   
   render: ->
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
     @
   
+  networkModeConfig: ->
+    $a.broker.trigger('app:display_message:info', @NETWORK_EDIT_MSG)
+
+  scenarioModeConfig: ->
+    $a.broker.trigger('app:display_message:info', @SCENARIO_EDIT_MSG)
+
+  closeNetworkModeConfig: ->
+    $a.broker.trigger('app:close_display_message')
+
+  closeScenarioModeConfig: ->
+    $a.broker.trigger('app:close_display_message')
+
   _initializeCollections: () ->
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
     $a.linkList = new $a.LinkListCollection($a.models.links(), @network)

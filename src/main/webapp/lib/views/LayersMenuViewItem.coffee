@@ -27,8 +27,11 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     # again we'll create a submenu if values.link is set
     @_createSubMenu @values.items, @values.link if @values.link
     # puts a check mark if this item needs checkmarks
-    @check(true) if @values.triggerShow
-
+    @check(true) if @values.triggerShow and @values.checkShow?
+    if @values.triggerShow and @values.checkShow is false
+      @isShowing = false
+      @check(false) 
+    
   render: ->
     $("##{@parent}").append(@el)
     @
@@ -56,10 +59,10 @@ class window.beats.LayersMenuViewItem extends Backbone.View
   # menu-data.coffee which items call this method and which do not
   toggleVisible: =>
     if @isShowing
-      @collection.trigger(@triggerHide, @event_arg)
+      @collection.trigger(@triggerHide, @event_arg) if @collection?
       @isShowing = false
       @check(false)
     else
-      @collection.trigger(@triggerShow, @event_arg)
+      @collection.trigger(@triggerShow, @event_arg) if @collection?
       @isShowing = true
       @check(true)

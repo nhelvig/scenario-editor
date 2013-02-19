@@ -347,8 +347,16 @@ $a.layers_menu = [
 $a.mode_menu = [
   {
     label: 'Network Edit Mode'
-    event: ((e) -> $a.broker.trigger('map:network_mode')) }
+    event: 'toggleVisible'
+    triggerShow: 'map:open_network_mode'
+    triggerHide: 'map:close_network_mode'
+    collection: '$a.broker'
+    checkShow : false}
   {
     label: 'Scenario Edit Mode'
-    event: ((e) -> $a.broker.trigger('map:scenario_mode')) }
+    event: 'toggleVisible'
+    triggerShow: 'map:open_scenario_mode'
+    triggerHide: 'map:close_scenario_mode'
+    collection: '$a.broker'
+    checkShow : false}
 ]
