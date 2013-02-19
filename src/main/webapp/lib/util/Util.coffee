@@ -144,3 +144,12 @@ window.beats.Util =
       if test?.length == 0
         return newId
       newId++
+  
+  publishEvents : (obj, events, context) ->
+    for key, value of events
+      obj.on(key, context[value], context)
+            
+  unpublishEvents: (obj, events, context) ->
+    for key, value in events
+      obj.off(key, context[value], context)
+  

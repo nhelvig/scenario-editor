@@ -21,7 +21,6 @@ class window.beats.AppView extends Backbone.View
     @_initializeMap()
     @_navBar()
     @_contextMenu()
-    @_layersMenu()
     @_messagePanel()
     @newScenario() if $a.Environment.DEV is false
     # Wait for idle map so that we can get projection
@@ -77,16 +76,6 @@ class window.beats.AppView extends Backbone.View
 
     attrs = { menuItems: $a.nav_bar_menu_items, attach: '#main-nav div' }
     @nbv = new $a.NavBarView(attrs)
-
-  # This creates the layers menu bar
-  _layersMenu: () ->
-    attrs = {
-              className: 'dropdown-menu bottom-up'
-              id: 'l_list'
-              parentId: 'lh'
-              menuItems: $a.layers_menu
-            }
-    @lmenu = new $a.LayersMenuView(attrs)
 
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.

@@ -16,6 +16,7 @@ class window.beats.MapNetworkView extends Backbone.View
     @_initializeCollections()
     _.each(@networks, (network) => @_drawNetwork(network))
     @_drawScenarioItems()
+    @_layersMenu()
     
     # This class creates the tree view of all the elements of the scenario
     $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
@@ -28,11 +29,21 @@ class window.beats.MapNetworkView extends Backbone.View
   
   _initializeCollections: () ->
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
-    $a.linkList = new $a.LinkListCollection($a.models.links())
+    $a.linkList = new $a.LinkListCollection($a.models.links(), @network)
     $a.sensorList = new $a.SensorListCollection($a.models.sensors())
     $a.controllerSet = new $a.ControllerSetCollection($a.models.controllers())
     $a.eventSet = new $a.EventSetCollection($a.models.events())
-    
+  
+  # This creates the layers menu bar
+  _layersMenu: () ->
+    attrs = {
+      className: 'dropdown-menu bottom-up'
+      id: 'l_list'
+      parentId: 'lh'
+      menuItems: $a.layers_menu
+    }
+    @lmenu = new $a.LayersMenuView(attrs)
+  
   _drawScenarioItems: () ->
     @_drawSensors()
     @_drawControllers()
@@ -46,7 +57,6 @@ class window.beats.MapNetworkView extends Backbone.View
     @_drawLinks(network)
     if network.get('nodelist')?
       @_drawNodes network.get('nodelist').get('node'), network
-
   
   # These methods instantiate each elements view instance in the map
   _drawLinks: (network) ->

@@ -8,24 +8,26 @@ class window.beats.LayersMenuViewItem extends Backbone.View
   tagName : 'li'
   isShowing: true
 
-  initialize: (@parent, values) ->
-    @triggerShow = values.triggerShow if values.triggerShow
-    @triggerHide = values.triggerHide if values.triggerHide
+  initialize: (@parent, @values) ->
+    @collection = eval(@values.collection) if @values.collection
+    @triggerShow = @values.triggerShow if @values.triggerShow
+    @triggerHide = @values.triggerHide if @values.triggerHide
+    @event_arg = @values.param if @values.param
     @template = _.template($('#child-item-menu-template').html())
     displayText = values.label
     # values.link indicates a submenu and we display '>>' in the view
     # to indicate a menu
-    displayText = "#{values.label} &raquo; " if values.link
-    @$el.html @template({text: displayText}) if values.label
-    @$el.attr 'class', values.className if values.className
-    @$el.attr 'href', values.href if values.href
-    @$el.attr 'id', values.link if values.link
-    @events = {'click': values.event } if values.event
+    displayText = "#{values.label} &raquo; " if @values.link
+    @$el.html @template({text: displayText}) if @values.label
+    @$el.attr 'class', @values.className if @values.className
+    @$el.attr 'href', @values.href if @values.href
+    @$el.attr 'id', @values.link if @values.link
+    @events = {'click': @values.event } if @values.event
     @render()
     # again we'll create a submenu if values.link is set
-    @_createSubMenu values.items, values.link if values.link
+    @_createSubMenu @values.items, @values.link if @values.link
     # puts a check mark if this item needs checkmarks
-    @check(true) if values.triggerShow
+    @check(true) if @values.triggerShow
 
   render: ->
     $("##{@parent}").append(@el)
@@ -52,12 +54,12 @@ class window.beats.LayersMenuViewItem extends Backbone.View
   # This function is called on the click if we are toggling the checkmark to
   # show/hide. Not every item operates like this. You can see in
   # menu-data.coffee which items call this method and which do not
-  toggleVisible: ->
+  toggleVisible: =>
     if @isShowing
-      $a.broker.trigger(@triggerHide)
+      @collection.trigger(@triggerHide, @event_arg)
       @isShowing = false
       @check(false)
     else
-      $a.broker.trigger(@triggerShow)
+      @collection.trigger(@triggerShow, @event_arg)
       @isShowing = true
       @check(true)
