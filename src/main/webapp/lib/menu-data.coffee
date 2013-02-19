@@ -20,6 +20,7 @@ $a.nav_bar_menu_items =
     'Save Local Scenario': (->  $a.broker.trigger("app:save_scenario"))
     'Close Local Scenario': (-> $a.broker.trigger('map:clear_map'))
     'Import Local Scenario': noconfig
+    'Open Network From DB': (-> $a.broker.trigger("app:login"))
   Windows:
     'Node Browser': (-> $a.BrowserView.start('node'))
     'Link Browser': (-> $a.BrowserView.start('link'))
