@@ -19,7 +19,7 @@ class window.beats.MessagePanelView extends Backbone.View
     @render()
 
   render: ->
-    $('body').append(@el)
+    $('#map_canvas').append(@el)
   
   _message: (message, type) -> 
     @$el.addClass "#{type}"

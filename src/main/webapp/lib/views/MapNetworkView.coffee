@@ -39,6 +39,7 @@ class window.beats.MapNetworkView extends Backbone.View
     @
   
   networkModeConfig: ->
+    $a.broker.trigger('map:close_tree')
     $a.broker.trigger('app:display_message:info', @NETWORK_EDIT_MSG)
 
   scenarioModeConfig: ->
