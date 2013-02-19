@@ -13,10 +13,10 @@ class window.beats.MapLinkView extends Backbone.View
   model_events : {
     'remove': 'removeLink'
     'change:selected': 'toggleSelected'
-    'change:lane_offset': '_drawLink'
-    'change:lanes': '_setStrokeWeight'
+    'change:lane_offset': 'drawLink'
+    'change:lanes': 'setStrokeWeight'
     'change:view': 'hideShowLink'
-    'change:editor_show': '_editor'
+    'change:editor_show': 'editor'
     'change:show_demands': 'viewDemands'
   }
   
@@ -59,7 +59,7 @@ class window.beats.MapLinkView extends Backbone.View
   # lines are being drawn
   # We set listeners up in drawLink because they need to be re-attached anytime
   # the link is re-drawn
-  _drawLink: ->
+  drawLink: ->
     @hideLink() if @link? #if you are applying offset to existing line
     linkGeom = @model.geometry()
     enc = google.maps.geometry.encoding
@@ -136,12 +136,12 @@ class window.beats.MapLinkView extends Backbone.View
     strokeColor = MapLinkView.SELECTED_LINK_COLOR if @model.selected()? is true
     strokeColor
   
-  _setStrokeWeight: ->
+  setStrokeWeight: ->
     nLanes = @model.lanes()
     @link.setOptions(options: {strokeWeight: @getLinkStrokeWeight(nLanes)})
   
   # creates the editor for a link
-  _editor:  ->
+  editor:  ->
     if @model.editor_show() is true
       @linkSelect()
       env = new $a.EditorLinkView(elem: 'link', models: [@model], width: 375)
