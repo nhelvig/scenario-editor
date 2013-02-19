@@ -195,7 +195,8 @@ class window.beats.AppView extends Backbone.View
 
   # Load Network
   _loadNetwork: (networkId) ->
-    $('body').attr('disabled', true)
+    # add overlay to disable screen
+    messageBox = new $a.MessageWindowView( {text: "Loading Network..."} )
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion 
     # and pass in JSON instead of XML
@@ -205,8 +206,9 @@ class window.beats.AppView extends Backbone.View
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
       success: (data) =>
-        $('body').css('disabled', false)
-        # Hack to get XML data loaded
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
         beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkList>'
         data = data.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
         end = '</NetworkList> <SignalList/> <SensorList/> <EventSet/> <ControllerSet/> </scenario>'

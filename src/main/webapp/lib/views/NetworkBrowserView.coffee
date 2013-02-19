@@ -30,7 +30,6 @@ class window.beats.NetworkBrowserView extends Backbone.View
     @
     
 
-
   # Using data tables framework render Network list within data tables
   renderTable: () ->
     $a.networkcollection = new $a.NetworkCollection()
@@ -94,7 +93,6 @@ class window.beats.NetworkBrowserView extends Backbone.View
       )
       # Try and load network and display message
       $a.broker.trigger("app:load_network", networkId)
-      $a.broker.trigger("app:show_message:info", "Loading Network...")
-      # close network and disable screen while loading
+      # close network browser
       $a.networkbrowser.close()
     )

@@ -38,7 +38,7 @@ $a.map_views = [
   'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 
   'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'LogInView'
   'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
-  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView',
+  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 'MessageWindowView'
   'NetworkBrowserView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
