@@ -2,7 +2,7 @@
 # system
 class window.beats.ContextMenuHandler
   $a = window.beats
-  mode: $a.BOTH_MODE
+  mode: $a.SCENARIO_MODE
   
   broker_events : {
     'map:open_network_mode' : 'networkMode'
@@ -41,7 +41,7 @@ class window.beats.ContextMenuHandler
   # context passed through args
   _populateMenu: (args) ->
     items = []
-    items.push item for item in args.items when item.mode is @mode or item.mode is $a.BOTH_MODE 
+    items.push item for item in args.items when item.mode is @mode
     items = _.union(items, $a.node_selected) if $a.nodeList? and $a.nodeList.isOneSelected()
     items = _.union(items, $a.node_selected_node_clicked) if $a.nodeList? and $a.nodeList.isOneSelected() and args.model?
     items

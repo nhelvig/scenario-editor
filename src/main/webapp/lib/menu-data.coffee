@@ -1,7 +1,6 @@
 $a = window.beats
 $a.NETWORK_MODE = 'network'
 $a.SCENARIO_MODE = 'scenario'
-$a.BOTH_MODE = 'both'
 
 
 # The names of all the parent tree elements of the scenario. It is used in
@@ -25,10 +24,10 @@ nav_bar_menu_item = (label, event, mode) ->
 $a.nav_bar_menu_items =
   File:
     'New Scenario': (-> $a.broker.trigger("app:new_scenario"))
-    'Open Local Scenario': (-> $a.broker.trigger("app:open_scenario"))
-    'Save Local Scenario': (->  $a.broker.trigger("app:save_scenario"))
-    'Close Local Scenario': (-> $a.broker.trigger('map:clear_map'))
-    'Import Local Scenario': noconfig
+    'Import XML Scenario': (-> $a.broker.trigger("app:open_scenario"))
+    'Export Scenario to XML': (->  $a.broker.trigger("app:save_scenario"))
+    'Load Scenario from DB': noconfig
+    'Save Scenario to DB': noconfig
   Windows:
     'Node Browser': (-> $a.BrowserView.start('node'))
     'Link Browser': (-> $a.BrowserView.start('link'))
@@ -39,8 +38,8 @@ $a.nav_bar_menu_items =
     'Network Properties': noconfig
   Tools:
     'Import PeMS data': noconfig
-    Calibrate: noconfig
-    Simulate: noconfig
+    'Calibrate': noconfig
+    'Simulate': noconfig
     'Visualize Measurements': (-> window.open(ETHAN_VIZ_MEASURE_URI))
   Help:
     About: noconfig
@@ -108,6 +107,9 @@ $a.node_selected_node_clicked = [
 
 # Link Context Menu
 $a.link_context_menu = [
+  context_menu_item 'Edit link scenario data',
+      ((e) -> $a.linkList.trigger('links:open_editor', e.currentTarget.id)),
+      $a.SCENARIO_MODE
   context_menu_item 'Edit this link',
       ((e) -> $a.linkList.trigger('links:open_editor', e.currentTarget.id)),
       $a.NETWORK_MODE
