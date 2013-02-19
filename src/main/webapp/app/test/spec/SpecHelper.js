@@ -54,7 +54,7 @@ beforeEach(function() {
     network = $a.models.network();
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
-    $a.linkList = new $a.LinkListCollection($a.models.links())
+    $a.linkList = new $a.LinkListCollection($a.models.links(), network)
     $a.linkListView = new $a.LinkListView($a.linkList, network)
   }
   
@@ -189,7 +189,8 @@ beforeEach(function() {
       controller: c,
       dps: dps,
       dp: dp,
-      density: density
+      density: density,
+      network: network
     };
   };
 });

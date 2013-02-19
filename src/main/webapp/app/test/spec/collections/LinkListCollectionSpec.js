@@ -17,7 +17,8 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'duplicateLink').andCallThrough();
 
     scen = scenarioAndFriends();
-    this.lColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
+    links = [scen.link1, scen.link2, scen.link3]
+    this.lColl= new $a.LinkListCollection(links, scen.network);
   });
 
   describe("Instantiation", function() {
@@ -108,20 +109,16 @@ describe("LinkListCollection", function() {
   });
   describe("splitLinkAddNode", function() {
     it("should split a link add one node at position", function() {
-      scen = scenarioAndFriends();
-      linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
-      var lengthBefore = linkColl.length;
-      linkColl.splitLinkAddNode(scen.link1.cid, new google.maps.LatLng(0,0));
-      expect(lengthBefore + 1).toEqual(linkColl.length);
+      var lengthBefore = this.lColl.length;
+      this.lColl.splitLinkAddNode(scen.link1.cid, new google.maps.LatLng(0,0));
+      expect(lengthBefore + 1).toEqual(this.lColl.length);
     });
   });
   describe("splitLinkByDistance", function() {
     it("should split a link by the distance", function() {
-      scen = scenarioAndFriends();
-      linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
-      var lengthBefore = linkColl.length;
-      linkColl.splitLinkByDistance(scen.link1);
-      expect(lengthBefore + 2).toEqual(linkColl.length);
+      var lengthBefore = this.lColl.length;
+      this.lColl.splitLinkByDistance(scen.link1);
+      expect(lengthBefore + 2).toEqual(this.lColl.length);
     });
   });
   describe("addLink ", function() {
@@ -165,19 +162,16 @@ describe("LinkListCollection", function() {
   });
   describe("joinLink ", function() {
     it("should join links when node is removed", function() {
-      scen = scenarioAndFriends()
-      linkColl= new $a.LinkListCollection([scen.link1, scen.link2, scen.link3]);
-      links = linkColl.models
+      links = this.lColl.models
       lBefore = links.length
       n = scen.node2
       args = {out:n.outputs(), in:n.inputs(), nodeId: n.id}
-      linkColl.joinLink(args);
-      expect(lBefore - 1).toEqual(linkColl.models.length);
+      this.lColl.joinLink(args);
+      expect(lBefore - 1).toEqual(this.lColl.models.length);
     });
   });
   describe("duplicateLink ", function() {
     it("should create duplicate link", function() {
-      scen = scenarioAndFriends();
       lengthBefore = this.lColl.models.length
       link =  this.lColl.models[0];
       link.set_geometry(scen.link1.geometry());
