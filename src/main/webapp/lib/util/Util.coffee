@@ -73,6 +73,7 @@ window.beats.Util =
       label: item.label
       className: item.className
       event: item.event
+      mode: item.mode
 
   # This makes an ajax call to the server in order to write the model's xml 
   # file and download it back to the user. Call From "Save Local Network" menu 
