@@ -17,14 +17,14 @@ class window.beats.MapLinkView extends Backbone.View
     'change:lanes': '_setStrokeWeight'
     'change:view': 'hideShowLink'
     'change:editor_show': '_editor'
+    'change:show_demands': 'viewDemands'
   }
   
   broker_events: {
-    #'map:init', 'render'
-    #'map:clear_selected', 'clearSelected'
+    'map:init': 'render'
   }
 
-  initialize: (@model, @network) ->
+  initialize: (@model) ->
     # Gets the encoded path line string if it is not already been set
     if(@model.legs? and @model.legs.length > 0)
       @_createEncodedPath @model.legs
@@ -33,11 +33,6 @@ class window.beats.MapLinkView extends Backbone.View
     @_saveLinkLength()
     @_contextMenu()
     @_publishEvents();
-    # $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyNodes, @)
-    # $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyNodes, @)
-    # $a.broker.on("map:select_network:#{@network.cid}", @linkSelect, @)
-    # $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-    # $a.broker.on("link:view_demands:#{@model.cid}", @viewDemands, @)
   
   render: ->
     @link.setMap($a.map)
@@ -148,11 +143,12 @@ class window.beats.MapLinkView extends Backbone.View
       $(env.el).tabs()
       $(env.el).dialog('open')
 
-  viewDemands: () ->
-    dv = new $a.DemandVisualizer(@model.get('demand'))
-    $('body').append(dv.el)
-    dv.render()
-    $(dv.el).dialog('open')
+  viewDemands: ->
+    if(@model.show_demands() is true)
+      dv = new $a.DemandVisualizer(@model.demand())
+      $('body').append(dv.el)
+      dv.render()
+      $(dv.el).dialog('open')
 
   # The following handles the show/hide of links and arrow heads
   # hideShow is called when a change to view state on model occurs
@@ -171,94 +167,30 @@ class window.beats.MapLinkView extends Backbone.View
   # in order to remove an element you need to unpublish the events, hide the
   # marker and set it to null
   removeLink: ->
-    @model.off('remove')
-    $a.broker.off('map:init')
-    $a.broker.off('map:hide_link_layer')
-    $a.broker.off('map:show_link_layer')
-    $a.broker.off("map:links:show_#{@model.get('type')}",)
-    $a.broker.off("map:links:hide_#{@model.get('type')}")
-    $a.broker.off("map:select_item:#{@model.cid}")
-    $a.broker.off("map:clear_item:#{@model.cid}")
-    $a.broker.off("map:select_neighbors:#{@model.cid}")
-    $a.broker.off("map:clear_neighbors:#{@model.cid}")
-    $a.broker.off('map:clear_selected')
-    $a.broker.off("map:select_network:#{@network.cid}")
-    $a.broker.off("map:clear_network:#{@network.cid}")
-    $a.broker.off("map:open_editor:#{@model.cid}")
-    $a.broker.off("link:view_demands:#{@model.cid}")
+    $a.Util.unpublishEvents(@model, @model_events, @)
     google.maps.event.removeListener(@zoomListener);
     @hideLink() if @link?
     @link = null
-    
-  # Select events for link
-  # Unless the Shift key is held down, this function clears any other selected
-  # items on the map and in the tree after we determine if this link is to
-  # be selected or deselected. You need to call @_triggerClearSelectEvents
-  # from within the conditional so that you appropriately select or de-select
-  # the current link and corresponding tree item
-  manageLinkSelect: ->
-    if @link.get('strokeColor') == MapLinkView.LINK_COLOR
-      @_triggerClearSelectEvents()
-      @linkSelect()
-    else
-      @_triggerClearSelectEvents()
-      @clearSelected()
-
-  # This function triggers the events that make the selected tree and map items
-  # to de-selected. Called by other events to help
-  _triggerClearSelectEvents: ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
-
+  
   # This method swaps the icon for the selected color
   linkSelect: ->
-    $a.broker.trigger("app:tree_highlight:#{@model.cid}")
     @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
   # This method swaps the icon for the de-selected color
   clearSelected: ->
     @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
 
-  # This method toggles the selection of the node
+  # This method toggles the selection of the link
   toggleSelected: () ->
     if(@model.selected() is true)
       @linkSelect()
     else
       @clearSelected()
 
-  # This method is called from the context menu and selects itself and all
-  # the links nodes as the higlighted tree items
-  selectSelfandMyNodes: ->
-    # First see if everthing should be de-selected; if shift down will not occur
-    @_triggerClearSelectEvents()
-    @linkSelect()
-    beginNode = @model.get("begin").get("node")
-    endNode = @model.get("end").get("node")
-    $a.broker.trigger("app:tree_highlight:#{@model.cid}")
-    $a.broker.trigger("app:tree_highlight:#{beginNode.cid}")
-    $a.broker.trigger("app:tree_highlight:#{endNode.cid}")
-    $a.broker.trigger("map:select_item:#{beginNode.cid}")
-    $a.broker.trigger("map:select_item:#{endNode.cid}")
-
-  # called from the context menu as well. It clears itself and its nodes as
-  # well as the higlighted tree items
-  clearSelfandMyNodes: ->
-    @clearSelected()
-    beginNode = @model.get("begin").get("node")
-    endNode = @model.get("end").get("node")
-    $a.broker.trigger("map:clear_item:#{beginNode.cid}")
-    $a.broker.trigger("map:clear_item:#{endNode.cid}")
-    $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
-    $a.broker.trigger("app:tree_remove_highlight:#{beginNode.cid}")
-    $a.broker.trigger("app:tree_remove_highlight:#{endNode.cid}")
-
   # these events are set up during initialization of the object
   _publishEvents: () ->
-    for key, value of @model_events
-      @model.on(key, @[value], @)
-    
-    # for key, value of @broker_events
-    #  $a.broker.on(key, @[value], @)
+    $a.Util.publishEvents(@model, @model_events, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
 
   # Calculates and returns Link Length, path must be set otherwise length is 0
   # Length is always in meters

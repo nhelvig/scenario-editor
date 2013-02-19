@@ -1,5 +1,4 @@
 window.beats.Link::defaults =
-  select: false
   type: ''
   lanes: 1
   lane_offset: 0
@@ -19,6 +18,7 @@ window.beats.Link::set_geometry = (text) ->
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::id = -> @get("id")
 window.beats.Link::type = -> @get("type")
+window.beats.Link::demand = -> @get("demand")
 window.beats.Link::lanes = -> @get("lanes")
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
@@ -85,12 +85,20 @@ window.beats.Link::toggle_selected =  ->
     @set('selected', false) 
   else 
     @set('selected', true)
-   
+
+window.beats.Link::set_selected = (flag) ->
+  @set('selected', flag)
+  
 window.beats.Link::selected = ->
   @get('selected')
+
+window.beats.Link::editor_show = ->
+  @get('editor_show')
 
 window.beats.Link::set_editor_show = (flag) ->
   @set('editor_show', flag)
 
-window.beats.Link::editor_show = ->
-  @get('editor_show')
+window.beats.Link::set_show_demands = (flag) ->
+  @set('show_demands', flag)
+
+window.beats.Link::show_demands = -> @get('show_demands', flag)

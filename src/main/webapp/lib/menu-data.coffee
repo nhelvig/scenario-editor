@@ -84,34 +84,34 @@ $a.node_selected_node_clicked = [
 # Link Context Menu
 $a.link_context_menu = [
   context_menu_item 'Edit this link',
-          ((e) -> $a.linkList.trigger('links:open_editor', e.currentTarget.id))
+      ((e) -> $a.linkList.trigger('links:open_editor', e.currentTarget.id))
   context_menu_item  'Select Link and its Nodes',
-                      ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}"))
+      ((e) -> $a.linkList.trigger('links:select_neighbors', e.currentTarget.id))
   context_menu_item 'Remove this link',
-                    ((e) -> $a.broker.trigger("links:remove", e.currentTarget.id))
+      ((e) -> $a.broker.trigger("links:remove", e.currentTarget.id))
   {className:'context_menu_separator'}
   context_menu_item 'Add sensor to this link',
-                    ((e) -> $a.linkList.trigger("links:add_sensor", e.currentTarget.id))
+      ((e) -> $a.linkList.trigger("links:add_sensor", e.currentTarget.id))
   context_menu_item 'Add controller to this link',
-                    ((e) -> $a.linkList.trigger("links:add_controller", e.currentTarget.id))
+      ((e) -> $a.linkList.trigger("links:add_controller", e.currentTarget.id))
   context_menu_item 'Add event to this link',
-                    ((e) -> $a.linkList.trigger("links:add_event", e.currentTarget.id))
+      ((e) -> $a.linkList.trigger("links:add_event", e.currentTarget.id))
   {className:'context_menu_separator'}
   context_menu_item  'Clear Selection',
-                      ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}"))
+      ((e) -> $a.linkList.trigger('links:deselect_link', e.currentTarget.id))
   {className:'context_menu_separator'}
   context_menu_item  'Split link, add node here',
-                      ((e) -> $a.linkList.trigger("links:split_add_node", e.currentTarget.id, $a.contextMenu.position))
+      ((e) -> $a.linkList.trigger("links:split_add_node", e.currentTarget.id, $a.contextMenu.position))
   context_menu_item  'Split link with nodes',
-                      ((e) -> $a.linkList.trigger("links:split", e.currentTarget.id, 2))
+      ((e) -> $a.linkList.trigger("links:split", e.currentTarget.id, 2))
   context_menu_item  'Duplicate link',
-                      ((e) -> $a.linkList.trigger("links:duplicate", e.currentTarget.id))
+      ((e) -> $a.linkList.trigger("links:duplicate", e.currentTarget.id))
 
 ]
 
 $a.link_context_menu_demand_item = [
   context_menu_item  'View Demands'
-                      ((e) -> $a.broker.trigger("link:view_demands:#{e.currentTarget.id}"))
+      ((e) -> $a.linkList.trigger('links:view_demands', e.currentTarget.id))
 ]
 # Sensor Context Menu
 $a.sensor_context_menu = [

@@ -84,3 +84,12 @@ window.beats.Node::remove = ->
 
 window.beats.Node::add = ->
   window.beats.models.nodes().push(@)
+  
+window.beats.Node::toggle_selected =  ->
+  if(@selected() is true) 
+    @set('selected', false) 
+  else 
+    @set('selected', true)
+
+window.beats.Node::selected = ->
+  @get('selected')

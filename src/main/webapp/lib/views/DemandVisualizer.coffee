@@ -245,6 +245,7 @@ class window.beats.DemandVisualizer extends Backbone.View
       autoOpen: false,
       modal: false,
       close: =>
+        @link.set_show_demands(false)
         @$el.remove()
     if @demand.is_constant()
       @renderConstDemands()

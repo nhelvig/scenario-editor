@@ -116,7 +116,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
 
   # This method toggles the selection of the node
   toggleSelected: () ->
-    if(@model.get('selected') is true)
+    if(@model.selected() is true)
       @makeSelected()
     else
       @clearSelected()
