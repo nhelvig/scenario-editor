@@ -73,8 +73,8 @@ class window.beats.NetworkBrowserView extends Backbone.View
   # set up columns and their titles for the browser
   _getColumns: () ->
     columns =  [
-            { "sTitle": "Id","bVisible": false},
-            { "sTitle": "Network Name","sWidth": "100%"}
+            { "sTitle": "Id","sWidth": "20%"},
+            { "sTitle": "Network Name","sWidth": "80%"}
         ]
 
   # the click event for any row triggers an event to load the specified network
