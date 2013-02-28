@@ -9,6 +9,9 @@ class window.beats.TreeChildItemView extends Backbone.View
     click: 'manageHighlight'
     contextmenu: 'showContext'
 
+  model_events: 
+    'change:selected': 'toggleSelected'
+  
   # The model attribute is the model for this class, the element
   # attribute is the name of the parent tree element this model should
   # be attached too
@@ -57,6 +60,13 @@ class window.beats.TreeChildItemView extends Backbone.View
       @highlight()
     else
       @highlighted = false
+      @removeHighlight()
+    
+  # This method toggles the selection of the node
+  toggleSelected: () ->
+    if(@model.selected() is true)
+      @highligh()
+    else
       @removeHighlight()
 
   highlight: ->

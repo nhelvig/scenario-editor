@@ -48,7 +48,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
         </node>\
       </NodeList>\
       <LinkList>\
-        <link lanes="4" lane_offset="0" length="150.8687318153821" type="" id="1" in_sync="true">\
+        <link lanes="4" lane_offset="0" length="150.8687318153821" type="electric_toll" id="1" in_sync="true">\
           <begin node_id="1"/>\
           <end node_id="2"/>\
           <roads>\

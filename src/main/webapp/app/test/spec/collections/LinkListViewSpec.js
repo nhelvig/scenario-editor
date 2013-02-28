@@ -10,7 +10,7 @@ describe("LinkListView", function() {
     spyOn($a.LinkListView.prototype, 'createAndDrawLink').andCallThrough();
     spyOn($a.LinkListView.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListView.prototype, 'setStrokeWeight').andCallThrough();
-    this.lColl = new $a.LinkListCollection(models);
+    this.lColl = new $a.LinkListCollection(models, network);
     this.view = new $a.LinkListView(this.lColl, network);
     begin = models[0].begin_node();
     end = models[0].end_node();

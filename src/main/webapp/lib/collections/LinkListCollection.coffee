@@ -6,12 +6,18 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # set up the event that calls for the addition of a link to the collection
   # register the links begin and end nodes with the remove method on the model
   # node
-  initialize: (@models)->
+  initialize: (@models, @network)->
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
     $a.broker.on('links:remove', @removeLink, @)
+    $a.broker.on('map:clear_selected', @clearSelected, @)
+    $a.broker.on("map:select_network:#{@network.cid}", @setSelected, @)
+    $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
+
+    @on('links:hide_link_layer', @hideLinkLayer, @)
+    @on('links:show_link_layer', @showLinkLayer, @)
     @on('links:duplicate', @duplicateLink, @)
     @on('links:add_sensor', @addSensorToLink, @)
     @on('links:add_controller', @addControllerToLink, @)
@@ -19,6 +25,11 @@ class window.beats.LinkListCollection extends Backbone.Collection
     @on('links:remove', @removeLink, @)
     @on('links:split', @splitLink, @)
     @on('links:split_add_node', @splitLinkAddNode, @)
+    @on('links:open_editor', @showEditor, @)
+    @on('links:select_neighbors', @setNeighborsSelected, @)
+    @on('links:deselect_link', @deSelectLink, @)
+    @on('links:view_demand', @viewDemands, @)
+    
     @forEach((link) =>  @_setUpEvents(link))
   
   # addLink takes the begin node and end node ids, sets up the appropriate
@@ -51,19 +62,36 @@ class window.beats.LinkListCollection extends Backbone.Collection
     args.end.inputs().push new window.beats.Input({link: link})
     link
   
+  # called from context menu of link. Highlight itself and its nodes 
+  setNeighborsSelected: (cid) ->
+    link = @getByCid(cid)
+    link.toggle_selected() if link.selected() is false
+    begin = link.begin_node()
+    end = link.end_node()
+    begin.toggle_selected() if begin.selected() is false
+    end.toggle_selected() if end.selected() is false
+  
+  # set one link selected
+  deSelectLink: (cid) ->
+    link = @getByCid(cid)
+    link.toggle_selected() if link.selected() is true
+    
   # this function sets all the links passed in selected field to true. It is
   # called by the BrowserTypeView for links in order to sync the view state
   # between the browser and the map -- if selected in browser it will select
   # it on the map
   setSelected: (links) ->
+    links = @models if !links?
     _.each(links, (link) ->
-      link.set('selected', true) if !link.get('selected')
+      link.set_selected(true) if link.selected() is false
     )
 
   # set selected to false for all links. It is triggered
   # when the link browser closes as well as when we initialize the collection
   clearSelected: ->
-    @forEach((link) -> link.set('selected', false))
+    @forEach((link) -> 
+      link.set('selected', false) if link.selected() is true
+    ) unless $a.SHIFT_DOWN
   
   # This removes either the begin or end node from the link if the node
   # itself has been removed from the node collection
@@ -225,6 +253,24 @@ class window.beats.LinkListCollection extends Backbone.Collection
     eNode.bind('remove', => @removeNodeReference(link, 'end')) 
     bNode.position().on('change',(=> @reDrawLink(link)), @)
     eNode.position().on('change',(=> @reDrawLink(link)), @)
+  
+  #view the demands for the link passed in
+  viewDemands: (cid) ->
+    link =  @getByCid(cid)
+    link.show_demands(true)
+  
+  #show editor for the link passed in
+  showEditor: (cid) ->
+    link =  @getByCid(cid)
+    link.set_editor_show(true)
+  
+  # hide links
+  hideLinkLayer: (type) =>
+    @forEach((link) -> link.set_view('hide') if !type? or type is link.type())
+  
+  # show links
+  showLinkLayer: (type) =>
+    @forEach((link) -> link.set_view('show') if !type? or type is link.type())
 
   # This method adds a sensor to the link id passed in
   addSensorToLink: (cid) ->
