@@ -20,6 +20,8 @@ class window.beats.InitialDensitySet extends Backbone.Model
     obj.set('id', id)
     name = $(xml).attr('name')
     obj.set('name', name)
+    tstamp = $(xml).attr('tstamp')
+    obj.set('tstamp', Number(tstamp))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -33,6 +35,7 @@ class window.beats.InitialDensitySet extends Backbone.Model
     _.each(@get('density') || [], (a_density) -> xml.appendChild(a_density.to_xml(doc)))
     if @has('id') && @id != "" then xml.setAttribute('id', @get('id'))
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
+    if @has('tstamp') && @tstamp != 0.0 then xml.setAttribute('tstamp', @get('tstamp'))
     xml
   
   deep_copy: -> InitialDensitySet.from_xml1(@to_xml(), {})

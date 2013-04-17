@@ -10,8 +10,6 @@ class window.beats.Splitratio extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Splitratio()
-    destination_network_id = $(xml).attr('destination_network_id')
-    obj.set('destination_network_id', destination_network_id)
     link_in = $(xml).attr('link_in')
     obj.set('link_in', link_in)
     link_out = $(xml).attr('link_out')
@@ -25,7 +23,6 @@ class window.beats.Splitratio extends Backbone.Model
     xml = doc.createElement('splitratio')
     if @encode_references
       @encode_references()
-    xml.setAttribute('destination_network_id', @get('destination_network_id')) if @has('destination_network_id')
     xml.setAttribute('link_in', @get('link_in')) if @has('link_in')
     xml.setAttribute('link_out', @get('link_out')) if @has('link_out')
     xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))

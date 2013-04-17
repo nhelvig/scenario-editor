@@ -12,8 +12,8 @@ class window.beats.Density extends Backbone.Model
     obj = new window.beats.Density()
     link_id = $(xml).attr('link_id')
     obj.set('link_id', link_id)
-    link_id_destination = $(xml).attr('link_id_destination')
-    obj.set('link_id_destination', link_id_destination)
+    destination_network_id = $(xml).attr('destination_network_id')
+    obj.set('destination_network_id', destination_network_id)
     obj.set('text', xml.text())
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
@@ -24,7 +24,7 @@ class window.beats.Density extends Backbone.Model
     if @encode_references
       @encode_references()
     xml.setAttribute('link_id', @get('link_id')) if @has('link_id')
-    xml.setAttribute('link_id_destination', @get('link_id_destination')) if @has('link_id_destination')
+    xml.setAttribute('destination_network_id', @get('destination_network_id')) if @has('destination_network_id')
     xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))
     xml
   
