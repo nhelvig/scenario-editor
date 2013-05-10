@@ -8,7 +8,6 @@ window.beats.Network::initialize = ->
   @set 'linklist', new window.beats.LinkList
   @set 'controllerset', new window.beats.ControllerSet
   @set 'description', new window.beats.Description
-  @set 'intersectioncache', new window.beats.IntersectionCache
   @set 'position', new window.beats.Position
   @get('position').get('point').push(new window.beats.Point)
 

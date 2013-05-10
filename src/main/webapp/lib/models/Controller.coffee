@@ -35,7 +35,7 @@ class window.beats.Controller extends Backbone.Model
     type = $(xml).attr('type')
     obj.set('type', type)
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
     dt = $(xml).attr('dt')
     obj.set('dt', Number(dt))
     enabled = $(xml).attr('enabled')

@@ -13,9 +13,9 @@ class window.beats.Networkpair extends Backbone.Model
     linkpair = xml.children('linkpair')
     obj.set('linkpair', _.map($(linkpair), (linkpair_i) -> $a.Linkpair.from_xml2($(linkpair_i), deferred, object_with_id)))
     network_a = $(xml).attr('network_a')
-    obj.set('network_a', network_a)
+    obj.set('network_a', Number(network_a))
     network_b = $(xml).attr('network_b')
-    obj.set('network_b', network_b)
+    obj.set('network_b', Number(network_b))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

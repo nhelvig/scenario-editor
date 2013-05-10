@@ -1,4 +1,4 @@
-class window.beats.NetworkList extends Backbone.Model
+class window.beats.Node_type extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,20 +9,23 @@ class window.beats.NetworkList extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.NetworkList()
-    network = xml.children('network')
-    obj.set('network', _.map($(network), (network_i) -> $a.Network.from_xml2($(network_i), deferred, object_with_id)))
+    obj = new window.beats.Node_type()
+    id = $(xml).attr('id')
+    obj.set('id', Number(id))
+    name = $(xml).attr('name')
+    obj.set('name', name)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('NetworkList')
+    xml = doc.createElement('node_type')
     if @encode_references
       @encode_references()
-    _.each(@get('network') || [], (a_network) -> xml.appendChild(a_network.to_xml(doc)))
+    xml.setAttribute('id', @get('id')) if @has('id')
+    xml.setAttribute('name', @get('name')) if @has('name')
     xml
   
-  deep_copy: -> NetworkList.from_xml1(@to_xml(), {})
+  deep_copy: -> Node_type.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

@@ -1,5 +1,5 @@
-window.beats.SplitratioProfile::resolve_references =
-  window.beats.ReferenceHelper.resolver('node_id', 'node', 'node', 'splitratioprofile', 'SplitratioProfile', false)
+window.beats.SplitRatioProfile::resolve_references =
+  window.beats.ReferenceHelper.resolver('node_id', 'node', 'node', 'splitratioprofile', 'SplitRatioProfile', false)
 
-window.beats.SplitratioProfile::encode_references = ->
+window.beats.SplitRatioProfile::encode_references = ->
   @set 'node_id', @get('node').id

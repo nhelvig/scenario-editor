@@ -12,12 +12,16 @@ class window.beats.FundamentalDiagramProfile extends Backbone.Model
     obj = new window.beats.FundamentalDiagramProfile()
     fundamentalDiagram = xml.children('fundamentalDiagram')
     obj.set('fundamentaldiagram', _.map($(fundamentalDiagram), (fundamentalDiagram_i) -> $a.FundamentalDiagram.from_xml2($(fundamentalDiagram_i), deferred, object_with_id)))
+    id = $(xml).attr('id')
+    obj.set('id', Number(id))
     link_id = $(xml).attr('link_id')
-    obj.set('link_id', link_id)
+    obj.set('link_id', Number(link_id))
     start_time = $(xml).attr('start_time')
     obj.set('start_time', Number(start_time))
     dt = $(xml).attr('dt')
     obj.set('dt', Number(dt))
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -27,9 +31,11 @@ class window.beats.FundamentalDiagramProfile extends Backbone.Model
     if @encode_references
       @encode_references()
     _.each(@get('fundamentaldiagram') || [], (a_fundamentaldiagram) -> xml.appendChild(a_fundamentaldiagram.to_xml(doc)))
+    xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('link_id', @get('link_id')) if @has('link_id')
     if @has('start_time') && @start_time != 0 then xml.setAttribute('start_time', @get('start_time'))
     xml.setAttribute('dt', @get('dt')) if @has('dt')
+    if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
   deep_copy: -> FundamentalDiagramProfile.from_xml1(@to_xml(), {})

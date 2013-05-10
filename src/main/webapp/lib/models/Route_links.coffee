@@ -1,4 +1,4 @@
-class window.beats.Road extends Backbone.Model
+class window.beats.Route_links extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,11 +9,15 @@ class window.beats.Road extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.Road()
+    obj = new window.beats.Route_links()
+    link_references = xml.children('link_references')
+    obj.set('link_references', $a.Link_references.from_xml2(link_references, deferred, object_with_id))
+    crudFlag = xml.children('crudFlag')
+    obj.set('crudflag', $a.CrudFlag.from_xml2(crudFlag, deferred, object_with_id))
     id = $(xml).attr('id')
     obj.set('id', Number(id))
-    name = $(xml).attr('name')
-    obj.set('name', name)
+    link_order = $(xml).attr('link_order')
+    obj.set('link_order', Number(link_order))
     mod_stamp = $(xml).attr('mod_stamp')
     obj.set('mod_stamp', mod_stamp)
     if obj.resolve_references
@@ -21,14 +25,16 @@ class window.beats.Road extends Backbone.Model
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('road')
+    xml = doc.createElement('route_links')
     if @encode_references
       @encode_references()
+    xml.appendChild(@get('link_references').to_xml(doc)) if @has('link_references')
+    xml.appendChild(@get('crudflag').to_xml(doc)) if @has('crudflag')
     xml.setAttribute('id', @get('id')) if @has('id')
-    xml.setAttribute('name', @get('name')) if @has('name')
+    xml.setAttribute('link_order', @get('link_order')) if @has('link_order')
     xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml
   
-  deep_copy: -> Road.from_xml1(@to_xml(), {})
+  deep_copy: -> Route_links.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

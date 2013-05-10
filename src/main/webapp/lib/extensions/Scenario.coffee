@@ -43,11 +43,11 @@ window.beats.Scenario::initialize = ->
   @set('schemaVersion', window.beats.SchemaVersion)
   @object_with_id = network: {}, node: {}, link: {}, path: {}, sensor: {}
   @set 'settings', new window.beats.Settings
-  @set 'networklist', new window.beats.NetworkList
+  @set 'networklist', new window.beats.NetworkSet
   @set 'controllerset', new window.beats.ControllerSet
   @set 'eventset', new window.beats.EventSet
-  @set 'sensorlist', new window.beats.SensorList
-  @set 'signallist', new window.beats.SignalList
+  @set 'sensorlist', new window.beats.SensorSet
+  @set 'signallist', new window.beats.SignalSet
 
 window.beats.Scenario::set_position = (lat, lng) ->
   @network().set_position(lat, lng)

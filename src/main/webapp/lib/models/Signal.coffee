@@ -13,9 +13,9 @@ class window.beats.Signal extends Backbone.Model
     phase = xml.children('phase')
     obj.set('phase', _.map($(phase), (phase_i) -> $a.Phase.from_xml2($(phase_i), deferred, object_with_id)))
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
     node_id = $(xml).attr('node_id')
-    obj.set('node_id', node_id)
+    obj.set('node_id', Number(node_id))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

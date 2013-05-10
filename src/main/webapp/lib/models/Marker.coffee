@@ -10,8 +10,12 @@ class window.beats.Marker extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Marker()
+    id = $(xml).attr('id')
+    obj.set('id', Number(id))
     name = $(xml).attr('name')
     obj.set('name', name)
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp)
     postmile = $(xml).attr('postmile')
     obj.set('postmile', Number(postmile))
     if obj.resolve_references
@@ -22,7 +26,9 @@ class window.beats.Marker extends Backbone.Model
     xml = doc.createElement('marker')
     if @encode_references
       @encode_references()
+    xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('name', @get('name')) if @has('name')
+    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml.setAttribute('postmile', @get('postmile')) if @has('postmile')
     xml
   
