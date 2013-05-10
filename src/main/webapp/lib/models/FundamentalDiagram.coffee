@@ -10,8 +10,8 @@ class window.beats.FundamentalDiagram extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.FundamentalDiagram()
-    crudFlag = xml.children('crudFlag')
-    obj.set('crudflag', $a.CrudFlag.from_xml2(crudFlag, deferred, object_with_id))
+    crudFlag = $(xml).attr('crudFlag')
+    obj.set('crudFlag', crudFlag)
     id = $(xml).attr('id')
     obj.set('id', Number(id))
     order = $(xml).attr('order')
@@ -44,7 +44,7 @@ class window.beats.FundamentalDiagram extends Backbone.Model
     xml = doc.createElement('fundamentalDiagram')
     if @encode_references
       @encode_references()
-    xml.appendChild(@get('crudflag').to_xml(doc)) if @has('crudflag')
+    xml.setAttribute('crudFlag', @get('crudFlag')) if @has('crudFlag')
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('order', @get('order')) if @has('order')
     xml.setAttribute('capacity', @get('capacity')) if @has('capacity')

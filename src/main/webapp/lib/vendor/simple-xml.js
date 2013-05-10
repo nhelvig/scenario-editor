@@ -1,7 +1,7 @@
 window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
 <scenario>\
   <settings/>\
-  <NetworkList>\
+  <NetworkSet>\
     <network dt="300">\
       <description/>\
       <position>\
@@ -67,11 +67,6 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <shape>yybfFzdmiVnEeAjAWJC</shape>\
         </link>\
       </LinkList>\
-      <IntersectionCache/>\
     </network>\
-  </NetworkList>\
-  <SignalList/>\
-  <SensorList/>\
-  <EventSet/>\
-  <ControllerSet/>\
+  </NetworkSet>\
 </scenario>'

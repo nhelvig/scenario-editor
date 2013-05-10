@@ -10,8 +10,8 @@ class window.beats.Demand extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Demand()
-    crudFlag = xml.children('crudFlag')
-    obj.set('crudflag', $a.CrudFlag.from_xml2(crudFlag, deferred, object_with_id))
+    crudFlag = $(xml).attr('crudFlag')
+    obj.set('crudFlag', crudFlag)
     id = $(xml).attr('id')
     obj.set('id', Number(id))
     content = $(xml).attr('content')
@@ -32,7 +32,7 @@ class window.beats.Demand extends Backbone.Model
     xml = doc.createElement('demand')
     if @encode_references
       @encode_references()
-    xml.appendChild(@get('crudflag').to_xml(doc)) if @has('crudflag')
+    xml.setAttribute('crudFlag', @get('crudFlag')) if @has('crudFlag')
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('content', @get('content')) if @has('content')
     xml.setAttribute('demandProfile_id', @get('demandProfile_id')) if @has('demandProfile_id')

@@ -43,11 +43,11 @@ window.beats.Scenario::initialize = ->
   @set('schemaVersion', window.beats.SchemaVersion)
   @object_with_id = network: {}, node: {}, link: {}, path: {}, sensor: {}
   @set 'settings', new window.beats.Settings
-  @set 'networklist', new window.beats.NetworkSet
+  @set 'networkset', new window.beats.NetworkSet
   @set 'controllerset', new window.beats.ControllerSet
   @set 'eventset', new window.beats.EventSet
-  @set 'sensorlist', new window.beats.SensorSet
-  @set 'signallist', new window.beats.SignalSet
+  @set 'sensorset', new window.beats.SensorSet
+  @set 'signalset', new window.beats.SignalSet
 
 window.beats.Scenario::set_position = (lat, lng) ->
   @network().set_position(lat, lng)
@@ -65,10 +65,10 @@ window.beats.Scenario::set_links = (list) ->
   @network().get('linklist')?.set('link', list)
 
 window.beats.Scenario::sensors = ->
-  @get('sensorlist')?.get('sensor') || []
+  @get('sensorset')?.get('sensor') || []
 
 window.beats.Scenario::set_sensors = (list) ->
-  @get('sensorlist')?.set('sensor', list)
+  @get('sensorset')?.set('sensor', list)
 
 window.beats.Scenario::controllers = ->
   @get('controllerset')?.get('controller') || @createController()
@@ -82,11 +82,14 @@ window.beats.Scenario::events = ->
 window.beats.Scenario::set_events = (list) ->
   @get('eventset')?.set('event', list)
 
-window.beats.Scenario::networklist = -> 
-  @get('networklist')
-   
+window.beats.Scenario::networkset = -> 
+  @get('networkset')
+
+window.beats.Scenario::networks = -> 
+  @get('networkset').get('network')
+     
 window.beats.Scenario::network = -> 
-  @get('networklist').get('network')[0]
+  @get('networkset').get('network')[0]
 
 window.beats.Scenario::settings = -> 
   @get('settings')

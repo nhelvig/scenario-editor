@@ -8,7 +8,7 @@ class window.beats.Scenario extends Backbone.Model
     obj
   
   @from_xml2: (xml, deferred, object_with_id) ->
-    #return null if (not xml? or xml.length == 0)
+    return null if (not xml? or xml.length == 0)
     obj = new window.beats.Scenario()
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))

@@ -12,7 +12,7 @@ class window.beats.MapNetworkView extends Backbone.View
   ERROR_MSG = 'Directions API Error: Could not render link :'
     
   initialize: (@scenario) ->
-    @networks =  @scenario.get('networklist').get('network')
+    @networks =  @scenario.networks()
     @_initializeCollections()
     _.each(@networks, (network) => @_drawNetwork(network))
     @_drawScenarioItems()
@@ -55,8 +55,8 @@ class window.beats.MapNetworkView extends Backbone.View
   _drawNetwork: (network)->
     $a.map.setCenter($a.Util.getLatLng(network))
     @_drawLinks(network)
-    if network.get('nodelist')?
-      @_drawNodes network.get('nodelist').get('node'), network
+    if network.nodes()?
+      @_drawNodes network.nodes(), network
   
   # These methods instantiate each elements view instance in the map
   _drawLinks: (network) ->

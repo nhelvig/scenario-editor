@@ -11,6 +11,9 @@ window.beats.Network::initialize = ->
   @set 'position', new window.beats.Position
   @get('position').get('point').push(new window.beats.Point)
 
+window.beats.Network::nodes = -> 
+  @get('nodelist')?.get('node') || []
+  
 window.beats.Network::description_text = ->
   @get('description').get('text')
 
