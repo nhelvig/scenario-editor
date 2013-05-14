@@ -26,8 +26,8 @@ class window.beats.MapLinkView extends Backbone.View
 
   initialize: (@model) ->
     # Gets the encoded path line string if it is not already been set
-    if(@model.legs? and @model.legs.length > 0)
-      @_createEncodedPath @model.legs
+    if(@model.position()? and @model.position().length > 0)
+      @_createEncodedPath @model.position()
       @_saveEncodedPath()
     @drawLink()
     @_saveLinkLength()
@@ -41,14 +41,9 @@ class window.beats.MapLinkView extends Backbone.View
   # this method reads the path of points contained in the legs, joins them
   # into one array with no duplicates and then encodes the using googles
   # geomtry package in order to save the path to models shape field
-  _createEncodedPath: (legs) ->
-    smPath = []
-    for leg in legs
-      for step in leg.steps
-        for pt in step.path
-          if !(pt in smPath)
-            smPath.push pt
-    @encodedPath = google.maps.geometry.encoding.encodePath smPath
+  _createEncodedPath: (pts) ->
+    gPath = (new google.maps.LatLng(pt.lat(), pt.lng()) for pt in pts)
+    @encodedPath = google.maps.geometry.encoding.encodePath gPath
 
   # save the encoded path to the model
   _saveEncodedPath: ->

@@ -58,6 +58,11 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
             <road name=""/>\
           </roads>\
           <dynamics type="CTM"/>\
+          <position>\
+            <point lat="37.6202986513823" lng="-122.07620012739" elevation=""/>\
+            <point lat="37.6213886513823" lng="-122.0769501" elevation=""/>\
+            <point lat="37.6218272580057" lng="-122.07726611031" elevation=""/>\
+          </position>\
           <shape>_bcfFrgmiVJCx@SxD}@DA</shape>\
         </link>\
         <link lanes="4" lane_offset="0" length="170.29121862518073" type="" id="2" in_sync="true">\

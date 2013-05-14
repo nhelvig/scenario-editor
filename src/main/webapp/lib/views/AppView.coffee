@@ -199,9 +199,9 @@ class window.beats.AppView extends Backbone.View
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
-        beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkList>'
+        beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
         data = data.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
-        end = '</NetworkList> <SignalList/> <SensorList/> <EventSet/> <ControllerSet/> </scenario>'
+        end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
         data = data + end
         @_displayMap(data)
       dataType: 'text'
