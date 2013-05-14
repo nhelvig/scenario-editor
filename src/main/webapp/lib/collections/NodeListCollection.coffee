@@ -140,15 +140,15 @@ class window.beats.NodeListCollection extends Backbone.Collection
   _setUpEvents: (node) ->
     node.on('remove', => node.remove())
     node.on('add', => node.add())
-    node.on('change:node_name', -> node.set_crud(window.beats.CrudFlag.UPDATE))
-    node.on('change:in_sync', -> node.set_crud(window.beats.CrudFlag.UPDATE))
+    node.on('change:node_name change:in_sync', 
+          -> node.set_crud($a.CrudFlag.UPDATE))
     node.position().on('change:lat change:lng change:elevation', 
-                        -> node.set_crud(window.beats.CrudFlag.UPDATE))
+          -> node.set_crud($a.CrudFlag.UPDATE))
     node.node_type().on('change:name', 
-                        -> node.set_crud(window.beats.CrudFlag.UPDATE))
+          -> node.set_crud($a.CrudFlag.UPDATE))
     _.map(node.roadway_markers().get('marker'), 
           (marker) -> marker.on('change:name change:postmile', 
-                      -> node.set_crud(window.beats.CrudFlag.UPDATE))
+                      -> node.set_crud($a.CrudFlag.UPDATE))
     )
     
   #this method clears the collection upon a clear map
