@@ -4,7 +4,7 @@ $a.models_with_extensions = [ 'Begin', 'CapacityProfile',
   'Controller', 'ControllerSet', 'DemandProfile',
   'Density', 'Display_position', 'Dynamics', 'End', 'Event', 'EventSet',
   'FundamentalDiagramProfile', 'Input', 'Intersection', 'Link', 'LinkList',
-  'Marker', 'Network', 'NetworkSet', 'Node', 'NodeList', 'Output',
+  'Marker', 'Network', 'NetworkSet', 'Node', 'Node_type', 'NodeList', 'Output',
   'Phase', 'Point', 'Position', 'Road',
   'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorSet', 'Settings',
   'Signal', 'SignalSet', 'Splitratio', 'SplitRatioProfile'

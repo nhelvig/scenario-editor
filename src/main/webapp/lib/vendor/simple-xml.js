@@ -8,7 +8,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
         <point lat="37.865316577955674" lng="-122.29704350395201" elevation="0"/>\
       </position>\
       <NodeList>\
-        <node type="" id="1">\
+        <node id="1" node_name="node1">\
           <roadway_markers>\
             <marker name="" postmile="0"/>\
           </roadway_markers>\
@@ -19,8 +19,9 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <position>\
             <point lat="37.86799330928557" lng="-122.2976803779602" elevation=""/>\
           </position>\
+          <node_type name="terminal" />\
         </node>\
-        <node type="" id="2">\
+        <node type="" id="2" node_name="node2">\
           <roadway_markers>\
             <marker name="" postmile="0"/>\
           </roadway_markers>\
@@ -33,8 +34,9 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <position>\
             <point lat="37.866705913656425" lng="-122.29724049568176" elevation=""/>\
           </position>\
+           <node_type name="simple" />\
         </node>\
-        <node type="" id="3">\
+        <node type="" id="3" node_name="node3">\
           <roadway_markers>\
             <marker name="" postmile="0"/>\
           </roadway_markers>\
@@ -45,6 +47,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <position>\
             <point lat="37.86524062678921" lng="-122.29676842689514" elevation=""/>\
           </position>\
+         <node_type name="terminal" />\
         </node>\
       </NodeList>\
       <LinkList>\

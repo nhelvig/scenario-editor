@@ -64,6 +64,9 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # It is called from the context menu's add node event
   addNode: (position, type) ->
     n = new $a.Node()
+    t = new $a.Node_type();
+    t.set_name(type.name()) if type?
+    
     p = new $a.Position()
     pt = new $a.Point()
     pt.set(
@@ -77,7 +80,8 @@ class window.beats.NodeListCollection extends Backbone.Collection
     p.get('point').push(pt)
     n.set('id', $a.Util.getNewElemId($a.models.nodes()))
     n.set('position', p)
-    n.set('type', type) if type?
+    n.set('node_type', t) if type?
+    n.set_crud($a.CrudFlag.CREATE)
     @_setUpEvents(n)
     @add(n)
     n
@@ -134,9 +138,19 @@ class window.beats.NodeListCollection extends Backbone.Collection
 
   # This method sets up the events each node should listen too
   _setUpEvents: (node) ->
-    node.bind('remove', => node.remove())
-    node.bind('add', => node.add())
-  
+    node.on('remove', => node.remove())
+    node.on('add', => node.add())
+    node.on('change:node_name', -> node.set_crud(window.beats.CrudFlag.UPDATE))
+    node.on('change:in_sync', -> node.set_crud(window.beats.CrudFlag.UPDATE))
+    node.position().on('change:lat change:lng change:elevation', 
+                        -> node.set_crud(window.beats.CrudFlag.UPDATE))
+    node.node_type().on('change:name', 
+                        -> node.set_crud(window.beats.CrudFlag.UPDATE))
+    _.map(node.roadway_markers().get('marker'), 
+          (marker) -> marker.on('change:name change:postmile', 
+                      -> node.set_crud(window.beats.CrudFlag.UPDATE))
+    )
+    
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)

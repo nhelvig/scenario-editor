@@ -136,7 +136,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   
   # This returns the appropriate icon for terminals and selected or not
   _getTypeIcon : (selected) ->
-    switch @model.get('type')
+    switch @model.type()
       when MapNodeView.TERMINAL_TYPE
         if selected
           MapNodeView.SELECTED_TERMINAL_ICON

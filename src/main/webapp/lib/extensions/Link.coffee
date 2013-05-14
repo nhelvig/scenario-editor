@@ -11,6 +11,9 @@ window.beats.Link::initialize = ->
   @set('roads', new window.beats.Roads)
   @set('subdivide', false)
 
+window.beats.Link::set_crud = (flag) -> @set 'crudFlag', flag
+window.beats.Link::crud = -> @get 'crudFlag'
+
 window.beats.Link::set_geometry = (text) ->
   sh = new window.beats.Shape()
   sh.set('text', text)

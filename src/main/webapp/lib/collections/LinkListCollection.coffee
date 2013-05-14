@@ -245,6 +245,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->
     link.on('change:subdivide', => @splitLinkByDistance(link))
+    link.on('change', link.set_crud($a.CrudFlag.UPDATE), @)
     link.bind('remove', -> link.remove())
     link.bind('add', -> link.add())
     bNode = link.begin_node()
