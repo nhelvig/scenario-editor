@@ -110,7 +110,12 @@ window.beats.Link::selected = ->
   @get('selected')
 
 window.beats.Link::remove = ->
-  @set_crud($a.CrudFlag.DELETE)
+  if @crud() is $a.CrudFlag.CREATE
+    links = window.beats.models.links()
+    links = _.reject(links, (l) => l is @)
+    window.beats.models.set_links(links)
+  else
+    @set_crud($a.CrudFlag.DELETE)
   @stopListening
 
 window.beats.Link::add = ->
