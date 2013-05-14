@@ -1,5 +1,4 @@
 $a = window.beats
-
 window.beats.Link::defaults =
   selected : false
   lanes: 1
@@ -7,14 +6,15 @@ window.beats.Link::defaults =
   in_sync: true
 
 window.beats.Link::initialize = ->
-  @set('dynamics', new window.beats.Dynamics())
+  @set('dynamics', new window.beats.Dynamics)
   @set('roads', new window.beats.Roads)
+  @set('position', new window.beats.Position)
   @set('subdivide', false)
   @set('shape', new window.beats.Shape)
-  t = new $a.Link_type()
-  t.set_name("simple")
+  t = new window.beats.Link_type()
   @set('link_type',t)
 
+window.beats.Link::shape = -> @get("shape")
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::ident = -> Number(@get("id"))
 window.beats.Link::id = -> @get("id")
@@ -30,14 +30,23 @@ window.beats.Link::in_sync = -> @get('in_sync')
 window.beats.Link::begin_node = -> @get('begin').get('node')
 window.beats.Link::end_node = -> @get('end').get('node')
 window.beats.Link::dynamics = -> @get('dynamics')
+window.beats.Link::roads = -> @get('roads')
 window.beats.Link::subdivide = -> @get("subdivide")
 
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
   @defaults[id] = val
 
+window.beats.Link::set_link_name = (name) -> @set('link_name',name)
+
 window.beats.Link::set_length = (length) ->@set('length', length)
-window.beats.Link::set_crud = (flag) -> @set 'crudFlag', flag
+window.beats.Link::set_crud = (flag) -> 
+    if @crud() != window.beats.CrudFlag.CREATE
+      @set 'crudFlag', flag
+window.beats.Link::set_crud_update = ->
+    if @crud() != window.beats.CrudFlag.CREATE
+      @set 'crudFlag', window.beats.CrudFlag.UPDATE
+
 window.beats.Link::set_subdivide = (val) -> @set("subdivide", val)
 
 window.beats.Link::set_geometry = (text) ->
@@ -46,7 +55,7 @@ window.beats.Link::set_geometry = (text) ->
 window.beats.Link::set_dynamics = (type) -> 
   @get('dynamics').set_type(type)
 
-window.beats.Link::link_type = -> @get("link_type") if @get("link_type")?
+window.beats.Link::link_type = -> @get("link_type")
 window.beats.Link::type = -> @get("link_type").name() if @get("link_type")?
 window.beats.Link::set_type = (val) -> 
   @get("link_type").set_name(val)
@@ -56,7 +65,7 @@ window.beats.Link::updatePosition = (pos) ->
   @get('position').get('point')[0].set({'lat':pos.lat(), 'lng':pos.lng()})
 
 window.beats.Link::position = ->
-  @get('position').get('point')[0]
+  @get('position')?.get('point')[0] || null
 
 window.beats.Link::parallel_links = ->
   begin_node = @get('begin').get('node')

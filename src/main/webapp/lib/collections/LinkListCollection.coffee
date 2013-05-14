@@ -244,13 +244,22 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->
+    ch = 'change:lanes change:lane_offset change:length change:speed_limit '
+    ch += 'change:link_name change:in_sync'
+    link.on(ch, -> link.set_crud_update())
     link.on('change:subdivide', => @splitLinkByDistance(link))
-    link.bind('remove', -> link.remove())
-    link.bind('add', -> link.add())
+    link.on('remove', -> link.remove())
+    link.on('add', -> link.add())
+    
+    link.link_type().on('change', -> link.set_crud_update()) if(link.link_type()?)
+    link.position().on('change', -> link.set_crud_update()) if(link.position()?)
+    link.shape().on('change', -> link.set_crud_update()) if(link.shape()?)
+    link.dynamics().on('change', -> link.set_crud_update()) if(link.dynamics()?)
+    _.map(link.roads().road(), (r) -> r.on('change', -> link.set_crud_update()))
     bNode = link.begin_node()
     eNode = link.end_node()
-    bNode.bind('remove', => @removeNodeReference(link, 'begin'))
-    eNode.bind('remove', => @removeNodeReference(link, 'end')) 
+    bNode.on('remove', => @removeNodeReference(link, 'begin'))
+    eNode.on('remove', => @removeNodeReference(link, 'end')) 
     bNode.position().on('change',(=> @reDrawLink(link)), @)
     eNode.position().on('change',(=> @reDrawLink(link)), @)
   

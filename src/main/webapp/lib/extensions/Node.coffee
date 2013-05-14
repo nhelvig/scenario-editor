@@ -15,6 +15,9 @@ window.beats.Node::crud = -> @get 'crudFlag'
 window.beats.Node::set_crud = (flag) ->
   if @crud() != $a.CrudFlag.CREATE
     @set 'crudFlag', flag
+window.beats.Node::set_crud_update = ->
+  if @crud() != $a.CrudFlag.CREATE
+    @set 'crudFlag', window.beats.CrudFlag.UPDATE
 
 window.beats.Node::name = -> @get("node_name")
 window.beats.Node::set_name = (name) -> @set("node_name", name)
