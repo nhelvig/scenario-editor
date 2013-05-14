@@ -101,9 +101,8 @@ window.beats.Link::selected = ->
   @get('selected')
 
 window.beats.Link::remove = ->
-  links = window.beats.models.links()
-  links = _.reject(links, (l) => l.id is @.id)
-  window.beats.models.set_links(links)
+  @set_crud($a.CrudFlag.DELETE)
+  @stopListening
 
 window.beats.Link::add = ->
   window.beats.models.links().push(@)
