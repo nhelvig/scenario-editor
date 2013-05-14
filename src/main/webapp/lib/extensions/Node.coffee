@@ -93,9 +93,6 @@ window.beats.Node::position = ->
   @get('position').get('point')[0]
 
 window.beats.Node::remove = ->
-  # nodes = window.beats.models.nodes()
-  # nodes = _.reject(nodes, (n) => n is @)
-  # window.beats.models.set_nodes(nodes)
   @set_crud($a.CrudFlag.DELETE)
   @stopListening
 
