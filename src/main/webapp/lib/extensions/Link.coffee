@@ -10,11 +10,13 @@ window.beats.Link::initialize = ->
   @set('dynamics', new window.beats.Dynamics())
   @set('roads', new window.beats.Roads)
   @set('subdivide', false)
+  @set('shape', new window.beats.Shape)
+
+window.beats.Link::set_crud = (flag) -> @set 'crudFlag', flag
+window.beats.Link::crud = -> @get 'crudFlag'
 
 window.beats.Link::set_geometry = (text) ->
-  sh = new window.beats.Shape()
-  sh.set('text', text)
-  @set('shape', sh)
+  @get('shape').set('text',text)
 
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::id = -> @get("id")

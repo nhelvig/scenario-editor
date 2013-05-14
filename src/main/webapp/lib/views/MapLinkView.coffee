@@ -32,7 +32,7 @@ class window.beats.MapLinkView extends Backbone.View
     @drawLink()
     @_saveLinkLength()
     @_contextMenu()
-    @_publishEvents();
+    @_publishEvents()
   
   render: ->
     @link.setMap($a.map) if @link?
@@ -215,7 +215,7 @@ class window.beats.MapLinkView extends Backbone.View
     length
 
   # Saves Link Length Should be called when either:
-  # 1) link has no length attribute so on load it is added to model,
+  # 1) link has no length attribute on load so it is added to model,
   # 2) New link is added or 3) If link is changed
   _saveLinkLength: ->
     # get length in meters of link
