@@ -38,7 +38,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # of the appropriate nodes
   addLink: (args) ->
     link = new window.beats.Link()
-    
+    link.set_crud($a.CrudFlag.CREATE)
     id = $a.Util.getNewElemId($a.models.links())
     link.set('id', id)
     
