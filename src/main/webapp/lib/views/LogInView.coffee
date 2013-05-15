@@ -29,7 +29,7 @@ class window.beats.LogInView extends Backbone.View
         @$el.remove()
     $('.ui-dialog-titlebar-close').css('visibility', 'hidden')
 
-  # Attempts to log into project manager by sending authentication request
+  # Attempts to log into DB by sending authentication request
   # to server
   logIn: (event) ->
     # prevent the default action of submitting the form

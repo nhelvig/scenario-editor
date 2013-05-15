@@ -7,7 +7,7 @@ $a.models_with_extensions = [ 'Begin', 'CapacityProfile',
   'Link_type', 'Marker', 'Network', 'NetworkSet', 'Node', 'Node_type', 'NodeList', 'Output',
   'Phase', 'Point', 'Position', 'Road',
   'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorSet', 'Settings',
-  'Signal', 'SignalSet', 'Splitratio', 'SplitRatioProfile'
+  'Signal', 'SignalSet', 'Splitratio', 'SplitratioProfile'
 ]
 
 $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
