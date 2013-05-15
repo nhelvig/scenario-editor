@@ -252,10 +252,10 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link.on('add', -> link.add())
     
     link.link_type().on('change', -> link.set_crud_update()) if(link.link_type()?)
-    link.position().on('change', -> link.set_crud_update()) if(link.position()?)
     link.shape().on('change', -> link.set_crud_update()) if(link.shape()?)
     link.dynamics().on('change', -> link.set_crud_update()) if(link.dynamics()?)
-    _.map(link.roads().road(), (r) -> r.on('change', -> link.set_crud_update()))
+    if(link.roads()? and link.roads().road())
+      _.map(link.roads().road(), (r) -> r.on('change', -> link.set_crud_update()))
     bNode = link.begin_node()
     eNode = link.end_node()
     bNode.on('remove', => @removeNodeReference(link, 'begin'))

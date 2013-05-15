@@ -50,6 +50,7 @@ window.beats.Link::set_crud_update = ->
 window.beats.Link::set_subdivide = (val) -> @set("subdivide", val)
 
 window.beats.Link::set_geometry = (text) ->
+  @set('shape', new window.beats.Shape)  if not @get('shape')?
   @get('shape').set('text',text)
 
 window.beats.Link::set_dynamics = (type) -> 
@@ -62,10 +63,13 @@ window.beats.Link::set_type = (val) ->
   @defaults['link_type'] = val
 
 window.beats.Link::updatePosition = (pos) ->
-  @get('position').get('point')[0].set({'lat':pos.lat(), 'lng':pos.lng()})
+  @get('position').get('point').push(pos)
 
+window.beats.Link::set_position = (points) ->
+  @get('position').set('point', points)
+  
 window.beats.Link::position = ->
-  @get('position')?.get('point')[0] || null
+  @get('position')?.get('point')
 
 window.beats.Link::parallel_links = ->
   begin_node = @get('begin').get('node')
@@ -110,7 +114,12 @@ window.beats.Link::selected = ->
   @get('selected')
 
 window.beats.Link::remove = ->
-  @set_crud($a.CrudFlag.DELETE)
+  if @crud() is $a.CrudFlag.CREATE
+    links = window.beats.models.links()
+    links = _.reject(links, (l) => l is @)
+    window.beats.models.set_links(links)
+  else
+    @set_crud($a.CrudFlag.DELETE)
   @stopListening
 
 window.beats.Link::add = ->

@@ -26,8 +26,8 @@ class window.beats.MapLinkView extends Backbone.View
 
   initialize: (@model) ->
     # Gets the encoded path line string if it is not already been set
-    if(@model.legs? and @model.legs.length > 0)
-      @_createEncodedPath @model.legs
+    if(@model.position()? and @model.position().length > 0)
+      @_createEncodedPath @model.position()
       @_saveEncodedPath()
     @drawLink()
     @_saveLinkLength()
@@ -38,17 +38,12 @@ class window.beats.MapLinkView extends Backbone.View
     @link.setMap($a.map) if @link?
     @
 
-  # this method reads the path of points contained in the legs, joins them
-  # into one array with no duplicates and then encodes the using googles
+  # this method reads the path of MO points converting them into Google Points
+  # and then encodes the using googles
   # geomtry package in order to save the path to models shape field
-  _createEncodedPath: (legs) ->
-    smPath = []
-    for leg in legs
-      for step in leg.steps
-        for pt in step.path
-          if !(pt in smPath)
-            smPath.push pt
-    @encodedPath = google.maps.geometry.encoding.encodePath smPath
+  _createEncodedPath: (pts) ->
+    gPath = (new google.maps.LatLng(pt.lat(), pt.lng()) for pt in pts)
+    @encodedPath = google.maps.geometry.encoding.encodePath gPath
 
   # save the encoded path to the model
   _saveEncodedPath: ->
@@ -106,7 +101,7 @@ class window.beats.MapLinkView extends Backbone.View
   # this information is displays when you mouse over a polyline
   getLinkRollOverInfo: () ->
     str = "Id: " + @model.id + "</br>"
-    str += "Name: " + @model.road_names() + "</br>"
+    str += "Name: " + @model.link_name() + "</br>"
     str += "Type: " + @model.type() + "</br>"
     str += "Number of Lanes: " + @model.lanes() + "</br>"
     str += "Length: " + @model.length()

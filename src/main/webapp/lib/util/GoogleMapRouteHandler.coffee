@@ -74,7 +74,15 @@ class window.beats.GoogleMapRouteHandler
             msg = "#{WARNING_MSG} #{rte.warnings}"
             $a.broker.trigger('app:show_message:info', msg)
           if link?
-            link.legs = rte.legs 
+            smPath = []
+            for leg in rte.legs
+              for step in leg.steps
+                for pt in step.path
+                  if !(pt in smPath)
+                    smPath.push pt
+
+            link.legs = smPath
+            link.set_position(@_convertLatLngToPoints(smPath)) 
             $a.broker.trigger('map:draw_link', link) if !@stop
             if(rate > 200)
               rate -= 100
@@ -101,3 +109,12 @@ class window.beats.GoogleMapRouteHandler
   #checks to see if we are over the google query limit
   _isOverQuery: (status) ->
     status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT
+    
+  _convertLatLngToPoints: (pts) ->
+    moPoints = []
+    for pt in pts
+      p = new $a.Point()
+      p.set_lat(pt.lat())
+      p.set_lng(pt.lng())
+      moPoints.push(p)
+    moPoints
