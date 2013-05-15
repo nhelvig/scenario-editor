@@ -82,7 +82,7 @@ class window.beats.GoogleMapRouteHandler
                     smPath.push pt
 
             link.legs = smPath
-            link.set_position(_convertLatLngToPoints(smPath)) 
+            link.set_position(@_convertLatLngToPoints(smPath)) 
             $a.broker.trigger('map:draw_link', link) if !@stop
             if(rate > 200)
               rate -= 100

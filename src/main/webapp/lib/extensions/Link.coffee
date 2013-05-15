@@ -50,6 +50,7 @@ window.beats.Link::set_crud_update = ->
 window.beats.Link::set_subdivide = (val) -> @set("subdivide", val)
 
 window.beats.Link::set_geometry = (text) ->
+  @set('shape', new window.beats.Shape)  if not @get('shape')?
   @get('shape').set('text',text)
 
 window.beats.Link::set_dynamics = (type) -> 

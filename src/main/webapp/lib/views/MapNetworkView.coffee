@@ -15,6 +15,7 @@ class window.beats.MapNetworkView extends Backbone.View
     @networks =  @scenario.networks()
     @_initializeCollections()
     _.each(@networks, (network) => @_drawNetwork(network))
+    @_centerMap() if @networks[0].position()?
     @_drawScenarioItems()
     @_layersMenu()
     
@@ -44,6 +45,11 @@ class window.beats.MapNetworkView extends Backbone.View
     }
     @lmenu = new $a.LayersMenuView(attrs)
   
+  #center the map based on network position
+  _centerMap: () ->
+    pt = @networks[0].position().points()[0]
+    $a.map.setCenter(new google.maps.LatLng(pt.lat(), pt.lng()))
+    
   _drawScenarioItems: () ->
     @_drawSensors()
     @_drawControllers()

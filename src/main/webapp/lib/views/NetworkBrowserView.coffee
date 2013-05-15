@@ -54,7 +54,8 @@ class window.beats.NetworkBrowserView extends Backbone.View
         "bInfo": false,
         "bAutoWidth": false,
         "bJQueryUI": true,
-    })
+        "bDestroy": true
+    }) 
     $a.networkbrowser.addLoadNetworkListener()
     
 

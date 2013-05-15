@@ -101,7 +101,7 @@ class window.beats.MapLinkView extends Backbone.View
   # this information is displays when you mouse over a polyline
   getLinkRollOverInfo: () ->
     str = "Id: " + @model.id + "</br>"
-    str += "Name: " + @model.road_names() + "</br>"
+    str += "Name: " + @model.link_name() + "</br>"
     str += "Type: " + @model.type() + "</br>"
     str += "Number of Lanes: " + @model.lanes() + "</br>"
     str += "Length: " + @model.length()

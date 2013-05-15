@@ -56,7 +56,8 @@ class window.beats.TreeView extends Backbone.View
   # this method sets up the tree and all the events related opening and
   # closing the tree view.
   _setUpToggleAndExpand: () ->
-    $("#right_tree").prepend $('#toggle-tree-handle-template').html()
+    if $('#tree-resize').length == 0
+      $("#right_tree").prepend $('#toggle-tree-handle-template').html()
     
     @positionHandle()
     $('#tree-handle').click( ->
