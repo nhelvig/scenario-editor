@@ -11,7 +11,7 @@ class window.beats.Input extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Input()
     link_id = $(xml).attr('link_id')
-    obj.set('link_id', link_id)
+    obj.set('link_id', Number(link_id))
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

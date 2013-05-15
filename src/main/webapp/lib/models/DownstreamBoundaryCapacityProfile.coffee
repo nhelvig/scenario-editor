@@ -1,4 +1,4 @@
-class window.beats.CapacityProfile extends Backbone.Model
+class window.beats.DownstreamBoundaryCapacityProfile extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,9 +9,9 @@ class window.beats.CapacityProfile extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.CapacityProfile()
+    obj = new window.beats.DownstreamBoundaryCapacityProfile()
     link_id = $(xml).attr('link_id')
-    obj.set('link_id', link_id)
+    obj.set('link_id', Number(link_id))
     start_time = $(xml).attr('start_time')
     obj.set('start_time', Number(start_time))
     dt = $(xml).attr('dt')
@@ -22,7 +22,7 @@ class window.beats.CapacityProfile extends Backbone.Model
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('capacityProfile')
+    xml = doc.createElement('downstreamBoundaryCapacityProfile')
     if @encode_references
       @encode_references()
     xml.setAttribute('link_id', @get('link_id')) if @has('link_id')
@@ -31,6 +31,6 @@ class window.beats.CapacityProfile extends Backbone.Model
     xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))
     xml
   
-  deep_copy: -> CapacityProfile.from_xml1(@to_xml(), {})
+  deep_copy: -> DownstreamBoundaryCapacityProfile.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

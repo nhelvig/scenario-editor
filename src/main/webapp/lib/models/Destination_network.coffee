@@ -13,9 +13,9 @@ class window.beats.Destination_network extends Backbone.Model
     link_references = xml.children('link_references')
     obj.set('link_references', $a.Link_references.from_xml2(link_references, deferred, object_with_id))
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
     link_id_destination = $(xml).attr('link_id_destination')
-    obj.set('link_id_destination', link_id_destination)
+    obj.set('link_id_destination', Number(link_id_destination))
     if object_with_id.destination_network
       object_with_id.destination_network[obj.id] = obj
     if obj.resolve_references

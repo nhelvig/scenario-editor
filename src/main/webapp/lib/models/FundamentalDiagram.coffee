@@ -10,6 +10,12 @@ class window.beats.FundamentalDiagram extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.FundamentalDiagram()
+    crudFlag = $(xml).attr('crudFlag')
+    obj.set('crudFlag', crudFlag)
+    id = $(xml).attr('id')
+    obj.set('id', Number(id))
+    order = $(xml).attr('order')
+    obj.set('order', Number(order))
     capacity = $(xml).attr('capacity')
     obj.set('capacity', Number(capacity))
     free_flow_speed = $(xml).attr('free_flow_speed')
@@ -28,6 +34,8 @@ class window.beats.FundamentalDiagram extends Backbone.Model
     obj.set('std_dev_free_flow_speed', Number(std_dev_free_flow_speed))
     std_dev_congestion_speed = $(xml).attr('std_dev_congestion_speed')
     obj.set('std_dev_congestion_speed', Number(std_dev_congestion_speed))
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -36,6 +44,9 @@ class window.beats.FundamentalDiagram extends Backbone.Model
     xml = doc.createElement('fundamentalDiagram')
     if @encode_references
       @encode_references()
+    xml.setAttribute('crudFlag', @get('crudFlag')) if @has('crudFlag')
+    xml.setAttribute('id', @get('id')) if @has('id')
+    xml.setAttribute('order', @get('order')) if @has('order')
     xml.setAttribute('capacity', @get('capacity')) if @has('capacity')
     xml.setAttribute('free_flow_speed', @get('free_flow_speed')) if @has('free_flow_speed')
     xml.setAttribute('congestion_speed', @get('congestion_speed')) if @has('congestion_speed')
@@ -45,6 +56,7 @@ class window.beats.FundamentalDiagram extends Backbone.Model
     xml.setAttribute('std_dev_capacity', @get('std_dev_capacity')) if @has('std_dev_capacity')
     xml.setAttribute('std_dev_free_flow_speed', @get('std_dev_free_flow_speed')) if @has('std_dev_free_flow_speed')
     xml.setAttribute('std_dev_congestion_speed', @get('std_dev_congestion_speed')) if @has('std_dev_congestion_speed')
+    if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
   deep_copy: -> FundamentalDiagram.from_xml1(@to_xml(), {})

@@ -27,7 +27,7 @@ class window.beats.Event extends Backbone.Model
     splitratioEvent = xml.children('splitratioEvent')
     obj.set('splitratioevent', $a.SplitratioEvent.from_xml2(splitratioEvent, deferred, object_with_id))
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
     tstamp = $(xml).attr('tstamp')
     obj.set('tstamp', Number(tstamp))
     enabled = $(xml).attr('enabled')

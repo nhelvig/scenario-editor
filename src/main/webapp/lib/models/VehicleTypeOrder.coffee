@@ -10,8 +10,10 @@ class window.beats.VehicleTypeOrder extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.VehicleTypeOrder()
-    vehicle_type = xml.children('vehicle_type')
-    obj.set('vehicle_type', _.map($(vehicle_type), (vehicle_type_i) -> $a.Vehicle_type.from_xml2($(vehicle_type_i), deferred, object_with_id)))
+    vehicleType = xml.children('vehicleType')
+    obj.set('vehicletype', _.map($(vehicleType), (vehicleType_i) -> $a.VehicleType.from_xml2($(vehicleType_i), deferred, object_with_id)))
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -20,7 +22,8 @@ class window.beats.VehicleTypeOrder extends Backbone.Model
     xml = doc.createElement('VehicleTypeOrder')
     if @encode_references
       @encode_references()
-    _.each(@get('vehicle_type') || [], (a_vehicle_type) -> xml.appendChild(a_vehicle_type.to_xml(doc)))
+    _.each(@get('vehicletype') || [], (a_vehicletype) -> xml.appendChild(a_vehicletype.to_xml(doc)))
+    if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
   deep_copy: -> VehicleTypeOrder.from_xml1(@to_xml(), {})

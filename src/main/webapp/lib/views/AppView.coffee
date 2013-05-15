@@ -133,10 +133,11 @@ class window.beats.AppView extends Backbone.View
     try
       xml = $.parseXML(fileText)
       $a.models = $a.Scenario.from_xml($(xml).children())
+      new $a.MapNetworkView $a.models
     catch error
+      console.log error.stack
       $a.broker.trigger("app:show_message:error", "Data file is badly formatted.")
-    new $a.MapNetworkView $a.models
-
+  
   clearMap: ->
     #$a.models = {}
     $a.broker.trigger('map:toggle_tree', false)
@@ -205,4 +206,3 @@ class window.beats.AppView extends Backbone.View
         @_displayMap(data)
       dataType: 'text'
     )
-

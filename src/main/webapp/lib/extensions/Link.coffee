@@ -1,36 +1,72 @@
+$a = window.beats
 window.beats.Link::defaults =
   selected : false
-  type: ''
   lanes: 1
   lane_offset: 0
-  record: true
   in_sync: true
 
 window.beats.Link::initialize = ->
-  @set('dynamics', new window.beats.Dynamics())
+  @set('dynamics', new window.beats.Dynamics)
   @set('roads', new window.beats.Roads)
+  @set('position', new window.beats.Position)
   @set('subdivide', false)
+  @set('shape', new window.beats.Shape)
+  t = new window.beats.Link_type()
+  @set('link_type',t)
 
-window.beats.Link::set_geometry = (text) ->
-  sh = new window.beats.Shape()
-  sh.set('text', text)
-  @set('shape', sh)
-
+window.beats.Link::shape = -> @get("shape")
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
+window.beats.Link::ident = -> Number(@get("id"))
 window.beats.Link::id = -> @get("id")
-window.beats.Link::type = -> @get("type")
 window.beats.Link::demand = -> @get("demand")
+window.beats.Link::crud = -> @get 'crudFlag'
 window.beats.Link::lanes = -> @get("lanes")
+window.beats.Link::lane_offset = -> @get("lane_offset")
+window.beats.Link::length = -> @get('length')
+window.beats.Link::speed_limit = -> @get('speed_limit')
+window.beats.Link::link_name = -> @get('link_name')
+window.beats.Link::mod_stamp = -> @get('mod_stamp')
+window.beats.Link::in_sync = -> @get('in_sync')
+window.beats.Link::begin_node = -> @get('begin').get('node')
+window.beats.Link::end_node = -> @get('end').get('node')
+window.beats.Link::dynamics = -> @get('dynamics')
+window.beats.Link::roads = -> @get('roads')
+window.beats.Link::subdivide = -> @get("subdivide")
+
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
   @defaults[id] = val
 
-window.beats.Link::subdivide = -> @get("subdivide")
+window.beats.Link::set_link_name = (name) -> @set('link_name',name)
 
-window.beats.Link::set_subdivide = (val) ->
-  @set("subdivide", val)
+window.beats.Link::set_length = (length) ->@set('length', length)
+window.beats.Link::set_crud = (flag) -> 
+    if @crud() != window.beats.CrudFlag.CREATE
+      @set 'crudFlag', flag
+window.beats.Link::set_crud_update = ->
+    if @crud() != window.beats.CrudFlag.CREATE
+      @set 'crudFlag', window.beats.CrudFlag.UPDATE
 
-window.beats.Link::ident = -> Number(@get("id"))
+window.beats.Link::set_subdivide = (val) -> @set("subdivide", val)
+
+window.beats.Link::set_geometry = (text) ->
+  @get('shape').set('text',text)
+
+window.beats.Link::set_dynamics = (type) -> 
+  @get('dynamics').set_type(type)
+
+window.beats.Link::link_type = -> @get("link_type")
+window.beats.Link::type = -> @get("link_type").name() if @get("link_type")?
+window.beats.Link::set_type = (val) -> 
+  @get("link_type").set_name(val)
+  @defaults['link_type'] = val
+
+window.beats.Link::updatePosition = (pos) ->
+  @get('position').get('point')[0].set({'lat':pos.lat(), 'lng':pos.lng()})
+
+window.beats.Link::position = ->
+  @get('position')?.get('point')[0] || null
+
 window.beats.Link::parallel_links = ->
   begin_node = @get('begin').get('node')
   end_node = @get('end').get('node')
@@ -55,26 +91,6 @@ window.beats.Link::set_road_names = (name) ->
   r[0].set('name',name)
   r[0].defaults["name"] = name
 
-window.beats.Link::begin_node = ->
-  @get('begin').get('node')
-
-window.beats.Link::end_node = ->
-  @get('end').get('node')
-  
-window.beats.Link::remove = ->
-  links = window.beats.models.links()
-  links = _.reject(links, (l) => l.id is @.id)
-  window.beats.models.set_links(links)
-
-window.beats.Link::add = ->
-  window.beats.models.links().push(@)
-
-window.beats.Link::set_length = (length) ->
-  @set('length', length)
-
-window.beats.Link::length = ->
-  @get('length')
-
 window.beats.Link::set_view = (view) ->
   @set('view', view)
   
@@ -92,6 +108,13 @@ window.beats.Link::set_selected = (flag) ->
   
 window.beats.Link::selected = ->
   @get('selected')
+
+window.beats.Link::remove = ->
+  @set_crud($a.CrudFlag.DELETE)
+  @stopListening
+
+window.beats.Link::add = ->
+  window.beats.models.links().push(@)
 
 window.beats.Link::editor_show = ->
   @get('editor_show')

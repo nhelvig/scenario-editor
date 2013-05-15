@@ -12,6 +12,8 @@ class window.beats.Parameters extends Backbone.Model
     obj = new window.beats.Parameters()
     parameter = xml.children('parameter')
     obj.set('parameter', _.map($(parameter), (parameter_i) -> $a.Parameter.from_xml2($(parameter_i), deferred, object_with_id)))
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -21,6 +23,7 @@ class window.beats.Parameters extends Backbone.Model
     if @encode_references
       @encode_references()
     _.each(@get('parameter') || [], (a_parameter) -> xml.appendChild(a_parameter.to_xml(doc)))
+    if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
   deep_copy: -> Parameters.from_xml1(@to_xml(), {})

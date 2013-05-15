@@ -13,7 +13,7 @@ class window.beats.ScenarioElement extends Backbone.Model
     type = $(xml).attr('type')
     obj.set('type', type)
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
     usage = $(xml).attr('usage')
     obj.set('usage', usage)
     if obj.resolve_references

@@ -84,7 +84,8 @@ class window.beats.EditorLinkView extends window.beats.EditorView
                   fdp = m.get('fundamentaldiagramprofile')
                   fdp?.get('fundamentaldiagram')[0] || null
           )
-    name: _.map(models, (m) -> m.road_names()).join(", ")
+    #name: _.map(models, (m) -> m.road_names()).join(", ")
+    name: _.map(models, (m) -> m.link_name()).join(", ")
     insync: if models[0].has('in_sync') and models[0].get('in_sync') then 'checked' else ''
     lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
     laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  
@@ -117,11 +118,13 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     fieldId = id[5...] if id.indexOf("link") is 0
     _.each(@models, (m) -> m.set_generic(fieldId,$("##{id}").val()))
   
-  # This saves the link name
+  # This saves the link name - will be needed when we go back to road names
   saveName: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_road_names($("##{id}").val()))
-
+    #_.each(@models, (m) -> m.set_road_names($("##{id}").val()))
+    _.each(@models, (m) -> m.set_link_name($("##{id}").val()))
+    
+    
   # This saves the checkbox indicating the link is in sync
   saveInSync: (e) ->
     id = e.currentTarget.id

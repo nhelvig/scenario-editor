@@ -1,4 +1,4 @@
-class window.beats.Road extends Backbone.Model
+class window.beats.FundamentalDiagramType extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,11 +9,15 @@ class window.beats.Road extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.Road()
+    obj = new window.beats.FundamentalDiagramType()
     id = $(xml).attr('id')
     obj.set('id', Number(id))
     name = $(xml).attr('name')
     obj.set('name', name)
+    description = $(xml).attr('description')
+    obj.set('description', description)
+    in_use = $(xml).attr('in_use')
+    obj.set('in_use', Number(in_use))
     mod_stamp = $(xml).attr('mod_stamp')
     obj.set('mod_stamp', mod_stamp)
     if obj.resolve_references
@@ -21,14 +25,16 @@ class window.beats.Road extends Backbone.Model
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('road')
+    xml = doc.createElement('fundamentalDiagramType')
     if @encode_references
       @encode_references()
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('name', @get('name')) if @has('name')
-    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
+    xml.setAttribute('description', @get('description')) if @has('description')
+    xml.setAttribute('in_use', @get('in_use')) if @has('in_use')
+    if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
-  deep_copy: -> Road.from_xml1(@to_xml(), {})
+  deep_copy: -> FundamentalDiagramType.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null
