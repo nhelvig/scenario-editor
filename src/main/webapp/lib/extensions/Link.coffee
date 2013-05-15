@@ -66,7 +66,8 @@ window.beats.Link::updatePosition = (pos) ->
   @get('position').get('point').push(pos)
 
 window.beats.Link::set_position = (points) ->
-  @get('position').set('point', points)
+  pos = @get('position')? || new $a.Position()
+  pos.set('point', points)
   
 window.beats.Link::position = ->
   @get('position')?.get('point')
