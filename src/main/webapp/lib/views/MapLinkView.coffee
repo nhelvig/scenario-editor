@@ -38,8 +38,8 @@ class window.beats.MapLinkView extends Backbone.View
     @link.setMap($a.map) if @link?
     @
 
-  # this method reads the path of points contained in the legs, joins them
-  # into one array with no duplicates and then encodes the using googles
+  # this method reads the path of MO points converting them into Google Points
+  # and then encodes the using googles
   # geomtry package in order to save the path to models shape field
   _createEncodedPath: (pts) ->
     gPath = (new google.maps.LatLng(pt.lat(), pt.lng()) for pt in pts)

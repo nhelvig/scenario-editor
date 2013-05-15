@@ -63,7 +63,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
             <point lat="37.867940000000004" lng="-122.29768000000001" elevation=""/>\
             <point lat="37.867650000000005" lng="-122.29758000000001" elevation=""/>\
             <point lat="37.86672" lng="-122.29727000000001" elevation=""/>\
-            <point lat="37.866690000000006," lng="-122.29726000000001" elevation=""/>\
+            <point lat="37.866690000000006" lng="-122.29726000000001" elevation=""/>\
           </position>\
           <shape>_bcfFrgmiVJCx@SxD}@DA</shape>\
         </link>\
