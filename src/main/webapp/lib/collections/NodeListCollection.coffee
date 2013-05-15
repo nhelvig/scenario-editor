@@ -146,7 +146,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     node.node_type().on('change:name', -> node.set_crud_update())
     _.map(node.roadway_markers().marker(), 
         (m) -> m.on('change', -> node.set_crud_update())
-    )
+    ) if(node.roadway_markers()? and node.roadway_markers().marker()?)
     
   #this method clears the collection upon a clear map
   clear: ->

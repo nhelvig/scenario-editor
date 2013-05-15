@@ -3,3 +3,5 @@ window.beats.Position::defaults =
   
 window.beats.Position::initialize = ->
   @set 'point', []
+  
+window.beats.Position::points = -> @get 'point'
