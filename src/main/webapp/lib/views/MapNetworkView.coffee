@@ -47,9 +47,10 @@ class window.beats.MapNetworkView extends Backbone.View
   
   #center the map based on network position
   _centerMap: () ->
-    pt = @networks[0].position().points()[0]
-    $a.map.setCenter(new google.maps.LatLng(pt.lat(), pt.lng()))
-    
+    pts = $a.Util.convertPointsToGoogleLatLng(@networks[0].position().points())
+    mid = google.maps.geometry.spherical.interpolate(pts[0], pts[1], 0.5)
+    $a.map.setCenter(new google.maps.LatLng(mid.lat(), mid.lng()))
+  
   _drawScenarioItems: () ->
     @_drawSensors()
     @_drawControllers()

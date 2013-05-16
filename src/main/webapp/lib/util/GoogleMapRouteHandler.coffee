@@ -57,8 +57,9 @@ class window.beats.GoogleMapRouteHandler
   
   # check to see if the geometry exists before cycling to get route
   _geomDoesNotExist: (link) ->
-     geom = link.get('shape')?.get('text')
-     return geom is undefined or geom is null
+     g = link.get('shape')?.get('text')
+     pos = link.position()
+     return (pos is null or pos?.length is 0) and (g is undefined or g is null)
   
   # _directionsRequest makes the actual route request to google. if we 
   # recieve any error, this method will wait 3 seconds and then 
@@ -74,13 +75,7 @@ class window.beats.GoogleMapRouteHandler
             msg = "#{WARNING_MSG} #{rte.warnings}"
             $a.broker.trigger('app:show_message:info', msg)
           if link?
-            smPath = []
-            for leg in rte.legs
-              for step in leg.steps
-                for pt in step.path
-                  if !(pt in smPath)
-                    smPath.push pt
-
+            smPath = @_getPoints(rte)
             link.legs = smPath
             link.set_position(@_convertLatLngToPoints(smPath)) 
             $a.broker.trigger('map:draw_link', link) if !@stop
@@ -92,6 +87,15 @@ class window.beats.GoogleMapRouteHandler
           setTimeout (() =>  @_requestLinks(link.index)), rate
       )
   
+  _getPoints: (rte) ->
+    smPath = []
+    for leg in rte.legs
+      for step in leg.steps
+        for pt in step.path
+          if !(pt in smPath)
+            smPath.push pt
+    smPath
+
   # this makes a single request to a link and triggers its drawing on the map
   _directionsRequestOneLink: (link) ->
       @directionsService.route(link.request, (response, status) =>
@@ -100,7 +104,9 @@ class window.beats.GoogleMapRouteHandler
           if rte.warnings.length > 0
             msg = "#{WARNING_MSG} #{rte.warnings}"
             $a.broker.trigger('app:show_message:info', msg)
-          link.legs = rte.legs
+          smPath = @_getPoints(rte)
+          link.legs = smPath
+          link.set_position(@_convertLatLngToPoints(smPath))
           $a.broker.trigger('map:draw_link', link)
         else
           setTimeout (() =>  @requestLink(link)), 1000

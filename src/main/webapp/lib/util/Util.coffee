@@ -222,6 +222,9 @@ window.beats.Util =
 
     return new google.maps.Point(Math.round(xi),Math.round(yi))
 
+  convertPointsToGoogleLatLng : (pts) ->
+    (new google.maps.LatLng(pt.lat(), pt.lng()) for pt in pts)
+
   # determine strokeweight for zoom
   getLinkStrokeWeight: ->
     zoomLevel = $a.map.getZoom()

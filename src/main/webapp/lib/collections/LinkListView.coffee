@@ -35,7 +35,8 @@ class window.beats.LinkListView extends Backbone.Collection
   # because if the shape exists it has been moved on the map or we have a new 
   # node that wants a link
   addAndRender: (link) ->
-    if !link.geometry()? or link.geometry() is ''
+    pos = link.position()
+    if (!pos? or pos.length is 0) and (!link.geometry()? or link.geometry() is '')
       @routeHandler.requestLink(link)
     else
       @createAndDrawLink(link)
