@@ -42,7 +42,7 @@ class window.beats.MapLinkView extends Backbone.View
   # and then encodes the using googles
   # geomtry package in order to save the path to models shape field
   _createEncodedPath: (pts) ->
-    gPath = (new google.maps.LatLng(pt.lat(), pt.lng()) for pt in pts)
+    gPath = $a.Util.convertPointsToGoogleLatLng(pts)
     @encodedPath = google.maps.geometry.encoding.encodePath gPath
 
   # save the encoded path to the model

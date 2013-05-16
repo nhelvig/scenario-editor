@@ -6,6 +6,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
       <description/>\
       <position>\
         <point lat="37.865316577955674" lng="-122.29704350395201" elevation="0"/>\
+        <point lat="37.865316577955674" lng="-122.29704350395201" elevation="0"/>\
       </position>\
       <NodeList>\
         <node id="1" node_name="node1">\
