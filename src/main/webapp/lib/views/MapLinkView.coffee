@@ -85,7 +85,12 @@ class window.beats.MapLinkView extends Backbone.View
       $a.broker.trigger('map:clear_selected') # this could also go in the model?
       @model.toggle_selected()
     )
-    
+  
+  _unpublishGoogleEvents: ->
+    gme = google.maps.event
+    gme.clearInstanceListeners(@link) if @link?
+    gme.removeListener(@zoomListener)
+  
   # this is the rollover window for the link
   _createInfoWindow: ->
     iWindow = new google.maps.InfoWindow()
@@ -173,17 +178,18 @@ class window.beats.MapLinkView extends Backbone.View
   # marker and set it to null
   removeLink: ->
     $a.Util.unpublishEvents(@model, @model_events, @)
-    google.maps.event.removeListener(@zoomListener);
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
+    @_unpublishGoogleEvents()
     @hideLink() if @link?
     @link = null
   
   # This method swaps the icon for the selected color
   linkSelect: ->
-    @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
+    @link?.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
   # This method swaps the icon for the de-selected color
   clearSelected: ->
-    @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
+    @link?.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
 
   # This method toggles the selection of the link
   toggleSelected: () ->
