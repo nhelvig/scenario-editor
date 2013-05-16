@@ -43,4 +43,6 @@ window.beats.Network::set_position = (lat,lng) ->
   @get('position').get('point')[0].set('lng', lng)
 
 window.beats.Network::position = -> @get('position')
-  
+
+window.beats.Network::set_editor_show = (flag) ->
+  @set('editor_show', flag)

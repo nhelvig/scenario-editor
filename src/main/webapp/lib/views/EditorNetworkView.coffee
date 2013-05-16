@@ -28,9 +28,6 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
   # This is used to save the network name when focus is
   # lost from the element
   saveNetworkName: (e) ->
-    console.dir(@models[0])
-    console.dir(@models[0].get('name'))
-    console.dir(@models[0].set_name('asdf'))
     id = e.currentTarget.id
     _.each(@models, (m) -> m.set_name($("##{id}").val()))
 
