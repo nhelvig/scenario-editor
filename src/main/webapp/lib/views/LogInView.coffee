@@ -53,8 +53,7 @@ class window.beats.LogInView extends Backbone.View
     # and renable screen 
     if $a.usersession.isAuthenticated()
       $('#user-dialog').remove()
-      # For now automatically generate network list, in future login should change menu config
-      $a.broker.trigger("app:open_network_browser")
+      # TODO: Enable DB menu options
     else
       $('#user-login-error').html('Invalid Username or Password')
 

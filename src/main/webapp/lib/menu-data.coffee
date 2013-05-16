@@ -19,8 +19,11 @@ $a.nav_bar_menu_items =
     'Open Local Scenario': (-> $a.broker.trigger("app:open_scenario"))
     'Save Local Scenario': (->  $a.broker.trigger("app:save_scenario"))
     'Close Local Scenario': (-> $a.broker.trigger("map:clear_map"))
-    'Import Network To DB': (-> $a.broker.trigger("app:login"))
-    'Open Network From DB': (-> $a.broker.trigger("app:login"))
+  DB:
+    'Log In': (-> $a.broker.trigger("app:login"))
+    'Import Network into DB': (-> $a.broker.trigger("app:import_network_db"))
+    'Open Network from DB': (-> $a.broker.trigger("app:open_network_browser_db"))
+    'Save DB Network to DB': (-> $a.broker.trigger("app:save_network_db"))
   Windows:
     'Node Browser': (-> $a.BrowserView.start('node'))
     'Link Browser': (-> $a.BrowserView.start('link'))
@@ -28,7 +31,7 @@ $a.nav_bar_menu_items =
     'Event Browser': noconfig
     'Controller Browser': (-> $a.BrowserView.start('controller'))
     'Sensor Browser': (-> $a.BrowserView.start('sensor'))
-    'Network Properties': noconfig
+    'Network Properties': (-> $a.broker.trigger("map:open_network_editor"))
   Tools:
     'Import PeMS data': noconfig
     Calibrate: noconfig

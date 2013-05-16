@@ -18,7 +18,7 @@ class window.beats.MapNetworkView extends Backbone.View
     @_centerMap() if @networks[0].position()?
     @_drawScenarioItems()
     @_layersMenu()
-    
+
     # This class creates the tree view of all the elements of the scenario
     $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
     @render()
@@ -26,6 +26,8 @@ class window.beats.MapNetworkView extends Backbone.View
   render: ->
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
+    # handle network browser event
+    $a.broker.on('map:open_network_editor', @_editor, @)
     @
   
   _initializeCollections: () ->
@@ -82,3 +84,9 @@ class window.beats.MapNetworkView extends Backbone.View
 
   _drawSignals: (signals) ->
     _.each(signals, (i) ->  new $a.MapSignalView(i) if $a.Util.getLatLng(i)?)
+
+  _editor: ->
+    env = new $a.EditorNetworkView(elem: 'network', models: [@networks], width: 300)
+    $('body').append(env.el)
+    env.render()
+    $(env.el).dialog('open')

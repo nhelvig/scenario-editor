@@ -220,7 +220,7 @@
               <input type="text" name="num-lanes" id="lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
               <label for="lane-offset">Lane Offset</label>
               <input type="text" name="lane-offset" id="lane_offset" class="text ui-widget-content ui-corner-all" value="{{laneOffset}}"/>
-              <label for="length">Length (miles)</label>
+              <label for="length">Length </label>
               <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
             </fieldset>
           </form>
@@ -314,7 +314,7 @@
             <fieldset>
               <label>Sub-divide this link every:</label>
               <input type="text" name="subdivide" id="subdivide" class="text ui-widget-content ui-corner-all" value=""/>
-              <span> miles </span>
+              <span> </span>
               <button id="do-subdivide" class="text ui-widget-content ui-corner-all" >Sub-divide Now</button>
               <hr/>
               <label for="split">Split this link into:</label>
@@ -423,7 +423,7 @@
         </fieldset>
       </form>
       <div id="user-login-error"></div>
-    <div>
+    </div>
     </script>
     <script type="text/template" id="message-window-template">
     <div id="wrapper">
@@ -433,6 +433,22 @@
         </fieldset>
       </form>
     <div>
+    </script>
+    <script type="text/template" id="network-editor-dialog-template">
+      <div id="wrapper">
+        <form>
+          <fieldset>
+            <label>Network Name:</label>
+            <input type="text" name="network-name" id="network-name" class="text ui-widget-content ui-corner-all" value=""/>
+            <label>Description:</label>
+            <input type="text" name="description" id="network-description" class="text ui-widget-content ui-corner-all" value=""/>
+            <label>Locked For Edit:</label>
+            <input type="checkbox" name="locked-for-edit" id="locked-for-edit" class="text ui-widget-content ui-corner-all" />
+            <label>Locked For History:</label>
+            <input type="checkbox" name="locked-for-history" id="locked-for-history" class="text ui-widget-content ui-corner-all" />
+          </fieldset>
+        </form>
+      </div>
     </script>
   </body>
 </html>

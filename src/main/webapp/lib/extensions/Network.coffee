@@ -13,12 +13,30 @@ window.beats.Network::initialize = ->
 
 window.beats.Network::nodes = -> 
   @get('nodelist')?.get('node') || []
-  
+
+window.beats.Network::name = ->
+  @get('name')
+
+window.beats.Network::set_name = (s) ->
+  @set('name',s)
+
 window.beats.Network::description_text = ->
   @get('description').get('text')
 
 window.beats.Network::set_description_text = (s) ->
   @get('description').set('text',s)
+
+window.beats.Network::locked_for_edit = ->
+  @get('lockedForEdit')
+
+window.beats.Network::set_locked_for_edit = (s) ->
+  @set('lockedForEdit',(s.toString().toLowerCase() == 'true') if s?)
+
+window.beats.Network::locked_for_history = ->
+  @get('lockedForHistory')
+
+window.beats.Network::set_locked_for_history = (s) ->
+  @set('lockedForHistory',(s.toString().toLowerCase() == 'true') if s?)
 
 window.beats.Network::set_position = (lat,lng) ->
   @get('position').get('point')[0].set('lat', lat)
