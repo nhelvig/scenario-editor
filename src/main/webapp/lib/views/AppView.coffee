@@ -39,8 +39,9 @@ class window.beats.AppView extends Backbone.View
     $a.broker.on("app:save_scenario", @saveScenario, @)
     $a.broker.on("map:alert", @showAlert, @)
     $a.broker.on("app:login", @_login, @)
-    $a.broker.on("app:open_network_browser", @_openNetworkBrowser, @)
+    $a.broker.on("app:open_network_browser_db", @_openNetworkBrowser, @)
     $a.broker.on("app:load_network", @_loadNetwork, @)
+    $a.broker.on("app:import_network_db", @_importNetwork, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -105,7 +106,7 @@ class window.beats.AppView extends Backbone.View
     $a.broker.trigger('map:clear_map')
     $a.map.setZoom(AppView.INITIAL_ZOOM_LEVEL)
     $a.models = new $a.Scenario()
-    $a.models.networklist().set('network',[new $a.Network()])
+    $a.models.networkset().set('network',[new $a.Network()])
     network = $a.models.network()
     $a.nodeList = new $a.NodeListCollection([])
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
@@ -121,9 +122,13 @@ class window.beats.AppView extends Backbone.View
 
   # Creates Log in screen
   _login: () ->
-    # Create login pop up
-    attrs = { title : "Log In"}
-    @login = new $a.LogInView(attrs)
+    # Check if user session exists and is authenticated, if so by pass login
+    if $a.usersession and $a.usersession.isAuthenticated()
+       # do nothing
+    else
+      # Create login pop up
+      attrs = { title : "Log In"}
+      @login = new $a.LogInView(attrs)
 
   
   # displayMap takes the uploaded file data parses the xml into the model
@@ -181,9 +186,9 @@ class window.beats.AppView extends Backbone.View
   _openNetworkBrowser: () ->
     # open network browser
     options = { title: 'Network List' }
-    if not $a.newtorkbrowser? then $a.networkbrowser = new $a.NetworkBrowserView(options) 
+    if not $a.newtorkbrowser? then $a.networkbrowser = new $a.NetworkBrowserView(options)
 
-  # Load Network
+  # Load Network From DB
   _loadNetwork: (networkId) ->
     # add overlay to disable screen
     messageBox = new $a.MessageWindowView( {text: "Loading Network..."} )
@@ -191,7 +196,7 @@ class window.beats.AppView extends Backbone.View
     # TODO: Implement backbone parse in each model to cascade model creadtion 
     # and pass in JSON instead of XML
     $.ajax(
-      url: "/via-rest-api/project/1/scenario/1/network/" + networkId
+      url: '/via-rest-api/project/1/scenario/1/network/' + networkId
       type: 'GET'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
@@ -204,5 +209,43 @@ class window.beats.AppView extends Backbone.View
         end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
         data = data + end
         @_displayMap(data)
+      error: (data) =>
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
       dataType: 'text'
+    )
+
+  # Import Network into DB
+  _importNetwork: () ->
+    # add overlay to disable screen
+    messageBox = new $a.MessageWindowView( {text: "Importing Network..."} )
+    doc = document.implementation.createDocument(null, null, null)
+
+    # one off ajax request to get network from DB in XML form
+    # TODO: Implement backbone parse in each model to cascade model creadtion
+    # and pass in JSON instead of XML
+    $.ajax(
+      url: '/via-rest-api/project/1/scenario/1/network/'
+      type: 'POST'
+      beforeSend: (xhrObj) ->
+        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+      success: (data) =>
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
+        beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
+        data = data.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
+        end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
+        data = data + end
+        @_displayMap(data)
+      error: (data) =>
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
+        alert("Error importing Network")
+      contentType: 'text/xml'
+      dataType: 'text'
+      data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
+
     )

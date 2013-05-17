@@ -238,7 +238,7 @@ window.beats.Util =
       newZoom = $a.Util.STROKE_WEIGHT_THINNER
     newZoom
 
-  # Function to convert XML to JSON 
+  # Function to convert JSON to XML
   # Reference: http://goessner.net/download/prj/jsonxml/
   json2xml: (json, tab) ->
     xml = ""
@@ -296,3 +296,14 @@ window.beats.Util =
       xml.replace(/\t|\n/g, "")
     # return xml
     xml
+
+  # Utility function used to convert a backbone Object to JSON
+  obj2json: (obj) ->
+    seen = []
+    JSON.stringify(obj, (key, val) ->
+      if typeof val == "object"
+        if seen.indexOf(val) >= 0
+          return
+        seen.push(val)
+      return val
+    )
