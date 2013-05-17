@@ -7,6 +7,8 @@ class window.beats.MessageWindowView extends Backbone.View
   # used to inject into the html template
   initialize: (@options) ->
     displayText  = $a.Util.toStandardCasing(@options.text)  # eg. node -> Node
+    modal = @options.model # True if this should disable background
+    okButton =
     @$el.attr 'title', "Message Box"
     @$el.attr 'id', "message-dialog"
     @template = _.template($("#message-window-template").html())

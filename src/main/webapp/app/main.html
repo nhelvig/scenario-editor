@@ -439,13 +439,13 @@
         <form>
           <fieldset>
             <label>Network Name:</label>
-            <input type="text" name="network-name" id="network-name" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="network-name" id="network-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
             <label>Description:</label>
-            <input type="text" name="description" id="network-description" class="text ui-widget-content ui-corner-all" value=""/>
+            <input type="text" name="description" id="network-description" class="text ui-widget-content ui-corner-all" value="{{description}}"/>
             <label>Locked For Edit:</label>
-            <input type="checkbox" name="locked-for-edit" id="locked-for-edit" class="text ui-widget-content ui-corner-all" />
+            <input type="checkbox" name="locked-for-edit" id="locked-for-edit" class="ui-widget-content ui-corner-all" value="locked-for-edit" {{lockedForEdit}}/>
             <label>Locked For History:</label>
-            <input type="checkbox" name="locked-for-history" id="locked-for-history" class="text ui-widget-content ui-corner-all" />
+            <input type="checkbox" name="locked-for-history" id="locked-for-history" class="ui-widget-content ui-corner-all" value="locked-for-history" {{lockedForHistory}}/>
           </fieldset>
         </form>
       </div>
