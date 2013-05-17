@@ -39,7 +39,7 @@ class window.beats.NetworkBrowserView extends Backbone.View
   networkListCallback: ->
     tabledata = $a.networkcollection.map((network) -> 
         [
-          network.get('id'),
+          if network.get('id')? then network.get('id') else 12,
           if network.get('name')? then network.get('name') else ''
         ]
       )
@@ -65,6 +65,7 @@ class window.beats.NetworkBrowserView extends Backbone.View
     @$el.remove()
     @undelegateEvents()
     @$el.removeData().unbind()
+    $a.broker.off("app:networkListCallback")
     
     # Remove view from DOM
     @remove();  
@@ -81,7 +82,7 @@ class window.beats.NetworkBrowserView extends Backbone.View
   # the click event for any row triggers an event to load the specified network
   addLoadNetworkListener: () ->
     #handles the row selection
-    $("#network-browser-table tbody").on("click", "tr", ->
+    $("#network-browser-table tbody").one("click", "tr", ->
       $(this).addClass('row_selected')
     )
     networkId = null
