@@ -25,6 +25,7 @@ class window.beats.MapLinkView extends Backbone.View
   }
 
   initialize: (@model) ->
+    @iWindow = new google.maps.InfoWindow()
     # Gets the encoded path line string if it is not already been set
     if(@model.position()? and @model.position().length > 0)
       @_createEncodedPath @model.position()
@@ -93,15 +94,25 @@ class window.beats.MapLinkView extends Backbone.View
   
   # this is the rollover window for the link
   _createInfoWindow: ->
-    iWindow = new google.maps.InfoWindow()
     google.maps.event.addListener(@link, 'mouseover', (e) =>
-      iWindow.setContent(@getLinkRollOverInfo())
-      iWindow.setPosition(e.latLng)
-      setTimeout((() -> iWindow.open($a.map)), 2000)
+      if(not @_isInfoWindowOpen())
+        @iWindow.setContent(@getLinkRollOverInfo())
+        @iWindow.setPosition(e.latLng)
+        setTimeout((() => @iWindow.open($a.map)), 2000)
     );
     google.maps.event.addListener(@link, 'mouseout', => 
-      setTimeout((()-> iWindow.close()), 2000)
+      if(@_isInfoWindowOpen())
+        setTimeout((() => 
+          @iWindow.setContent('')
+          @iWindow.close()), 
+          2000
+        )
     );
+  
+  _isInfoWindowOpen : ->
+    map = @iWindow.getMap()
+    #@return (map is null or typeof map is "undefined")
+    map?
   
   # this information is displays when you mouse over a polyline
   getLinkRollOverInfo: () ->
