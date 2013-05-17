@@ -27,8 +27,15 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
     # handle network browser event
-    $a.broker.on('map:open_network_editor', @_editor, @)
+    @_setUpEvents()
     @
+  
+  _setUpEvents: ->
+    $a.broker.on('map:open_network_editor', @_editor, @)
+    $a.broker.on("map:clear_map", @_tearDownEvents, @)
+
+  _tearDownEvents: ->
+    $a.broker.off('map:open_network_editor')
   
   _initializeCollections: () ->
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
