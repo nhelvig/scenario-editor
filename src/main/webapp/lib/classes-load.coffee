@@ -1,9 +1,9 @@
 $a = window.beats
 
-$a.models_with_extensions = [ 'Begin', 'CapacityProfile',
+$a.models_with_extensions = [ 'Begin',
   'Controller', 'ControllerSet', 'DemandProfile',
   'Density', 'Display_position', 'Dynamics', 'End', 'Event', 'EventSet',
-  'FundamentalDiagramProfile', 'Input', 'Intersection', 'Link', 'LinkList',
+  'FundamentalDiagramProfile', 'Input', 'Link', 'LinkList',
   'Link_type', 'Marker', 'Network', 'NetworkSet', 'Node', 'Node_type', 'NodeList', 'Output',
   'Phase', 'Point', 'Position', 'Road',
   'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorSet', 'Settings',
@@ -22,7 +22,7 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
   'Route', 'Route_links', 'Row', 'ScenarioElement', 'Sensor_type', 
   'Shape', 'SplitratioEvent',
   'SplitRatioSet', 'Table', 'TargetElements', 'Units',
-  'UserSession', 'Vehicle_type', 'VehicleTypeOrder',
+  'UserSession', 'VehicleType', 'VehicleTypeOrder',
   'VehicleTypeSet','Weavingfactors', 'WeavingFactorSet' 
   ]
 
@@ -38,7 +38,7 @@ $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
   'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 
-  'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'LogInView'
+  'EditorNetworkView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'LogInView'
   'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
   'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 'MessageWindowView'
   'NetworkBrowserView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
@@ -50,4 +50,4 @@ $a.utils = ['ArrayText',  'ContextMenuHandler', 'Constants', 'Environment',
   'GoogleMapRouteHandler', 'ReferenceHelper', 'Util'
 ]
 
-$a.overrides = [ 'Sync' ]
+$a.overrides = [ 'Number', 'Sync' ]

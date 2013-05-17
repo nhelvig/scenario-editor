@@ -29,7 +29,7 @@ class window.beats.LogInView extends Backbone.View
         @$el.remove()
     $('.ui-dialog-titlebar-close').css('visibility', 'hidden')
 
-  # Attempts to log into project manager by sending authentication request
+  # Attempts to log into DB by sending authentication request
   # to server
   logIn: (event) ->
     # prevent the default action of submitting the form
@@ -52,9 +52,10 @@ class window.beats.LogInView extends Backbone.View
     # Check if User is authenticated, if so remove log in window 
     # and renable screen 
     if $a.usersession.isAuthenticated()
+      # set authentication header
+      $a.usersession.setHeaders()
       $('#user-dialog').remove()
-      # For now automatically generate network list, in future login should change menu config
-      $a.broker.trigger("app:open_network_browser")
+      # TODO: Enable DB menu options
     else
       $('#user-login-error').html('Invalid Username or Password')
 

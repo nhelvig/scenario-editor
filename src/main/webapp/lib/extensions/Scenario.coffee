@@ -1,6 +1,6 @@
 window.beats.Scenario.from_xml = (xml) ->
   object_with_id =
-    networklist: {}
+    networkset: {}
     node: {}
     link: {}
     path: {}

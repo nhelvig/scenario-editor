@@ -4,7 +4,6 @@ $a = window.beats
 oldSync = Backbone.sync
 Backbone.sync = (method, model, options) ->
   # Add Authentication String from Stored Session Object
-  $a.usersession.setHeaders() if $a.usersession?
   headers = $a.usersession.getHeaders() if $a.usersession? 
   options.headers = headers
 
