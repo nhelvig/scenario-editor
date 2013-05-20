@@ -42,6 +42,7 @@ class window.beats.AppView extends Backbone.View
     $a.broker.on("app:open_network_browser_db", @_openNetworkBrowser, @)
     $a.broker.on("app:load_network", @_loadNetwork, @)
     $a.broker.on("app:import_network_db", @_importNetwork, @)
+    $a.broker.on("app:save_network_db", @_saveNetwork, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -191,7 +192,7 @@ class window.beats.AppView extends Backbone.View
   # Load Network From DB
   _loadNetwork: (networkId) ->
     # add overlay to disable screen
-    messageBox = new $a.MessageWindowView( {text: "Loading Network..."} )
+    messageBox = new $a.MessageWindowView( {text: "Loading Network...", okButton: false} )
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion 
     # and pass in JSON instead of XML
@@ -200,26 +201,35 @@ class window.beats.AppView extends Backbone.View
       type: 'GET'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+
       success: (data) =>
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
-        # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
-        beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
-        data = data.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
-        end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
-        data = data + end
-        @_displayMap(data)
-      error: (data) =>
+        if data.success == true
+          # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
+          beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
+          data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
+          end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
+          data = data + end
+          @_displayMap(data)
+        else
+          # Display Error Message
+          messageBox = new $a.MessageWindowView( {text: data.message, okButton: false} )
+
+      error: (xhr, textStatus, errorThrown) =>
         # Remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         # Display Error Message
-      dataType: 'text'
+        messageBox = new $a.MessageWindowView( {text: "Error Loading Network, " + errorThrown, okButton: true} )
+
+      contentType: 'text/json'
+      dataType: 'json'
     )
 
   # Import Network into DB
   _importNetwork: () ->
     # add overlay to disable screen
-    messageBox = new $a.MessageWindowView( {text: "Importing Network..."} )
+    messageBox = new $a.MessageWindowView( {text: "Importing Network...", okButton:false} )
     doc = document.implementation.createDocument(null, null, null)
 
     # one off ajax request to get network from DB in XML form
@@ -230,22 +240,70 @@ class window.beats.AppView extends Backbone.View
       type: 'POST'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+
       success: (data) =>
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
-        # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
-        beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
-        data = data.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
-        end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
-        data = data + end
-        @_displayMap(data)
-      error: (data) =>
+        if data.success == true
+          # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
+          beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
+          data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
+          end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
+          data = data + end
+          @_displayMap(data)
+        else
+          # Display Error Message
+          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+
+      error: (xhr, textStatus, errorThrown) =>
         # Remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         # Display Error Message
-        alert("Error importing Network")
-      contentType: 'text/xml'
-      dataType: 'text'
-      data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
+        messageBox = new $a.MessageWindowView( {text: "Error Importing Network, " + errorThrown, okButton: true} )
 
+      contentType: 'text/json'
+      dataType: 'json'
+      # TODO: Data should be changed to be JSON
+      data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
+    )
+
+  # Save Network into DB
+  _saveNetwork: () ->
+    # add overlay to disable screen
+    messageBox = new $a.MessageWindowView( {text: "Saving Network...", okButton:false} )
+    doc = document.implementation.createDocument(null, null, null)
+
+    # one off ajax request to get network from DB in XML form
+    # TODO: Implement backbone parse in each model to cascade model creadtion
+    # and pass in JSON instead of XML
+    $.ajax(
+      url: '/via-rest-api/project/1/scenario/1/network/' +  $a.models.network().get('id')
+      type: 'PUT'
+      beforeSend: (xhrObj) ->
+        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+
+      success: (data) =>
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        if data.success == true
+          # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
+          beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
+          data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
+          end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
+          data = data + end
+          @_displayMap(data)
+        else
+          # Display Error Message
+          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+
+      error: (xhr, textStatus, errorThrown) =>
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
+        messageBox = new $a.MessageWindowView( {text: "Error Saving Network, " + errorThrown, okButton: true} )
+
+      contentType: 'text/json'
+      dataType: 'json'
+      # TODO: Data should be changed to be JSON
+      data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
     )

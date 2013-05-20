@@ -44,5 +44,10 @@ window.beats.Network::set_position = (lat,lng) ->
 
 window.beats.Network::position = -> @get('position')
 
+window.beats.Network::id = -> @get('id')
+
+window.beats.Network::set_id = (id) ->
+  @set('id', id)
+
 window.beats.Network::set_editor_show = (flag) ->
   @set('editor_show', flag)
