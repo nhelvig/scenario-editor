@@ -1506,7 +1506,7 @@ $a.fileText = '<?xml version="1.0"?>\
       <fundamentalDiagram capacity="3000" capacity_drop="0" congestion_speed="10" jam_density="400" free_flow_speed="30" critical_speed="30"/>\
     </fundamentalDiagramProfile>\
   </FundamentalDiagramProfileSet>\
-  <NetworkList>\
+  <NetworkSet>\
     <network dt="1" id="-1" name="San Pablo Ave.">\
       <description>San Pablo Avenue constructed with the TOPL Arterial Masterscript.</description>\
       <position>\
@@ -5419,8 +5419,8 @@ $a.fileText = '<?xml version="1.0"?>\
         </link>\
       </LinkList>\
     </network>\
-  </NetworkList>\
-  <SensorList>\
+  </NetworkSet>\
+  <SensorSet>\
       <sensor id="-1" type="static_point">\
          <description>University Ave</description>\
          <position>\
@@ -5442,5 +5442,5 @@ $a.fileText = '<?xml version="1.0"?>\
          </parameters>\
          <link_reference id="-6620"/>\
       </sensor>\
-   </SensorList>\
+   </SensorSet>\
 </scenario>'
