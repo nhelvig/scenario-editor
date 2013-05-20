@@ -70,6 +70,7 @@ class window.beats.MapNetworkView extends Backbone.View
   # instantiate the various elements of the network
   _drawNetwork: (network)->
     $a.map.setCenter($a.Util.getLatLng(network))
+    $a.map.setZoom($a.AppView.INITIAL_ZOOM_LEVEL)
     @_drawLinks(network)
     if network.nodes()?
       @_drawNodes network.nodes(), network
