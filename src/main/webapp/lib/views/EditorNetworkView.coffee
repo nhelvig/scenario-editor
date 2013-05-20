@@ -20,10 +20,10 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
 
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models) ->
-    'network-name': models[0].name
-    'network-description': models[0].description_text
-    'locked-for-edit': models[0].locked_for_edit
-    'locked-for-history': models[0].locked_for_history
+    'name': models[0].name()
+    'description': models[0].description_text()
+    'lockedForEdit': if models[0].locked_for_edit() then "checked" else ""
+    'lockedForHistory': if models[0].locked_for_history() then "checked" else ""
 
   # This is used to save the network name when focus is
   # lost from the element

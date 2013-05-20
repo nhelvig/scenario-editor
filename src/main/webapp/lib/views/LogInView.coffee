@@ -52,6 +52,8 @@ class window.beats.LogInView extends Backbone.View
     # Check if User is authenticated, if so remove log in window 
     # and renable screen 
     if $a.usersession.isAuthenticated()
+      # set authentication header
+      $a.usersession.setHeaders()
       $('#user-dialog').remove()
       # TODO: Enable DB menu options
     else
