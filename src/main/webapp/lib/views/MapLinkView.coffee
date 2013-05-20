@@ -110,9 +110,7 @@ class window.beats.MapLinkView extends Backbone.View
     );
   
   _isInfoWindowOpen : ->
-    map = @iWindow.getMap()
-    #@return (map is null or typeof map is "undefined")
-    map?
+    @iWindow.getMap()?
   
   # this information is displays when you mouse over a polyline
   getLinkRollOverInfo: () ->

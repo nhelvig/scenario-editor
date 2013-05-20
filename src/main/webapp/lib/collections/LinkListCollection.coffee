@@ -13,8 +13,9 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.broker.on('links_collection:join', @joinLink, @)
     $a.broker.on('links:remove', @removeLink, @)
     $a.broker.on('map:clear_selected', @clearSelected, @)
-    $a.broker.on("map:select_network:#{@network.cid}", @setSelected, @)
-    $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
+    if network?
+      $a.broker.on("map:select_network:#{@network.cid}", @setSelected, @)
+      $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
 
     @on('links:hide_link_layer', @hideLinkLayer, @)
     @on('links:show_link_layer', @showLinkLayer, @)
