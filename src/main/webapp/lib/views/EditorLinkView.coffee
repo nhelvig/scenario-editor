@@ -2,7 +2,7 @@
 class window.beats.EditorLinkView extends window.beats.EditorView
   $a = window.beats
   events : {
-    'blur #link_type' : 'save'
+    'blur #link_type' : 'saveType'
     'blur #link_name' : 'saveName'
     'blur #lanes, #lane_offset, #length' : 'save'
     'blur #capacity,
@@ -55,7 +55,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   
   #set selected type element
   _setSelectedType: ->
-    type = @models[0].get('type');
+    type = @models[0].type_id();
     $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
   
   # if tab doesn't have one of the profiles disable it
@@ -123,8 +123,14 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     id = e.currentTarget.id
     #_.each(@models, (m) -> m.set_road_names($("##{id}").val()))
     _.each(@models, (m) -> m.set_link_name($("##{id}").val()))
-    
-    
+
+  # these are callback events for various elements in the interface
+  # This is used to save the type when focus is
+  # lost from the element
+  saveType: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.set_type($("##{id}").val(), $("##{id}").attr("name")))
+
   # This saves the checkbox indicating the link is in sync
   saveInSync: (e) ->
     id = e.currentTarget.id

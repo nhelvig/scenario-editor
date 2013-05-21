@@ -114,7 +114,7 @@ class window.beats.MapLinkView extends Backbone.View
   getLinkRollOverInfo: () ->
     str = "Id: " + @model.id + "</br>"
     str += "Name: " + @model.link_name() + "</br>"
-    str += "Type: " + @model.type() + "</br>"
+    str += "Type: " + @model.type_name() + "</br>"
     str += "Number of Lanes: " + @model.lanes() + "</br>"
     str += "Length: " + @model.length()
     str

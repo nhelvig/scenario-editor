@@ -93,17 +93,21 @@
             </select><br/>
             <label for="sensor-link-type">Link Type</label>
             <select id="sensor_link_type" name ="sensor-link-type" class="ui-widget-content-select ui-corner-all">
-              <option value="freeway">Freeway mainline</option>
-              <option value="freeway_connector">Freeway Connector</option>
-              <option value="heavy_vehicle">Heavy Vehicle</option>
-              <option value="hov_lane">HOV lanes</option>
-              <option value="hot_lane">HOT lanes</option>            
-              <option value="intersection_approach">Intersection Approach</option>            
-              <option value="onramp">On-ramps</option>
-              <option value="offramp">Off-ramps</option>
-              <option value="street">Street</option>
-              <option value="electric_toll">Electric Toll</option>
-              <option value="other">Other</option>
+              <option value="0" name="">--------------</option>
+              <option value="1" name="Freeway">Freeway</option>
+              <option value="2" name="Highway">Highway</option>
+              <option value="3" name="On-Ramp">On-Ramp</option>
+              <option value="4" name="Off-Ramp">Off-Ramp</option>
+              <option value="5" name="Interconnect">Interconnect</option>
+              <option value="6" name="HOV">HOV</option>
+              <option value="7" name="HOT">HOT</option>
+              <option value="8" name="Toll Lane">Toll Lane</option>
+              <option value="9" name="Heavy Vehicle Lane">Heavy Vehicle Lane</option>
+              <option value="10" name="Bus Lane">Bus Lane</option>
+              <option value="11" name="Street">Street</option>
+              <option value="12" name="Intersection Approach">Intersection Approach</option>
+              <option value="13" name="Left Turn Pocket">Left Turn Pocket</option>
+              <option value="14" name="Right Turn Pocket">Right Turn Pocket</option>
             </select><br/>
             <label for="sensor-links">Links</label>
             <input type="text" name="sensor-links" id="sensor_links" class="text ui-widget-content ui-corner-all" value="{{links}}" readonly/>
@@ -146,13 +150,14 @@
               <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
               <label for="type">Type</label>
               <select id="type" name ="type" class="ui-widget-content-select ui-corner-all">
-                <option value="freeway">Freeway</option>
-                <option value="highway">Highway</option>
-                <option value="signalized_intersection">Signalized Intersection</option>
-                <option value="simple">Simple</option>
-                <option value="stop_intersection">Stop Intersection</option>
-                <option value="terminal">Terminal</option>
-                <option value="other">Other</option>
+                <option value="0" name="">--------------</option>
+                <option value="1" name="Freeway">Freeway</option>
+                <option value="2" name="Highway">Highway</option>
+                <option value="3" name="Signalized Intersection">Signalized Intersection</option>
+                <option value="4" name="Simple">Simple</option>
+                <option value="5" name="Stop Intersection">Stop Intersection</option>
+                <option value="6" name="Terminal">Terminal</option>
+                <option value="7" name="Other">Other</option>
               </select><br/>
               <button id="edit-signal" class="text ui-widget-content ui-corner-all" >Edit Signal</button>
             </fieldset>
@@ -197,16 +202,21 @@
               <input type="text" name="link-name" id="link_name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
               <label for="type">Type</label>
               <select id="link_type" name ="type" class="ui-widget-content-select ui-corner-all">
-                <option value="electric_toll">Electric Toll Coll. Lane</option>
-                <option value="freeway">Freeway Mainline</option>
-                <option value="HOT">HOT lane</option>
-                <option value="HOV">HOV lane</option>
-                <option value="heavy_vehicle">Heavy Vehicle Lane</option>
-                <option value="intersection_approach">Intersection Approach</option>
-                <option value="freeway_connector">Interconnect</option>
-                <option value="offramp">Off-ramp</option>
-                <option value="onramp">On-ramp</option>
-                <option value="street">Street</option>
+                <option value="0" name="">--------------</option>
+                <option value="1" name="Freeway">Freeway</option>
+                <option value="2" name="Highway">Highway</option>
+                <option value="3" name="On-Ramp">On-Ramp</option>
+                <option value="4" name="Off-Ramp">Off-Ramp</option>
+                <option value="5" name="Interconnect">Interconnect</option>
+                <option value="6" name="HOV">HOV</option>
+                <option value="7" name="HOT">HOT</option>
+                <option value="8" name="Toll Lane">Toll Lane</option>
+                <option value="9" name="Heavy Vehicle Lane">Heavy Vehicle Lane</option>
+                <option value="10" name="Bus Lane">Bus Lane</option>
+                <option value="11" name="Street">Street</option>
+                <option value="12" name="Intersection Approach">Intersection Approach</option>
+                <option value="13" name="Left Turn Pocket">Left Turn Pocket</option>
+                <option value="14" name="Right Turn Pocket">Right Turn Pocket</option>
               </select><br/>
               <input type="checkbox" name="in_sync" id="in_sync" class="text ui-widget-content ui-corner-all" {{insync}} />
               <span>In Sync</span>

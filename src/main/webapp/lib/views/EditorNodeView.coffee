@@ -42,7 +42,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   
   #set selected type element
   _setSelectedType: ->
-    type = @models[0].type();
+    type = @models[0].type_id();
     $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
   
   # creates a hash of values taken from the model for the html template
@@ -58,7 +58,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # lost from the element
   saveType: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_type($("##{id}").val()))
+    _.each(@models, (m) -> m.set_type($("##{id}").val(), $("##{id}").attr("name")))
 
   # This is used to save the name when focus is
   # lost from the element
