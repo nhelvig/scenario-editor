@@ -31,7 +31,9 @@ class window.beats.MapLinkView extends Backbone.View
       @_createEncodedPath @model.position()
       @_saveEncodedPath()
     @drawLink()
-    @_saveLinkLength()
+    # only calculates and then updates link length if it not already set
+    if !model.length()?
+      @_saveLinkLength()
     @_contextMenu()
     @_publishEvents()
   

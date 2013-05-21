@@ -241,6 +241,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   reDrawLink: (link) ->
     link.set_geometry ''
     link.set_position null
+    link.set_length null
     @remove(link)
     @add(link)
   
