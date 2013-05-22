@@ -289,7 +289,7 @@ class window.beats.MapLinkView extends Backbone.View
     numLines = @model.lanes()
     zoomLevel = $a.map.getZoom()
     if (zoomLevel >= 17)
-      lineWidth = if numLines > 5 then 5 else numLines
+      lineWidth = if numLines > 5 then 5 else 3
     else if (zoomLevel >= 16)
       lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
     else
