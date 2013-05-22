@@ -27,6 +27,7 @@ window.beats.Node::in_sync = -> @get("in_sync")
 window.beats.Node::set_in_sync = (flag) -> @set("in_sync", flag)
 
 window.beats.Node::ident = -> Number(@get("id"))
+window.beats.Node::set_id = (id) -> @set("id", id)
 
 window.beats.Node::node_type = -> @get("node_type") if @get("node_type")?
 window.beats.Node::type_id = -> @get("node_type").get("id") if @get("node_type")?

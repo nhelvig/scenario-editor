@@ -3,7 +3,7 @@ describe("ContextMenuHandler", function() {
   
   beforeEach(function() {
       googleMap();
-      loadFixtures("context.menu.view.fixture.html");
+      jasmine.getFixtures().load("context.menu.view.fixture.html");
       spyOn($a.ContextMenuView.prototype, 'show').andCallThrough();
       this.cmh = new $a.ContextMenuHandler({  
                                               items:$a.main_context_menu,

@@ -10,14 +10,15 @@
   ];
   
   collections_jasmine_specs = [
-    //'NodeListCollectionSpec', 'NodeListViewSpec', 'LinkListCollectionSpec',
-    //'LinkListViewSpec'
+    //'NodeListCollectionSpec', 
+    'LinkListCollectionSpec'
+    //'LinkListViewSpec', 'NodeListViewSpec'
     //'SensorListCollectionSpec', 'SensorListViewSpec',
     //'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];
   
   model_jasmine_specs = ['BeginSpec', 'EndSpec', 'InputSpec','OutputSpec',
-    //'LinkSpec', 'NodeSpec' 
+    'LinkSpec', 'NodeSpec' 
     //'ControllerSpec', 'DemandProfileSpec','DensitySpec', , 'EventSpec', 
     //'ScenarioSpec', 'SensorSpec','SignalSpec', 'SplitratioProfileSpec'
   ];

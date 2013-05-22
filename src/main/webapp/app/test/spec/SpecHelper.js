@@ -76,9 +76,12 @@ beforeEach(function() {
     link.set('lanes', 3);
     link.set('length', 10000);
     link.set('subdivide', 2);
-    link.set('type','electric_toll');
     link.set('fundamentaldiagramprofile', fps);
     link.set('demand', dp);
+    
+    link.set('link_type', new window.beats.Link_type)
+    link.get("link_type").set_name('electric_toll')
+    
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];

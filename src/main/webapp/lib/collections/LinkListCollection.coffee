@@ -41,7 +41,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link = new window.beats.Link()
     link.set_crud($a.CrudFlag.CREATE)
     id = $a.Util.getNewElemId($a.models.links())
-    link.set('id', id)
+    link.set_id(id)
     
     if args.duplicate?
       link.set_geometry args.path
