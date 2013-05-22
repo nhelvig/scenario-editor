@@ -57,10 +57,13 @@ window.beats.Link::set_dynamics = (type) ->
   @get('dynamics').set_type(type)
 
 window.beats.Link::link_type = -> @get("link_type")
-window.beats.Link::type = -> @get("link_type").name() if @get("link_type")?
-window.beats.Link::set_type = (val) -> 
-  @get("link_type").set_name(val)
-  @defaults['link_type'] = val
+window.beats.Link::type_id = -> @get("link_type").get("id") if @get("link_type")?
+window.beats.Link::type_name = -> @get("link_type").name() if @get("link_type")?
+window.beats.Link::set_type = (id, name) ->
+  @set('link_type', new window.beats.Link_type)  if not @get('link_type')?
+  @get("link_type").set_id(id)
+  @get("link_type").set_name(name)
+  @defaults['link_type'] = id
 
 window.beats.Link::updatePosition = (pos) ->
   @get('position').get('point').push(pos)

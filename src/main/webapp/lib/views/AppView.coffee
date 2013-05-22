@@ -132,8 +132,8 @@ class window.beats.AppView extends Backbone.View
       @login = new $a.LogInView(attrs)
 
   
-  # displayMap takes the uploaded file data parses the xml into the model
-  # objects, and creates the MapNetworkView
+  # displayMap takes the uploaded file or serialized model object from database and parses the
+  # xml into backbone model objects, and creates the MapNetworkView
   _displayMap: (fileText) ->
     $a.broker.trigger("map:clear_map")
     try

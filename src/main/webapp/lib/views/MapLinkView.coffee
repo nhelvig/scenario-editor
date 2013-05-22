@@ -31,7 +31,9 @@ class window.beats.MapLinkView extends Backbone.View
       @_createEncodedPath @model.position()
       @_saveEncodedPath()
     @drawLink()
-    @_saveLinkLength()
+    # only calculates and then updates link length if it not already set
+    if !model.length()?
+      @_saveLinkLength()
     @_contextMenu()
     @_publishEvents()
   
@@ -112,7 +114,7 @@ class window.beats.MapLinkView extends Backbone.View
   getLinkRollOverInfo: () ->
     str = "Id: " + @model.id + "</br>"
     str += "Name: " + @model.link_name() + "</br>"
-    str += "Type: " + @model.type() + "</br>"
+    str += "Type: " + @model.type_name() + "</br>"
     str += "Number of Lanes: " + @model.lanes() + "</br>"
     str += "Length: " + @model.length()
     str
