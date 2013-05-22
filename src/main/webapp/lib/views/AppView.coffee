@@ -8,7 +8,7 @@ class window.beats.AppView extends Backbone.View
 
   @start: ->
     new window.beats.AppView().render()
-    
+  
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
     _.templateSettings =
@@ -192,7 +192,7 @@ class window.beats.AppView extends Backbone.View
   # Load Network From DB
   _loadNetwork: (networkId) ->
     # add overlay to disable screen
-    messageBox = new $a.MessageWindowView( {text: "Loading Network...", okButton: false} )
+    messageBox = new $a.MessageWindowView( {text: "Loading Network...", okButton: false} ) 
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion 
     # and pass in JSON instead of XML
