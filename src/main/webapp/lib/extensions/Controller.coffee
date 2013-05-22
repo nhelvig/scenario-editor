@@ -2,9 +2,6 @@ $a = window.beats
 
 window.beats.Controller::initialize = ->
   @set 'parameters', {}
-  @set 'planlist', new $a.PlanList()
-  @set 'plansequence', new $a.PlanSequence()
-  
 
 window.beats.Controller::selected = -> @get('selected')
 window.beats.Controller::name = -> @get('name')

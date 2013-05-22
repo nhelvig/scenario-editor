@@ -41,7 +41,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link = new window.beats.Link()
     link.set_crud($a.CrudFlag.CREATE)
     id = $a.Util.getNewElemId($a.models.links())
-    link.set('id', id)
+    link.set_id(id)
     
     if args.duplicate?
       link.set_geometry args.path
@@ -228,7 +228,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
                   [
                     link.get('id'),
                     link.road_names(),
-                    link.get('type'),
+                    link.type_name(),
                     link.get('lanes'),
                     link.get('begin').get('node').road_names(),
                     link.get('end').get('node').road_names()
@@ -241,6 +241,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   reDrawLink: (link) ->
     link.set_geometry ''
     link.set_position null
+    link.set_length null
     @remove(link)
     @add(link)
   
@@ -277,11 +278,11 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # hide links
   hideLinkLayer: (type) =>
-    @forEach((link) -> link.set_view('hide') if !type? or type is link.type())
+    @forEach((link) -> link.set_view('hide') if !type? or type is link.type_name())
   
   # show links
   showLinkLayer: (type) =>
-    @forEach((link) -> link.set_view('show') if !type? or type is link.type())
+    @forEach((link) -> link.set_view('show') if !type? or type is link.type_name())
 
   # This method adds a sensor to the link id passed in
   addSensorToLink: (cid) ->

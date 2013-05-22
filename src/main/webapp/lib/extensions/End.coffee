@@ -3,3 +3,8 @@ window.beats.End::resolve_references =
 
 window.beats.End::encode_references = ->
   @set 'node_id', @get('node').id
+  
+window.beats.End::set_node = (node) ->
+  @set 'node', node
+
+window.beats.End::node = -> @get 'node'

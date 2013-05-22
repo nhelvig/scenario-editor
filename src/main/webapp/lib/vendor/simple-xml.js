@@ -20,7 +20,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <position>\
             <point lat="37.86799330928557" lng="-122.2976803779602" elevation=""/>\
           </position>\
-          <node_type name="terminal" />\
+          <node_type id="6" name="Terminal" />\
         </node>\
         <node type="" id="2" node_name="node2">\
           <roadway_markers>\
@@ -35,7 +35,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <position>\
             <point lat="37.866705913656425" lng="-122.29724049568176" elevation=""/>\
           </position>\
-           <node_type name="simple" />\
+           <node_type id="4" name="Simple" />\
         </node>\
         <node type="" id="3" node_name="node3">\
           <roadway_markers>\
@@ -48,7 +48,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
           <position>\
             <point lat="37.86524062678921" lng="-122.29676842689514" elevation=""/>\
           </position>\
-         <node_type name="terminal" />\
+         <node_type id="6" name="Terminal" />\
         </node>\
       </NodeList>\
       <LinkList>\
@@ -67,6 +67,7 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
             <point lat="37.866690000000006" lng="-122.29726000000001" elevation=""/>\
           </position>\
           <shape>_bcfFrgmiVJCx@SxD}@DA</shape>\
+          <link_type id="1" name="Freeway" />\
         </link>\
         <link link_name = "2geom" lanes="4" lane_offset="0" length="170.29121862518073" type="" id="2" in_sync="true">\
           <begin node_id="2"/>\
@@ -75,7 +76,12 @@ window.beats.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
             <road name=""/>\
           </roads>\
           <dynamics type="CTM"/>\
+          <position>\
+            <point lat="37.86524062678921" lng="-122.29676842689514" elevation=""/>\
+            <point lat="37.866705913656425" lng="-122.29724049568176" elevation=""/>\
+          </position>\
           <shape>yybfFzdmiVnEeAjAWJC</shape>\
+          <link_type id="1" name="Freeway" />\
         </link>\
       </LinkList>\
     </network>\

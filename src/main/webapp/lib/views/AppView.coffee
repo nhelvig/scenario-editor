@@ -8,7 +8,7 @@ class window.beats.AppView extends Backbone.View
 
   @start: ->
     new window.beats.AppView().render()
-    
+  
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
     _.templateSettings =
@@ -132,8 +132,8 @@ class window.beats.AppView extends Backbone.View
       @login = new $a.LogInView(attrs)
 
   
-  # displayMap takes the uploaded file data parses the xml into the model
-  # objects, and creates the MapNetworkView
+  # displayMap takes the uploaded file or serialized model object from database and parses the
+  # xml into backbone model objects, and creates the MapNetworkView
   _displayMap: (fileText) ->
     $a.broker.trigger("map:clear_map")
     try
@@ -192,7 +192,7 @@ class window.beats.AppView extends Backbone.View
   # Load Network From DB
   _loadNetwork: (networkId) ->
     # add overlay to disable screen
-    messageBox = new $a.MessageWindowView( {text: "Loading Network...", okButton: false} )
+    messageBox = new $a.MessageWindowView( {text: "Loading Network...", okButton: false} ) 
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion 
     # and pass in JSON instead of XML

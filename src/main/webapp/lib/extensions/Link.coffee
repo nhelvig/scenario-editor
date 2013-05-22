@@ -27,11 +27,15 @@ window.beats.Link::speed_limit = -> @get('speed_limit')
 window.beats.Link::link_name = -> @get('link_name')
 window.beats.Link::mod_stamp = -> @get('mod_stamp')
 window.beats.Link::in_sync = -> @get('in_sync')
-window.beats.Link::begin_node = -> @get('begin').get('node')
-window.beats.Link::end_node = -> @get('end').get('node')
+window.beats.Link::begin_node = -> @get('begin').node()
+window.beats.Link::end_node = -> @get('end').node()
 window.beats.Link::dynamics = -> @get('dynamics')
 window.beats.Link::roads = -> @get('roads')
 window.beats.Link::subdivide = -> @get("subdivide")
+
+window.beats.Link::set_id = (id) -> @set('id', id)
+window.beats.Link::set_end_node = (node) -> @get('end').set_node(node)
+window.beats.Link::set_begin_node = (node) -> @get('begin').set_node(node)
 
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
@@ -57,10 +61,13 @@ window.beats.Link::set_dynamics = (type) ->
   @get('dynamics').set_type(type)
 
 window.beats.Link::link_type = -> @get("link_type")
-window.beats.Link::type = -> @get("link_type").name() if @get("link_type")?
-window.beats.Link::set_type = (val) -> 
-  @get("link_type").set_name(val)
-  @defaults['link_type'] = val
+window.beats.Link::type_id = -> @get("link_type").get("id") if @get("link_type")?
+window.beats.Link::type_name = -> @get("link_type").name() if @get("link_type")?
+window.beats.Link::set_type = (id, name) ->
+  @set('link_type', new window.beats.Link_type)  if not @get('link_type')?
+  @get("link_type").set_id(id)
+  @get("link_type").set_name(name)
+  @defaults['link_type'] = id
 
 window.beats.Link::updatePosition = (pos) ->
   @get('position').get('point').push(pos)

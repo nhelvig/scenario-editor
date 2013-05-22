@@ -45,8 +45,8 @@ class window.beats.GoogleMapRouteHandler
   # whether or not we want to force new geometry to be querried. This happens
   # when an existing node is dragged or a node is added.
   setUpLink: (link) ->
-      begin =  link.get('begin').get('node')
-      end = link.get('end').get('node')
+      begin =  link.begin_node()
+      end = link.end_node()
       #Create DirectionsRequest using DRIVING directions.
       link.request = {
        origin: $a.Util.getLatLng(begin),

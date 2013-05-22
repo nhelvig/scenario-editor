@@ -2,22 +2,25 @@
 (function() {
   top_level_specs = ['menu-dataSpec'
   ];
-  
+    
   view_jasmine_specs = [
-    'AppViewSpec', 'EditorNodeViewSpec', 'EditorLinkViewSpec', 
-    'EditorSensorViewSpec',  'MapLinkViewSpec', 'MapNodeViewSpec'
+    //'AppViewSpec', 'EditorNodeViewSpec', 'EditorLinkViewSpec', 
+    //'MapLinkViewSpec', 'MapNodeViewSpec'
+    //'EditorSensorViewSpec'
   ];
   
   collections_jasmine_specs = [
-    'NodeListCollectionSpec', 'NodeListViewSpec', 'LinkListCollectionSpec',
-    'LinkListViewSpec', 'SensorListCollectionSpec', 'SensorListViewSpec',
-    'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
+    //'NodeListCollectionSpec', 
+    'LinkListCollectionSpec'
+    //'LinkListViewSpec', 'NodeListViewSpec'
+    //'SensorListCollectionSpec', 'SensorListViewSpec',
+    //'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];
   
-  model_jasmine_specs = ['BeginSpec', 'ControllerSpec', 'DemandProfileSpec', 
-    'DensitySpec', 'EndSpec', 'EventSpec', 'InputSpec', 'IntersectionSpec',
-    'LinkSpec', 'NodeSpec', 'OutputSpec', 'ScenarioSpec', 'SensorSpec',
-    'SignalSpec', 'SplitratioProfileSpec'
+  model_jasmine_specs = ['BeginSpec', 'EndSpec', 'InputSpec','OutputSpec',
+    'LinkSpec', 'NodeSpec' 
+    //'ControllerSpec', 'DemandProfileSpec','DensitySpec', , 'EventSpec', 
+    //'ScenarioSpec', 'SensorSpec','SignalSpec', 'SplitratioProfileSpec'
   ];
   
   util_jasmine_specs = [

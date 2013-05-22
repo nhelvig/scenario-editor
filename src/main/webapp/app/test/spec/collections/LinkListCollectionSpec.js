@@ -19,6 +19,7 @@ describe("LinkListCollection", function() {
     scen = scenarioAndFriends();
     links = [scen.link1, scen.link2, scen.link3]
     this.lColl= new $a.LinkListCollection(links, scen.network);
+    $a.nodeList = new $a.NodeListCollection(scen.scenario.nodes());
   });
 
   describe("Instantiation", function() {
@@ -80,12 +81,12 @@ describe("LinkListCollection", function() {
        it(desc, function() {
        arrColumnsData = this.lColl.getBrowserColumnData();
        lColl = this.lColl.models[0];
-       expect(arrColumnsData[0][0]).toEqual(lColl.get('id'));
+       expect(arrColumnsData[0][0]).toEqual(lColl.ident());
        expect(arrColumnsData[0][1]).toEqual(lColl.road_names());
-       expect(arrColumnsData[0][2]).toEqual(lColl.get('type'));
-       expect(arrColumnsData[0][3]).toEqual(lColl.get('lanes'));
-       nodeB = lColl.get('begin').get('node');
-       nodeE = lColl.get('end').get('node');
+       expect(arrColumnsData[0][2]).toEqual(lColl.type_name());
+       expect(arrColumnsData[0][3]).toEqual(lColl.lanes());
+       nodeB = lColl.begin_node();
+       nodeE = lColl.end_node();
        expect(arrColumnsData[0][4]).toEqual(nodeB.road_names());
        expect(arrColumnsData[0][5]).toEqual(nodeE.road_names());
      });
@@ -147,8 +148,8 @@ describe("LinkListCollection", function() {
   describe("removeNodeReference", function() {
     it("should remove the begin or end node from link", function() {
       this.lColl.removeNodeReference(this.lColl.models[0],'end');
-      expect(this.lColl.models[0].get('end').get('node')).toBeNull();
-      scen.link1.get('end').set('node', end)
+      expect(this.lColl.models[0].end_node()).toBeNull();
+      scen.link1.set_end_node(end)
     });
   });
   
