@@ -121,11 +121,11 @@ beforeEach(function() {
     p.set('point', []);
     p.get('point').push(pt);
     
-    node1 = new window.beats.Node({id: 10, position: p, type: 'freeway'});
-    node2 = new window.beats.Node({id: 11, position: p});
-    node3 = new window.beats.Node({id: 12, position: p});
-    node4 = new window.beats.Node({id: 13, position: p});
-    node5 = new window.beats.Node({id: 14, position: p});
+    node1 = new window.beats.Node({id: 20, position: p, type: 'freeway'});
+    node2 = new window.beats.Node({id: 21, position: p});
+    node3 = new window.beats.Node({id: 22, position: p});
+    node4 = new window.beats.Node({id: 23, position: p});
+    node5 = new window.beats.Node({id: 24, position: p});
     sensor = new window.beats.Sensor({id:1, position: p});
     sensor1 = new window.beats.Sensor({id:1, position: p});
     sensor2 = new window.beats.Sensor({id:2, position: p});

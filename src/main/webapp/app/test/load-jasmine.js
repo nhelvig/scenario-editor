@@ -10,9 +10,10 @@
   ];
   
   collections_jasmine_specs = [
-    //'NodeListCollectionSpec', 
-    'LinkListCollectionSpec'
-    //'LinkListViewSpec', 'NodeListViewSpec'
+    'NodeListCollectionSpec', 
+    'LinkListCollectionSpec',
+    'LinkListViewSpec', 
+    'NodeListViewSpec'
     //'SensorListCollectionSpec', 'SensorListViewSpec',
     //'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];

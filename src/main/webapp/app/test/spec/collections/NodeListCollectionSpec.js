@@ -11,8 +11,7 @@ describe("NodeListCollection", function() {
     spyOn($a.NodeListCollection.prototype, 'removeNode').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'removeNodeAndLinks').andCallThrough();
     spyOn($a.NodeListCollection.prototype, 'removeNodeAndJoinLinks').andCallThrough();
-    scen = scenarioAndFriends(); 
-    this.nColl = new $a.NodeListCollection([scen.node1, scen.node2, scen.node3]);
+    this.nColl = new $a.NodeListCollection($a.models.nodes());
   });
   
   describe("Instantiation", function() {
@@ -41,15 +40,15 @@ describe("NodeListCollection", function() {
          expect($a.NodeListCollection.prototype.addLinkDest).toHaveBeenCalled();
        });
        it("should be watching removeNode", function() {
-         $a.broker.trigger("nodes:remove", scen.node1.cid);
+         $a.broker.trigger("nodes:remove", this.nColl.models[0].cid);
          expect($a.NodeListCollection.prototype.removeNode).toHaveBeenCalled();
        });
        it("should be watching removeNodeAndJoinLinks", function() {
-         $a.broker.trigger("nodes:remove_and_join", scen.node1.cid);
+         $a.broker.trigger("nodes:remove_and_join", this.nColl.models[0].cid);
          expect($a.NodeListCollection.prototype.removeNodeAndJoinLinks).toHaveBeenCalled();
        });
        it("should be watching removeNodeAndLinks", function() {
-         $a.broker.trigger("nodes:remove_and_links", scen.node1.cid);
+         $a.broker.trigger("nodes:remove_and_links", this.nColl.models[0].cid);
          expect($a.NodeListCollection.prototype.removeNodeAndLinks).toHaveBeenCalled();
        });
   });
@@ -125,7 +124,7 @@ describe("NodeListCollection", function() {
    describe("removeNode ", function() {
      it("should find the correct node by id and remove it", function() {
        var lengthBefore = this.nColl.length;
-       this.nColl.removeNode(scen.node3.cid, true);
+       this.nColl.removeNode(this.nColl.models[2].cid, true);
        expect(lengthBefore - 1).toEqual(this.nColl.length);
      });
    });
@@ -133,7 +132,7 @@ describe("NodeListCollection", function() {
   describe("removeNodeAndLinks ", function() {
      it("should remove node and its links", function() {
        nodesLengthBefore = this.nColl.length;
-       this.nColl.removeNodeAndLinks(scen.node3.cid);
+       this.nColl.removeNodeAndLinks(this.nColl.models[2].cid);
        nodesLengthAfter = this.nColl.length;
        expect(nodesLengthBefore - 1).toEqual(this.nColl.length);
      });
