@@ -39,7 +39,7 @@ describe("EditorNodeView", function() {
   
   describe("Rendering", function() {
     beforeEach(function() {
-              this.v = this.view.render();
+        this.v = this.view.render();
     });
     it("returns the view object", function() {
       expect(this.v).toEqual(this.view);
@@ -50,8 +50,9 @@ describe("EditorNodeView", function() {
     });
     
     it("should should have correct type selected", function() {
-      type = this.view.models[0].get('type');
-      expect($($(this.view.el).find('#type option:selected'))).toHaveValue(type);
+      type = this.view.models[0].node_type().name();
+      expected = $($(this.view.el).find('#type option:selected')).attr("name");
+      expect(expected).toEqual(type);
     });
     
     //checks that template was created correctly
@@ -85,7 +86,7 @@ describe("EditorNodeView", function() {
          $(selected).attr('selected', false);
          options = $(this.view.el).find("select option");
          $(options[1]).attr('selected', true);
-         newSelectedValue = $(options[1]).val();
+         newSelectedValue = $(options[1]).attr("name");
          $("#type").blur();            
          expect(this.view.models[0].type_name()).toEqual(newSelectedValue); 
        });

@@ -9,7 +9,7 @@ window.beats.Node::initialize = ->
   @set('inputs', new $a.Inputs({input: []}))
   t = new $a.Node_type()
   t.set_name("simple")
-  t.set_id("5")
+  t.set_id("4")
   @set('node_type',t)
 
 window.beats.Node::crud = -> @get 'crudFlag'

@@ -177,8 +177,8 @@ describe("EditorLinkView", function() {
     
     it("should should have correct type selected", function() {
       val = this.view.models[0].link_type().name();
-      elem = $($(this.view.el).find('#link_type option:selected'));
-      expect(elem).toHaveValue(val);
+      elem = $($(this.view.el).find('#link_type option:selected')).attr("name");
+      expect(elem).toEqual(val);
     });
     
     //checks that template was created correctly
@@ -435,7 +435,7 @@ describe("EditorLinkView", function() {
                  $(selected).attr('selected', false);
                  options = $(this.view.el).find("select option");
                  $(options[1]).attr('selected', true);
-                 newSelectedValue = $(options[1]).val();
+                 newSelectedValue = $(options[1]).attr("name");
                  $("#link_type").blur();
                  expect(this.view.models[0].link_type().name()).toEqual(newSelectedValue);
                 });
