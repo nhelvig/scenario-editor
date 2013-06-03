@@ -4,8 +4,11 @@
   ];
     
   view_jasmine_specs = [
-    //'AppViewSpec', 'EditorNodeViewSpec', 'EditorLinkViewSpec', 
-    //'MapLinkViewSpec', 'MapNodeViewSpec'
+    'AppViewSpec',
+    'EditorNodeViewSpec',
+    'EditorLinkViewSpec', 
+    'MapLinkViewSpec',
+    'MapNodeViewSpec'
     //'EditorSensorViewSpec'
   ];
   
