@@ -28,6 +28,11 @@ class window.beats.LinkListView extends Backbone.Collection
   #this method clears the collection upon a clear map
   clear: ->
     $a.linkListView = {}
+    # turn off events
+    $a.broker.off('map:draw_link')
+    $a.broker.off('links:check_proximinity')
+    $a.broker.off("map:clear_map")
+
     
   # when a link is added to the link collection or a node moved, this function 
   # is called to set up the geometry on the map via the routeHandler. 
