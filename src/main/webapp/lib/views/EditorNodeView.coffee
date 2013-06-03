@@ -58,13 +58,13 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # lost from the element
   saveType: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_type($("##{id}").val()))
+    _.each(@models, (m) -> m.set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
 
   # This is used to save the name when focus is
   # lost from the element
   saveName: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_road_names($("##{id}").val()))
+    _.each(@models, (m) -> m.set_name($("##{id}").val()))
   
   
   # This is used to save the latitude, longitude and elevation when focus is

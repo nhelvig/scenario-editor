@@ -32,9 +32,11 @@ window.beats.Node::set_id = (id) -> @set("id", id)
 window.beats.Node::node_type = -> @get("node_type") if @get("node_type")?
 window.beats.Node::type_id = -> @get("node_type").get("id") if @get("node_type")?
 window.beats.Node::type_name = -> @get("node_type").name() if @get("node_type")?
-window.beats.Node::set_type = (name) ->
+window.beats.Node::set_type = (id, name) ->
   @set('node_type', new window.beats.Node_type)  if not @get('node_type')?
   @get("node_type").set_name(name)
+  @get("node_type").set_id(id)
+  @defaults['node_type'] = id
 
 window.beats.Node::locked = -> @get("lock")? and @get("lock") is true
 window.beats.Node::set_locked = (val) -> 

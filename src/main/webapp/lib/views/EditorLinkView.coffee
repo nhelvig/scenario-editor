@@ -129,7 +129,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   # lost from the element
   saveType: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_type($("##{id}").val()))
+    _.each(@models, (m) -> m.set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
 
   # This saves the checkbox indicating the link is in sync
   saveInSync: (e) ->
