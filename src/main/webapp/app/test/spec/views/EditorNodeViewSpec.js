@@ -5,7 +5,6 @@ describe("EditorNodeView", function() {
     loadFixtures('editor.node.view.fixture.html');
     scen = scenarioAndFriends();
     model = scen.node1
-    //model = $a.models.nodes()[0];
     spyOn($a.EditorNodeView.prototype, 'signalEditor').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'chooseName').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'removeJoinLinks').andCallThrough();
@@ -79,7 +78,7 @@ describe("EditorNodeView", function() {
        it("name is saved", function() {     
          $('#name').val("Name Changed");
          $("#name").blur();
-         expect(this.view.models[0].road_names()).toEqual("Name Changed");
+         expect(this.view.models[0].name()).toEqual("Name Changed");
        });
        it("type is saved", function() {
          selected = $($(this.view.el)).find('#type option:selected')
