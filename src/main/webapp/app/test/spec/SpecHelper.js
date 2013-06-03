@@ -81,7 +81,7 @@ beforeEach(function() {
     
     link.set('link_type', new window.beats.Link_type)
     link.get("link_type").set_name('electric_toll')
-    
+    link.set_link_name('Link ' + id);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
@@ -121,7 +121,8 @@ beforeEach(function() {
     p.set('point', []);
     p.get('point').push(pt);
     
-    node1 = new window.beats.Node({id: 20, position: p, type: 'freeway'});
+    node1 = new window.beats.Node({id: 20 ,position: p, type: 'freeway'});
+    node1.set_name("Node 1");
     node2 = new window.beats.Node({id: 21, position: p});
     node3 = new window.beats.Node({id: 22, position: p});
     node4 = new window.beats.Node({id: 23, position: p});

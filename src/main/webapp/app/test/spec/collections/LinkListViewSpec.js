@@ -31,6 +31,7 @@ describe("LinkListView", function() {
             });
                     
            it("should be watching createAndDrawLink", function() {
+             
              $a.broker.trigger('map:draw_link', scen.link1);
              expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();
            });

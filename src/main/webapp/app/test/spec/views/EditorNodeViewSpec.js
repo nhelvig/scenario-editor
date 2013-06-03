@@ -58,7 +58,7 @@ describe("EditorNodeView", function() {
     //checks that template was created correctly
     //Note: the elevation check force NaN to a string
     it("has the correct text content", function() {
-      expect(this.view.$('#name')).toHaveValue('Name not defined');
+      expect(this.view.$('#name')).toHaveValue(model.name());
       expect(this.view.$('#descripton')).toHaveValue(model.get('description'));
       lat = model.get('position').get('point')[0].get('lat');
       expect(this.view.$('#lat')).toHaveValue(lat);
@@ -88,7 +88,7 @@ describe("EditorNodeView", function() {
          $(options[1]).attr('selected', true);
          newSelectedValue = $(options[1]).val();
          $("#type").blur();            
-         expect(this.view.models[0].get('type')).toEqual(newSelectedValue); 
+         expect(this.view.models[0].type_name()).toEqual(newSelectedValue); 
        });
      });
  

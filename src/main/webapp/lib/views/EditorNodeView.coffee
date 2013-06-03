@@ -58,7 +58,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # lost from the element
   saveType: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_type($("##{id}").val(), $("##{id}").attr("name")))
+    _.each(@models, (m) -> m.set_type($("##{id}").val()))
 
   # This is used to save the name when focus is
   # lost from the element
