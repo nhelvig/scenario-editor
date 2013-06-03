@@ -109,6 +109,9 @@ class window.beats.AppView extends Backbone.View
     $a.models = new $a.Scenario()
     $a.models.networkset().set('network',[new $a.Network()])
     network = $a.models.network()
+    # set default position to be at berkeley
+    $a.models.network().set_position($a.DefaultPosition.Lat, $a.DefaultPosition.Long)
+    $a.mapNetworkView = new $a.MapNetworkView $a.models
     $a.nodeList = new $a.NodeListCollection([])
     $a.nodeListView = new $a.NodeListView($a.nodeList, network)
     $a.linkList = new $a.LinkListCollection([])
@@ -139,7 +142,7 @@ class window.beats.AppView extends Backbone.View
     try
       xml = $.parseXML(fileText)
       $a.models = $a.Scenario.from_xml($(xml).children())
-      new $a.MapNetworkView $a.models
+      $a.mapNetworkView = new $a.MapNetworkView $a.models
     catch error
       $a.broker.trigger("app:show_message:error", "Data file is badly formatted.")
   
