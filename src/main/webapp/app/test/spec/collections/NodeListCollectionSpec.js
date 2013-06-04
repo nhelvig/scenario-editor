@@ -58,7 +58,7 @@ describe("NodeListCollection", function() {
        arrColumnsData = this.nColl.getBrowserColumnData();
        expect(arrColumnsData[0][0]).toEqual(this.nColl.models[0].ident());
        expect(arrColumnsData[0][1]).toEqual(this.nColl.models[0].name());
-       expect(arrColumnsData[0][2]).toEqual(this.nColl.models[0].type_name()));
+       expect(arrColumnsData[0][2]).toEqual(this.nColl.models[0].type_name());
      });
   });
      
