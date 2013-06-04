@@ -226,12 +226,12 @@ class window.beats.LinkListCollection extends Backbone.Collection
   getBrowserColumnData: () ->
     @models.map((link) ->
                   [
-                    link.get('id'),
-                    link.road_names(),
+                    link.ident(),
+                    link.link_name(),
                     link.type_name(),
-                    link.get('lanes'),
-                    link.get('begin').get('node').road_names(),
-                    link.get('end').get('node').road_names()
+                    link.lanes(),
+                    link.begin_node().name(),
+                    link.end_node().name()
                   ]
                 )
   

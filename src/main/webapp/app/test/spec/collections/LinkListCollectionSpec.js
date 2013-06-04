@@ -82,13 +82,13 @@ describe("LinkListCollection", function() {
        arrColumnsData = this.lColl.getBrowserColumnData();
        lColl = this.lColl.models[0];
        expect(arrColumnsData[0][0]).toEqual(lColl.ident());
-       expect(arrColumnsData[0][1]).toEqual(lColl.road_names());
+       expect(arrColumnsData[0][1]).toEqual(lColl.link_name());
        expect(arrColumnsData[0][2]).toEqual(lColl.type_name());
        expect(arrColumnsData[0][3]).toEqual(lColl.lanes());
        nodeB = lColl.begin_node();
        nodeE = lColl.end_node();
-       expect(arrColumnsData[0][4]).toEqual(nodeB.road_names());
-       expect(arrColumnsData[0][5]).toEqual(nodeE.road_names());
+       expect(arrColumnsData[0][4]).toEqual(nodeB.name());
+       expect(arrColumnsData[0][5]).toEqual(nodeE.name());
      });
    });
   
