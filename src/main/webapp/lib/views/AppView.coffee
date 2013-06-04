@@ -144,7 +144,9 @@ class window.beats.AppView extends Backbone.View
       $a.models = $a.Scenario.from_xml($(xml).children())
       $a.mapNetworkView = new $a.MapNetworkView $a.models
     catch error
-      $a.broker.trigger("app:show_message:error", "Data file is badly formatted.")
+      if error.message then errMessage = error.message else errMessage = error
+      messageBox = new $a.MessageWindowView( {text: "Data file is badly formatted. " + errMessage, okButton: true} )
+
   
   clearMap: ->
     #$a.models = {}
