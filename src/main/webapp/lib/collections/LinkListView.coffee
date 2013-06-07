@@ -57,6 +57,10 @@ class window.beats.LinkListView extends Backbone.Collection
     else
       @createAndDrawLink(link)
     link
+    bNode = link.begin_node()
+    eNode = link.end_node()
+    bNode.position().on('change',(=> @resetPath(link)), @)
+    eNode.position().on('change',(=> @resetPath(link)), @)
   
   # this removes the link from the views array upon removal from collection
   removeLink: (link) ->

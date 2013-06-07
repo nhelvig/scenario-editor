@@ -8,7 +8,6 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # node
   initialize: (@models, @network)->
     $a.broker.on("map:clear_map", @clear, @)
-    $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
     $a.broker.on('links:remove', @removeLink, @)
@@ -219,8 +218,6 @@ class window.beats.LinkListCollection extends Backbone.Collection
     eNode = link.end_node()
     bNode.on('remove', => @removeNodeReference(link, 'begin'))
     eNode.on('remove', => @removeNodeReference(link, 'end')) 
-    bNode.position().on('change',(=> @reDrawLink(link)), @)
-    eNode.position().on('change',(=> @reDrawLink(link)), @)
   
   #view the demands for the link passed in
   viewDemands: (cid) ->
