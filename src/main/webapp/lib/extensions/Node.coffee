@@ -81,6 +81,12 @@ window.beats.Node::terminal = ->
 window.beats.Node::signalized = ->
   @get('type') is 'S'
 
+window.beats.Node::set_input = (link) ->
+  @inputs().push new window.beats.Input({link: link})
+  
+window.beats.Node::set_output = (link) ->
+  @outputs().push new window.beats.Output({link: link})
+
 window.beats.Node::inputs = ->
   if(!@has('inputs'))
     @set('inputs', new window.beats.Inputs({input: []}))

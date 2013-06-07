@@ -13,11 +13,23 @@ class window.beats.LinkListView extends Backbone.Collection
     @collection.on('add', @addAndRender, @)
     @collection.on('remove', @removeLink, @)
     @getLinkGeometry(@collection.models)
+    @setUpNodePositionChange(@collection.models)
 
   # create the route handler for the models
   getLinkGeometry: (models) ->
     @routeHandler = new $a.GoogleMapRouteHandler(models)
   
+  setUpNodePositionChange: (models) ->
+    _.each(models, (link) =>
+      bNode = link.begin_node()
+      eNode = link.end_node()
+      bNode.position().on('change',(=> @resetPath(link)), @)
+      eNode.position().on('change',(=> @resetPath(link)), @)
+    )
+  
+  resetPath: (link) ->
+    @routeHandler.setNewPath(link)
+    
   # this is called when the map:draw_link event is triggered. It created
   # the link view obect, which prepares itself to be drawn on the map
   createAndDrawLink: (link) ->
@@ -32,7 +44,6 @@ class window.beats.LinkListView extends Backbone.Collection
     $a.broker.off('map:draw_link')
     $a.broker.off('links:check_proximinity')
     $a.broker.off("map:clear_map")
-
     
   # when a link is added to the link collection or a node moved, this function 
   # is called to set up the geometry on the map via the routeHandler. 
@@ -46,11 +57,40 @@ class window.beats.LinkListView extends Backbone.Collection
     else
       @createAndDrawLink(link)
     link
+    bNode = link.begin_node()
+    eNode = link.end_node()
+    bNode.position().on('change',(=> @resetPath(link)), @)
+    eNode.position().on('change',(=> @resetPath(link)), @)
   
   # this removes the link from the views array upon removal from collection
   removeLink: (link) ->
     @views = _.reject(@views, (view) => view.model is link)
+    begin = link.begin_node()
+    begin.position().off('change')
+    end = link.end_node()
+    end.position().off('change')
+    @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
+    @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
+    @_turnOnNodePostionChange(end.inputs(), end.id, link)
+    @_turnOnNodePostionChange(end.outputs(), end.id, link)
   
+  # helper method for removeLink. It turns on the begin and node position 
+  # change event for all links that are not the removed link on the begin 
+  # and end nodes of the link that was removed. We tried to stop the removed
+  # link from responding to the node position change event it was attached too
+  # but we could not get the correct context.
+  # It appears future backbone releases will have a method to accomplish
+  # just this.
+  _turnOnNodePostionChange: (elements, nID, removedLink) ->
+    _.each(elements, (element) =>
+      link = element.link()
+      if(not(link.id is removedLink.id))
+        begin = link.begin_node()
+        end = link.end_node()
+        end.position().on('change',(=> @resetPath(link)), @) if end.id is nID
+        begin.position().on('change',(=> @resetPath(link)), @) if begin.id is nID
+    ) 
+    
   # tests to see if marker is close enough to snap, highlights it
   # sets the link for the model
   checkSnap: (markerView) ->

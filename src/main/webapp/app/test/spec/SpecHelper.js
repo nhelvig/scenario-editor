@@ -1,6 +1,14 @@
+//ovveride for jasmine describe method
+var oldDescribe = describe;
+describe = function(suiteName, method){
+  xml = $.parseXML($a.fileText);
+  $a.models = $a.Scenario.from_xml($(xml).children());
+  return oldDescribe(suiteName, method);
+};
+      
 beforeEach(function() {
   window.beats.broker = _.clone(Backbone.Events);
-  
+
   runDeferred = function(fList) {
     _.each(fList, function(f) { f(); });
   };

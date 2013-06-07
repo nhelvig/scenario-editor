@@ -70,14 +70,7 @@ class window.beats.GoogleMapRouteHandler
   _directionsRequest: (link) ->
       @directionsService.route(link.request, (response, status) =>
         if (status == google.maps.DirectionsStatus.OK)
-          rte = response.routes[0]
-          if rte.warnings.length > 0
-            msg = "#{WARNING_MSG} #{rte.warnings}"
-            $a.broker.trigger('app:show_message:info', msg)
-          if link?
-            smPath = @_getPoints(rte)
-            link.legs = smPath
-            link.set_position(@_convertLatLngToPoints(smPath)) 
+            @_handleRouteInfo(response, link)
             $a.broker.trigger('map:draw_link', link) if !@stop
             if(rate > 200)
               rate -= 100
@@ -100,18 +93,37 @@ class window.beats.GoogleMapRouteHandler
   _directionsRequestOneLink: (link) ->
       @directionsService.route(link.request, (response, status) =>
         if (status == google.maps.DirectionsStatus.OK)
-          rte = response.routes[0]
-          if rte.warnings.length > 0
-            msg = "#{WARNING_MSG} #{rte.warnings}"
-            $a.broker.trigger('app:show_message:info', msg)
-          smPath = @_getPoints(rte)
-          link.legs = smPath
-          link.set_position(@_convertLatLngToPoints(smPath))
+          @_handleRouteInfo(response, link)
           $a.broker.trigger('map:draw_link', link)
         else
           setTimeout (() =>  @requestLink(link)), 1000
       )
   
+  # this method is called from LinkListView on an existing link whose
+  # endpoints have been changed
+  setNewPath: (link) ->
+    @setUpLink(link)
+    @directionsService.route(link.request, (response, status) =>
+        if (status == google.maps.DirectionsStatus.OK)
+          @_handleRouteInfo(response, link)
+          link.poly.setPath(link.legs)
+          link.view._saveLinkLength()
+        else
+          msg = "Problem drawing new path; re-position node again."
+          $a.broker.trigger('app:show_message:error', msg)
+      )
+  
+  # helper method for directions responses
+  _handleRouteInfo: (response, link) ->
+    rte = response.routes[0]
+    if rte.warnings.length > 0
+      msg = "#{WARNING_MSG} #{rte.warnings}"
+      $a.broker.trigger('app:show_message:info', msg)
+    smPath = @_getPoints(rte)
+    if link?
+      link.legs = smPath
+      link.set_position(@_convertLatLngToPoints(smPath))
+
   #checks to see if we are over the google query limit
   _isOverQuery: (status) ->
     status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT

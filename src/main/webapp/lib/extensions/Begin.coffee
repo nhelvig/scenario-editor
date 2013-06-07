@@ -6,5 +6,6 @@ window.beats.Begin::encode_references = ->
   
 window.beats.Begin::set_node = (node) ->
   @set 'node', node
+  @set 'node_id', node.ident()
 
 window.beats.Begin::node = -> @get 'node'

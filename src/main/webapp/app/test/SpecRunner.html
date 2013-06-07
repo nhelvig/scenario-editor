@@ -14,9 +14,8 @@
   
   <script src="../js/vendor/head.js"></script>
   <script type="text/javascript">
+
      function runner() {
-        xml = $.parseXML($a.fileText);
-        $a.models = $a.Scenario.from_xml($(xml).children());
         _.templateSettings = {interpolate : /\{\{(.+?)\}\}/g }
         var jasmineEnv = jasmine.getEnv();
         jasmineEnv.updateInterval = 1000;
@@ -33,6 +32,8 @@
           jasmineEnv.execute();
         }
         execJasmine();
+        
+
     }
     head.js("load-jasmine.js", function() {
       window.runWithIncludes(runner);

@@ -4,13 +4,11 @@ describe("LinkListCollection", function() {
   
   beforeEach(function() {
     loadFixtures('main.canvas.view.fixture.html');
-
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLinkAddNode').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLinkByDistance').andCallThrough();
-    spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'joinLink').andCallThrough();
@@ -21,7 +19,7 @@ describe("LinkListCollection", function() {
     this.lColl= new $a.LinkListCollection(links, scen.network);
     $a.nodeList = new $a.NodeListCollection(scen.scenario.nodes());
   });
-
+  
   describe("Instantiation", function() {
     it("sets models to a collection of links", function() {
       expect(this.lColl.models).not.toBeNull();
@@ -49,10 +47,6 @@ describe("LinkListCollection", function() {
     it("should be watching splitLinkAddNode", function() {
       this.lColl.trigger("links:split_add_node", scen.link1.cid, new google.maps.LatLng(0,0));
       expect($a.LinkListCollection.prototype.splitLinkAddNode).toHaveBeenCalled();
-    });
-    it("should be watching reDrawLink", function() {
-      $a.broker.trigger("map:redraw_link", scen.link4);
-      expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();
     });
     it("should be watching joinLink", function() {
       $a.broker.trigger("links_collection:join", scen.node2);
@@ -153,14 +147,7 @@ describe("LinkListCollection", function() {
     });
   });
   
-  describe("reDrawLink ", function() {
-    it("should take link and redraw it after update called", function() {
-      begin = scen.link1.begin_node();
-      begin.updatePosition(new google.maps.LatLng(37.8579, -122.2995));
-      links = this.lColl.reDrawLink(scen.link1);
-      expect(this.lColl.length).toEqual(3);
-    });
-  });
+
   describe("joinLink ", function() {
     it("should join links when node is removed", function() {
       links = this.lColl.models
@@ -190,10 +177,6 @@ describe("LinkListCollection", function() {
     it("should de-reference $a.linkList", function() {
       expect($a.linkList).toEqual({});
     });
-    it("should stop listening to map:redraw_link", function() {
-      $a.broker.trigger('map:redraw_link')    
-      expect($a.LinkListCollection.prototype.reDrawLink).not.toHaveBeenCalled();
-    }); 
     it("should stop listening to links_collection:add", function() {
       $a.broker.trigger('links_collection:add')    
       expect($a.LinkListCollection.prototype.addLink).not.toHaveBeenCalled();
