@@ -232,21 +232,22 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # and set it back on the new link. You need to create a new link because
   # simply trying 
   reDrawLink: (link) ->
-    args = {
-      begin: link.begin_node()
-      end: link.end_node()
-    }
-    reAssign = {
-      id: link.ident()
-      link_name: link.link_name()
-      link_type: link.link_type()
-      lanes: link.lanes()
-      lane_offset: link.lane_offset()
-      in_sync: link.in_sync()
-    }
-    @remove(link)
-    l = @addLink(args)
-    l.set(reAssign)
+    # args = {
+    #   begin: link.begin_node()
+    #   end: link.end_node()
+    # }
+    # reAssign = {
+    #   id: link.ident()
+    #   link_name: link.link_name()
+    #   link_type: link.link_type()
+    #   lanes: link.lanes()
+    #   lane_offset: link.lane_offset()
+    #   in_sync: link.in_sync()
+    # }
+    # @remove(link)
+    # l = @addLink(args)
+    # l.set(reAssign)
+    
     
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->

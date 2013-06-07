@@ -13,11 +13,23 @@ class window.beats.LinkListView extends Backbone.Collection
     @collection.on('add', @addAndRender, @)
     @collection.on('remove', @removeLink, @)
     @getLinkGeometry(@collection.models)
+    @setUpNodePositionChange(@collection.models)
 
   # create the route handler for the models
   getLinkGeometry: (models) ->
     @routeHandler = new $a.GoogleMapRouteHandler(models)
   
+  setUpNodePositionChange: (models) ->
+    _.each(models, (link) =>
+      bNode = link.begin_node()
+      eNode = link.end_node()
+      bNode.position().on('change',(=> @resetPath(link)), @)
+      eNode.position().on('change',(=> @resetPath(link)), @)
+    )
+  
+  resetPath: (link) ->
+    @routeHandler.setNewPath(link)
+    
   # this is called when the map:draw_link event is triggered. It created
   # the link view obect, which prepares itself to be drawn on the map
   createAndDrawLink: (link) ->
@@ -32,7 +44,6 @@ class window.beats.LinkListView extends Backbone.Collection
     $a.broker.off('map:draw_link')
     $a.broker.off('links:check_proximinity')
     $a.broker.off("map:clear_map")
-
     
   # when a link is added to the link collection or a node moved, this function 
   # is called to set up the geometry on the map via the routeHandler. 

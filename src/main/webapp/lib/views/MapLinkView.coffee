@@ -74,6 +74,7 @@ class window.beats.MapLinkView extends Backbone.View
       strokeOpacity: 0.6
       strokeWeight: @getLinkStrokeWeight()
     })
+    @model.view = @link
     @_publishGoogleEvents()
     @_createInfoWindow()
 

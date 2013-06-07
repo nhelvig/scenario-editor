@@ -112,6 +112,22 @@ class window.beats.GoogleMapRouteHandler
           setTimeout (() =>  @requestLink(link)), 1000
       )
   
+  setNewPath : (link) ->
+    @setUpLink(link)
+    @directionsService.route(link.request, (response, status) =>
+        if (status == google.maps.DirectionsStatus.OK)
+          rte = response.routes[0]
+          if rte.warnings.length > 0
+            msg = "#{WARNING_MSG} #{rte.warnings}"
+            $a.broker.trigger('app:show_message:info', msg)
+          smPath = @_getPoints(rte)
+          link.legs = smPath
+          link.set_position(@_convertLatLngToPoints(smPath))
+          link.view.setPath(smPath)
+        else
+          $a.broker.trigger('app:show_message:info', "Problem drawing new path")
+      )
+  
   #checks to see if we are over the google query limit
   _isOverQuery: (status) ->
     status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT
