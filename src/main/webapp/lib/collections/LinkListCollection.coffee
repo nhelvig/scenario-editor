@@ -95,33 +95,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # re-instante position change for all of each nodes inputs and outputs
   removeLink: (linkID) ->
     link = @getByCid(linkID)
-    begin = link.begin_node()
-    begin.position().off('change')
-    end = link.end_node()
-    end.position().off('change')
     @remove(link)
-    @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
-    @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
-    @_turnOnNodePostionChange(end.inputs(), end.id, link)
-    @_turnOnNodePostionChange(end.outputs(), end.id, link)
-  
-  # helper method for removeLink. It turns on the begin and node position 
-  # change event for all links that are not the removed link on the begin 
-  # and end nodes of the link that was removed. We tried to stop the removed
-  # link from responding to the node position change event it was attached too
-  # but we could not get the correct context.
-  # It appears future backbone releases will have a method to accomplish
-  # just this.
-  _turnOnNodePostionChange: (elements, nID, removedLink) ->
-    _.each(elements, (element) =>
-      link = element.link()
-      if(not(link.id is removedLink.id))
-        begin = link.begin_node()
-        end = link.end_node()
-        end.position().on('change',(=> @reDrawLink(link)), @) if end.id is nID
-        begin.position().on('change',(=> @reDrawLink(link)), @) if begin.id is nID
-    ) 
-  
+
   # creates a duplicate link to the one passed in
   duplicateLink: (linkID) ->
     link = @getByCid(linkID)
