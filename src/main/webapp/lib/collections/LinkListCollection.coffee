@@ -226,29 +226,6 @@ class window.beats.LinkListCollection extends Backbone.Collection
                   ]
                 )
   
-  # This method is triggered when a node is dragged. First remove the current
-  # link from the map and re-add the new link to the collection which 
-  # triggers the creation of view. In order to keep the current state, copy it
-  # and set it back on the new link. You need to create a new link because
-  # simply trying 
-  reDrawLink: (link) ->
-    # args = {
-    #   begin: link.begin_node()
-    #   end: link.end_node()
-    # }
-    # reAssign = {
-    #   id: link.ident()
-    #   link_name: link.link_name()
-    #   link_type: link.link_type()
-    #   lanes: link.lanes()
-    #   lane_offset: link.lane_offset()
-    #   in_sync: link.in_sync()
-    # }
-    # @remove(link)
-    # l = @addLink(args)
-    # l.set(reAssign)
-    
-    
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->
     ch = 'change:lanes change:lane_offset change:length change:speed_limit '
