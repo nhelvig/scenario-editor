@@ -39,28 +39,19 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # of the appropriate nodes
   addLink: (args) ->
     link = new window.beats.Link()
+    link.set_id($a.Util.getNewElemId($a.models.links()))
     link.set_crud($a.CrudFlag.CREATE)
-    id = $a.Util.getNewElemId($a.models.links())
-    link.set_id(id)
+    link.set_end_node args.end
+    link.set_begin_node args.begin
     
     if args.duplicate?
       link.set_geometry args.path
       link.legs = []
     
-    begin = new window.beats.Begin()
-    begin.set('node_id', args.begin.get('id'))
-    begin.set('node', args.begin)
-    
-    end = new window.beats.End()
-    end.set('node_id', args.end.get('id'))
-    end.set('node', args.end)
-    
-    link.set('begin', begin)
-    link.set('end', end)
     @_setUpEvents(link)
     @add(link)
-    args.begin.outputs().push new window.beats.Output({link: link})
-    args.end.inputs().push new window.beats.Input({link: link})
+    link.begin_node().set_output(link)
+    link.end_node().set_input(link)
     link
   
   # called from context menu of link. Highlight itself and its nodes 
@@ -237,14 +228,26 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # This method is triggered when a node is dragged. First remove the current
   # link from the map and re-add the new link to the collection which 
-  # triggers the creation of view
+  # triggers the creation of view. In order to keep the current state, copy it
+  # and set it back on the new link. You need to create a new link because
+  # simply trying 
   reDrawLink: (link) ->
-    link.set_geometry ''
-    link.set_position null
-    link.set_length null
+    args = {
+      begin: link.begin_node()
+      end: link.end_node()
+    }
+    reAssign = {
+      id: link.ident()
+      link_name: link.link_name()
+      link_type: link.link_type()
+      lanes: link.lanes()
+      lane_offset: link.lane_offset()
+      in_sync: link.in_sync()
+    }
     @remove(link)
-    @add(link)
-  
+    l = @addLink(args)
+    l.set(reAssign)
+    
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->
     ch = 'change:lanes change:lane_offset change:length change:speed_limit '

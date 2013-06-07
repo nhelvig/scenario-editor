@@ -4,7 +4,6 @@ describe("LinkListCollection", function() {
   
   beforeEach(function() {
     loadFixtures('main.canvas.view.fixture.html');
-
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLink').andCallThrough();
@@ -21,7 +20,7 @@ describe("LinkListCollection", function() {
     this.lColl= new $a.LinkListCollection(links, scen.network);
     $a.nodeList = new $a.NodeListCollection(scen.scenario.nodes());
   });
-
+  
   describe("Instantiation", function() {
     it("sets models to a collection of links", function() {
       expect(this.lColl.models).not.toBeNull();
