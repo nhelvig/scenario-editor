@@ -95,7 +95,44 @@ class window.beats.LinkListCollection extends Backbone.Collection
   removeLink: (linkID) ->
     link = @getByCid(linkID)
     @remove(link)
-
+    begin = link.begin_node()
+    begin.position().off('change')
+    end = link.end_node()
+    end.position().off('change')
+    @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
+    @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
+    @_turnOnNodePostionChange(end.inputs(), end.id, link)
+    @_turnOnNodePostionChange(end.outputs(), end.id, link)
+  
+  # helper method for removeLink. It turns on the begin and node position 
+  # change event for all links that are not the removed link on the begin 
+  # and end nodes of the link that was removed. We tried to stop the removed
+  # link from responding to the node position change event it was attached too
+  # but we could not get the correct context.
+  # It appears future backbone releases will have a method to accomplish
+  # just this.
+  _turnOnNodePostionChange: (elements, nID, removedLink) ->
+    _.each(elements, (element) =>
+      link = element.link()
+      if(not(link.id is removedLink.id))
+        begin = link.begin_node()
+        end = link.end_node()
+        end.position().on('change',(=> @reDrawLink(link)), @) if end.id is nID
+        begin.position().on('change',(=> @reDrawLink(link)), @) if begin.id is nID
+    )
+  
+  # This method redraws the link after a node has been re-positioned. It must
+  # remove the old link and create a new one in order to ensure proper
+  # handling of links on database side
+  reDrawLink: (link) ->
+    attrs = link.copy_attributes()
+    @removeLink(link.cid)
+    args = {}
+    args.begin = link.begin_node()
+    args.end = link.end_node()
+    newLink = @addLink(args)
+    newLink.set(attrs)
+    
   # creates a duplicate link to the one passed in
   duplicateLink: (linkID) ->
     link = @getByCid(linkID)
@@ -176,7 +213,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     bLink.begin_node().position().off()
     eLink.end_node().position().off()
     @addLink({begin: bLink.begin_node(), end: eLink.end_node(), path: path})
-    
+
+  
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.
   clear: ->
@@ -218,6 +256,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     eNode = link.end_node()
     bNode.on('remove', => @removeNodeReference(link, 'begin'))
     eNode.on('remove', => @removeNodeReference(link, 'end')) 
+    bNode.position().on('change',(=> @reDrawLink(link)), @)
+    eNode.position().on('change',(=> @reDrawLink(link)), @)
   
   #view the demands for the link passed in
   viewDemands: (cid) ->

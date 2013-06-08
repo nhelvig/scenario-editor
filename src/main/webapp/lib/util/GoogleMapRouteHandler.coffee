@@ -98,21 +98,7 @@ class window.beats.GoogleMapRouteHandler
         else
           setTimeout (() =>  @requestLink(link)), 1000
       )
-  
-  # this method is called from LinkListView on an existing link whose
-  # endpoints have been changed
-  setNewPath: (link) ->
-    @setUpLink(link)
-    @directionsService.route(link.request, (response, status) =>
-        if (status == google.maps.DirectionsStatus.OK)
-          @_handleRouteInfo(response, link)
-          link.poly.setPath(link.legs)
-          link.view._saveLinkLength()
-        else
-          msg = "Problem drawing new path; re-position node again."
-          $a.broker.trigger('app:show_message:error', msg)
-      )
-  
+    
   # helper method for directions responses
   _handleRouteInfo: (response, link) ->
     rte = response.routes[0]

@@ -147,7 +147,6 @@ describe("LinkListCollection", function() {
     });
   });
   
-
   describe("joinLink ", function() {
     it("should join links when node is removed", function() {
       links = this.lColl.models

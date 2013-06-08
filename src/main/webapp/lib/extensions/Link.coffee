@@ -153,3 +153,17 @@ window.beats.Link::set_show_demands = (flag) ->
   @set('show_demands', flag)
 
 window.beats.Link::show_demands = -> @get('show_demands', flag)
+
+window.beats.Link::copy_attributes = ->
+  {
+    'link_name': @link_name()
+    'lanes': @lanes()
+    'lane_offset': @lane_offset()
+    'in_sync': @in_sync()
+    'selected': @selected()
+    'speed_limit': @speed_limit()
+    'subdivide': @subdivide()
+    'link_type': new $a.Link_type({id:@type_id(), name:@type_name()})
+    'dynamics': new $a.Dynamics({type:@dynamics().type()})
+    'roads': @roads()
+  }

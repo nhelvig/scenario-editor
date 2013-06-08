@@ -7,7 +7,6 @@ describe("LinkListView", function() {
     network = $a.models.get('networkset').get('network')[0];
     models = $a.models.links();
     spyOn($a.LinkListView.prototype, 'addAndRender').andCallThrough();
-    spyOn($a.LinkListView.prototype, 'resetPath').andCallThrough();
     spyOn($a.LinkListView.prototype, 'createAndDrawLink').andCallThrough();
     spyOn($a.LinkListView.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListView.prototype, 'setStrokeWeight').andCallThrough();
@@ -31,13 +30,7 @@ describe("LinkListView", function() {
                 expect($a.LinkListView.prototype.addAndRender).toHaveBeenCalled();
                 this.lColl.removeLink(link.cid);
             });
-            it("should be watching resetPath", function() {
-                link = this.lColl.models[0];
-                latLng = new google.maps.LatLng(37.8579, -122.2995);
-                link.begin_node().updatePosition(latLng);
-                expect($a.LinkListView.prototype.resetPath).toHaveBeenCalled();
-                this.lColl.removeLink(link.cid);
-            });        
+        
            it("should be watching createAndDrawLink", function() {
              $a.broker.trigger('map:draw_link', scen.link1);
              expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();
