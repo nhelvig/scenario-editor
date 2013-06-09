@@ -40,7 +40,7 @@ describe("LinkListCollection", function() {
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
     it("should be watching splitLink", function() {
-      this.lColl.trigger("links:split", $a.linkList.models[0].cid);
+      this.lColl.trigger("links:split", scen.link1.cid);
       expect($a.LinkListCollection.prototype.splitLink).toHaveBeenCalled();
     });
     it("should be watching splitLinkByDistance", function() {
@@ -107,6 +107,20 @@ describe("LinkListCollection", function() {
       this.lColl.removeLink(scen.link1.cid);
       expect(lengthBefore - 1).toEqual(this.lColl.length);
     });
+    msg = "should remove a link without an error if begin or end node are ";
+    msg += "missing from link";
+    it(msg, function() {
+      var removedNoError = true;
+      try{
+        scen.link1.set('begin', null);
+        scen.link1.set('end', null);
+        this.lColl.removeLink(scen.link1.cid);
+      }catch(error) {
+        removedNoError = false;
+      }
+      expect(removedNoError).toBeTruthy();
+    });
+    
   });
   describe("splitLink", function() {
     it("should split a link from the collection", function() {
