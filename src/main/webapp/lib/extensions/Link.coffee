@@ -54,6 +54,7 @@ window.beats.Link::set_generic = (id, val) ->
 window.beats.Link::set_link_name = (name) -> @set('link_name',name)
 
 window.beats.Link::set_length = (length) ->@set('length', length)
+window.beats.Link::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp) 
 window.beats.Link::set_crud = (flag) -> 
     if @crud() != window.beats.CrudFlag.CREATE
       @set 'crudFlag', flag
@@ -172,3 +173,16 @@ window.beats.Link::copy_attributes = ->
     'dynamics': new $a.Dynamics({type:@dynamics().type()}) if @dynamics()?
     'roads': @roads() if @roads?
   }
+
+# we need to remove the crudFlag and mop_stamp before saving to an xml file
+# and then replace both attributes on the object
+window.beats.Link::old_to_xml = window.beats.Link::to_xml 
+window.beats.Link::to_xml = (doc) ->
+   crud = @crud()
+   mod = @mod_stamp()
+   @unset 'crudFlag', { silent:true }
+   @unset 'mod_stamp', { silent:true }
+   xml = @old_to_xml(doc)
+   @set_crud(crud) if crud?
+   @set_mod_stamp(mod) if mod?
+   xml

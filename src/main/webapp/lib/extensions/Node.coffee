@@ -38,6 +38,10 @@ window.beats.Node::set_type = (id, name) ->
   @get("node_type").set_id(id)
   @defaults['node_type'] = id
 
+
+window.beats.Node::mod_stamp = -> @get('mod_stamp')
+window.beats.Node::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
+
 window.beats.Node::locked = -> @get("lock")? and @get("lock") is true
 window.beats.Node::set_locked = (val) -> 
   @set("lock", val)
@@ -132,3 +136,16 @@ window.beats.Node::toggle_selected =  ->
 
 window.beats.Node::selected = ->
   @get('selected')
+
+# we need to remove the crudFlag and mop_stamp before saving to an xml file
+# and then replace both attributes on the object
+window.beats.Node::old_to_xml = window.beats.Node::to_xml 
+window.beats.Node::to_xml = (doc) ->
+   crud = @crud()
+   mod = @mod_stamp()
+   @unset 'crudFlag', { silent:true }
+   @unset 'mod_stamp', { silent:true }
+   xml = @old_to_xml(doc)
+   @set_crud(crud) if crud?
+   @set_mod_stamp(mod) if mod?
+   xml
