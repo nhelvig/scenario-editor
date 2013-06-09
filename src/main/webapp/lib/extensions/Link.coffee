@@ -154,6 +154,11 @@ window.beats.Link::set_show_demands = (flag) ->
 
 window.beats.Link::show_demands = -> @get('show_demands', flag)
 
+# This method is called when a node is re-positioned and the link redrawn.
+# Before removing the link we need to get its attributes so they can 
+# be copied into the new link. Note: Moving a node requires a delete of 
+# the old attached link and creating a new link in order to meet the specs
+# for link handling in the database
 window.beats.Link::copy_attributes = ->
   {
     'link_name': @link_name()
@@ -164,6 +169,6 @@ window.beats.Link::copy_attributes = ->
     'speed_limit': @speed_limit()
     'subdivide': @subdivide()
     'link_type': new $a.Link_type({id:@type_id(), name:@type_name()})
-    'dynamics': new $a.Dynamics({type:@dynamics().type()})
-    'roads': @roads()
+    'dynamics': new $a.Dynamics({type:@dynamics().type()}) if @dynamics()?
+    'roads': @roads() if @roads?
   }

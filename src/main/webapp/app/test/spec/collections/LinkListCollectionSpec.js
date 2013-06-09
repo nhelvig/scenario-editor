@@ -6,18 +6,16 @@ describe("LinkListCollection", function() {
     loadFixtures('main.canvas.view.fixture.html');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
+    spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLinkAddNode').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLinkByDistance').andCallThrough();
-    spyOn($a.LinkListCollection.prototype, 'clear').andCallThrough();
     spyOn($a.LinkListCollection.prototype, '_setUpEvents').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'joinLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'duplicateLink').andCallThrough();
-
     scen = scenarioAndFriends();
-    links = [scen.link1, scen.link2, scen.link3]
-    this.lColl= new $a.LinkListCollection(links, scen.network);
-    $a.nodeList = new $a.NodeListCollection(scen.scenario.nodes());
+    links = [scen.link1, scen.link2, scen.link3];
+    this.lColl= new $a.LinkListCollection(links,$a.models.network());
   });
   
   describe("Instantiation", function() {
@@ -26,18 +24,23 @@ describe("LinkListCollection", function() {
     });
     
     it("should be watching addLink", function() {
-      begin = scen.link1.begin_node();
-      end = scen.link1.end_node();
+      begin = $a.linkList.models[0].begin_node();
+      end = $a.linkList.models[0].end_node();
       $a.broker.trigger("links_collection:add", {begin:begin,end:end});
       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
     });
-
+    it("should be watching reDrawLink after updatePosition called on node", 
+      function() {
+        begin = $a.linkList.models[0].begin_node()
+        begin.updatePosition(new google.maps.LatLng(37.8579, -122.2995));
+        expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();
+    });
     it("should be watching removeLink", function() {
       $a.broker.trigger("links:remove", scen.link1.cid);
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
     });
     it("should be watching splitLink", function() {
-      this.lColl.trigger("links:split", scen.link1.cid);
+      this.lColl.trigger("links:split", $a.linkList.models[0].cid);
       expect($a.LinkListCollection.prototype.splitLink).toHaveBeenCalled();
     });
     it("should be watching splitLinkByDistance", function() {
@@ -60,13 +63,10 @@ describe("LinkListCollection", function() {
     it("should call _setUpEvents", function() {
       expect($a.LinkListCollection.prototype._setUpEvents).toHaveBeenCalled();
     });
-    it("should be watching clear", function() {
-      $a.broker.trigger("map:clear_map");
-      this.after(function() { 
-        $a.models = $a.Scenario.from_xml($(xml).children()); 
-      });
-      expect($a.LinkListCollection.prototype.clear).toHaveBeenCalled();
-    });
+    // it("should be watching clear", function() {
+    //   $a.broker.trigger("map:clear_map");
+    //   expect($a.linkList.clear).toHaveBeenCalled();
+    // });
   });
     
   describe("getBrowserColumnData", function() {
@@ -85,7 +85,22 @@ describe("LinkListCollection", function() {
        expect(arrColumnsData[0][5]).toEqual(nodeE.name());
      });
    });
-  
+   describe("reDrawLink ", function() {
+      it("should take link and redraw it after update called", function() {
+        var oldLength = $a.linkList.length;
+        var oldLink = $a.linkList.models[0];
+        newLink = $a.linkList.reDrawLink(oldLink);
+        expect(oldLink.crud()).toEqual($a.CrudFlag.DELETE);
+        expect(newLink.crud()).toEqual($a.CrudFlag.CREATE);
+        expect(newLink.link_name()).toEqual(oldLink.link_name());
+        expect(newLink.lanes()).toEqual(oldLink.lanes());
+        expect(newLink.lane_offset()).toEqual(oldLink.lane_offset());
+        expect(newLink.in_sync()).toEqual(oldLink.in_sync());
+        expect(newLink.type_name()).toEqual(oldLink.type_name());
+        expect(newLink.type_id()).toEqual(oldLink.type_id());
+        expect($a.linkList.length).toEqual(oldLength);
+      });
+  });
   describe("removeLink", function() {
     it("should remove a link from the collection", function() {
       var lengthBefore = this.lColl.length;
