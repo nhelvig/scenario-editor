@@ -80,19 +80,20 @@ class window.beats.MapLinkView extends Backbone.View
   # publish polyline google events
   _publishGoogleEvents: ->
     gme = google.maps.event
-    gme.addListener(@link, 'dblclick', (evt) => 
+    @dblclckHandler = gme.addListener(@link, 'dblclick', (evt) => 
       @model.set_editor_show(true)
       evt.stop()
     )
-    gme.addListener(@link, 'click', =>  
+    @clickHandler = gme.addListener(@link, 'click', =>  
       $a.broker.trigger('map:clear_selected') # this could also go in the model?
       @model.toggle_selected()
     )
   
   _unpublishGoogleEvents: ->
     gme = google.maps.event
-    gme.clearInstanceListeners(@link) if @link?
     gme.removeListener(@zoomListener)
+    gme.removeListener(@dblclckHandler)
+    gme.removeListener(@clickHandler)
   
   # this is the rollover window for the link
   _createInfoWindow: ->

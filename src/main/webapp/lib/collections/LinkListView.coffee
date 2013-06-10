@@ -48,7 +48,7 @@ class window.beats.LinkListView extends Backbone.Collection
   # this removes the link from the views array upon removal from collection
   removeLink: (link) ->
     @views = _.reject(@views, (view) => view.model is link)
-  
+    
   # tests to see if marker is close enough to snap, highlights it
   # sets the link for the model
   checkSnap: (markerView) ->

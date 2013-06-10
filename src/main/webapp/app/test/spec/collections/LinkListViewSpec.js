@@ -25,13 +25,13 @@ describe("LinkListView", function() {
             
             it("should be watching addAndRender", function() {
                 l = scen.link1
-                link = this.lColl.addLink({begin:l.begin_node(),end:l.end_node(), path:l.geometry(), parallel:true});
+                args = {begin:l.begin_node(),end:l.end_node(),path:l.geometry(), parallel:true};
+                link = this.lColl.addLink(args);
                 expect($a.LinkListView.prototype.addAndRender).toHaveBeenCalled();
                 this.lColl.removeLink(link.cid);
             });
-                    
+        
            it("should be watching createAndDrawLink", function() {
-             
              $a.broker.trigger('map:draw_link', scen.link1);
              expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();
            });

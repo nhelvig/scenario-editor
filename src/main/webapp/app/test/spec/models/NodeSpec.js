@@ -17,7 +17,24 @@ describe("Node", function() {
     testLink2 = simpleLink(2, testNode1, testNode2);
     testLink3 = simpleLink(3, testNode2, testNode1);    
   });
+  describe("to_xml", function() {
+    beforeEach(function() {
+      doc = document.implementation.createDocument("document:xml", "begin", null);
+      testNode1.set_crud(window.beats.CrudFlag.UPDATE);
+      out = testNode1.to_xml(doc);
+    });
+    it("should not blow up on to_xml", function() {
+      expect(out).not.toBeNull();
 
+    });
+    it("should not contain crudFlag or modstamp attributes", function() {  
+      var strOut = new XMLSerializer().serializeToString(out);
+      var matchC = strOut.indexOf('crudFlag');
+      var matchM = strOut.indexOf('mod_stamp');
+      expect(matchC).toEqual(-1);
+      expect(matchM).toEqual(-1);
+    });
+  });
   describe("input indexes", function() {
     it("should return link1 and link2 for inputs to node2 from node1",function() {
       var ii = testNode2.input_indexes(testNode1);

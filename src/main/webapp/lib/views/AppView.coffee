@@ -94,6 +94,8 @@ class window.beats.AppView extends Backbone.View
         doc = document.implementation.createDocument(null, null, null)
         center = $a.map.getCenter()
         $a.models.set_position(center.lat(), center.lng())
+      # Set save mode to file, so that database relevent information is parsed out
+        $a.saveMode = 'file'
         attrs =
           xml: $a.models.to_xml(doc)
         $a.Util.writeAndDownloadXML(attrs)
@@ -235,6 +237,8 @@ class window.beats.AppView extends Backbone.View
     # add overlay to disable screen
     messageBox = new $a.MessageWindowView( {text: "Importing Network...", okButton:false} )
     doc = document.implementation.createDocument(null, null, null)
+    # Set save mode to db
+    $a.saveMode = 'db'
 
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion
@@ -276,6 +280,8 @@ class window.beats.AppView extends Backbone.View
     # add overlay to disable screen
     messageBox = new $a.MessageWindowView( {text: "Saving Network...", okButton:false} )
     doc = document.implementation.createDocument(null, null, null)
+    # Set save mode to db, so that xml is formatted with CRUDFlag and modstamps
+    $a.saveMode = 'db'
 
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion

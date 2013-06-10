@@ -7,7 +7,9 @@ describe("Link", function() {
   var testNode, testNode2, testNode3, testNode4;
   var testLink1;
   var testLink2;
-
+  var doc;
+  var out;
+  
   beforeEach(function() {
     testNode = new window.beats.Node({id: testNodeId});
     testNode2 = new window.beats.Node({id: testNodeId2});
@@ -17,12 +19,25 @@ describe("Link", function() {
     testLink3 = simpleLink(3, testNode, testNode3);
   });
 
-  it("should not blow up on to_xml", function() {
-    var doc = document.implementation.createDocument("document:xml", "begin", null);
-    var out = testLink1.to_xml(doc);
-    expect(out).not.toBeNull();
-  });
+  describe("to_xml", function() {
+    beforeEach(function() {
+      doc = document.implementation.createDocument("document:xml", "begin", null);
+      testLink1.set_crud(window.beats.CrudFlag.UPDATE);
+      out = testLink1.to_xml(doc);
+    });
+    it("should not blow up on to_xml", function() {
+      expect(out).not.toBeNull();
 
+    });
+    it("should not contain crudFlag or modstamp attributes", function() {  
+      var strOut = new XMLSerializer().serializeToString(out);
+      var matchC = strOut.indexOf('crudFlag');
+      var matchM = strOut.indexOf('mod_stamp');
+      expect(matchC).toEqual(-1);
+      expect(matchM).toEqual(-1);
+    });
+  });
+  
   describe("parallel_links", function() {
     it("should return parallel links", function() {
       expect(testLink2.parallel_links()).toContain(testLink3);
