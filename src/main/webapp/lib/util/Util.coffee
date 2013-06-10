@@ -51,7 +51,9 @@ window.beats.Util =
   toStandardCasing: (elem) ->
     formattedWord = []
     for word in elem.split /\s+/
-      formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase()
+      # if word is not null or not "" (empty)
+      if !!word
+        formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase()
     formattedWord.join ' '
 
   # This method is used to grab the model elements from object model by id.
