@@ -143,7 +143,7 @@ window.beats.Node::old_to_xml = window.beats.Node::to_xml
 window.beats.Node::to_xml = (doc) ->
   xml = ''
   # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
-  if window.beats? and  window.beats.saveMode == 'file'
+  if window.beats? and window.beats.fileSaveMode
     crud = @crud()
     mod = @mod_stamp()
     @unset 'crudFlag', { silent:true }

@@ -153,4 +153,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     @remove(@models)
     $a.nodeList = {}
     $a.broker.off('nodes:add')
+    $a.broker.off('nodes:remove')
+    $a.broker.off('nodes:remove_and_links')
+    $a.broker.off('nodes:remove_and_join')
     @off(null, null, @)

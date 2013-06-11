@@ -10,7 +10,7 @@ window.beats.LinkList::old_to_xml = window.beats.LinkList::to_xml
 window.beats.LinkList::to_xml = (doc) ->
   xml = ''
   # If we are converting to xml to be saved to file remove all deleted elements from list
-  if window.beats? and  window.beats.saveMode == 'file'
+  if window.beats? and window.beats.fileSaveMode
     filter = ((link) => link.crud() == window.beats.CrudFlag.DELETE)
     deletedLinks = _.filter(@get('link'), filter)
     keepLinks = _.reject(@get('link'), filter)

@@ -225,6 +225,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.linkList = {}
     $a.broker.off("map:redraw_link")
     $a.broker.off('links_collection:add')
+    $a.broker.off('links_collection:join')
+    $a.broker.off('links:remove')
     @off(null, null, @)
   
   # This is called when a link browser is created in order to return

@@ -10,7 +10,7 @@ window.beats.NodeList::old_to_xml = window.beats.NodeList::to_xml
 window.beats.NodeList::to_xml = (doc) ->
   xml = ''
   # If we are converting to xml to be saved to file remove all deleted elements from list
-  if window.beats? and  window.beats.saveMode == 'file'
+  if window.beats? and window.beats.fileSaveMode
     filter = ((node) => node.crud() == window.beats.CrudFlag.DELETE)
     deletedNodes = _.filter(@get('node'), filter)
     keepNodes = _.reject(@get('node'), filter)
