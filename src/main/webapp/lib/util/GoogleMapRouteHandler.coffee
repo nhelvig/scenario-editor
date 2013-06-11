@@ -79,13 +79,20 @@ class window.beats.GoogleMapRouteHandler
           rate = 1000
           setTimeout (() =>  @_requestLinks(link.index)), rate
       )
-  
+
+  _duplicatePoint: (point, arrayOfPoints) ->
+    duplicate = false
+    for pt in arrayOfPoints
+      if pt.equals(point)
+        duplicate = true
+    duplicate
+
   _getPoints: (rte) ->
     smPath = []
     for leg in rte.legs
       for step in leg.steps
         for pt in step.path
-          if !(pt in smPath)
+          if !@_duplicatePoint(pt,smPath)
             smPath.push pt
     smPath
 
