@@ -135,7 +135,7 @@ window.beats.Link::selected = ->
 window.beats.Link::remove = ->
   if @crud() is $a.CrudFlag.CREATE
     links = window.beats.models.links()
-    links = _.reject(links, (l) => l is @)
+    links = _.reject(links, (l) => l.ident() == @.ident())
     window.beats.models.set_links(links)
   else
     @set_crud($a.CrudFlag.DELETE)
