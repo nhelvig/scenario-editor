@@ -17,7 +17,6 @@ window.beats.Link::initialize = ->
 window.beats.Link::shape = -> @get("shape")
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::ident = -> Number(@get("id"))
-window.beats.Link::id = -> @get("id")
 window.beats.Link::demand = -> @get("demand")
 window.beats.Link::crud = -> @get 'crudFlag'
 window.beats.Link::lanes = -> @get("lanes")
@@ -44,8 +43,8 @@ window.beats.Link::end = ->
      @set('end', new window.beats.End())
   @get('end')
   
-window.beats.Link::begin_node = -> @begin().node()
-window.beats.Link::end_node = -> @end().node()
+window.beats.Link::begin_node = -> @begin()?.node()
+window.beats.Link::end_node = -> @end()?.node()
   
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
@@ -135,10 +134,12 @@ window.beats.Link::selected = ->
 window.beats.Link::remove = ->
   if @crud() is $a.CrudFlag.CREATE
     links = window.beats.models.links()
-    links = _.reject(links, (l) => l.ident() == @.ident())
+    links = _.reject(links, (l) => l.ident() is @.ident())
     window.beats.models.set_links(links)
   else
+    # remove link from input output
     @set_crud($a.CrudFlag.DELETE)
+
   @stopListening
 
 window.beats.Link::add = ->
@@ -178,11 +179,17 @@ window.beats.Link::copy_attributes = ->
 # and then replace both attributes on the object
 window.beats.Link::old_to_xml = window.beats.Link::to_xml 
 window.beats.Link::to_xml = (doc) ->
-   crud = @crud()
-   mod = @mod_stamp()
-   @unset 'crudFlag', { silent:true }
-   @unset 'mod_stamp', { silent:true }
-   xml = @old_to_xml(doc)
-   @set_crud(crud) if crud?
-   @set_mod_stamp(mod) if mod?
-   xml
+  xml = ''
+  # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
+  if window.beats? and window.beats.fileSaveMode
+    crud = @crud()
+    mod = @mod_stamp()
+    @unset 'crudFlag', { silent:true }
+    @unset 'mod_stamp', { silent:true }
+    xml = @old_to_xml(doc)
+    @set_crud(crud) if crud?
+    @set_mod_stamp(mod) if mod?
+  # Otherwise we are converting to xml to goto the database
+  else
+    xml = @old_to_xml(doc)
+  xml

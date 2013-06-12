@@ -38,6 +38,7 @@ class window.beats.MapNetworkView extends Backbone.View
     # Commenting out since this ends up preventing the network properties editor from being lauched
     # after the map has been cleared (ie. New Scenario selected)
     $a.broker.off('map:open_network_editor')
+    $a.broker.off("map:clear_map")
   
   _initializeCollections: () ->
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())

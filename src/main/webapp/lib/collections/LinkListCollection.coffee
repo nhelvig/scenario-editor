@@ -95,14 +95,14 @@ class window.beats.LinkListCollection extends Backbone.Collection
   removeLink: (linkID) ->
     link = @getByCid(linkID)
     @remove(link)
+    begin = link.begin_node()
+    end = link.end_node()
     if begin?
-      begin = link.begin_node()
       begin.position().off('change')
       @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
       @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
     
     if end?
-      end = link.end_node()
       end.position().off('change')
       @_turnOnNodePostionChange(end.inputs(), end.id, link)
       @_turnOnNodePostionChange(end.outputs(), end.id, link)
@@ -117,7 +117,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
   _turnOnNodePostionChange: (elements, nID, removedLink) ->
     _.each(elements, (element) =>
       link = element.link()
-      if(not(link.id is removedLink.id))
+      # if the link has not just been removed and link has been marked for delete previous
+      if(not(link.id is removedLink.id) && not(link.crud() is $a.CrudFlag.DELETE))
         begin = link.begin_node()
         end = link.end_node()
         end.position().on('change',(=> @reDrawLink(link)), @) if end.id is nID
@@ -225,6 +226,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.linkList = {}
     $a.broker.off("map:redraw_link")
     $a.broker.off('links_collection:add')
+    $a.broker.off('links_collection:join')
+    $a.broker.off('links:remove')
     @off(null, null, @)
   
   # This is called when a link browser is created in order to return

@@ -94,6 +94,8 @@ class window.beats.AppView extends Backbone.View
         doc = document.implementation.createDocument(null, null, null)
         center = $a.map.getCenter()
         $a.models.set_position(center.lat(), center.lng())
+      # Set save mode to file, so that database relevent information is parsed out
+        $a.fileSaveMode = true
         attrs =
           xml: $a.models.to_xml(doc)
         $a.Util.writeAndDownloadXML(attrs)
@@ -144,7 +146,9 @@ class window.beats.AppView extends Backbone.View
       $a.models = $a.Scenario.from_xml($(xml).children())
       $a.mapNetworkView = new $a.MapNetworkView $a.models
     catch error
-      $a.broker.trigger("app:show_message:error", "Data file is badly formatted.")
+      if error.message then errMessage = error.message else errMessage = error
+      messageBox = new $a.MessageWindowView( {text: "Data file is badly formatted. " + errMessage, okButton: true} )
+
   
   clearMap: ->
     #$a.models = {}
@@ -233,6 +237,8 @@ class window.beats.AppView extends Backbone.View
     # add overlay to disable screen
     messageBox = new $a.MessageWindowView( {text: "Importing Network...", okButton:false} )
     doc = document.implementation.createDocument(null, null, null)
+    # Set save mode to db
+    $a.fileSaveMode = false
 
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion
@@ -274,6 +280,8 @@ class window.beats.AppView extends Backbone.View
     # add overlay to disable screen
     messageBox = new $a.MessageWindowView( {text: "Saving Network...", okButton:false} )
     doc = document.implementation.createDocument(null, null, null)
+    # Set save mode to db, so that xml is formatted with CRUDFlag and modstamps
+    $a.fileSaveMode = false
 
     # one off ajax request to get network from DB in XML form
     # TODO: Implement backbone parse in each model to cascade model creadtion

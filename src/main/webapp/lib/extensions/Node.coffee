@@ -141,11 +141,17 @@ window.beats.Node::selected = ->
 # and then replace both attributes on the object
 window.beats.Node::old_to_xml = window.beats.Node::to_xml 
 window.beats.Node::to_xml = (doc) ->
-   crud = @crud()
-   mod = @mod_stamp()
-   @unset 'crudFlag', { silent:true }
-   @unset 'mod_stamp', { silent:true }
-   xml = @old_to_xml(doc)
-   @set_crud(crud) if crud?
-   @set_mod_stamp(mod) if mod?
-   xml
+  xml = ''
+  # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
+  if window.beats? and window.beats.fileSaveMode
+    crud = @crud()
+    mod = @mod_stamp()
+    @unset 'crudFlag', { silent:true }
+    @unset 'mod_stamp', { silent:true }
+    xml = @old_to_xml(doc)
+    @set_crud(crud) if crud?
+    @set_mod_stamp(mod) if mod?
+  # Otherwise we are converting to xml to goto the database
+  else
+    xml = @old_to_xml(doc)
+  xml
