@@ -17,7 +17,6 @@ window.beats.Link::initialize = ->
 window.beats.Link::shape = -> @get("shape")
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::ident = -> Number(@get("id"))
-window.beats.Link::id = -> @get("id")
 window.beats.Link::demand = -> @get("demand")
 window.beats.Link::crud = -> @get 'crudFlag'
 window.beats.Link::lanes = -> @get("lanes")
@@ -44,8 +43,8 @@ window.beats.Link::end = ->
      @set('end', new window.beats.End())
   @get('end')
   
-window.beats.Link::begin_node = -> @begin().node()
-window.beats.Link::end_node = -> @end().node()
+window.beats.Link::begin_node = -> @begin()?.node()
+window.beats.Link::end_node = -> @end()?.node()
   
 window.beats.Link::set_generic = (id, val) -> 
   @set(id, val)
@@ -135,10 +134,12 @@ window.beats.Link::selected = ->
 window.beats.Link::remove = ->
   if @crud() is $a.CrudFlag.CREATE
     links = window.beats.models.links()
-    links = _.reject(links, (l) => l is @)
+    links = _.reject(links, (l) => l.ident() is @.ident())
     window.beats.models.set_links(links)
   else
+    # remove link from input output
     @set_crud($a.CrudFlag.DELETE)
+
   @stopListening
 
 window.beats.Link::add = ->
