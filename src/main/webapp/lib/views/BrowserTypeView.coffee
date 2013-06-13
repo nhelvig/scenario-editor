@@ -15,6 +15,9 @@ class window.beats.BrowserNodeView extends  window.beats.BrowserView
       close: =>
         # turn off all node model change events in browser view
         $a.nodeList.forEach((node) => node.off('change', @rePopulateTable, @))
+        # remove editor pane from memory
+        @nev.remove()
+        # remove browser from memory
         @$el.remove()
     super
   
@@ -70,6 +73,9 @@ class window.beats.BrowserLinkView extends  window.beats.BrowserView
       close: =>
         # turn off all link model change events in browser view
         $a.linkList.forEach((link) => link.off('change', @rePopulateTable, @))
+        # remove editor pane from memory
+        @nev.remove()
+        # remove browser from memory
         @$el.remove()
     super
   
@@ -127,6 +133,9 @@ class window.beats.BrowserSensorView extends  window.beats.BrowserView
       close: =>
         # turn off all sensor model change events in browser view
         $a.sensorList.forEach((sensor) => sensor.off('change', @rePopulateTable, @))
+        # remove editor pane from memory
+        @nev.remove()
+        # remove browser from memory
         @$el.remove()
     super
   
@@ -181,6 +190,9 @@ class window.beats.BrowserControllerView extends  window.beats.BrowserView
       close: =>
         # turn off all controller model change events in browser view
         $a.controllerSet.forEach((controller) => controller.off('change', @rePopulateTable, @))
+        # remove editor pane from memory
+        @nev.remove()
+        # remove browser from memory
         @$el.remove()
     super
   
