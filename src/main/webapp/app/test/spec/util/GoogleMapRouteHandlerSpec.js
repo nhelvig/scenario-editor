@@ -95,10 +95,14 @@ describe("GoogleMapRouteHandler", function() {
         position = l.position();
         l.set_geometry(null);
         l.set_position(null);
+        l.request = {
+          origin: new google.maps.LatLng(37.8667059136, -122.29724049568),
+          destination: new google.maps.LatLng(37.8636076312, -122.2843974655),
+          travelMode: google.maps.TravelMode.DRIVING
+        };
       });
       afterEach(function(){
-        l.set_geometry(geometry);
-        l.set_position(position);
+        //
       })
      it('directionsRequest: should have link position set', function() {
        runs(function() {
@@ -112,6 +116,10 @@ describe("GoogleMapRouteHandler", function() {
        runs(function() { 
          expect(l).not.toBeNull();
          expect(l.position()).not.toBeNull();
+
+         // Set back geom and position
+         l.set_geometry(geometry);
+         l.set_position(position);
        });
      });
      
@@ -124,9 +132,34 @@ describe("GoogleMapRouteHandler", function() {
        waitsFor(function() {
          return flag;
        }, "The request should be done", 750);
-       runs(function() { 
+       runs(function() {
          expect(l).not.toBeNull();
          expect(l.position()).not.toBeNull();
+
+         // Set back geom and position
+         l.set_geometry(geometry);
+         l.set_position(position);
+       });
+     });
+
+     it('getPoints: should not contain duplicate points', function() {
+       runs(function() {
+         flag = false;
+         gmr._directionsRequestOneLink(l);
+         console.dir(l);
+         setTimeout(function() {flag = true;}, 500);
+       });
+       waitsFor(function() {
+         return flag;
+       }, "The request should be done", 750);
+       runs(function() {
+         // Checked the route request defined in beforeEach and it returns 3 duplicate lat,longs
+         // but 50 unique lat and longs - so ensure only 50 are kept
+         expect(l.position().length).toBe(50);
+
+         // Set back geom and position
+         l.set_geometry(geometry);
+         l.set_position(position);
        });
      });
    });

@@ -37,9 +37,7 @@ window.beats.Util =
   # others in display_position.
   getLatLng: (elem) ->
     if @_getLng(elem)? && @_getLat(elem)?
-      roundLat = @_round_dec(@_getLat(elem),4)
-      roundLng = @_round_dec(@_getLng(elem),4)
-      new google.maps.LatLng(roundLat, roundLng)
+      new google.maps.LatLng(@_getLat(elem), @_getLng(elem))
     else
       null
 
@@ -51,7 +49,9 @@ window.beats.Util =
   toStandardCasing: (elem) ->
     formattedWord = []
     for word in elem.split /\s+/
-      formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase()
+      # if word is not null or not "" (empty)
+      if !!word
+        formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase()
     formattedWord.join ' '
 
   # This method is used to grab the model elements from object model by id.

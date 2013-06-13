@@ -8,7 +8,6 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # node
   initialize: (@models, @network)->
     $a.broker.on("map:clear_map", @clear, @)
-    $a.broker.on("map:redraw_link", @reDrawLink, @)
     $a.broker.on('links_collection:add', @addLink, @)
     $a.broker.on('links_collection:join', @joinLink, @)
     $a.broker.on('links:remove', @removeLink, @)
@@ -39,28 +38,19 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # of the appropriate nodes
   addLink: (args) ->
     link = new window.beats.Link()
+    link.set_id($a.Util.getNewElemId($a.models.links()))
     link.set_crud($a.CrudFlag.CREATE)
-    id = $a.Util.getNewElemId($a.models.links())
-    link.set_id(id)
+    link.set_end_node args.end
+    link.set_begin_node args.begin
     
     if args.duplicate?
       link.set_geometry args.path
       link.legs = []
     
-    begin = new window.beats.Begin()
-    begin.set('node_id', args.begin.get('id'))
-    begin.set('node', args.begin)
-    
-    end = new window.beats.End()
-    end.set('node_id', args.end.get('id'))
-    end.set('node', args.end)
-    
-    link.set('begin', begin)
-    link.set('end', end)
     @_setUpEvents(link)
     @add(link)
-    args.begin.outputs().push new window.beats.Output({link: link})
-    args.end.inputs().push new window.beats.Input({link: link})
+    link.begin_node().set_output(link)
+    link.end_node().set_input(link)
     link
   
   # called from context menu of link. Highlight itself and its nodes 
@@ -104,15 +94,18 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # re-instante position change for all of each nodes inputs and outputs
   removeLink: (linkID) ->
     link = @getByCid(linkID)
-    begin = link.begin_node()
-    begin.position().off('change')
-    end = link.end_node()
-    end.position().off('change')
     @remove(link)
-    @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
-    @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
-    @_turnOnNodePostionChange(end.inputs(), end.id, link)
-    @_turnOnNodePostionChange(end.outputs(), end.id, link)
+    begin = link.begin_node()
+    end = link.end_node()
+    if begin?
+      begin.position().off('change')
+      @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
+      @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
+    
+    if end?
+      end.position().off('change')
+      @_turnOnNodePostionChange(end.inputs(), end.id, link)
+      @_turnOnNodePostionChange(end.outputs(), end.id, link)
   
   # helper method for removeLink. It turns on the begin and node position 
   # change event for all links that are not the removed link on the begin 
@@ -124,13 +117,26 @@ class window.beats.LinkListCollection extends Backbone.Collection
   _turnOnNodePostionChange: (elements, nID, removedLink) ->
     _.each(elements, (element) =>
       link = element.link()
-      if(not(link.id is removedLink.id))
+      # if the link has not just been removed and link has been marked for delete previous
+      if(not(link.id is removedLink.id) && not(link.crud() is $a.CrudFlag.DELETE))
         begin = link.begin_node()
         end = link.end_node()
         end.position().on('change',(=> @reDrawLink(link)), @) if end.id is nID
         begin.position().on('change',(=> @reDrawLink(link)), @) if begin.id is nID
-    ) 
+    )
   
+  # This method redraws the link after a node has been re-positioned. It must
+  # remove the old link and create a new one in order to ensure proper
+  # handling of links on database side
+  reDrawLink: (link) ->
+    attrs = link.copy_attributes()
+    @removeLink(link.cid)
+    args = {}
+    args.begin = link.begin_node()
+    args.end = link.end_node()
+    newLink = @addLink(args)
+    newLink.set(attrs)
+    
   # creates a duplicate link to the one passed in
   duplicateLink: (linkID) ->
     link = @getByCid(linkID)
@@ -211,7 +217,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     bLink.begin_node().position().off()
     eLink.end_node().position().off()
     @addLink({begin: bLink.begin_node(), end: eLink.end_node(), path: path})
-    
+
+  
   # this method clears the collection upon a clear map as well shuts off the 
   # events it is listening too.
   clear: ->
@@ -219,6 +226,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
     $a.linkList = {}
     $a.broker.off("map:redraw_link")
     $a.broker.off('links_collection:add')
+    $a.broker.off('links_collection:join')
+    $a.broker.off('links:remove')
     @off(null, null, @)
   
   # This is called when a link browser is created in order to return
@@ -226,24 +235,14 @@ class window.beats.LinkListCollection extends Backbone.Collection
   getBrowserColumnData: () ->
     @models.map((link) ->
                   [
-                    link.get('id'),
-                    link.road_names(),
+                    link.ident(),
+                    link.link_name(),
                     link.type_name(),
-                    link.get('lanes'),
-                    link.get('begin').get('node').road_names(),
-                    link.get('end').get('node').road_names()
+                    link.lanes(),
+                    link.begin_node().name(),
+                    link.end_node().name()
                   ]
                 )
-  
-  # This method is triggered when a node is dragged. First remove the current
-  # link from the map and re-add the new link to the collection which 
-  # triggers the creation of view
-  reDrawLink: (link) ->
-    link.set_geometry ''
-    link.set_position null
-    link.set_length null
-    @remove(link)
-    @add(link)
   
   # This method sets up the events each link should listen too
   _setUpEvents: (link) ->

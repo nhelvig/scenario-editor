@@ -4,21 +4,25 @@
   ];
     
   view_jasmine_specs = [
-    //'AppViewSpec', 'EditorNodeViewSpec', 'EditorLinkViewSpec', 
-    //'MapLinkViewSpec', 'MapNodeViewSpec'
+    'AppViewSpec',
+    'EditorNodeViewSpec',
+    'EditorLinkViewSpec', 
+    'MapLinkViewSpec',
+    'MapNodeViewSpec'
     //'EditorSensorViewSpec'
   ];
   
   collections_jasmine_specs = [
-    //'NodeListCollectionSpec', 
-    'LinkListCollectionSpec'
-    //'LinkListViewSpec', 'NodeListViewSpec'
+    'NodeListCollectionSpec', 
+    'LinkListCollectionSpec',
+    'LinkListViewSpec', 
+    'NodeListViewSpec'
     //'SensorListCollectionSpec', 'SensorListViewSpec',
     //'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];
   
   model_jasmine_specs = ['BeginSpec', 'EndSpec', 'InputSpec','OutputSpec',
-    'LinkSpec', 'NodeSpec' 
+    'LinkSpec', 'NodeSpec', 'LinkListSpec','NodeListSpec'
     //'ControllerSpec', 'DemandProfileSpec','DensitySpec', , 'EventSpec', 
     //'ScenarioSpec', 'SensorSpec','SignalSpec', 'SplitratioProfileSpec'
   ];
@@ -100,4 +104,5 @@
                 });
           });
   };
+  
 }).call(this);
