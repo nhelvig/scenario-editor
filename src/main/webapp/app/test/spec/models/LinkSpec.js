@@ -21,6 +21,7 @@ describe("Link", function() {
 
   describe("to_xml", function() {
     beforeEach(function() {
+      window.beats.fileSaveMode = true;
       doc = document.implementation.createDocument("document:xml", "begin", null);
       testLink1.set_crud(window.beats.CrudFlag.UPDATE);
       out = testLink1.to_xml(doc);
