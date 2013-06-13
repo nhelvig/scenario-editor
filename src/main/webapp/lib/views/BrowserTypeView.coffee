@@ -10,7 +10,12 @@ class window.beats.BrowserNodeView extends  window.beats.BrowserView
   
   # set up width for dialog box and let BrowserView render it
   render:() ->
-    @$el.dialog({width:600})
+    @$el.dialog
+      width:850
+      close: =>
+        # turn off all node model change events in browser view
+        $a.nodeList.forEach((node) => node.off('change', @rePopulateTable, @))
+        @$el.remove()
     super
   
   # set up editor view for nodes selected in the right pane
@@ -60,7 +65,12 @@ class window.beats.BrowserLinkView extends  window.beats.BrowserView
   
   # set up editor view for links selected in the right pane
   render:() ->
-    @$el.dialog({width:850})
+    @$el.dialog
+      width:850
+      close: =>
+        # turn off all link model change events in browser view
+        $a.linkList.forEach((link) => link.off('change', @rePopulateTable, @))
+        @$el.remove()
     super
   
   # set up editor view for link selected in the right pane
@@ -112,7 +122,12 @@ class window.beats.BrowserSensorView extends  window.beats.BrowserView
   
   # set up editor view for sensors selected in the right pane
   render:() ->
-    @$el.dialog({width:800})
+    @$el.dialog
+      width:800
+      close: =>
+        # turn off all sensor model change events in browser view
+        $a.sensorList.forEach((sensor) => sensor.off('change', @rePopulateTable, @))
+        @$el.remove()
     super
   
   # set up editor view for sensor selected in the right pane
@@ -161,7 +176,12 @@ class window.beats.BrowserControllerView extends  window.beats.BrowserView
   
   # set up editor view for controller selected in the right pane
   render:() ->
-    @$el.dialog({width:800})
+    @$el.dialog
+      width:800
+      close: =>
+        # turn off all controller model change events in browser view
+        $a.controllerSet.forEach((controller) => controller.off('change', @rePopulateTable, @))
+        @$el.remove()
     super
   
   # set up editor view for controller selected in the right pane
