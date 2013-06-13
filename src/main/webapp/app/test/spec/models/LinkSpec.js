@@ -55,4 +55,15 @@ describe("Link", function() {
       expect(testLink1.road_names()).toEqual("name1, name2");
     });
   });
+  
+  describe("remove", function() {
+    msg = "should remove the link from the links list of models if the CrudFlag";
+    msg += "is CREATE";
+    it(msg, function() {
+      var length = $a.models.links().length;
+      $a.models.links()[0].set_crud($a.CrudFlag.CREATE);
+      $a.models.links()[0].remove();
+      expect(length-1).toEqual($a.models.links().length);
+    });
+  });
 });
