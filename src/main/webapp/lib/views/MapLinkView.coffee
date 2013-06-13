@@ -101,7 +101,7 @@ class window.beats.MapLinkView extends Backbone.View
       if(not @_isInfoWindowOpen())
         @iWindow.setContent(@getLinkRollOverInfo())
         @iWindow.setPosition(e.latLng)
-        trackMouseoverTimeout = setTimeout((() => @iWindow.open($a.map)), 2000)
+        trackMouseoverTimeout = setTimeout((() => @iWindow.open($a.map)), 1000)
         google.maps.event.addListenerOnce(@link, 'mouseout', (e) =>
           window.clearTimeout(trackMouseoverTimeout);
           @iWindow.close()
