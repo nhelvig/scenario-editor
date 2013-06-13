@@ -4,9 +4,9 @@ describe("MapNodeView", function() {
 
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
-    network = $s.models.get('networklist').get('network')[0];
-    model = network.get('nodelist').get('node')[3];
-
+    network = $a.models.get('networkset').get('network')[0];
+    model = network.get('nodelist').get('node')[0];
+    
     spyOn($s.MapNodeView.prototype, 'selectLink').andCallThrough();
     spyOn($s.MapNodeView.prototype, 'selectMyInLinks').andCallThrough();
     spyOn($s.MapNodeView.prototype, 'selectMyOutLinks').andCallThrough();
@@ -25,25 +25,25 @@ describe("MapNodeView", function() {
   });
 
   describe("Event response", function() {
-    it("should handle select all connected links", function() {
-      $s.broker.trigger("map:select_neighbors:" + model.cid);
-      expect($s.MapNodeView.prototype.selectSelfandMyLinks).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(12);
-    });
+   it("should handle select all connected links", function() {
+     $s.broker.trigger("map:select_neighbors:" + model.cid);
+     expect($s.MapNodeView.prototype.selectSelfandMyLinks).toHaveBeenCalled();
+     expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
+     expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(3);
+   });
 
-    it("should handle select all incoming links", function() {
-      $s.broker.trigger("map:select_neighbors_in:" + model.cid);
-      expect($s.MapNodeView.prototype.selectMyInLinks).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(8);
-    });
-
-    it("should handle select all outgoing links", function() {
-      $s.broker.trigger("map:select_neighbors_out:" + model.cid);
-      expect($s.MapNodeView.prototype.selectMyOutLinks).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
-      expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(4);
-    });
+   it("should handle select all incoming links", function() {
+     $s.broker.trigger("map:select_neighbors_in:" + model.cid);
+     expect($s.MapNodeView.prototype.selectMyInLinks).toHaveBeenCalled();
+     expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
+     expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(1);
+   });
+       
+   it("should handle select all outgoing links", function() {
+     $s.broker.trigger("map:select_neighbors_out:" + model.cid);
+     expect($s.MapNodeView.prototype.selectMyOutLinks).toHaveBeenCalled();
+     expect($s.MapNodeView.prototype.selectLink).toHaveBeenCalled();
+     expect($s.MapNodeView.prototype.selectLink.calls.length).toEqual(2);
+   });
   });
 });

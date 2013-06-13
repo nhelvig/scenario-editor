@@ -40,8 +40,6 @@ class window.beats.BrowserView extends Backbone.View
       modal: false,
       open: ->
         $('.ui-state-default').blur() #hack to get ui dialog focus bug
-      close: =>
-        @$el.remove()
 
     @renderTable()
     @renderEditor()

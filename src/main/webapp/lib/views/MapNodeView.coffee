@@ -49,6 +49,9 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   # and then calls super to set itself to null, unpublish the general events, 
   # and hide itself
   removeElement: ->
+    @model.off('change:selected', @toggleSelected)
+    @model.off('change:type', @changeIconType)
+    @model.off('remove', @removeElement)
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:select_neighbors_out:#{@model.cid}")
     $a.broker.off("map:select_neighbors_in:#{@model.cid}")

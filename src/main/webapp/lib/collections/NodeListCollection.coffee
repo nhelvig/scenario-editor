@@ -22,7 +22,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
     @models.map((node) -> 
-      [node.get('id'), node.road_names(), node.get('type')]
+      [node.ident(), node.name(), node.type_name()]
     )
   
   # this function sets all the nodes passed in selected field to true. It is
@@ -73,7 +73,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
             { 
               'lat':position.lat(),
               'lng':position.lng(),
-              'elevation':''
+              'elevation': 0 # default to 0 for elevation setting
             }
           )
     p.set('point', []) 
@@ -98,14 +98,14 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # similar to addLink above except it creates a terminal node and draws the link
   # from this position to the other selected node
   addLinkOrigin: (position) ->
-    node = @addNode(position,'terminal')
+    node = @addNode(position, new $a.Node_type({name: 'terminal'}))
     selNode = @_getSelectedNode()
     $a.broker.trigger('links_collection:add', {begin:node, end:selNode[0] })
   
   # similar to addLink above except it creates a terminal node and draws the link
   # to this position from the other selected node
   addLinkDest: (position) ->
-    node = @addNode(position, 'terminal')
+    node = @addNode(position, new $a.Node_type({name: 'terminal'}))
     selNode = @_getSelectedNode()
     $a.broker.trigger('links_collection:add', {begin:selNode[0], end:node})
   
@@ -153,4 +153,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     @remove(@models)
     $a.nodeList = {}
     $a.broker.off('nodes:add')
+    $a.broker.off('nodes:remove')
+    $a.broker.off('nodes:remove_and_links')
+    $a.broker.off('nodes:remove_and_join')
     @off(null, null, @)

@@ -7,6 +7,13 @@ $a.fileText = '<?xml version="1.0" encoding="UTF-8"?>\
       <description>Mobile Millenium network 335, imported from PostgreSQL by mm-network-import tool.</description>\
       <NodeList>\
         <node id="78580" node_name="78580">\
+          <outputs>\
+            <output link_id="10100401"/>\
+            <output link_id="10100402"/>\
+          </outputs>\
+          <inputs>\
+            <input link_id="10100403"/>\
+          </inputs>\
           <position>\
             <point lat="37.62789" lng="-122.08164" elevation="0"/>\
           </position>\

@@ -1,6 +1,18 @@
+//ovveride for jasmine describe method
+var oldDescribe = describe;
+describe = function(suiteName, method){
+  xml = $.parseXML($a.fileText);
+  $a.models = $a.Scenario.from_xml($(xml).children());
+  network = $a.models.network();
+  $a.broker = _.clone(Backbone.Events)
+  $a.nodeList = new $a.NodeListCollection($a.models.nodes());
+  $a.linkList = new $a.LinkListCollection($a.models.links(), network);
+  return oldDescribe(suiteName, method);
+};
+      
 beforeEach(function() {
   window.beats.broker = _.clone(Backbone.Events);
-  
+
   runDeferred = function(fList) {
     _.each(fList, function(f) { f(); });
   };
@@ -81,7 +93,7 @@ beforeEach(function() {
     
     link.set('link_type', new window.beats.Link_type)
     link.get("link_type").set_name('electric_toll')
-    
+    link.set_link_name('Link ' + id);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
@@ -121,11 +133,12 @@ beforeEach(function() {
     p.set('point', []);
     p.get('point').push(pt);
     
-    node1 = new window.beats.Node({id: 10, position: p, type: 'freeway'});
-    node2 = new window.beats.Node({id: 11, position: p});
-    node3 = new window.beats.Node({id: 12, position: p});
-    node4 = new window.beats.Node({id: 13, position: p});
-    node5 = new window.beats.Node({id: 14, position: p});
+    node1 = new window.beats.Node({id: 20 ,position: p, type: 'freeway'});
+    node1.set_name("Node 1");
+    node2 = new window.beats.Node({id: 21, position: p});
+    node3 = new window.beats.Node({id: 22, position: p});
+    node4 = new window.beats.Node({id: 23, position: p});
+    node5 = new window.beats.Node({id: 24, position: p});
     sensor = new window.beats.Sensor({id:1, position: p});
     sensor1 = new window.beats.Sensor({id:1, position: p});
     sensor2 = new window.beats.Sensor({id:2, position: p});
