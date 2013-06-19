@@ -66,10 +66,10 @@ class window.beats.NetworkBrowserView extends Backbone.View
     @undelegateEvents()
     @$el.removeData().unbind()
     $a.broker.off("app:networkListCallback")
-    
+
     # Remove view from DOM
-    @remove();  
-    Backbone.View.prototype.remove.call(this);
+    @remove()
+    Backbone.View.prototype.remove.call(@)
     
 
   # set up columns and their titles for the browser
@@ -83,14 +83,14 @@ class window.beats.NetworkBrowserView extends Backbone.View
   addLoadNetworkListener: () ->
     #handles the row selection
     $("#network-browser-table tbody").one("click", "tr", ->
-      $(this).addClass('row_selected')
+      $(@).addClass('row_selected')
     )
     networkId = null
 
     # Finds selected row triggers event to load this network
     $("#network-browser-table tbody").on("click", "tr", ->
       $($a.networkbrowser.dTable.fnSettings().aoData).each((data) ->  
-        if($(this.nTr).hasClass('row_selected'))
+        if($(@.nTr).hasClass('row_selected'))
           networkId =  @_aData[0]
       )
       # Try and load network and display message
