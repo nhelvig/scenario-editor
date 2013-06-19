@@ -1,4 +1,4 @@
-# This class is used to load our project models.
+# This class is used to load our network models.
 class window.beats.NetworkCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Network

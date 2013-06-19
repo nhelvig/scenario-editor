@@ -40,9 +40,11 @@ class window.beats.AppView extends Backbone.View
     $a.broker.on("map:alert", @showAlert, @)
     $a.broker.on("app:login", @_login, @)
     $a.broker.on("app:open_network_browser_db", @_openNetworkBrowser, @)
+    $a.broker.on("app:open_scenario_browser_db", @_openScenarioBrowser, @)
     $a.broker.on("app:load_network", @_loadNetwork, @)
     $a.broker.on("app:import_network_db", @_importNetwork, @)
     $a.broker.on("app:save_network_db", @_saveNetwork, @)
+    $a.broker.on("app:load_scenario", @_loadScenario, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -193,7 +195,13 @@ class window.beats.AppView extends Backbone.View
   _openNetworkBrowser: () ->
     # open network browser
     options = { title: 'Network List' }
-    if not $a.newtorkbrowser? then $a.networkbrowser = new $a.NetworkBrowserView(options)
+    $a.networkbrowser = new $a.NetworkBrowserView(options)
+
+  # Open scenario browser to choose scenario to load from DB
+  _openScenarioBrowser: () ->
+    # open scenario browser
+    options = { title: 'Scenario List' }
+    $a.scenariobrowser = new $a.ScenarioBrowserView(options)
 
   # Load Network From DB
   _loadNetwork: (networkId) ->
@@ -316,4 +324,36 @@ class window.beats.AppView extends Backbone.View
       dataType: 'json'
       # TODO: Data should be changed to be JSON
       data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
+    )
+
+  # Load Scenario From DB
+  _loadScenario: (scenarioId) ->
+    # add overlay to disable screen
+    messageBox = new $a.MessageWindowView( {text: "Loading Scenario...", okButton: false} )
+    # one off ajax request to get scenario from DB in XML form
+    # TODO: Implement backbone parse in each model to cascade model creadtion
+    # and pass in JSON instead of XML
+    $.ajax(
+      url: '/via-rest-api/project/1/scenario/' + scenarioId
+      type: 'GET'
+      beforeSend: (xhrObj) ->
+        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+
+      success: (data) =>
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        if data.success == true
+          @_displayMap(data.resource)
+        else
+          # Display Error Message
+          messageBox = new $a.MessageWindowView( {text: data.message, okButton: false} )
+
+      error: (xhr, textStatus, errorThrown) =>
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
+        messageBox = new $a.MessageWindowView( {text: "Error Loading Scenario, " + errorThrown, okButton: true} )
+
+      contentType: 'text/json'
+      dataType: 'json'
     )

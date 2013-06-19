@@ -31,7 +31,7 @@ $a.collections = ['LinkListCollection', 'LinkListView',
   'EventSetCollection', 'EventSetView', 'NetworkCollection'
   'NodeListCollection','NodeListView', 
   'SensorListCollection', 'SensorListView',
-  'ScenarioElementCollection'
+  'ScenarioCollection', 'ScenarioElementCollection'
 ]
 
 $a.map_views = [
@@ -41,7 +41,7 @@ $a.map_views = [
   'EditorNetworkView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'LogInView'
   'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
   'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 'MessageWindowView'
-  'NetworkBrowserView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
+  'NetworkBrowserView', 'ScenarioBrowserView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
