@@ -21,6 +21,7 @@ $a.nav_bar_menu_items =
     'Close Local Scenario': (-> $a.broker.trigger("map:clear_map"))
   DB:
     'Log In': (-> $a.broker.trigger("app:login"))
+    'Open Scenario': (-> $a.broker.trigger("app:open_scenario_browser_db"))
     'Open Network': (-> $a.broker.trigger("app:open_network_browser_db"))
     'Save New Network': (-> $a.broker.trigger("app:import_network_db"))
     'Save Network': (-> $a.broker.trigger("app:save_network_db"))
