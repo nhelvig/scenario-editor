@@ -3,7 +3,7 @@ class window.beats.ScenarioCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Scenario
   # should be changed to eventually allow for project id to be passed in
-  url: "/via-rest-api/project/1/scenarios"
+  url: "/via-rest-api/project/1/scenario"
 
   # Override fetch function to trigger login view changes
   fetch: (options) ->

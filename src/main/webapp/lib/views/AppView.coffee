@@ -228,7 +228,7 @@ class window.beats.AppView extends Backbone.View
           @_displayMap(data)
         else
           # Display Error Message
-          messageBox = new $a.MessageWindowView( {text: data.message, okButton: false} )
+          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
 
       error: (xhr, textStatus, errorThrown) =>
         # Remove modal message which disabled screen
@@ -346,7 +346,7 @@ class window.beats.AppView extends Backbone.View
           @_displayMap(data.resource)
         else
           # Display Error Message
-          messageBox = new $a.MessageWindowView( {text: data.message, okButton: false} )
+          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
 
       error: (xhr, textStatus, errorThrown) =>
         # Remove modal message which disabled screen
