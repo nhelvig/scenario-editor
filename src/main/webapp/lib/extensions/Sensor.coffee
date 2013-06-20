@@ -3,7 +3,7 @@ window.beats.Sensor::defaults =
 
 window.beats.Sensor::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
-    link = object_with_id.link[@get('link_reference').get('id')]
+    link = object_with_id.link[@get('link_reference')?.get('id')]
     @set('link', link)
 
 window.beats.Sensor::point = ->
