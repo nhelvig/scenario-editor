@@ -21,7 +21,7 @@ window.beats.Network::set_name = (s) ->
   @set('name',s)
 
 window.beats.Network::description_text = ->
-  @get('description').get('text')
+  @get('description')?.get('text')
 
 window.beats.Network::set_description_text = (s) ->
   @get('description').set('text',s)
