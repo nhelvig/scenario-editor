@@ -15,9 +15,9 @@ class window.beats.SensorListCollection extends Backbone.Collection
     @models.map((sensor) -> 
             [
               sensor.ident(), 
-              sensor.type(), 
-              sensor.link()?.type(),
-              sensor.link()?.ident() || ''
+              sensor.type_name(),
+              sensor.link_reference()?.type_name(),
+              sensor.link_reference()?.ident() || ''
             ]
     )
   

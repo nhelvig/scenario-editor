@@ -87,9 +87,12 @@
           <fieldset>
             <label for="sensor-type">Type</label>
             <select id="sensor_type" name ="sensor-type" class="ui-widget-content-select ui-corner-all">
-              <option value="static_point">Static Point</option>
-              <option value="static_area">Static Area</option>
-              <option value="moving_point">Moving Point</option>
+              <option value="0" name="">--------------</option>
+              <option value="1" name="Loop">Loop</option>
+              <option value="2" name="Magnetic">Magnetic</option>
+              <option value="3" name="Radar">Radar</option>
+              <option value="4" name="Camera">Camera</option>
+              <option value="5" name="TMC">TMC</option>
             </select><br/>
             <label for="sensor-link-type">Link Type</label>
             <select id="sensor_link_type" name ="sensor-link-type" class="ui-widget-content-select ui-corner-all">

@@ -6,8 +6,8 @@ $a.models_with_extensions = [ 'Begin',
   'FundamentalDiagramProfile', 'Input', 'Link', 'LinkList', 'Link_type',
   'Marker', 'Network', 'NetworkSet', 'Node', 'Node_type', 'NodeList', 
   'Output', 'Phase', 'Point', 'Position', 'Road',
-  'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorSet', 'Settings',
-  'Signal', 'SignalSet', 'Splitratio', 'SplitRatioProfile'
+  'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorSet', 'Sensor_type',
+  'Settings', 'Signal', 'SignalSet', 'Splitratio', 'SplitRatioProfile'
 ]
 
 $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
@@ -16,7 +16,7 @@ $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
   'DownstreamBoundaryCapacitySet', 'FeedbackElements',
   'FundamentalDiagram', 'FundamentalDiagramSet', 'FundamentalDiagramType',
   'InitialDensitySet', 'Inputs',
-  'Interval', 'Link_reference', 'Link_references', 'Link_type',
+  'Interval', 'Link_reference', 'Link_references',
   'Linkpair','NetworkConnections', 'Networkpair',  'Node_type', 'Outputs',
   'Parameter', 'Parameters', 'Queue_controller', 
   'Route', 'Route_links', 'Row', 'ScenarioElement', 'Sensor_type', 

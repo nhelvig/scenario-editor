@@ -36,8 +36,8 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
-    type = @models[0].type()
-    lType = @models[0].link()?.type()
+    type = @models[0].type_id()
+    lType = @models[0].link_reference()?.type_id()
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
@@ -49,7 +49,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
       elev: models[0].display_elev();
       url: ''
       url_desc: URL_DESC
-      links: _.map(models, (m) -> m.link().ident() if m.link()?).join('; ')
+      links: _.map(models, (m) -> m.link_id() if m.link_id()?).join('; ')
     }
   
   # these are callback events for various elements in the interface
