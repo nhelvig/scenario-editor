@@ -44,9 +44,9 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   # set up a hash of values from the model and inserted into the html template
   _getTemplateData: (models) ->
     { 
-      lat: models[0].display_lat();
-      lng: models[0].display_lng();
-      elev: models[0].display_elev();
+      lat: models[0].display_lat()
+      lng: models[0].display_lng()
+      elev: models[0].display_elev()
       url: ''
       url_desc: URL_DESC
       links: _.map(models, (m) -> m.link_id() if m.link_id()?).join('; ')
