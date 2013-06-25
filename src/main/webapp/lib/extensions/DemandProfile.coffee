@@ -2,7 +2,7 @@ window.beats.DemandProfile::resolve_references =
   window.beats.ReferenceHelper.resolver('link_id_origin', 'link', 'link', 'demand', 'DemandProfile', true)
 
 window.beats.DemandProfile::encode_references = ->
-  @set('link_id', @get('link').id)
+  @set('link_id', @get('link').ident())
 
 window.beats.DemandProfile::demands_by_vehicle_type = ->
     timeSepDemands = @get('text').split(",")

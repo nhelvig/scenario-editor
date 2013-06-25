@@ -29,7 +29,9 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     # disabled until we implement
     $('body').find('#edit-signal').attr("disabled", true)
     $('body').find('#edit-signal').addClass('ui-state-disabled')
-    disable = [2]
+
+    # For now disable the tools tab and the splitratio, if none exist
+    disable = [3]
     @$el.tabs({ disabled: disable })
   
   # if in browser we diable some fields from being editted
@@ -47,11 +49,20 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models) ->
+    splitRatioSet = _.map(models, (m) ->
+      splitRatioProfile = m.get('splitratiprofile')
+      splitRatioProfile?.get('splitratio')[0] || null
+    )
+    splitRatioProfile = models[0].get('splitratioprofile') || null if models.length == 1
+
     name: _.map(models, (m) -> m.name())
     lat: $a.Util.getGeometry({models:models, geom:'lat'})
     lng: $a.Util.getGeometry({models:models, geom:'lng'})
     elevation: $a.Util.getGeometry({models:models, geom:'elevation'})
-    lock: if models[0]? and models[0].locked() then 'checked' else '' 
+    lock: if models[0]? and models[0].locked() then 'checked' else ''
+    destnetworkid: splitRatioProfile?.get('destination_network_id')
+    srpStartTime: $a.Util.convertSecondsToHoursMinSec(splitRatioProfile?.get('start_time') || 0)
+    srpSampleTime: $a.Util.convertSecondsToHoursMinSec(splitRatioProfile?.get('dt') || 0)
 
   # these are callback events for various elements in the interface
   # This is used to save the type when focus is
