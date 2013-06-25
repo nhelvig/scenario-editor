@@ -151,7 +151,8 @@ class window.beats.TreeView extends Backbone.View
       targets = @_findTargetElements(e, params.attachId)
       if targets? and !(targets.length is 0)
         switch params.type
-          when 'link', 'node' then name = targets[0].road_names()
+          when 'link' then name = targets[0].link_name()
+          when 'node' then name = targets[0].name()
           else name = targets[0].get('name')
   
         # for OD Profiles
@@ -214,7 +215,7 @@ class window.beats.TreeView extends Backbone.View
   _setUpTreeData: ->   
     @parentNodes = [
         {
-          parentList: @scenario.get('networklist')
+          parentList: @scenario.get('networkset')
           modelListName: 'network'
           attachId: 'network-list'
           nameList: null
@@ -236,7 +237,7 @@ class window.beats.TreeView extends Backbone.View
           attachId: 'controllers'
         },
         {
-          parentList: @scenario.get('demandprofileset')
+          parentList: @scenario.get('demandset')
           modelListName: 'demandprofile'
           attachId: 'demand-profiles'
         },
@@ -246,32 +247,32 @@ class window.beats.TreeView extends Backbone.View
           attachId: 'events'
         },
         {
-          parentList: @scenario.get('fundamentaldiagramprofileset')
+          parentList: @scenario.get('fundamentaldiagramset')
           modelListName: 'fundamentaldiagramprofile'
           attachId: 'fundamental-diagram-profiles'
         },
         {
-          parentList: @scenario.get('oddemandprofileset')
+          parentList: @scenario.get('demandset')
           modelListName: 'oddemandprofile'
           attachId: 'od-demand-profiles'
         },
         {
-          parentList: @scenario.get('downstreamboundarycapacityprofileset')
+          parentList: @scenario.get('downstreamboundarycapacityset')
           modelListName: 'downstreamboundarycapacityprofile'
           attachId: 'downstream-boundary-profiles'
         },
         {
-          parentList: @scenario.get('splitratioprofileset')
+          parentList: @scenario.get('splitratioset')
           modelListName: 'splitratioprofile'
           attachId: 'split-ratio-profiles'
         },
         {
-          parentList: @scenario.get('sensorlist')
+          parentList: @scenario.get('sensorset')
           modelListName: 'sensor'
           attachId: 'sensors'
         },
         {
-          parentList: @scenario.get('signallist')
+          parentList: @scenario.get('signalset')
           modelListName: 'signal'
           attachId: 'signals'
         }
