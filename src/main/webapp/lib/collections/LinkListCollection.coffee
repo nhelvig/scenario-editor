@@ -95,6 +95,9 @@ class window.beats.LinkListCollection extends Backbone.Collection
   removeLink: (linkID) ->
     link = @getByCid(linkID)
     @remove(link)
+   # 6/25/2013 - DO NOT REMOVE THIS CODE -- MAY BE PUT BACK IN PLACE
+   #             IF we decide that node re-positioned should delete old link
+   #             and create new one
    #  begin = link.begin_node()
    #   end = link.end_node()
    #   if begin?
