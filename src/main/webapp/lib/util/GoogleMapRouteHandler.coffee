@@ -96,6 +96,20 @@ class window.beats.GoogleMapRouteHandler
             smPath.push pt
     smPath
 
+  # this method is called from LinkListView on an existing link whose
+  # endpoints have been changed
+  setNewPath: (link) ->
+    @setUpLink(link)
+    @directionsService.route(link.request, (response, status) =>
+      if (status == google.maps.DirectionsStatus.OK)
+        @_handleRouteInfo(response, link)
+        link.poly.setPath(link.legs)
+        link.view._saveLinkLength()
+      else
+        msg = "Problem drawing new path; re-position node again."
+        $a.broker.trigger('app:show_message:error', msg)
+    )
+
   # this makes a single request to a link and triggers its drawing on the map
   _directionsRequestOneLink: (link) ->
       @directionsService.route(link.request, (response, status) =>

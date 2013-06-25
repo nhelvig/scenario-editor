@@ -25,6 +25,7 @@ class window.beats.MapLinkView extends Backbone.View
   }
 
   initialize: (@model) ->
+    @model.view = @
     @iWindow = new google.maps.InfoWindow()
     # Gets the encoded path line string if it is not already been set
     if(@model.position()? and @model.position().length > 0)
@@ -35,6 +36,7 @@ class window.beats.MapLinkView extends Backbone.View
     if !model.length()?
       @_saveLinkLength()
     @_contextMenu()
+    @model.poly = @link
     @_publishEvents()
   
   render: ->

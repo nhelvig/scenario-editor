@@ -146,7 +146,6 @@ describe("GoogleMapRouteHandler", function() {
        runs(function() {
          flag = false;
          gmr._directionsRequestOneLink(l);
-         console.dir(l);
          setTimeout(function() {flag = true;}, 500);
        });
        waitsFor(function() {
