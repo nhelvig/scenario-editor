@@ -68,13 +68,15 @@ class window.beats.LinkListView extends Backbone.Collection
   removeLink: (link) ->
     @views = _.reject(@views, (view) => view.model is link)
     begin = link.begin_node()
-    begin.position().off('change')
     end = link.end_node()
-    end.position().off('change')
-    @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
-    @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
-    @_turnOnNodePostionChange(end.inputs(), end.id, link)
-    @_turnOnNodePostionChange(end.outputs(), end.id, link)
+    if begin?
+      begin.position().off('change')
+      @_turnOnNodePostionChange(begin.inputs(), begin.id, link)
+      @_turnOnNodePostionChange(begin.outputs(), begin.id, link)
+    if end?
+      end.position().off('change')
+      @_turnOnNodePostionChange(end.inputs(), end.id, link)
+      @_turnOnNodePostionChange(end.outputs(), end.id, link)
   
   # helper method for removeLink. It turns on the begin and node position 
   # change event for all links that are not the removed link on the begin 
