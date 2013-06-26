@@ -280,11 +280,11 @@ class window.beats.LinkListCollection extends Backbone.Collection
   
   # hide links
   hideLinkLayer: (type) =>
-    @forEach((link) -> link.set_view('hide') if !type? or type is link.type_name())
+    @forEach((link) -> link.set_hide('hide') if !type? or type is link.type_name())
   
   # show links
   showLinkLayer: (type) =>
-    @forEach((link) -> link.set_view('show') if !type? or type is link.type_name())
+    @forEach((link) -> link.set_hide('show') if !type? or type is link.type_name())
 
   # This method adds a sensor to the link id passed in
   addSensorToLink: (cid) ->

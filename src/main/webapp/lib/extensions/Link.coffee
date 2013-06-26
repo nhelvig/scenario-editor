@@ -113,11 +113,11 @@ window.beats.Link::set_road_names = (name) ->
   r[0].set('name',name)
   r[0].defaults["name"] = name
 
-window.beats.Link::set_view = (view) ->
-  @set('view', view)
+window.beats.Link::set_hide = (flag) ->
+  @set('hide', flag)
   
-window.beats.Link::view = ->
-  @get('view')
+window.beats.Link::hide = ->
+  @get('hide')
 
 window.beats.Link::toggle_selected =  ->
   if(@selected() is true) 
