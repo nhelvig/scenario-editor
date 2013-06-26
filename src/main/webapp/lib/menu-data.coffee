@@ -347,4 +347,11 @@ $a.layers_menu = [
     event: 'toggleVisible'
     triggerShow: "map:show_demand_layer"
     triggerHide: "map:hide_demand_layer" }
+  { className: 'divider' }
+  {
+    label: 'Satelite Tiles'
+    event: 'toggleMapTypeVisible'
+    triggerShow: "map:show_satellite"
+    triggerHide: "map:hide_satellite"
+    initiallyChecked: false}
 ]

@@ -27,7 +27,12 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     # again we'll create a submenu if values.link is set
     @_createSubMenu @values.items, @values.link if @values.link
     # puts a check mark if this item needs checkmarks
-    @check(true) if @values.triggerShow
+    if @values.triggerShow
+      @check(true)
+      @isShowing = true
+    if @values.initiallyChecked is false
+      @check(false)
+      @isShowing = false
 
   render: ->
     $("##{@parent}").append(@el)
@@ -61,5 +66,18 @@ class window.beats.LayersMenuViewItem extends Backbone.View
       @check(false)
     else
       @collection.trigger(@triggerShow, @event_arg)
+      @isShowing = true
+      @check(true)
+      
+  # This function is called on the click if we are toggling the checkmark to
+  # show/hide. Not every item operates like this. You can see in
+  # menu-data.coffee which items call this method and which do not
+  toggleMapTypeVisible: =>
+    if @isShowing
+      $a.broker.trigger(@triggerHide, false)
+      @isShowing = false
+      @check(false)
+    else
+      $a.broker.trigger(@triggerShow, true)
       @isShowing = true
       @check(true)
