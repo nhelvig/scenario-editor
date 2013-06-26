@@ -3,3 +3,6 @@ window.beats.SplitRatioProfile::resolve_references =
 
 window.beats.SplitRatioProfile::encode_references = ->
   @set 'node_id', @get('node').ident()
+
+window.beats.SplitRatioProfile::split_ratios = ->
+  @get('splitratio')
