@@ -21,7 +21,8 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # call the super class to set up the dialog box and then set the select box
   render: ->
     super @elem
-    @renderSplitRatioTable()
+    if @splitRatioProfile?
+      @renderSplitRatioTable()
     @_setSelectedType()
     @_checkDisableTabs()
     @_checkDisableFields()
