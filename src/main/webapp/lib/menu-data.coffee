@@ -330,23 +330,26 @@ $a.layers_menu = [
   {
     label: 'Events'
     event: 'toggleVisible'
+    collection: '$a.eventSet'
     triggerShow: "map:show_event_layer"
     triggerHide: "map:hide_event_layer"}
   {
     label: 'Controllers'
     event: 'toggleVisible'
+    collection: '$a.controllerSet'
     triggerShow: "map:show_controller_layer"
     triggerHide: "map:hide_controller_layer" }
   {
     label: 'Sensors'
     event: 'toggleVisible'
+    collection: '$a.sensorList'
     triggerShow: "map:show_sensor_layer"
     triggerHide: "map:hide_sensor_layer" }
-  {
-    label: 'Demands'
-    event: 'toggleVisible'
-    triggerShow: "map:show_demand_layer"
-    triggerHide: "map:hide_demand_layer" }
+  # { 
+  #  label: 'Demands'
+  #  event: 'toggleVisible'
+  #  triggerShow: "map:show_demand_layer"
+  #  triggerHide: "map:hide_demand_layer" }
   { className: 'divider' }
   {
     label: 'Satelite Tiles'

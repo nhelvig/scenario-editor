@@ -40,11 +40,11 @@ describe("LinkListView", function() {
                runs(function() {
                    flag = false;
                    link.begin_node().updatePosition(latLng);
-                   setTimeout(function() {flag = true;}, 700);
+                   setTimeout(function() {flag = true;}, 1000);
                });
                waitsFor(function() {
                  return flag;
-               }, "The request should be done", 900);
+               }, "The request should be done", 1500);
                runs(function() { 
                  expect($a.LinkListView.prototype.resetPath).toHaveBeenCalled();
                  this.lColl.removeLink(link.cid);

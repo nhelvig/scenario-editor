@@ -15,7 +15,7 @@ class window.beats.MapLinkView extends Backbone.View
     'change:selected': 'toggleSelected'
     'change:lane_offset': 'drawLink'
     'change:lanes': 'setStrokeWeight'
-    'change:view': 'hideShowLink'
+    'change:hide': 'hideShowLink'
     'change:editor_show': 'editor'
     'change:show_demands': 'viewDemands'
   }
@@ -173,7 +173,7 @@ class window.beats.MapLinkView extends Backbone.View
   # The following handles the show/hide of links and arrow heads
   # hideShow is called when a change to view state on model occurs
   hideShowLink: ->
-    if(@model.view() is 'hide')
+    if(@model.hide() is 'hide')
       @hideLink()
     else
       @showLink()
