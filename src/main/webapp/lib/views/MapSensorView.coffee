@@ -42,7 +42,8 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # called by drag event to see if any link is within proximity and
   # the marker should snap to it
   snapMarker: ->
-    $a.broker.trigger("links:check_proximinity", @)
+    # TODO: Uncomment once checkSnap function is EditorLinkView stops throwing errors
+    #$a.broker.trigger("links:check_proximinity", @)
   
   # Context Menu
   # Create the Sensor Context Menu. Call the super class method to create the
