@@ -12,3 +12,6 @@ window.beats.DemandProfile::demands_by_vehicle_type = ->
 
 window.beats.DemandProfile::is_constant = ->
    @demands_by_vehicle_type()[0].length == 1
+
+window.beats.DemandProfile::demands = ->
+  @get('demand')

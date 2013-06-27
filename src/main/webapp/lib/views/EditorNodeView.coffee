@@ -21,6 +21,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # call the super class to set up the dialog box and then set the select box
   render: ->
     super @elem
+    # If there is split ratio profile for link, render split ratio data table
     if @splitRatioProfile?
       @renderSplitRatioTable()
     @_setSelectedType()

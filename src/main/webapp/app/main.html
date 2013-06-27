@@ -320,9 +320,10 @@
               
               <label for="link-demand-sample-second" class="time">:: s</label>
               <input type="number" id="link_demand_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['s']}}" />
-              
-              <label for="demand-profile">Demand Profile (vph)</label>
-              <textarea name="demand-profile" id="dp_text" rows="10" class="text ui-widget-content ui-corner-all">{{demandProfile}}</textarea>
+
+              <div>
+                <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="link-demand-table"></table>
+              </div>
             </fieldset>
           </form>
         </div>
