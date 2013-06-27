@@ -6,7 +6,7 @@ describe("LinkListCollection", function() {
     loadFixtures('main.canvas.view.fixture.html');
     spyOn($a.LinkListCollection.prototype, 'addLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'removeLink').andCallThrough();
-    spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
+    //spyOn($a.LinkListCollection.prototype, 'reDrawLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLink').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLinkAddNode').andCallThrough();
     spyOn($a.LinkListCollection.prototype, 'splitLinkByDistance').andCallThrough();
@@ -29,12 +29,12 @@ describe("LinkListCollection", function() {
       $a.broker.trigger("links_collection:add", {begin:begin,end:end});
       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
     });
-    it("should be watching reDrawLink after updatePosition called on node", 
-      function() {
-        begin = $a.linkList.models[0].begin_node()
-        begin.updatePosition(new google.maps.LatLng(37.8579, -122.2995));
-        expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();
-    });
+    // it("should be watching reDrawLink after updatePosition called on node", 
+    //   function() {
+    //     begin = $a.linkList.models[0].begin_node()
+    //     begin.updatePosition(new google.maps.LatLng(37.8579, -122.2995));
+    //     expect($a.LinkListCollection.prototype.reDrawLink).toHaveBeenCalled();
+    // });
     it("should be watching removeLink", function() {
       $a.broker.trigger("links:remove", scen.link1.cid);
       expect($a.LinkListCollection.prototype.removeLink).toHaveBeenCalled();
@@ -85,22 +85,22 @@ describe("LinkListCollection", function() {
        expect(arrColumnsData[0][5]).toEqual(nodeE.name());
      });
    });
-   describe("reDrawLink ", function() {
-      it("should take link and redraw it after update called", function() {
-        var oldLength = $a.linkList.length;
-        var oldLink = $a.linkList.models[0];
-        newLink = $a.linkList.reDrawLink(oldLink);
-        expect(oldLink.crud()).toEqual($a.CrudFlag.DELETE);
-        expect(newLink.crud()).toEqual($a.CrudFlag.CREATE);
-        expect(newLink.link_name()).toEqual(oldLink.link_name());
-        expect(newLink.lanes()).toEqual(oldLink.lanes());
-        expect(newLink.lane_offset()).toEqual(oldLink.lane_offset());
-        expect(newLink.in_sync()).toEqual(oldLink.in_sync());
-        expect(newLink.type_name()).toEqual(oldLink.type_name());
-        expect(newLink.type_id()).toEqual(oldLink.type_id());
-        expect($a.linkList.length).toEqual(oldLength);
-      });
-  });
+  //  describe("reDrawLink ", function() {
+  //     it("should take link and redraw it after update called", function() {
+  //       var oldLength = $a.linkList.length;
+  //       var oldLink = $a.linkList.models[0];
+  //       newLink = $a.linkList.reDrawLink(oldLink);
+  //       expect(oldLink.crud()).toEqual($a.CrudFlag.DELETE);
+  //       expect(newLink.crud()).toEqual($a.CrudFlag.CREATE);
+  //       expect(newLink.link_name()).toEqual(oldLink.link_name());
+  //       expect(newLink.lanes()).toEqual(oldLink.lanes());
+  //       expect(newLink.lane_offset()).toEqual(oldLink.lane_offset());
+  //       expect(newLink.in_sync()).toEqual(oldLink.in_sync());
+  //       expect(newLink.type_name()).toEqual(oldLink.type_name());
+  //       expect(newLink.type_id()).toEqual(oldLink.type_id());
+  //       expect($a.linkList.length).toEqual(oldLength);
+  //     });
+  // });  
   describe("removeLink", function() {
     it("should remove a link from the collection", function() {
       var lengthBefore = this.lColl.length;

@@ -15,7 +15,7 @@ class window.beats.MapLinkView extends Backbone.View
     'change:selected': 'toggleSelected'
     'change:lane_offset': 'drawLink'
     'change:lanes': 'setStrokeWeight'
-    'change:view': 'hideShowLink'
+    'change:hide': 'hideShowLink'
     'change:editor_show': 'editor'
     'change:show_demands': 'viewDemands'
   }
@@ -25,6 +25,7 @@ class window.beats.MapLinkView extends Backbone.View
   }
 
   initialize: (@model) ->
+    @model.view = @
     @iWindow = new google.maps.InfoWindow()
     # Gets the encoded path line string if it is not already been set
     if(@model.position()? and @model.position().length > 0)
@@ -35,6 +36,7 @@ class window.beats.MapLinkView extends Backbone.View
     if !model.length()?
       @_saveLinkLength()
     @_contextMenu()
+    @model.poly = @link
     @_publishEvents()
   
   render: ->
@@ -171,7 +173,7 @@ class window.beats.MapLinkView extends Backbone.View
   # The following handles the show/hide of links and arrow heads
   # hideShow is called when a change to view state on model occurs
   hideShowLink: ->
-    if(@model.view() is 'hide')
+    if(@model.hide() is 'hide')
       @hideLink()
     else
       @showLink()

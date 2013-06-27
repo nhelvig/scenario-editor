@@ -45,6 +45,8 @@ class window.beats.AppView extends Backbone.View
     $a.broker.on("app:import_network_db", @_importNetwork, @)
     $a.broker.on("app:save_network_db", @_saveNetwork, @)
     $a.broker.on("app:load_scenario", @_loadScenario, @)
+    $a.broker.on("map:show_satellite", @_showSatelliteTiles, @)
+    $a.broker.on("map:hide_satellite", @_showSatelliteTiles, @)
     @
 
   # create the landing map. The latitude and longitude our arbitarily pointing
@@ -191,6 +193,14 @@ class window.beats.AppView extends Backbone.View
     $('#lh').fadeIn(200)
     $('#mh').fadeIn(200)
 
+  # shows and hides satellite tiles
+  _showSatelliteTiles: (flag) ->
+    if(flag)
+      $a.map.setMapTypeId(google.maps.MapTypeId.SATELLITE)
+    else
+      $a.map.setMapTypeId(google.maps.MapTypeId.ROADMAP)
+    
+  
   # Open network browser to choose newtork to load from DB
   _openNetworkBrowser: () ->
     # open network browser

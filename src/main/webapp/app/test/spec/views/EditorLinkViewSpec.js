@@ -89,14 +89,14 @@ describe("EditorLinkView", function() {
         val: "changed",
         type: "blur",
         field:"knob"
-      },
-      {
-        desc: "Demand Tab: 'Demand Profile' field calls saveDP",
-        id: "#dp_text",
-        val: "changed",
-        type: "blur",
-        field:"text"
-      },
+      }
+      //{
+      //  desc: "Demand Tab: 'Demand Profile' field calls saveDP",
+      //  id: "#dp_text",
+      //  val: "changed",
+      //  type: "blur",
+      //  field:"text"
+      //},
     ];
   
   var testsCapacity = [
@@ -212,7 +212,8 @@ describe("EditorLinkView", function() {
         knob: dp.get('knob') || '',
         dpStart: $a.Util.convertSecondsToHoursMinSec(dp.get('start_time') || 0),
         dpSample: $a.Util.convertSecondsToHoursMinSec(dp.get('dt') || 0),
-        demandProfile: dp.get('text') || '',
+        // Demand Profile Text box no longer in use
+        //demandProfile: dp.get('text') || '',
       };
       
       var view = this.view;
@@ -230,7 +231,7 @@ describe("EditorLinkView", function() {
       expect(view.$('#std_dev_congestion')).toHaveValue(v.congestionStandardDev);
       expect(view.$('#std_dev_free_flow_speed')).toHaveValue(v.freeFlowStdDev);
       expect(view.$('#cp_text')).toHaveValue(v.capacityProfile);
-      expect(view.$('#dp_text')).toHaveValue(v.demandProfile);
+      //expect(view.$('#dp_text')).toHaveValue(v.demandProfile);
       expect(view.$('#knob')).toHaveValue(v.knob);
       expect(view.$('#link_demand_start_hour')).toHaveValue(v.dpStart.h);
       expect(view.$('#link_demand_start_minute')).toHaveValue(v.dpStart.m);
@@ -312,10 +313,11 @@ describe("EditorLinkView", function() {
                    $('#knob').blur();
                    expect($a.EditorLinkView.prototype.saveDP).toHaveBeenCalled();
                  });
-                 it("Demand Tab: 'Demand Profile' field calls saveDP", function() { 
-                   $('#dp_text').blur();
-                   expect($a.EditorLinkView.prototype.saveDP).toHaveBeenCalled();
-                 });
+                 // Text area no longer in use (data tables instead)
+                 //it("Demand Tab: 'Demand Profile' field calls saveDP", function() {
+                 //  $('#dp_text').blur();
+                 //  expect($a.EditorLinkView.prototype.saveDP).toHaveBeenCalled();
+                 //});
                  it("Demand Tab: 'Start Time: hour' field calls saveDPTime", function() { 
                    $('#link_demand_start_hour').blur();
                    expect($a.EditorLinkView.prototype.saveDPTime).toHaveBeenCalled();

@@ -8,6 +8,7 @@ describe("LinkListView", function() {
     models = $a.models.links();
     spyOn($a.LinkListView.prototype, 'addAndRender').andCallThrough();
     spyOn($a.LinkListView.prototype, 'createAndDrawLink').andCallThrough();
+    spyOn($a.LinkListView.prototype, 'resetPath').andCallThrough();
     spyOn($a.LinkListView.prototype, 'removeLink').andCallThrough();
     spyOn($a.LinkListView.prototype, 'setStrokeWeight').andCallThrough();
     this.lColl = new $a.LinkListCollection(models, network);
@@ -27,10 +28,28 @@ describe("LinkListView", function() {
                 l = scen.link1
                 args = {begin:l.begin_node(),end:l.end_node(),path:l.geometry(), parallel:true};
                 link = this.lColl.addLink(args);
+                args = {begin:l.begin_node(),end:l.end_node(),path:l.geometry(), parallel:true};
+                link = this.lColl.addLink(args);
                 expect($a.LinkListView.prototype.addAndRender).toHaveBeenCalled();
                 this.lColl.removeLink(link.cid);
             });
         
+            it("should be watching resetPath", function() {
+               link = this.lColl.models[0];
+               latLng = new google.maps.LatLng(37.8579, -122.2995);
+               runs(function() {
+                   flag = false;
+                   link.begin_node().updatePosition(latLng);
+                   setTimeout(function() {flag = true;}, 1000);
+               });
+               waitsFor(function() {
+                 return flag;
+               }, "The request should be done", 1500);
+               runs(function() { 
+                 expect($a.LinkListView.prototype.resetPath).toHaveBeenCalled();
+                 this.lColl.removeLink(link.cid);
+               });
+            });   
            it("should be watching createAndDrawLink", function() {
              $a.broker.trigger('map:draw_link', scen.link1);
              expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();

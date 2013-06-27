@@ -108,11 +108,11 @@ describe("GoogleMapRouteHandler", function() {
        runs(function() {
          flag = false;
          gmr._directionsRequest(l);
-         setTimeout(function() {flag = true;}, 500);
+         setTimeout(function() {flag = true;}, 1000);
        });
        waitsFor(function() {
          return flag;
-       }, "The request should be done", 750);
+       }, "The request should be done", 1500);
        runs(function() { 
          expect(l).not.toBeNull();
          expect(l.position()).not.toBeNull();
@@ -127,11 +127,11 @@ describe("GoogleMapRouteHandler", function() {
        runs(function() {
          flag = false;
          gmr._directionsRequestOneLink(l);
-         setTimeout(function() {flag = true;}, 500);
+         setTimeout(function() {flag = true;}, 1000);
        });
        waitsFor(function() {
          return flag;
-       }, "The request should be done", 750);
+       }, "The request should be done", 1500);
        runs(function() {
          expect(l).not.toBeNull();
          expect(l.position()).not.toBeNull();
@@ -146,12 +146,11 @@ describe("GoogleMapRouteHandler", function() {
        runs(function() {
          flag = false;
          gmr._directionsRequestOneLink(l);
-         console.dir(l);
-         setTimeout(function() {flag = true;}, 500);
+         setTimeout(function() {flag = true;}, 1000);
        });
        waitsFor(function() {
          return flag;
-       }, "The request should be done", 750);
+       }, "The request should be done", 1500);
        runs(function() {
          // Checked the route request defined in beforeEach and it returns 3 duplicate lat,longs
          // but 50 unique lat and longs - so ensure only 50 are kept

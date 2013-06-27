@@ -162,7 +162,6 @@ class window.beats.BrowserSensorView extends  window.beats.BrowserView
             { "sTitle": "Type","sWidth": "25%"},
             { "sTitle": "Link Type","sWidth": "25%"},
             { "sTitle": "Links","sWidth": "25%"},
-            { "sTitle": "Description","sWidth": "25%"},
         ]
   
   # get the sensor models of the items that are selected. Called by BrowserView
