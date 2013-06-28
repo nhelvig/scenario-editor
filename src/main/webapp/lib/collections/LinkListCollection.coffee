@@ -77,6 +77,16 @@ class window.beats.LinkListCollection extends Backbone.Collection
       link.set_selected(true) if link.selected() is false
     )
 
+  # Return Link in collection which is selected on map
+  # if multiple links are selected will only return last selected one
+  getSelected: ->
+    selectedLink = null
+    # go through all links in model and check if it is selected
+    for link in @models
+      if link.selected() is true
+        selectedLink = link
+    selectedLink
+
   # set selected to false for all links. It is triggered
   # when the link browser closes as well as when we initialize the collection
   clearSelected: ->
