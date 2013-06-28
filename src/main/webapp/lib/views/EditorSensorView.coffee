@@ -8,7 +8,8 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   URL_DESC += 'For ranges, use this date format:<br/>July 20-21, 2012'
   
   events : {
-    'blur #sensor_type, #sensor_link_type': 'save' 
+    'blur #sensor_type' : 'saveType'
+    'blur #sensor_link_type': 'saveLinkType'
     'blur #sensor_links' : 'saveLinks'
     'blur #sensor_lat, #sensor_lng, #sensor_elevation' : 'saveGeo'
     'click #display-at-pos' : 'displayAtPos'
@@ -59,7 +60,17 @@ class window.beats.EditorSensorView extends window.beats.EditorView
     id = e.currentTarget.id
     fieldId = @_getFieldId(id)
     _.each(@models, (m) -> m.set_generic(fieldId, $("##{id}").val()))
-  
+
+  # Save sensor type
+  saveType: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
+
+  # Save link type attached to sensor
+  saveLinkType: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.link_reference().set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
+
   # links are in the link_reference attribute
   saveLinks: (e) ->
     id = e.currentTarget.id
