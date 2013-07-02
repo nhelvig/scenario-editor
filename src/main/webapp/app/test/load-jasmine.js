@@ -96,6 +96,7 @@
         '../js/vendor/jquery-ui-1.8.21/js/jquery-ui-1.8.21.min.js', 
         '../js/vendor/underscore.js', 
         '../js/vendor/backbone.js',
+        '../js/vendor/jquery.dataTables.min.js',
         '../js/vendor/bootstrap/js/bootstrap.min.js', 
         function() {
           google.load("maps", "3",{

@@ -124,7 +124,7 @@ class window.beats.BrowserView extends Backbone.View
   attachRowSelection: () ->
     bid = @browser_table_id
     #handles the row selection
-    $("#{@browser_table_id} tbody tr").click( ->
+    $("#{@browser_table_id} tbody").on("click", "tr", ->
       if $(this).hasClass('row_selected')
         $(this).removeClass('row_selected')
       else
@@ -133,10 +133,10 @@ class window.beats.BrowserView extends Backbone.View
         $(this).addClass('row_selected')
     )
 
-    #handles the editor rendering 
+    #handles the editor rendering
     $("#{@browser_table_id} tbody").click( (event) =>
       selectedIds = []
-      $(@dTable.fnSettings().aoData).each((data) ->  
+      $(@dTable.fnSettings().aoData).each((data) ->
         if($(this.nTr).hasClass('row_selected'))
           selectedIds.push @_aData[0]
       )
@@ -150,14 +150,19 @@ class window.beats.BrowserView extends Backbone.View
   # if any change in the editor is made the table itself is rendered again
   # to make sure the state is synchronized
   rePopulateTable: () ->
-    @data = @_getData()
-    rowIndex = 0
-    self = this
-    $(@dTable.fnSettings().aoData).each( (data) ->  
+    # Check if this method fired because of a selected attribute change
+    if arguments?[0]._changed.hasOwnProperty('selected')
+      selected = true
+    # Don't repopulate table if the model change event fired because of it was selected
+    if not selected
+      @data = @_getData()
+      rowIndex = 0
+      self = this
+      $(@dTable.fnSettings().aoData).each( (data) ->
           if($(this.nTr).hasClass('row_selected'))
             self.dTable.fnUpdate(self.data[rowIndex],rowIndex)
           rowIndex++
-    )
+      )
 
   # Minimize the editor or browser window to bottom of parent window
   minimize: () ->
