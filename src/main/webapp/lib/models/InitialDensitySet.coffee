@@ -12,14 +12,18 @@ class window.beats.InitialDensitySet extends Backbone.Model
     obj = new window.beats.InitialDensitySet()
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
-    VehicleTypeOrder = xml.children('VehicleTypeOrder')
-    obj.set('vehicletypeorder', $a.VehicleTypeOrder.from_xml2(VehicleTypeOrder, deferred, object_with_id))
     density = xml.children('density')
     obj.set('density', _.map($(density), (density_i) -> $a.Density.from_xml2($(density_i), deferred, object_with_id)))
+    project_id = $(xml).attr('project_id')
+    obj.set('project_id', Number(project_id))
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
     name = $(xml).attr('name')
     obj.set('name', name)
+    tstamp = $(xml).attr('tstamp')
+    obj.set('tstamp', Number(tstamp))
+    modStamp = $(xml).attr('modStamp')
+    obj.set('modStamp', modStamp)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -29,10 +33,12 @@ class window.beats.InitialDensitySet extends Backbone.Model
     if @encode_references
       @encode_references()
     xml.appendChild(@get('description').to_xml(doc)) if @has('description')
-    xml.appendChild(@get('vehicletypeorder').to_xml(doc)) if @has('vehicletypeorder')
     _.each(@get('density') || [], (a_density) -> xml.appendChild(a_density.to_xml(doc)))
-    if @has('id') && @id != "" then xml.setAttribute('id', @get('id'))
+    if @has('project_id') && @project_id != 0 then xml.setAttribute('project_id', @get('project_id'))
+    xml.setAttribute('id', @get('id')) if @has('id')
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
+    if @has('tstamp') && @tstamp != 0.0 then xml.setAttribute('tstamp', @get('tstamp'))
+    xml.setAttribute('modStamp', @get('modStamp')) if @has('modStamp')
     xml
   
   deep_copy: -> InitialDensitySet.from_xml1(@to_xml(), {})

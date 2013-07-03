@@ -37,9 +37,7 @@ window.beats.Util =
   # others in display_position.
   getLatLng: (elem) ->
     if @_getLng(elem)? && @_getLat(elem)?
-      roundLat = @_round_dec(@_getLat(elem),4)
-      roundLng = @_round_dec(@_getLng(elem),4)
-      new google.maps.LatLng(roundLat, roundLng)
+      new google.maps.LatLng(@_getLat(elem), @_getLng(elem))
     else
       null
 
@@ -51,7 +49,9 @@ window.beats.Util =
   toStandardCasing: (elem) ->
     formattedWord = []
     for word in elem.split /\s+/
-      formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase()
+      # if word is not null or not "" (empty)
+      if !!word
+        formattedWord.push word[0].toUpperCase() + word[1..].toLowerCase()
     formattedWord.join ' '
 
   # This method is used to grab the model elements from object model by id.
@@ -152,5 +152,159 @@ window.beats.Util =
             
   unpublishEvents: (obj, events, context) ->
     for key, value in events
-      obj.off(key, context[value], context)
-  
+      obj.off(key, context[value], context)  
+
+  #parallel lines
+  parallelLines: (points, prj) ->
+    pPts = [] #left side of center
+
+    #shift the pts array away from the road
+    #o = (gapPx + weight)/2
+    offset = 0.00005
+    for i in [1..points.length-1]
+      p1 = prj.fromLatLngToPoint(points[i-1])
+      p2 = prj.fromLatLngToPoint(points[i])
+      theta = Math.atan2(p1.x-p2.x,p1.y-p2.y) + (Math.PI/2)
+      theta -= Math.PI*2 if(theta > Math.PI)
+      dx = offset * Math.sin(theta)
+      dy = offset * Math.cos(theta)
+      p1l = new google.maps.Point(p1.x+dx,p1.y+dy)
+      p2l = new google.maps.Point(p2.x+dx,p2.y+dy)
+      pPts.push(prj.fromPointToLatLng(p1l))
+
+    pPts.push(prj.fromPointToLatLng(p2l)) #last point
+    pPts
+
+  # this function computes the intersection of the sent lines p0-p1 and p2-p3
+  # and returns the intersection point,
+  intersect: (p0, p1, p2, p3) ->
+    # a1 b1 c1 a2 b2 c2 # constants of linear equations
+    # det_inv  # the inverse of the determinant of the coefficient matrix
+    # m1 m2    # the slopes of each line
+
+    x0 = p0.x;
+    y0 = p0.y;
+    x1 = p1.x;
+    y1 = p1.y;
+    x2 = p2.x;
+    y2 = p2.y;
+    x3 = p3.x;
+    y3 = p3.y;
+
+    # compute slopes, note the cludge for infinity, however, this will
+    # be close enough
+
+    if ((x1-x0)!=0)
+      m1 = (y1-y0)/(x1-x0)
+    else
+      m1 = 1e+10   # close enough to infinity
+
+    if ((x3-x2)!=0)
+      m2 = (y3-y2)/(x3-x2)
+    else
+      m2 = 1e+10   # close enough to infinity
+
+    #compute constants
+    a1 = m1
+    a2 = m2
+
+    b1 = -1
+    b2 = -1
+
+    c1 = (y0-m1*x0)
+    c2 = (y2-m2*x2)
+
+    #compute the inverse of the determinate
+    det_inv = 1/(a1*b2 - a2*b1)
+
+    # use Kramers rule to compute xi and yi
+    xi=((b1*c2 - b2*c1)*det_inv)
+    yi=((a2*c1 - a1*c2)*det_inv)
+
+    return new google.maps.Point(Math.round(xi),Math.round(yi))
+
+  convertPointsToGoogleLatLng : (pts) ->
+    (new google.maps.LatLng(pt.lat(), pt.lng()) for pt in pts)
+
+  # determine strokeweight for zoom
+  getLinkStrokeWeight: ->
+    zoomLevel = $a.map.getZoom()
+    if (zoomLevel >= 18)
+      newZoom = $a.Util.STROKE_WEIGHT_THICKER
+    else if (zoomLevel >= 17)
+      newZoom = $a.Util.STROKE_WEIGHT_THICK
+    else if (zoomLevel >= 16)
+      newZoom = $a.Util.STROKE_WEIGHT_THIN
+    else
+      newZoom = $a.Util.STROKE_WEIGHT_THINNER
+    newZoom
+
+  # Function to convert JSON to XML
+  # Reference: http://goessner.net/download/prj/jsonxml/
+  json2xml: (json, tab) ->
+    xml = ""
+    # Recursive function to transveres through child JSON objects
+    toXml = (v, name, ind) ->
+      # define XML variable to be global
+      $a.xml = "";
+      # If JSON element is an Array
+      if v instanceof Array 
+        for elm in v
+          $a.xml += ind + toXml(elm, name, ind+"\t") + "\n"
+
+      # If JSON element is an object 
+      else if typeof(v) == "object" 
+        hasChild = false
+        $a.xml += ind + "<" + name
+        for key of v
+          # If element has "@" character at beginning it is an attribute
+          if key.charAt(0) == "@"
+            $a.xml += " " + key.substr(1) + "=\"" + v[key].toString() + "\""
+          # Otherwise element is a tag
+          else
+            hasChild = true
+        # Close brace dependent if it has children    
+        $a.xml += if hasChild then ">" else "/>"
+        
+        # Continue on if JSON element has child elements
+        if hasChild
+          for key of v
+            # If element key is of type text (no XML tag created)
+            if key == "#text" or key == "$"
+              $a.xml += v[key]
+            else if key == "#cdata" 
+              $a.xml += "<![CDATA[" + v[key] + "]]>"
+            # Else if element is not an XML attribute it has children
+            else if key.charAt(0) != "@"
+              $a.xml += toXml v[key], key, ind+"\t"
+            
+          # Add indentation for new element if it is on a new line 
+          if $a.xml.charAt($a.xml.length-1) == "\n"
+            $a.xml += ind + "</" + name + ">"
+          else
+            $a.xml += "</" + name + ">"
+      
+      # If JSON element is just a string value
+      else
+         $a.xml += ind + "<" + name + ">" + v?.toString() +  "</" + name + ">"
+      $a.xml
+
+    for key of json
+      xml += toXml(json[key], key, "");
+    if tab? 
+      xml.replace(/\t/g, tab)
+    else
+      xml.replace(/\t|\n/g, "")
+    # return xml
+    xml
+
+  # Utility function used to convert a backbone Object to JSON
+  obj2json: (obj) ->
+    seen = []
+    JSON.stringify(obj, (key, val) ->
+      if typeof val == "object"
+        if seen.indexOf(val) >= 0
+          return
+        seen.push(val)
+      return val
+    )

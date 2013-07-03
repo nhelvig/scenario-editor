@@ -16,8 +16,10 @@ class window.beats.WeavingFactorSet extends Backbone.Model
     obj.set('vehicletypeorder', $a.VehicleTypeOrder.from_xml2(VehicleTypeOrder, deferred, object_with_id))
     weavingfactors = xml.children('weavingfactors')
     obj.set('weavingfactors', _.map($(weavingfactors), (weavingfactors_i) -> $a.Weavingfactors.from_xml2($(weavingfactors_i), deferred, object_with_id)))
+    project_id = $(xml).attr('project_id')
+    obj.set('project_id', Number(project_id))
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
     name = $(xml).attr('name')
     obj.set('name', name)
     if obj.resolve_references
@@ -31,7 +33,8 @@ class window.beats.WeavingFactorSet extends Backbone.Model
     xml.appendChild(@get('description').to_xml(doc)) if @has('description')
     xml.appendChild(@get('vehicletypeorder').to_xml(doc)) if @has('vehicletypeorder')
     _.each(@get('weavingfactors') || [], (a_weavingfactors) -> xml.appendChild(a_weavingfactors.to_xml(doc)))
-    if @has('id') && @id != "" then xml.setAttribute('id', @get('id'))
+    if @has('project_id') && @project_id != 0 then xml.setAttribute('project_id', @get('project_id'))
+    xml.setAttribute('id', @get('id')) if @has('id')
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
     xml
   

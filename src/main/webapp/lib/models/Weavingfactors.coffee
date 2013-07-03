@@ -11,9 +11,9 @@ class window.beats.Weavingfactors extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Weavingfactors()
     link_in = $(xml).attr('link_in')
-    obj.set('link_in', link_in)
+    obj.set('link_in', Number(link_in))
     link_out = $(xml).attr('link_out')
-    obj.set('link_out', link_out)
+    obj.set('link_out', Number(link_out))
     obj.set('text', xml.text())
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)

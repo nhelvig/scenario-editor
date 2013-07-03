@@ -1,48 +1,53 @@
 $a = window.beats
 
-$a.models_with_extensions = [ 'Begin', 'CapacityProfile',
-  'Controller', 'ControllerSet', 'DemandProfile',
+$a.models_with_extensions = [ 'Begin',
+  'Controller', 'ControllerSet', 'DemandProfile', 'Demand',
   'Density', 'Display_position', 'Dynamics', 'End', 'Event', 'EventSet',
-  'FundamentalDiagramProfile', 'Input', 'Intersection', 'Link', 'LinkList',
-  'Marker', 'Network', 'NetworkList', 'Node', 'NodeList', 'Output',
-  'Phase', 'Plan', 'PlanList', 'PlanSequence', 'Point', 'Position', 'Road',
-  'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorList', 'Settings',
-  'Signal', 'SignalList', 'Splitratio', 'SplitratioProfile'
+  'FundamentalDiagramProfile', 'Input', 'Link', 'LinkList', 'Link_type',
+  'Marker', 'Network', 'NetworkSet', 'Node', 'Node_type', 'NodeList', 
+  'Output', 'Phase', 'Point', 'Position', 'Road',
+  'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorSet', 'Sensor_type',
+  'Settings', 'Signal', 'SignalSet', 'Splitratio', 'SplitRatioProfile'
 ]
 
 $a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
-  'Column', 'Column_name', 'Column_names', 'DemandProfileSet', 'Description',
-  'DestinationNetworks', 'DownstreamBoundaryCapacityProfileSet',
-  'FeedbackElements', 'FundamentalDiagram', 'FundamentalDiagramProfileSet',
-  'InitialDensitySet', 'Inputs', 'IntersectionCacheEntry',
-  'IntersectionCache', 'Interval', 'Link_reference', 'Link_references', 
-  'Linkpair','NetworkConnections', 'Networkpair', 'Outputs',
-  'Parameter', 'Parameters', 'Plan_reference', 'Queue_controller', 
-  'Route', 'Routes', 'Row', 'ScenarioElement', 'Shape', 'SplitratioEvent',
-  'SplitRatioProfileSet', 'Stage', 'Table', 'TargetElements', 'Units',
-  'Vehicle_type', 'VehicleTypes', 'VehicleTypeOrder',
-  'Weavingfactors', 'WeavingFactorSet' ]
+  'Column', 'Column_name', 'Column_names', 'DemandSet', 'Description',
+  'DestinationNetworks','DownstreamBoundaryCapacityProfile',
+  'DownstreamBoundaryCapacitySet', 'FeedbackElements',
+  'FundamentalDiagram', 'FundamentalDiagramSet', 'FundamentalDiagramType',
+  'InitialDensitySet', 'Inputs',
+  'Interval', 'Link_reference', 'Link_references',
+  'Linkpair','NetworkConnections', 'Networkpair',  'Node_type', 'Outputs',
+  'Parameter', 'Parameters', 'Queue_controller', 
+  'Route', 'Route_links', 'Row', 'ScenarioElement', 'Sensor_type', 
+  'Shape', 'SplitratioEvent',
+  'SplitRatioSet', 'Table', 'TargetElements', 'Units',
+  'UserSession', 'VehicleType', 'VehicleTypeOrder',
+  'VehicleTypeSet','Weavingfactors', 'WeavingFactorSet' 
+  ]
 
 $a.collections = ['LinkListCollection', 'LinkListView',
   'ControllerSetCollection', 'ControllerSetView', 
-  'EventSetCollection', 'EventSetView',
+  'EventSetCollection', 'EventSetView', 'NetworkCollection'
   'NodeListCollection','NodeListView', 
   'SensorListCollection', 'SensorListView',
-  'ScenarioElementCollection'
+  'ScenarioCollection', 'ScenarioElementCollection'
 ]
 
 $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
   'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 
-  'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'MapLinkView', 
-  'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
-  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 
-  'TreeView', 'TreeParentItemView', 'TreeChildItemView',
+  'EditorNetworkView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'LogInView'
+  'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
+  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 'MessageWindowView'
+  'NetworkBrowserView', 'ScenarioBrowserView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
   'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
   'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.utils= ['ArrayText',  'ContextMenuHandler', 'Environment',
+$a.utils = ['ArrayText',  'ContextMenuHandler', 'Constants', 'Environment',
   'GoogleMapRouteHandler', 'ReferenceHelper', 'Util'
 ]
+
+$a.overrides = [ 'Number', 'Sync' ]

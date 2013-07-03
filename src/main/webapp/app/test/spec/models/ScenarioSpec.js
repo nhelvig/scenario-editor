@@ -12,8 +12,8 @@ describe("Scenario", function() {
       expect(sc.get('schemaVersion')).toEqual('1.0.20');
     });
 
-    describe("sensorlist", function() {
-      var sl = sc.get('sensorlist').get('sensor');
+    describe("sensorset", function() {
+      var sl = sc.get('sensorset').get('sensor');
 
       it("should have 1 sensor", function() {
         expect(sl.length).toEqual(1);
@@ -38,8 +38,9 @@ describe("Scenario", function() {
       });
     });
 
-    describe("networklist", function() {
-      var networks = sc.get('networklist'), network = networks.get('network')[0];
+    describe("networkset", function() {
+      var networks = sc.get('networkset');
+      var network = networks.get('network')[0];
       expect(networks).toBeDefined();
       expect(networks).not.toBeNull();
 
@@ -49,7 +50,7 @@ describe("Scenario", function() {
 
       describe("network", function() {
         it("should have ID -1",function() {
-          expect(network.get('id')).toEqual('-1');
+          expect(network.get('id')).toEqual(-1);
         });
 
       describe("nodelist", function() {

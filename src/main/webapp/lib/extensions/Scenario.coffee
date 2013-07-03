@@ -1,6 +1,6 @@
 window.beats.Scenario.from_xml = (xml) ->
   object_with_id =
-    networklist: {}
+    networkset: {}
     node: {}
     link: {}
     path: {}
@@ -43,11 +43,11 @@ window.beats.Scenario::initialize = ->
   @set('schemaVersion', window.beats.SchemaVersion)
   @object_with_id = network: {}, node: {}, link: {}, path: {}, sensor: {}
   @set 'settings', new window.beats.Settings
-  @set 'networklist', new window.beats.NetworkList
+  @set 'networkset', new window.beats.NetworkSet
   @set 'controllerset', new window.beats.ControllerSet
   @set 'eventset', new window.beats.EventSet
-  @set 'sensorlist', new window.beats.SensorList
-  @set 'signallist', new window.beats.SignalList
+  @set 'sensorset', new window.beats.SensorSet
+  @set 'signalset', new window.beats.SignalSet
 
 window.beats.Scenario::set_position = (lat, lng) ->
   @network().set_position(lat, lng)
@@ -65,10 +65,10 @@ window.beats.Scenario::set_links = (list) ->
   @network().get('linklist')?.set('link', list)
 
 window.beats.Scenario::sensors = ->
-  @get('sensorlist')?.get('sensor') || []
+  @get('sensorset')?.get('sensor') || []
 
 window.beats.Scenario::set_sensors = (list) ->
-  @get('sensorlist')?.set('sensor', list)
+  @get('sensorset')?.set('sensor', list)
 
 window.beats.Scenario::controllers = ->
   @get('controllerset')?.get('controller') || @createController()
@@ -82,11 +82,14 @@ window.beats.Scenario::events = ->
 window.beats.Scenario::set_events = (list) ->
   @get('eventset')?.set('event', list)
 
-window.beats.Scenario::networklist = -> 
-  @get('networklist')
-   
+window.beats.Scenario::networkset = -> 
+  @get('networkset')
+
+window.beats.Scenario::networks = -> 
+  @get('networkset').get('network')
+     
 window.beats.Scenario::network = -> 
-  @get('networklist').get('network')[0]
+  @get('networkset').get('network')[0]
 
 window.beats.Scenario::networks = -> 
   @get('networklist').get('network')
@@ -153,14 +156,16 @@ window.beats.Scenario::encode_references = ->
           (link) =>
             if link.has('demand')
               if(!demandprofileset)
-                @set('demandprofileset', new window.beats.DemandProfileSet())
+                @set('demandprofileset', new window.beats.DemandSet())
+                demandprofileset = @get('demandprofileset')
               if(!demandprofileset.has('demandprofile'))
                 demandprofileset.set('demandprofile', [])
               demandprofileset.get('demandprofile').push(link.get('demand'))
 
             if link.has('capacity')
               if(!capacityprofileset)
-                @set('downstreamboundarycapacityprofileset', new window.beats.DownstreamBoundaryCapacityProfileSet())
+                @set('downstreamboundarycapacityprofileset', new window.beats.DownstreamBoundaryCapacitySet())
+                capacityprofileset = @get('downstreamboundarycapacityprofileset')
               if(!capacityprofileset.has('capacityprofile'))
                 capacityprofileset.set('capacityprofile',[])
               capacityprofileset.get('capacityprofile').push(link.get('capacity'))
@@ -168,6 +173,7 @@ window.beats.Scenario::encode_references = ->
             if link.has('density')
               if(!initialdensityset)
                 @set('initialdensityset', new window.beats.InitialDensitySet())
+                initialdensityset =  @get('initialdensityset')
               if(!initialdensityset.has('density'))
                 initialdensityset.set('density', [])
               initialdensityset.get('density').push(link.get('density'))
@@ -178,7 +184,8 @@ window.beats.Scenario::encode_references = ->
         (node) =>
           if (node.has('splitratios'))
             if(!splitratioprofileset)
-              @set('splitratioprofileset', new SplitRatioProfileSet())
+              @set('splitratioprofileset', new window.beats.SplitRatioSet())
+              splitratioprofileset = @get('splitratioprofileset')
             if(!splitratioprofileset.has('splitratios'))
               splitratioprofileset.set('splitratios', [])
             splitratioprofileset.get('splitratios').push(node.get('splitratios'))

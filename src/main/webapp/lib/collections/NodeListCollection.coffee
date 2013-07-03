@@ -22,7 +22,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
     @models.map((node) -> 
-      [node.get('id'), node.road_names(), node.get('type')]
+      [node.ident(), node.name(), node.type_name()]
     )
   
   # this function sets all the nodes passed in selected field to true. It is
@@ -64,20 +64,24 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # It is called from the context menu's add node event
   addNode: (position, type) ->
     n = new $a.Node()
+    t = new $a.Node_type();
+    t.set_name(type.name()) if type?
+    
     p = new $a.Position()
     pt = new $a.Point()
     pt.set(
             { 
               'lat':position.lat(),
               'lng':position.lng(),
-              'elevation':''
+              'elevation': 0 # default to 0 for elevation setting
             }
           )
     p.set('point', []) 
     p.get('point').push(pt)
     n.set('id', $a.Util.getNewElemId($a.models.nodes()))
     n.set('position', p)
-    n.set('type', type) if type?
+    n.set('node_type', t) if type?
+    n.set_crud($a.CrudFlag.CREATE)
     @_setUpEvents(n)
     @add(n)
     n
@@ -94,14 +98,14 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # similar to addLink above except it creates a terminal node and draws the link
   # from this position to the other selected node
   addLinkOrigin: (position) ->
-    node = @addNode(position,'terminal')
+    node = @addNode(position, new $a.Node_type({name: 'terminal'}))
     selNode = @_getSelectedNode()
     $a.broker.trigger('links_collection:add', {begin:node, end:selNode[0] })
   
   # similar to addLink above except it creates a terminal node and draws the link
   # to this position from the other selected node
   addLinkDest: (position) ->
-    node = @addNode(position, 'terminal')
+    node = @addNode(position, new $a.Node_type({name: 'terminal'}))
     selNode = @_getSelectedNode()
     $a.broker.trigger('links_collection:add', {begin:selNode[0], end:node})
   
@@ -134,12 +138,22 @@ class window.beats.NodeListCollection extends Backbone.Collection
 
   # This method sets up the events each node should listen too
   _setUpEvents: (node) ->
-    node.bind('remove', => node.remove())
-    node.bind('add', => node.add())
-  
+    node.on('remove', => node.remove())
+    node.on('add', => node.add())
+    node.on('change:node_name change:in_sync', 
+          -> node.set_crud($a.CrudFlag.UPDATE))
+    node.position().on('change', -> node.set_crud_update())
+    node.node_type().on('change:name', -> node.set_crud_update())
+    _.map(node.roadway_markers().marker(), 
+        (m) -> m.on('change', -> node.set_crud_update())
+    ) if(node.roadway_markers()? and node.roadway_markers().marker()?)
+    
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)
     $a.nodeList = {}
     $a.broker.off('nodes:add')
+    $a.broker.off('nodes:remove')
+    $a.broker.off('nodes:remove_and_links')
+    $a.broker.off('nodes:remove_and_join')
     @off(null, null, @)

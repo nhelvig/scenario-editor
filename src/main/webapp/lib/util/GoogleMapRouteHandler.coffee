@@ -45,8 +45,8 @@ class window.beats.GoogleMapRouteHandler
   # whether or not we want to force new geometry to be querried. This happens
   # when an existing node is dragged or a node is added.
   setUpLink: (link) ->
-      begin =  link.get('begin').get('node')
-      end = link.get('end').get('node')
+      begin =  link.begin_node()
+      end = link.end_node()
       #Create DirectionsRequest using DRIVING directions.
       link.request = {
        origin: $a.Util.getLatLng(begin),
@@ -56,9 +56,13 @@ class window.beats.GoogleMapRouteHandler
       link
   
   # check to see if the geometry exists before cycling to get route
+  # returns true if link geom and position are not set
   _geomDoesNotExist: (link) ->
-     geom = link.get('shape')?.get('text')
-     return geom is undefined or geom is null
+     g = link.get('shape')?.get('text')
+     pos = link.position()
+     # if link position is null, undefined or has a zero length and
+     # the link shape string is null or undefined return true
+     return (pos is undefined or pos is null or pos?.length is 0) and (g is undefined or g is null)
   
   # _directionsRequest makes the actual route request to google. if we 
   # recieve any error, this method will wait 3 seconds and then 
@@ -69,12 +73,7 @@ class window.beats.GoogleMapRouteHandler
   _directionsRequest: (link) ->
       @directionsService.route(link.request, (response, status) =>
         if (status == google.maps.DirectionsStatus.OK)
-          rte = response.routes[0]
-          if rte.warnings.length > 0
-            msg = "#{WARNING_MSG} #{rte.warnings}"
-            $a.broker.trigger('app:show_message:info', msg)
-          if link?
-            link.legs = rte.legs 
+            @_handleRouteInfo(response, link)
             $a.broker.trigger('map:draw_link', link) if !@stop
             if(rate > 200)
               rate -= 100
@@ -83,21 +82,67 @@ class window.beats.GoogleMapRouteHandler
           rate = 1000
           setTimeout (() =>  @_requestLinks(link.index)), rate
       )
-  
+
+  _duplicatePoint: (point, arrayOfPoints) ->
+    duplicate = false
+    for pt in arrayOfPoints
+      if pt.equals(point)
+        duplicate = true
+    duplicate
+
+  _getPoints: (rte) ->
+    smPath = []
+    for leg in rte.legs
+      for step in leg.steps
+        for pt in step.path
+          if !@_duplicatePoint(pt,smPath)
+            smPath.push pt
+    smPath
+
+  # this method is called from LinkListView on an existing link whose
+  # endpoints have been changed
+  setNewPath: (link) ->
+    @setUpLink(link)
+    @directionsService.route(link.request, (response, status) =>
+      if (status == google.maps.DirectionsStatus.OK)
+        @_handleRouteInfo(response, link)
+        link.poly.setPath(link.legs)
+        link.view._saveLinkLength()
+      else
+        msg = "Problem drawing new path; re-position node again."
+        $a.broker.trigger('app:show_message:error', msg)
+    )
+
   # this makes a single request to a link and triggers its drawing on the map
   _directionsRequestOneLink: (link) ->
       @directionsService.route(link.request, (response, status) =>
         if (status == google.maps.DirectionsStatus.OK)
-          rte = response.routes[0]
-          if rte.warnings.length > 0
-            msg = "#{WARNING_MSG} #{rte.warnings}"
-            $a.broker.trigger('app:show_message:info', msg)
-          link.legs = rte.legs
+          @_handleRouteInfo(response, link)
           $a.broker.trigger('map:draw_link', link)
         else
           setTimeout (() =>  @requestLink(link)), 1000
       )
-  
+    
+  # helper method for directions responses
+  _handleRouteInfo: (response, link) ->
+    rte = response.routes[0]
+    if rte.warnings.length > 0
+      msg = "#{WARNING_MSG} #{rte.warnings}"
+      $a.broker.trigger('app:show_message:info', msg)
+    smPath = @_getPoints(rte)
+    if link?
+      link.legs = smPath
+      link.set_position(@_convertLatLngToPoints(smPath))
+
   #checks to see if we are over the google query limit
   _isOverQuery: (status) ->
     status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT
+    
+  _convertLatLngToPoints: (pts) ->
+    moPoints = []
+    for pt in pts
+      p = new $a.Point()
+      p.set_lat(pt.lat())
+      p.set_lng(pt.lng())
+      moPoints.push(p)
+    moPoints

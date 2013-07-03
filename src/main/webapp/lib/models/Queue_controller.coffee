@@ -34,7 +34,8 @@ class window.beats.Queue_controller extends Backbone.Model
       parameters_xml = doc.createElement('parameters')
       _.each(@get('parameters'), (par_val, par_name) ->
           parameter_xml = doc.createElement('parameter')
-          parameter_xml.setAttribute(par_name, par_val)
+          parameter_xml.setAttribute('name',par_name)
+          parameter_xml.setAttribute('value', par_val)
           parameters_xml.appendChild(parameter_xml)
       )
       xml.appendChild(parameters_xml)

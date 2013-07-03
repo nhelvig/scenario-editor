@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.berkeley.path</groupId>
   <artifactId>scenario-editor</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>scenario-editor</name>
  
@@ -25,6 +25,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
       <artifactId>junit</artifactId>
       <version>4.10</version>
     </dependency>
+    <dependency>
+      <groupId>edu.berkeley.path</groupId>
+      <artifactId>via-rest-api</artifactId>
+      <version>0.1-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
   </dependencies>
  
   <build>
@@ -35,6 +41,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jettyVersion}</version>
         <configuration>
+          <contextHandlers>
+            <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+              <contextPath>/via-rest-api</contextPath>
+              <war>target/via-rest-api.war</war>
+            </contextHandler>
+          </contextHandlers>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
               <port>9090</port>
@@ -42,6 +54,32 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
             </connector>
           </connectors>   
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>copy</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>copy</goal>
+                </goals>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>edu.berkeley.path</groupId>
+                            <artifactId>via-rest-api</artifactId>
+                            <version>0.1-SNAPSHOT</version>
+                            <type>war</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>target/</outputDirectory>
+                            <destFileName>via-rest-api.war</destFileName>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

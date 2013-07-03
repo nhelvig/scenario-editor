@@ -8,6 +8,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
     @models.forEach((sensor) => @_setUpEvents(sensor))
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('sensors:add', @addSensor, @)
+    @on('sensors:attach_to_link', @attachToLink, @)
     @on('sensors:remove', @removeSensor, @)
   
   # the sensor browser calls this to gets the column data for the table
@@ -15,9 +16,9 @@ class window.beats.SensorListCollection extends Backbone.Collection
     @models.map((sensor) -> 
             [
               sensor.ident(), 
-              sensor.type(), 
-              sensor.link()?.type(),
-              sensor.link()?.ident() || ''
+              sensor.type_name(),
+              sensor.link_reference()?.type_name(),
+              sensor.link_reference()?.ident() || ''
             ]
     )
   
@@ -45,7 +46,19 @@ class window.beats.SensorListCollection extends Backbone.Collection
     @_setUpEvents(s)
     @add(s)
     s
-    
+
+  # Attach Sensor to Link on map
+  attachToLink: (sID) ->
+    # get selected sensor
+    sensor = @getByCid(sID)
+    # now find selected link
+    link = $a.linkList.getSelected()
+    # if a link was selected, set it as reference
+    if link
+      sensor.set_link_reference(link)
+      sensor.set_link_id(link.ident())
+
+
   # This method sets up the events each sensor should listen too
   _setUpEvents: (sensor) ->
     sensor.bind('remove', =>

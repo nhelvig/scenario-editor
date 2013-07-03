@@ -24,10 +24,15 @@ nav_bar_menu_item = (label, event, mode) ->
 $a.nav_bar_menu_items =
   File:
     'New Scenario': (-> $a.broker.trigger("app:new_scenario"))
-    'Import XML Scenario': (-> $a.broker.trigger("app:open_scenario"))
-    'Export Scenario to XML': (->  $a.broker.trigger("app:save_scenario"))
-    'Load Scenario from DB': noconfig
-    'Save Scenario to DB': noconfig
+    'Open Local Scenario': (-> $a.broker.trigger("app:open_scenario"))
+    'Save Local Scenario': (->  $a.broker.trigger("app:save_scenario"))
+    'Close Local Scenario': (-> $a.broker.trigger("map:clear_map"))
+  DB:
+    'Log In': (-> $a.broker.trigger("app:login"))
+    'Open Scenario': (-> $a.broker.trigger("app:open_scenario_browser_db"))
+    'Open Network': (-> $a.broker.trigger("app:open_network_browser_db"))
+    'Save New Network': (-> $a.broker.trigger("app:import_network_db"))
+    'Save Network': (-> $a.broker.trigger("app:save_network_db"))
   Windows:
     'Node Browser': (-> $a.BrowserView.start('node'))
     'Link Browser': (-> $a.BrowserView.start('link'))
@@ -35,7 +40,7 @@ $a.nav_bar_menu_items =
     'Event Browser': noconfig
     'Controller Browser': (-> $a.BrowserView.start('controller'))
     'Sensor Browser': (-> $a.BrowserView.start('sensor'))
-    'Network Properties': noconfig
+    'Network Properties': (-> $a.broker.trigger("map:open_network_editor"))
   Tools:
     'Import PeMS data': noconfig
     'Calibrate': noconfig
@@ -159,6 +164,8 @@ $a.sensor_context_menu = [
   context_menu_item 'Remove this sensor',
       ((e) -> $a.sensorList.trigger("sensors:remove", e.currentTarget.id)),
       $a.SCENARIO_MODE
+  context_menu_item 'Attach to selected link',
+                    ((e) -> $a.sensorList.trigger("sensors:attach_to_link", e.currentTarget.id))
   context_menu_item 'Select sensor link',
       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")),
       $a.SCENARIO_MODE
@@ -385,23 +392,34 @@ $a.layers_menu = [
   {
     label: 'Events'
     event: 'toggleVisible'
+    collection: '$a.eventSet'
     triggerShow: "map:show_event_layer"
     triggerHide: "map:hide_event_layer"}
   {
     label: 'Controllers'
     event: 'toggleVisible'
+    collection: '$a.controllerSet'
     triggerShow: "map:show_controller_layer"
     triggerHide: "map:hide_controller_layer" }
   {
     label: 'Sensors'
     event: 'toggleVisible'
+    collection: '$a.sensorList'
     triggerShow: "map:show_sensor_layer"
     triggerHide: "map:hide_sensor_layer" }
+  # { 
+  #  label: 'Demands'
+  #  event: 'toggleVisible'
+  #  triggerShow: "map:show_demand_layer"
+  #  triggerHide: "map:hide_demand_layer" }
+  { className: 'divider' }
   {
-    label: 'Demands'
-    event: 'toggleVisible'
-    triggerShow: "map:show_demand_layer"
-    triggerHide: "map:hide_demand_layer" }
+    label: 'Satelite Tiles'
+    event: 'toggleMapTypeVisible'
+    triggerShow: "map:show_satellite"
+    triggerHide: "map:hide_satellite"
+    initiallyChecked: false}
+  }
 ]
 
 $a.mode_menu = [

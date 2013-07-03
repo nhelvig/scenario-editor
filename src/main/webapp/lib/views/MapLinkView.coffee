@@ -15,7 +15,7 @@ class window.beats.MapLinkView extends Backbone.View
     'change:selected': 'toggleSelected'
     'change:lane_offset': 'drawLink'
     'change:lanes': 'setStrokeWeight'
-    'change:view': 'hideShowLink'
+    'change:hide': 'hideShowLink'
     'change:editor_show': 'editor'
     'change:show_demands': 'viewDemands'
   }
@@ -25,30 +25,30 @@ class window.beats.MapLinkView extends Backbone.View
   }
 
   initialize: (@model) ->
+    @model.view = @
+    @iWindow = new google.maps.InfoWindow()
     # Gets the encoded path line string if it is not already been set
-    if(@model.legs? and @model.legs.length > 0)
-      @_createEncodedPath @model.legs
+    if(@model.position()? and @model.position().length > 0)
+      @_createEncodedPath @model.position()
       @_saveEncodedPath()
     @drawLink()
-    @_saveLinkLength()
+    # only calculates and then updates link length if it not already set
+    if !model.length()?
+      @_saveLinkLength()
     @_contextMenu()
-    @_publishEvents();
+    @model.poly = @link
+    @_publishEvents()
   
   render: ->
     @link.setMap($a.map) if @link?
     @
 
-  # this method reads the path of points contained in the legs, joins them
-  # into one array with no duplicates and then encodes the using googles
+  # this method reads the path of MO points converting them into Google Points
+  # and then encodes the using googles
   # geomtry package in order to save the path to models shape field
-  _createEncodedPath: (legs) ->
-    smPath = []
-    for leg in legs
-      for step in leg.steps
-        for pt in step.path
-          if !(pt in smPath)
-            smPath.push pt
-    @encodedPath = google.maps.geometry.encoding.encodePath smPath
+  _createEncodedPath: (pts) ->
+    gPath = $a.Util.convertPointsToGoogleLatLng(pts)
+    @encodedPath = google.maps.geometry.encoding.encodePath gPath
 
   # save the encoded path to the model
   _saveEncodedPath: ->
@@ -82,32 +82,44 @@ class window.beats.MapLinkView extends Backbone.View
   # publish polyline google events
   _publishGoogleEvents: ->
     gme = google.maps.event
-    gme.addListener(@link, 'dblclick', (evt) => 
+    @dblclckHandler = gme.addListener(@link, 'dblclick', (evt) =>
       @model.set_editor_show(true)
       evt.stop()
     )
-    gme.addListener(@link, 'click', =>  
+    @clickHandler = gme.addListener(@link, 'click', =>  
       $a.broker.trigger('map:clear_selected') # this could also go in the model?
       @model.toggle_selected()
     )
-    
+  
+  _unpublishGoogleEvents: ->
+    gme = google.maps.event
+    gme.removeListener(@zoomListener)
+    gme.removeListener(@dblclckHandler)
+    gme.removeListener(@clickHandler)
+  
   # this is the rollover window for the link
   _createInfoWindow: ->
-    iWindow = new google.maps.InfoWindow()
-    google.maps.event.addListener(@link, 'mouseover', (e) =>
-      iWindow.setContent(@getLinkRollOverInfo())
-      iWindow.setPosition(e.latLng)
-      setTimeout((() -> iWindow.open($a.map)), 2000)
+    gme = google.maps.event
+    @mOHandler = gme.addListener(@link, 'mouseover', (e) =>
+      if(not @_isInfoWindowOpen())
+        @iWindow.setContent(@getLinkRollOverInfo())
+        l = e.latLng
+        @iWindow.setPosition(new google.maps.LatLng(l.lat(),l.lng()+0.0001))
+        trackMouseoverTimeout = setTimeout(( => @iWindow.open($a.map)), 1000)
+        gme.addListenerOnce(@link, 'mouseout', (e) =>
+          window.clearTimeout(trackMouseoverTimeout);
+          @iWindow.close()
+        );
     );
-    google.maps.event.addListener(@link, 'mouseout', => 
-      setTimeout((()-> iWindow.close()), 2000)
-    );
+  
+  _isInfoWindowOpen : ->
+    @iWindow.getMap()?
   
   # this information is displays when you mouse over a polyline
   getLinkRollOverInfo: () ->
     str = "Id: " + @model.id + "</br>"
-    str += "Name: " + @model.road_names() + "</br>"
-    str += "Type: " + @model.type() + "</br>"
+    str += "Name: " + @model.link_name() + "</br>"
+    str += "Type: " + @model.type_name() + "</br>"
     str += "Number of Lanes: " + @model.lanes() + "</br>"
     str += "Length: " + @model.length()
     str
@@ -163,7 +175,7 @@ class window.beats.MapLinkView extends Backbone.View
   # The following handles the show/hide of links and arrow heads
   # hideShow is called when a change to view state on model occurs
   hideShowLink: ->
-    if(@model.view() is 'hide')
+    if(@model.hide() is 'hide')
       @hideLink()
     else
       @showLink()
@@ -178,17 +190,18 @@ class window.beats.MapLinkView extends Backbone.View
   # marker and set it to null
   removeLink: ->
     $a.Util.unpublishEvents(@model, @model_events, @)
-    google.maps.event.removeListener(@zoomListener);
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
+    @_unpublishGoogleEvents()
     @hideLink() if @link?
     @link = null
   
   # This method swaps the icon for the selected color
   linkSelect: ->
-    @link.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
+    @link?.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
   # This method swaps the icon for the de-selected color
   clearSelected: ->
-    @link.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
+    @link?.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
 
   # This method toggles the selection of the link
   toggleSelected: () ->
@@ -215,7 +228,7 @@ class window.beats.MapLinkView extends Backbone.View
     length
 
   # Saves Link Length Should be called when either:
-  # 1) link has no length attribute so on load it is added to model,
+  # 1) link has no length attribute on load so it is added to model,
   # 2) New link is added or 3) If link is changed
   _saveLinkLength: ->
     # get length in meters of link
@@ -281,7 +294,7 @@ class window.beats.MapLinkView extends Backbone.View
     numLines = @model.lanes()
     zoomLevel = $a.map.getZoom()
     if (zoomLevel >= 17)
-      lineWidth = if numLines > 5 then 5 else numLines
+      lineWidth = if numLines > 5 then 5 else 3
     else if (zoomLevel >= 16)
       lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
     else

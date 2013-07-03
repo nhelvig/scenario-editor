@@ -10,8 +10,9 @@ body { height: 100%; margin: 5px; padding: 0 }
   position:absolute;
 }
 
-.alert-bottom {position:absolute; bottom:0; right:2%; max-width:200px; z-index:1}
-.container {position:absolute; z-index:1; width: 278px; margin-top:5px;margin-left:80px; background-color: #444444; display:none}
+.alert-bottom {position:absolute; bottom:0; right:23%; max-width:200px}
+.container {position:absolute; z-index:1; width: 310px; margin-top:5px;margin-left:80px; background-color: #444444; display:none}
+
 .ui-dialog .ui-dialog-content
 {
   padding: 1px 0;
@@ -117,6 +118,10 @@ hr {
 .icon-ok {
   height: auto;
   display: block;
+}
+
+.btn-group li{
+  list-style-type: none;
 }
 /* allows the checkmark to be seen through the hover */
 .dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
@@ -343,6 +348,10 @@ hr {
 .editor_table td { padding: 5px; }
 
 .editor-button { display: inline; float: right; }
+
+#user-login-error { color:red; }
+
+.center { text-align: center; padding-top: 10px;}
 
 /* jQuery UI Hacks */
 .ui-widget-content-select { border: 1px solid #666666; background: #000000; color: #ffffff; }

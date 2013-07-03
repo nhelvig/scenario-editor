@@ -21,12 +21,16 @@ class window.beats.LayersMenuView extends Backbone.View
     @$el.attr 'id', @options.id if @options.id
     @render()
     _.each(@menuItems, (item) => new $a.LayersMenuViewItem(@id, item))
+    $a.broker.on("map:clear_map",@_clear, @)
   
   render: ->
     $("##{@options.parentId}").append(@el)
     $("##{@options.parentId}").click( => @$el.toggleClass "open")
     @
   
+  _clear: ->
+    $("##{@id}").remove()
+    
   #these open and close the Layers Menu itself
   displayOff: (e) ->
     @$el.removeClass "open"

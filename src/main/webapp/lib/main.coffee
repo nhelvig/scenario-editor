@@ -32,6 +32,12 @@ load_beats_classes = (after) ->
           "js/collections/#{cname}.js"
         )
     )
+    class_paths = class_paths.concat _.flatten(
+      _.map(
+        window.beats.overrides, (cname) -> 
+          "js/overrides/#{cname}.js"
+        )
+    )
     class_paths.push after
     head.js.apply(@, class_paths)
 

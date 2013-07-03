@@ -10,8 +10,12 @@ class window.beats.Road extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Road()
+    id = $(xml).attr('id')
+    obj.set('id', Number(id))
     name = $(xml).attr('name')
     obj.set('name', name)
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp)
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -20,7 +24,9 @@ class window.beats.Road extends Backbone.Model
     xml = doc.createElement('road')
     if @encode_references
       @encode_references()
+    xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('name', @get('name')) if @has('name')
+    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml
   
   deep_copy: -> Road.from_xml1(@to_xml(), {})

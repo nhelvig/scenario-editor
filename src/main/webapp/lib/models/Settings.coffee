@@ -10,8 +10,6 @@ class window.beats.Settings extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Settings()
-    VehicleTypes = xml.children('VehicleTypes')
-    obj.set('vehicletypes', $a.VehicleTypes.from_xml2(VehicleTypes, deferred, object_with_id))
     units = xml.children('units')
     obj.set('units', $a.Units.from_xml2(units, deferred, object_with_id))
     if obj.resolve_references
@@ -22,7 +20,6 @@ class window.beats.Settings extends Backbone.Model
     xml = doc.createElement('settings')
     if @encode_references
       @encode_references()
-    xml.appendChild(@get('vehicletypes').to_xml(doc)) if @has('vehicletypes')
     xml.appendChild(@get('units').to_xml(doc)) if @has('units')
     xml
   

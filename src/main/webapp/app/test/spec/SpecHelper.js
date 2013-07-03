@@ -1,6 +1,18 @@
+//ovveride for jasmine describe method
+var oldDescribe = describe;
+describe = function(suiteName, method){
+  xml = $.parseXML($a.fileText);
+  $a.models = $a.Scenario.from_xml($(xml).children());
+  network = $a.models.network();
+  $a.broker = _.clone(Backbone.Events)
+  $a.nodeList = new $a.NodeListCollection($a.models.nodes());
+  $a.linkList = new $a.LinkListCollection($a.models.links(), network);
+  return oldDescribe(suiteName, method);
+};
+      
 beforeEach(function() {
   window.beats.broker = _.clone(Backbone.Events);
-  
+
   runDeferred = function(fList) {
     _.each(fList, function(f) { f(); });
   };
@@ -76,9 +88,12 @@ beforeEach(function() {
     link.set('lanes', 3);
     link.set('length', 10000);
     link.set('subdivide', 2);
-    link.set('type','electric_toll');
     link.set('fundamentaldiagramprofile', fps);
     link.set('demand', dp);
+    
+    link.set('link_type', new window.beats.Link_type)
+    link.get("link_type").set_name('electric_toll')
+    link.set_link_name('Link ' + id);
     
     if(!node1.has('outputs')) {
       var output = [outputSingle];
@@ -101,7 +116,7 @@ beforeEach(function() {
   
   // "Factory" for scenario objects
   scenarioAndFriends = function() {
-    var nodeList, linkList, network, networkList;
+    var nodeList, linkList, network, networkset;
     var scenario, srp, idp, density;
     var node1, node2, node3, link1, link2, link3;
     var sensor;
@@ -118,11 +133,12 @@ beforeEach(function() {
     p.set('point', []);
     p.get('point').push(pt);
     
-    node1 = new window.beats.Node({id: 10, position: p, type: 'freeway'});
-    node2 = new window.beats.Node({id: 11, position: p});
-    node3 = new window.beats.Node({id: 12, position: p});
-    node4 = new window.beats.Node({id: 13, position: p});
-    node5 = new window.beats.Node({id: 14, position: p});
+    node1 = new window.beats.Node({id: 20 ,position: p, type: 'freeway'});
+    node1.set_name("Node 1");
+    node2 = new window.beats.Node({id: 21, position: p});
+    node3 = new window.beats.Node({id: 22, position: p});
+    node4 = new window.beats.Node({id: 23, position: p});
+    node5 = new window.beats.Node({id: 24, position: p});
     sensor = new window.beats.Sensor({id:1, position: p});
     sensor1 = new window.beats.Sensor({id:1, position: p});
     sensor2 = new window.beats.Sensor({id:2, position: p});
@@ -132,20 +148,20 @@ beforeEach(function() {
     ids = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});
     cs = new window.beats.ControllerSet({controller:[c]});
-    cp = new window.beats.CapacityProfile({id: 1});
-    cps = new window.beats.DownstreamBoundaryCapacityProfileSet({capacityprofile: [cp]});
+    cp = new window.beats.DownstreamBoundaryCapacityProfile({id: 1});
+    cps = new window.beats.DownstreamBoundaryCapacitySet({capacityprofile: [cp]});
     dp = new window.beats.DemandProfile({id: 1});
-    dps = new window.beats.DemandProfileSet({demandprofile: [dp]});
+    dps = new window.beats.DemandSet({demandprofile: [dp]});
     fp = new window.beats.FundamentalDiagramProfile({id: 1});
-    fps = new window.beats.FundamentalDiagramProfileSet({fundamentaldiagram: [fp]});
-    srp = new window.beats.SplitratioProfile({id: 1});
-    srps = new window.beats.SplitRatioProfileSet({splitratioprofile: [srp]});
+    fps = new window.beats.FundamentalDiagramSet({fundamentaldiagram: [fp]});
+    srp = new window.beats.SplitRatioProfile({id: 1});
+    srps = new window.beats.SplitRatioSet({splitratioprofile: [srp]});
     link1 = simpleLink(99,node1, node2, fps, dp);
     link2 = simpleLink(100,node2, node3);
     link3 = simpleLink(101, node3, node1);
     link4 = simpleLink(102, node4, node5);
 
-    sensorList = new window.beats.SensorList({sensor: [sensor1, sensor2, sensor3, sensor4]});
+    sensorset = new window.beats.SensorSet({sensor: [sensor1, sensor2, sensor3, sensor4]});
     linkList = new window.beats.LinkList({link: [link1, link2, link3]});
     nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
     network = new window.beats.Network({id: 1});
@@ -153,19 +169,19 @@ beforeEach(function() {
     // These must be called after initialize, initialize clears lists
     network.set('nodelist', nodeList);
     network.set('linklist', linkList);
-    networkList = new window.beats.NetworkList({network: [network]});
+    networkset = new window.beats.NetworkSet({network: [network]});
     scenario = new window.beats.Scenario({
       id: 1,
-      networklist: networkList,
+      networkset: networkset,
       controllerset: cs,
       initialdensityset: ids,
-      downstreamboundarycapacityprofileset: cps,
-      demandprofileset: dps,
-      fundamentalprofileset: fps,
-      splitratioprofileset: srps,
-      sensorlist: sensorList 
+      downstreamboundarycapacityset: cps,
+      demandset: dps,
+      fundamentaldiagramset: fps,
+      splitratioset: srps,
+      sensorset: sensorset
     });
-    scenario.set('networklist',networkList);
+    scenario.set('networkset',networkset);
     scenario.set('controllerset',cs);
     
     return {

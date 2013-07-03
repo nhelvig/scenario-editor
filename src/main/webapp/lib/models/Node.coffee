@@ -18,12 +18,18 @@ class window.beats.Node extends Backbone.Model
     obj.set('inputs', $a.Inputs.from_xml2(inputs, deferred, object_with_id))
     position = xml.children('position')
     obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id))
-    type = $(xml).attr('type')
-    obj.set('type', type)
+    node_type = xml.children('node_type')
+    obj.set('node_type', $a.Node_type.from_xml2(node_type, deferred, object_with_id))
+    crudFlag = $(xml).attr('crudFlag')
+    obj.set('crudFlag', crudFlag)
     id = $(xml).attr('id')
-    obj.set('id', id)
+    obj.set('id', Number(id))
+    node_name = $(xml).attr('node_name')
+    obj.set('node_name', node_name)
     in_sync = $(xml).attr('in_sync')
     obj.set('in_sync', (in_sync.toString().toLowerCase() == 'true') if in_sync?)
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp)
     if object_with_id.node
       object_with_id.node[obj.id] = obj
     if obj.resolve_references
@@ -38,9 +44,12 @@ class window.beats.Node extends Backbone.Model
     xml.appendChild(@get('outputs').to_xml(doc)) if @has('outputs')
     xml.appendChild(@get('inputs').to_xml(doc)) if @has('inputs')
     xml.appendChild(@get('position').to_xml(doc)) if @has('position')
-    xml.setAttribute('type', @get('type')) if @has('type')
+    xml.appendChild(@get('node_type').to_xml(doc)) if @has('node_type')
+    xml.setAttribute('crudFlag', @get('crudFlag')) if @has('crudFlag')
     xml.setAttribute('id', @get('id')) if @has('id')
+    xml.setAttribute('node_name', @get('node_name')) if @has('node_name')
     if @has('in_sync') && @in_sync != true then xml.setAttribute('in_sync', @get('in_sync'))
+    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml
   
   deep_copy: -> Node.from_xml1(@to_xml(), {})

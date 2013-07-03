@@ -24,10 +24,13 @@ class window.beats.MapNetworkView extends Backbone.View
     @networks =  @scenario.networks()
     @_initializeCollections()
     _.each(@networks, (network) => @_drawNetwork(network))
+    @_centerMap() if @networks[0].position()?
     @_drawScenarioItems()
     @_layersMenu()
     @_modeMenu() 
-    
+    # handle network browser event
+    @_setUpEvents()
+
     # This class creates the tree view of all the elements of the scenario
     $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
     @render()
@@ -51,6 +54,16 @@ class window.beats.MapNetworkView extends Backbone.View
   closeScenarioModeConfig: ->
     $a.broker.trigger('app:close_display_message')
 
+  _setUpEvents: ->
+    $a.broker.on('map:open_network_editor', @_editor, @)
+    $a.broker.on("map:clear_map", @_tearDownEvents, @)
+
+  _tearDownEvents: ->
+    # Commenting out since this ends up preventing the network properties editor from being lauched
+    # after the map has been cleared (ie. New Scenario selected)
+    $a.broker.off('map:open_network_editor')
+    $a.broker.off("map:clear_map")
+  
   _initializeCollections: () ->
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
     $a.linkList = new $a.LinkListCollection($a.models.links(), @network)
@@ -77,6 +90,21 @@ class window.beats.MapNetworkView extends Backbone.View
       menuItems: $a.mode_menu
     }
     @mmenu = new $a.LayersMenuView(attrs)
+
+  #center the map based on network position
+  _centerMap: () ->
+    pts = $a.Util.convertPointsToGoogleLatLng(@networks[0].position().points())
+
+    # if we have 1 display position defined, use it as the center
+    if length of pts and pts.length = 1
+      $a.map.setCenter(new google.maps.LatLng(pts[0].lat(), pts[0].lng()))
+    # if we have more two or more points defined, take midpoint of them
+    else if length of pts and pts.length > 1
+      mid = google.maps.geometry.spherical.interpolate(pts[0], pts[1], 0.5)
+      $a.map.setCenter(new google.maps.LatLng(mid.lat(), mid.lng()))
+    # otherwise we display position is not given and output error message
+    else
+      $a.broker.trigger('app:show_message:info', "Error, No Network Display Position Set.")
   
   _drawScenarioItems: () ->
     @_drawSensors()
@@ -87,10 +115,10 @@ class window.beats.MapNetworkView extends Backbone.View
   # _drawNetwork is organizing function calling all the methods that
   # instantiate the various elements of the network
   _drawNetwork: (network)->
-    $a.map.setCenter($a.Util.getLatLng(network))
+    $a.map.setZoom($a.AppView.INITIAL_ZOOM_LEVEL)
     @_drawLinks(network)
-    if network.get('nodelist')?
-      @_drawNodes network.get('nodelist').get('node'), network
+    if network.nodes()?
+      @_drawNodes network.nodes(), network
   
   # These methods instantiate each elements view instance in the map
   _drawLinks: (network) ->
@@ -110,3 +138,9 @@ class window.beats.MapNetworkView extends Backbone.View
 
   _drawSignals: (signals) ->
     _.each(signals, (i) ->  new $a.MapSignalView(i) if $a.Util.getLatLng(i)?)
+
+  _editor: ->
+    env = new $a.EditorNetworkView(elem: 'network', models: @networks, width: 300)
+    $('body').append(env.el)
+    env.render()
+    $(env.el).dialog('open')

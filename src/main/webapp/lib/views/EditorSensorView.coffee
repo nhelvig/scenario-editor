@@ -8,7 +8,8 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   URL_DESC += 'For ranges, use this date format:<br/>July 20-21, 2012'
   
   events : {
-    'blur #sensor_type, #sensor_link_type': 'save' 
+    'blur #sensor_type' : 'saveType'
+    'blur #sensor_link_type': 'saveLinkType'
     'blur #sensor_links' : 'saveLinks'
     'blur #sensor_lat, #sensor_lng, #sensor_elevation' : 'saveGeo'
     'click #display-at-pos' : 'displayAtPos'
@@ -36,20 +37,20 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
-    type = @models[0].type()
-    lType = @models[0].link()?.type()
+    type = @models[0].type_id()
+    lType = @models[0].link_reference()?.type_id()
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
     $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
   # set up a hash of values from the model and inserted into the html template
   _getTemplateData: (models) ->
     { 
-      lat: models[0].display_lat();
-      lng: models[0].display_lng();
-      elev: models[0].display_elev();
+      lat: models[0].display_lat()
+      lng: models[0].display_lng()
+      elev: models[0].display_elev()
       url: ''
       url_desc: URL_DESC
-      links: _.map(models, (m) -> m.link().ident() if m.link()?).join('; ')
+      links: _.map(models, (m) -> m.link_id() if m.link_id()?).join('; ')
     }
   
   # these are callback events for various elements in the interface
@@ -59,7 +60,17 @@ class window.beats.EditorSensorView extends window.beats.EditorView
     id = e.currentTarget.id
     fieldId = @_getFieldId(id)
     _.each(@models, (m) -> m.set_generic(fieldId, $("##{id}").val()))
-  
+
+  # Save sensor type
+  saveType: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
+
+  # Save link type attached to sensor
+  saveLinkType: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.link_reference().set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
+
   # links are in the link_reference attribute
   saveLinks: (e) ->
     id = e.currentTarget.id

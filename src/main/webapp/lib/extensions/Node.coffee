@@ -1,19 +1,46 @@
+$a = window.beats
+
 window.beats.Node::defaults =
-  type: ''
-  lock: false
-  elevation: ''
+  in_sync: false
 
 window.beats.Node::initialize = ->
-  @set('roadway_markers', new window.beats.Roadway_markers)
-  @set('outputs', new window.beats.Outputs({output: []}))
-  @set('inputs', new window.beats.Inputs({input: []}))
+  @set('roadway_markers', new $a.Roadway_markers)
+  @set('outputs', new $a.Outputs({output: []}))
+  @set('inputs', new $a.Inputs({input: []}))
+  t = new $a.Node_type()
+  t.set_name("simple")
+  t.set_id("4")
+  @set('node_type',t)
+
+window.beats.Node::crud = -> @get 'crudFlag'
+window.beats.Node::set_crud = (flag) ->
+  if @crud() != $a.CrudFlag.CREATE
+    @set 'crudFlag', flag
+window.beats.Node::set_crud_update = ->
+  if @crud() != $a.CrudFlag.CREATE
+    @set 'crudFlag', window.beats.CrudFlag.UPDATE
+
+window.beats.Node::name = -> @get("node_name")
+window.beats.Node::set_name = (name) -> @set("node_name", name)
+
+window.beats.Node::in_sync = -> @get("in_sync")
+window.beats.Node::set_in_sync = (flag) -> @set("in_sync", flag)
 
 window.beats.Node::ident = -> Number(@get("id"))
-window.beats.Node::type = -> @get("type")
+window.beats.Node::set_id = (id) -> @set("id", id)
 
-window.beats.Node::set_type = (val) -> 
-  @set('type', val)
-  @defaults['type'] = val
+window.beats.Node::node_type = -> @get("node_type") if @get("node_type")?
+window.beats.Node::type_id = -> @get("node_type").get("id") if @get("node_type")?
+window.beats.Node::type_name = -> @get("node_type").name() if @get("node_type")?
+window.beats.Node::set_type = (id, name) ->
+  @set('node_type', new window.beats.Node_type)  if not @get('node_type')?
+  @get("node_type").set_name(name)
+  @get("node_type").set_id(id)
+  @defaults['node_type'] = id
+
+
+window.beats.Node::mod_stamp = -> @get('mod_stamp')
+window.beats.Node::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
 
 window.beats.Node::locked = -> @get("lock")? and @get("lock") is true
 window.beats.Node::set_locked = (val) -> 
@@ -34,6 +61,7 @@ window.beats.Node::output_indexes = (other_node) ->
       [link, idx] if link.get('end').get('node') == other_node
   )
 
+window.beats.Node::roadway_markers = -> @get('roadway_markers')
 window.beats.Node::road_names = ->
   _.map(@get('roadway_markers')?.get('marker'), 
     (marker) -> 
@@ -52,10 +80,16 @@ window.beats.Node::set_road_names = (name) ->
   m[0].defaults['name'] = name
 
 window.beats.Node::terminal = ->
-  @get('type') is 'T'
+  @get('node_type').name() is 'Terminal'
 
 window.beats.Node::signalized = ->
   @get('type') is 'S'
+
+window.beats.Node::set_input = (link) ->
+  @inputs().push new window.beats.Input({link: link})
+  
+window.beats.Node::set_output = (link) ->
+  @outputs().push new window.beats.Output({link: link})
 
 window.beats.Node::inputs = ->
   if(!@has('inputs'))
@@ -77,14 +111,23 @@ window.beats.Node::position = ->
   @get('position').get('point')[0]
 
 window.beats.Node::remove = ->
-  nodes = window.beats.models.nodes()
-  nodes = _.reject(nodes, (n) => n is @)
-  window.beats.models.set_nodes(nodes)
+  if @crud() is $a.CrudFlag.CREATE
+    nodes = window.beats.models.nodes()
+    nodes = _.reject(nodes, (n) => n is @)
+    window.beats.models.set_nodes(nodes)
+  else
+    @set_crud($a.CrudFlag.DELETE)
   @stopListening
 
 window.beats.Node::add = ->
   window.beats.models.nodes().push(@)
-  
+
+window.beats.Node::editor_show = ->
+  @get('editor_show')
+
+window.beats.Node::set_editor_show = (flag) ->
+  @set('editor_show', flag)
+
 window.beats.Node::toggle_selected =  ->
   if(@selected() is true) 
     @set('selected', false) 
@@ -93,3 +136,22 @@ window.beats.Node::toggle_selected =  ->
 
 window.beats.Node::selected = ->
   @get('selected')
+
+# we need to remove the crudFlag and mop_stamp before saving to an xml file
+# and then replace both attributes on the object
+window.beats.Node::old_to_xml = window.beats.Node::to_xml 
+window.beats.Node::to_xml = (doc) ->
+  xml = ''
+  # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
+  if window.beats? and window.beats.fileSaveMode
+    crud = @crud()
+    mod = @mod_stamp()
+    @unset 'crudFlag', { silent:true }
+    @unset 'mod_stamp', { silent:true }
+    xml = @old_to_xml(doc)
+    @set_crud(crud) if crud?
+    @set_mod_stamp(mod) if mod?
+  # Otherwise we are converting to xml to goto the database
+  else
+    xml = @old_to_xml(doc)
+  xml

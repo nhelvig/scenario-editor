@@ -14,16 +14,16 @@
           <input type="text" name="link-name" id="link_name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
           <label for="type">Type</label>
           <select id="link_type" name ="type" class="ui-widget-content ui-corner-all">
-              <option value="electric_toll">Electric Toll Coll. Lane</option>
-              <option value="freeway">Freeway Mainline</option>
-              <option value="HOT">HOT lane</option>
-              <option value="HOV">HOV lane</option>
-              <option value="heavy_vehicle">Heavy Vehicle Lane</option>
-              <option value="intersection_approach">Intersection Approach</option>
-              <option value="freeway_connector">Interconnect</option>
-              <option value="offramp">Off-ramp</option>
-              <option value="onramp">On-ramp</option>
-              <option value="street">Street</option>
+              <option value="1" name="electric_toll">Electric Toll Coll. Lane</option>
+              <option value="2" name="freeway">Freeway Mainline</option>
+              <option value="3" name="HOT">HOT lane</option>
+              <option value="4" name="HOV">HOV lane</option>
+              <option value="5" name="heavy_vehicle">Heavy Vehicle Lane</option>
+              <option value="6" name="intersection_approach">Intersection Approach</option>
+              <option value="7" name="freeway_connector">Interconnect</option>
+              <option value="8" name="offramp">Off-ramp</option>
+              <option value="9" name="onramp">On-ramp</option>
+              <option value="10" name="street">Street</option>
           </select><br/>
           <input type="checkbox" name="in_sync" id="in_sync" class="text ui-widget-content ui-corner-all" {{insync}} />
           <span>In Sync</span>
@@ -91,9 +91,10 @@
           
           <label for="link-demand-sample-second" class="time">:: s</label>
           <input type="number" id="link_demand_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['s']}}" />
-          
-          <label for="demand-profile">Demand Profile (vph)</label>
-          <textarea name="demand-profile" id="dp_text" rows="10" class="text ui-widget-content ui-corner-all">{{demandProfile}}</textarea>
+
+          <div>
+            <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="link-demand-table"></table>
+          </div>
         </fieldset>
       </form>
     </div>

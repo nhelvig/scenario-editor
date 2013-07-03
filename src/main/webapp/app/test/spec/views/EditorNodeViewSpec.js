@@ -5,7 +5,6 @@ describe("EditorNodeView", function() {
     loadFixtures('editor.node.view.fixture.html');
     scen = scenarioAndFriends();
     model = scen.node1
-    //model = $a.models.nodes()[0];
     spyOn($a.EditorNodeView.prototype, 'signalEditor').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'chooseName').andCallThrough();
     spyOn($a.EditorNodeView.prototype, 'removeJoinLinks').andCallThrough();
@@ -40,7 +39,7 @@ describe("EditorNodeView", function() {
   
   describe("Rendering", function() {
     beforeEach(function() {
-              this.v = this.view.render();
+        this.v = this.view.render();
     });
     it("returns the view object", function() {
       expect(this.v).toEqual(this.view);
@@ -51,14 +50,15 @@ describe("EditorNodeView", function() {
     });
     
     it("should should have correct type selected", function() {
-      type = this.view.models[0].get('type');
-      expect($($(this.view.el).find('#type option:selected'))).toHaveValue(type);
+      type = this.view.models[0].node_type().name();
+      expected = $($(this.view.el).find('#type option:selected')).attr("name");
+      expect(expected).toEqual(type);
     });
     
     //checks that template was created correctly
     //Note: the elevation check force NaN to a string
     it("has the correct text content", function() {
-      expect(this.view.$('#name')).toHaveValue('Name not defined');
+      expect(this.view.$('#name')).toHaveValue(model.name());
       expect(this.view.$('#descripton')).toHaveValue(model.get('description'));
       lat = model.get('position').get('point')[0].get('lat');
       expect(this.view.$('#lat')).toHaveValue(lat);
@@ -79,16 +79,16 @@ describe("EditorNodeView", function() {
        it("name is saved", function() {     
          $('#name').val("Name Changed");
          $("#name").blur();
-         expect(this.view.models[0].road_names()).toEqual("Name Changed");
+         expect(this.view.models[0].name()).toEqual("Name Changed");
        });
        it("type is saved", function() {
          selected = $($(this.view.el)).find('#type option:selected')
          $(selected).attr('selected', false);
          options = $(this.view.el).find("select option");
          $(options[1]).attr('selected', true);
-         newSelectedValue = $(options[1]).val();
+         newSelectedValue = $(options[1]).attr("name");
          $("#type").blur();            
-         expect(this.view.models[0].get('type')).toEqual(newSelectedValue); 
+         expect(this.view.models[0].type_name()).toEqual(newSelectedValue); 
        });
      });
  

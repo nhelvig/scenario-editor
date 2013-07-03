@@ -2,7 +2,7 @@
 class window.beats.EditorLinkView extends window.beats.EditorView
   $a = window.beats
   events : {
-    'blur #link_type' : 'save'
+    'blur #link_type' : 'saveType'
     'blur #link_name' : 'saveName'
     'blur #lanes, #lane_offset, #length' : 'save'
     'blur #capacity,
@@ -48,6 +48,9 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   # upon initializations of tabs you disable tabs that are not needed
   render: ->
     super @elem
+    # If there is demand profile for link, render demand data table
+    if @dp?
+      @renderDemandTable()
     @_checkDisableTabs()
     @_checkDisableFields()
     @_setSelectedType()
@@ -55,7 +58,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   
   #set selected type element
   _setSelectedType: ->
-    type = @models[0].get('type');
+    type = @models[0].type_id();
     $(@$el[0]).find("select option[value='#{type}']").attr('selected','selected')
   
   # if tab doesn't have one of the profiles disable it
@@ -77,34 +80,75 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   # I could have just passed the model but I did it this way because 
   # I didn't want the long retrieval lines in the html.
   _getTemplateData: (models) ->
-    cp = models[0].get('capacity') || null if models.length == 1
-    dp = models[0].get('demand') || null if models.length == 1
+    @cp = models[0].get('capacity') || null if models.length == 1
+    @dp = models[0].get('demand') || null if models.length == 1
     
-    fds = _.map(models, (m) ->
+    @fds = _.map(models, (m) ->
                   fdp = m.get('fundamentaldiagramprofile')
                   fdp?.get('fundamentaldiagram')[0] || null
           )
-    name: _.map(models, (m) -> m.road_names()).join(", ")
+    #name: _.map(models, (m) -> m.road_names()).join(", ")
+    name: _.map(models, (m) -> m.link_name()).join(", ")
     insync: if models[0].has('in_sync') and models[0].get('in_sync') then 'checked' else ''
     lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
     laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  
     length: _.map(models, (m) -> m.get('length')).join(", ")  
-    freeFlowSpeed: _.map(fds, (fd) -> fd?.get('free_flow_speed') || '').join(", ")
-    capacity:  _.map(fds, (fd) -> fd?.get('capacity') || '').join(", ")
-    jamDensity: _.map(fds, (fd) -> fd?.get('jam_density') || '').join(", ")
-    capacityDrop: _.map(fds, (fd) -> fd?.get('capacity_drop') || '').join(", ")
-    criticalSpeed: _.map(fds, (fd) -> fd?.get('critical_speed') || '').join(", ")
-    congestionSpeed: _.map(fds, (fd) -> fd?.get('congestion_speed') || '').join(", ")
-    capacityStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_capacity') || '').join(", ")
-    congestionStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_congestion') || '').join(", ")
-    freeFlowStandardDev: _.map(fds, (fd) -> fd?.get('std_dev_free_flow') || '').join(", ")
-    cpStartTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('start_time') || 0)
-    cpSampleTime: $a.Util.convertSecondsToHoursMinSec(cp?.get('dt') || 0)
-    capacityProfile: cp?.get('text') || ''
-    knob: dp?.get('knob') || ''
-    dpStartTime: $a.Util.convertSecondsToHoursMinSec(dp?.get('start_time') || 0)
-    dpSampleTime: $a.Util.convertSecondsToHoursMinSec(dp?.get('dt') || 0)
-    demandProfile: dp?.get('text') || ''
+    freeFlowSpeed: _.map(@fds, (fd) -> fd?.get('free_flow_speed') || '').join(", ")
+    capacity:  _.map(@fds, (fd) -> fd?.get('capacity') || '').join(", ")
+    jamDensity: _.map(@fds, (fd) -> fd?.get('jam_density') || '').join(", ")
+    capacityDrop: _.map(@fds, (fd) -> fd?.get('capacity_drop') || '').join(", ")
+    criticalSpeed: _.map(@fds, (fd) -> fd?.get('critical_speed') || '').join(", ")
+    congestionSpeed: _.map(@fds, (fd) -> fd?.get('congestion_speed') || '').join(", ")
+    capacityStandardDev: _.map(@fds, (fd) -> fd?.get('std_dev_capacity') || '').join(", ")
+    congestionStandardDev: _.map(@fds, (fd) -> fd?.get('std_dev_congestion') || '').join(", ")
+    freeFlowStandardDev: _.map(@fds, (fd) -> fd?.get('std_dev_free_flow') || '').join(", ")
+    cpStartTime: $a.Util.convertSecondsToHoursMinSec(@cp?.get('start_time') || 0)
+    cpSampleTime: $a.Util.convertSecondsToHoursMinSec(@cp?.get('dt') || 0)
+    capacityProfile: @cp?.get('text') || ''
+    knob: @dp?.get('knob') || ''
+    dpStartTime: $a.Util.convertSecondsToHoursMinSec(@dp?.get('start_time') || 0)
+    dpSampleTime: $a.Util.convertSecondsToHoursMinSec(@dp?.get('dt') || 0)
+
+  # the demand tab calls this to the column data for the table
+  _getDemandData: () ->
+    dataArray = []
+    demands = @dp?.demands()
+    # if demands exist create a data array of their attributes
+    if demands?
+      $.each(demands, (index, demand) ->
+        dataArray.push([
+          demand.ident(),
+          demand.demand_order(),
+          demand.vehicle_type_id(),
+          demand.demand(),
+        ])
+      )
+    dataArray
+
+  # set up demand columns and their titles for the browser
+  _getDemandColumns: () ->
+    columns =  [
+      { "sTitle": "Id","bVisible": false},
+      { "sTitle": "Demand Order","sWidth": "30%"},
+      { "sTitle": "Vehicle Type ID","sWidth": "30%"},
+      { "sTitle": "Demand","sWidth": "40%"}
+    ]
+
+  # render the demands table for link
+  renderDemandTable: () ->
+    @dTable = $('#link-demand-table').dataTable( {
+      "aaData": @_getDemandData(),
+      "aoColumns": @_getDemandColumns(),
+      "aaSorting": [[ 2, "desc" ]]
+      "bPaginate": true,
+      "bLengthChange": false,
+      "bFilter": false,
+      "bSort": true,
+      "bInfo": false,
+      "bDestroy": true,
+      "bAutoWidth": false,
+      "bJQueryUI": true,
+    })
 
   # these are callback events for various elements in the interface
   # This is used to save the name, type and description when focus is
@@ -117,10 +161,18 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     fieldId = id[5...] if id.indexOf("link") is 0
     _.each(@models, (m) -> m.set_generic(fieldId,$("##{id}").val()))
   
-  # This saves the link name
+  # This saves the link name - will be needed when we go back to road names
   saveName: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_road_names($("##{id}").val()))
+    #_.each(@models, (m) -> m.set_road_names($("##{id}").val()))
+    _.each(@models, (m) -> m.set_link_name($("##{id}").val()))
+
+  # these are callback events for various elements in the interface
+  # This is used to save the type when focus is
+  # lost from the element
+  saveType: (e) ->
+    id = e.currentTarget.id
+    _.each(@models, (m) -> m.set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
 
   # This saves the checkbox indicating the link is in sync
   saveInSync: (e) ->

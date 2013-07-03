@@ -6,7 +6,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   @SELECTED_ICON: 'reddot'
   @TERMINAL_ICON: 'square'
   @SELECTED_TERMINAL_ICON: 'red-square'
-  @TERMINAL_TYPE: 'terminal'
+  @TERMINAL_TYPE: 'Terminal'
   $a = window.beats
 
   initialize: (model, @network) ->
@@ -49,6 +49,9 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   # and then calls super to set itself to null, unpublish the general events, 
   # and hide itself
   removeElement: ->
+    @model.off('change:selected', @toggleSelected)
+    @model.off('change:type', @changeIconType)
+    @model.off('remove', @removeElement)
     $a.broker.off("map:select_neighbors:#{@model.cid}")
     $a.broker.off("map:select_neighbors_out:#{@model.cid}")
     $a.broker.off("map:select_neighbors_in:#{@model.cid}")
@@ -136,7 +139,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   
   # This returns the appropriate icon for terminals and selected or not
   _getTypeIcon : (selected) ->
-    switch @model.get('type')
+    switch @model.type_name()
       when MapNodeView.TERMINAL_TYPE
         if selected
           MapNodeView.SELECTED_TERMINAL_ICON
