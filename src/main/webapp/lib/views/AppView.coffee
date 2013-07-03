@@ -111,6 +111,7 @@ class window.beats.AppView extends Backbone.View
   
   newScenario: ->
     $a.broker.trigger('map:clear_map')
+    $a.broker.trigger('app:tree_clear')
     $a.map.setZoom(AppView.INITIAL_ZOOM_LEVEL)
     $a.models = new $a.Scenario()
     $a.models.networkset().set('network',[new $a.Network()])
