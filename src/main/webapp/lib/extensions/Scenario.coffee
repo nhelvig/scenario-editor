@@ -91,9 +91,6 @@ window.beats.Scenario::networks = ->
 window.beats.Scenario::network = -> 
   @get('networkset').get('network')[0]
 
-window.beats.Scenario::networks = -> 
-  @get('networklist').get('network')
-  
 window.beats.Scenario::settings = -> 
   @get('settings')
 

@@ -72,7 +72,7 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.eventSet = new $a.EventSetCollection($a.models.events())
   
   # This creates the layers menu bar
-  _layersMenu: () ->
+  _layersMenu: ->
     attrs = {
       className: 'dropdown-menu bottom-up'
       id: 'l_list'
@@ -82,7 +82,7 @@ class window.beats.MapNetworkView extends Backbone.View
     @lmenu = new $a.LayersMenuView(attrs)
   
     # This creates the layers menu bar
-  _modeMenu: () ->
+  _modeMenu: ->
     attrs = {
       className: 'dropdown-menu bottom-up'
       id: 'm_list'

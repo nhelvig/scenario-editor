@@ -419,7 +419,6 @@ $a.layers_menu = [
     triggerShow: "map:show_satellite"
     triggerHide: "map:hide_satellite"
     initiallyChecked: false}
-  }
 ]
 
 $a.mode_menu = [
@@ -429,12 +428,12 @@ $a.mode_menu = [
     triggerShow: 'map:open_network_mode'
     triggerHide: 'map:close_network_mode'
     collection: '$a.broker'
-    checkShow : false}
+    initiallyChecked: true}
   {
     label: 'Scenario Edit Mode'
     event: 'toggleVisible'
     triggerShow: 'map:open_scenario_mode'
     triggerHide: 'map:close_scenario_mode'
     collection: '$a.broker'
-    checkShow : false}
+    initiallyChecked: false}
 ]

@@ -19,30 +19,41 @@ class window.beats.LayersMenuView extends Backbone.View
     @menuItems = @options.menuItems
     @$el.attr 'class', @options.className if @options.className
     @$el.attr 'id', @options.id if @options.id
+    @$el.attr 'role', 'menu'
     @render()
     _.each(@menuItems, (item) => new $a.LayersMenuViewItem(@id, item))
+    $("##{@options.parentId}").on('click', ((e) => @toggleOpen(e)))
     $a.broker.on("map:clear_map",@_clear, @)
   
   render: ->
     $("##{@options.parentId}").append(@el)
-    $("##{@options.parentId}").click( => @$el.toggleClass "open")
     @
   
   _clear: ->
     $("##{@id}").remove()
     
   #these open and close the Layers Menu itself
-  displayOff: (e) ->
+  displayOff: ->
     @$el.removeClass "open"
     
-  displayOn: (e) ->
+  #first close the other menu if it is open
+  displayOn: ->
+    elems = $(".btn-group").find(".bottom-up")
+    _.each(elems, (elem) -> $(elem).removeClass "open")
     @$el.addClass "open"
   
+  toggleOpen: (e) ->
+    if @$el.hasClass "open"
+      @displayOff()
+    else
+      @displayOn()
+    e.stopPropagation()
+  
   # hover events that open and close submenus
-  hoverSubOn: (e) ->
+  hoverSubOn: ->
     ul = $("##{e.currentTarget.id}").children("ul")
     ul.removeClass("submenu-hide").addClass "submenu-show"
 
-  hoverSubOff: (e) =>
+  hoverSubOff: ->
     ul = $("##{e.currentTarget.id}").children("ul")
     ul.removeClass("submenu-show").addClass "submenu-hide"
