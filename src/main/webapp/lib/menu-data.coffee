@@ -248,37 +248,44 @@ $a.layers_node_type_list = [
     label: 'Freeway'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_freeway"
-    triggerHide: "map:nodes:hide_freeway" }
+    triggerHide: "map:nodes:hide_freeway"
+    nodeSubMenu: true }
   {
     label: 'Highway'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_highway"
-    triggerHide: "map:nodes:hide_higway"  }
+    triggerHide: "map:nodes:hide_higway"
+    nodeSubMenu: true  }
   {
     label: 'Signalized Intersections'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_signalized_intersection"
-    triggerHide: "map:nodes:hide_signalized_intersection"  }
+    triggerHide: "map:nodes:hide_signalized_intersection"
+    nodeSubMenu: true  }
   {
     label: 'Simple'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_simple"
-    triggerHide: "map:nodes:hide_simple" }
+    triggerHide: "map:nodes:hide_simple"
+    nodeSubMenu: true }
   {
     label: 'Stop Intersections'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_stop_intersection"
-    triggerHide: "map:nodes:hide_stop_intersection"  }
+    triggerHide: "map:nodes:hide_stop_intersection"
+    nodeSubMenu: true  }
   {
     label: 'Terminals'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_terminal"
-    triggerHide: "map:nodes:hide_terminal"  }
+    triggerHide: "map:nodes:hide_terminal"
+    nodeSubMenu: true  }
   {
     label: 'Other'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_other"
-    triggerHide: "map:nodes:hide_other"  }
+    triggerHide: "map:nodes:hide_other"
+    nodeSubMenu: true}
 ]
 
 $a.layers_link_type_list = [
@@ -288,77 +295,88 @@ $a.layers_link_type_list = [
     triggerShow: "links:show_link_layer"
     triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'electric_toll'  }
+    param: 'electric_toll'
+    linkSubMenu: true}
   {
     label: 'Freeway mainlines'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'freeway' }
+    param: 'freeway'
+    linkSubMenu: true }
   {
     label: 'Highway mainlines'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'highway'  }
+    param: 'highway'
+    linkSubMenu: true  }
   {
     label: 'Heavy vehicle lanes'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'heavy_vehicle' }
+    param: 'heavy_vehicle'
+    linkSubMenu: true }
   {
     label: 'HOV lanes'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'hov' }
+    param: 'hov'
+    linkSubMenu: true }
   {
     label: 'HOT lanes'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'hot'  }
+    param: 'hot'
+    linkSubMenu: true  }
   {
     label: 'Interconnects'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'freeway_connector'}
+    param: 'freeway_connector'
+    linkSubMenu: true }
   {
     label: 'Intersection Approach'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'intersection_approach' }
+    param: 'intersection_approach'
+    linkSubMenu: true }
   {
     label: 'On-ramps'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'onramp'  }
+    param: 'onramp'
+    linkSubMenu: true }
   {
     label: 'Off-ramps'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'offramp'  }
+    param: 'offramp'
+    linkSubMenu: true  }
   {
     label: 'Streets'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
     triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
-    param: 'streets'  }
+    param: 'streets'
+    linkSubMenu: true  }
 ]
 
 $a.layers_menu = [
@@ -367,7 +385,8 @@ $a.layers_menu = [
     event: 'toggleVisible'
     collection : '$a.broker' 
     triggerShow: 'map:show_node_layer'
-    triggerHide: 'map:hide_node_layer' }
+    triggerHide: 'map:hide_node_layer'
+    toggleSubs: "map:toggle_node_subs" }
   {
     label: 'Nodes'
     className: 'dropdown submenu'
@@ -381,7 +400,8 @@ $a.layers_menu = [
     event: 'toggleVisible'
     collection : '$a.linkList' 
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:hide_link_layer" }
+    triggerHide: "links:hide_link_layer"
+    toggleSubs: "links:toggle_link_subs" }
   {
     label: 'Links'
     className: 'dropdown submenu'

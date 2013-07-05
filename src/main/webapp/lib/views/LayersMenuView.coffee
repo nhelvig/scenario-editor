@@ -25,7 +25,8 @@ class window.beats.LayersMenuView extends Backbone.View
     @$el.attr 'id', @options.id if @options.id
     @$el.attr 'role', 'menu'
     @render()
-    _.each(@menuItems, (item) => new $a.LayersMenuViewItem(@id, item))
+    _.each(@menuItems, (item) => 
+            new $a.LayersMenuViewItem(@id, item))
     $a.Util.publishEvents($a.broker, @broker_events, @)
     $("##{@options.parentId}").click((e) => @toggleOpen(e))
   

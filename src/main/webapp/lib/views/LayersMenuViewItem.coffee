@@ -33,7 +33,8 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     if @values.initiallyChecked is false
       @check(false)
       @isShowing = false
-
+    @_setUpSubMenuEvents()
+  
   render: ->
     $("##{@parent}").append(@el)
     @
@@ -49,6 +50,12 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     }
     new $a.LayersMenuView(attrs)
 
+  _setUpSubMenuEvents : ->
+    if @values.linkSubMenu?
+      @collection.on("links:toggle_link_subs", @toggleState, @)
+    if @values.nodeSubMenu?
+      $a.broker.on("map:toggle_node_subs", @toggleState, @)
+  
   # adds the checkmark to the item or takes it aways
   check: (show) ->
     if show
@@ -56,20 +63,28 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     else
       @$el.removeClass "icon-ok"
   
+  # this toggles the state of a submenu item (checked or unchecked)
+  # if the Show All/Hide All event occured on the Layers Menu
+  toggleState: ->
+    if @isShowing
+      @isShowing = false
+      @check(false)
+    else
+      @isShowing = true
+      @check(true)
+  
   # This function is called on the click if we are toggling the checkmark to
   # show/hide. Not every item operates like this. You can see in
   # menu-data.coffee which items call this method and which do not
   toggleVisible: (e) ->
+    @collection.trigger(@values.toggleSubs) if(@values.toggleSubs?)
     if @isShowing
       @collection.trigger(@triggerHide, @event_arg) if @collection?
-      @isShowing = false
-      @check(false)
     else
       @collection.trigger(@triggerShow, @event_arg) if @collection?
-      @isShowing = true
-      @check(true)
+    @toggleState()
     e.stopPropagation()
-      
+  
   # This function is called on the click if we are toggling the checkmark to
   # show/hide satellite tiles.
   toggleMapTypeVisible: (e) ->
