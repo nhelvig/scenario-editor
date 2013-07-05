@@ -16,7 +16,6 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     @template = _.template($('#child-item-menu-template').html())
     displayText = values.label
     # values.link indicates a submenu and we display '>>' in the view
-    # to indicate a menu
     displayText = "#{values.label} &raquo; " if @values.link
     @$el.html @template({text: displayText}) if @values.label
     @$el.attr 'class', @values.className if @values.className
@@ -24,7 +23,7 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     @$el.attr 'id', @values.link if @values.link
     @events = {'click': @values.event } if @values.event
     @render()
-    # again we'll create a submenu if values.link is set
+    #create a submenu if values.link is set
     @_createSubMenu @values.items, @values.link if @values.link
     # puts a check mark if this item needs checkmarks
     if @values.triggerShow

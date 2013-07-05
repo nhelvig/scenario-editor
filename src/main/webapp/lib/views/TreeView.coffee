@@ -9,10 +9,9 @@ class window.beats.TreeView extends Backbone.View
     'map:clear_map': 'clearMap'
     'map:toggle_tree': 'toggleTree'
     'app:main_tree': 'render'
+    'map:open_view_mode' : 'viewMode'
     'map:open_network_mode' : 'networkMode'
     'map:open_scenario_mode' : 'scenarioMode'
-    'map:close_network_mode' : 'closeNetworkMode'
-    'map:close_scenario_mode' : 'closeScenarioMode'
   }
   # The args contains the @scenario models as well as what parent div it
   # should attach the tree too.
@@ -229,18 +228,13 @@ class window.beats.TreeView extends Backbone.View
     $('#tree-handle').addClass("noClick")
     $('#tree-resize').draggable('disable')
     @closeTree()
-
-  closeNetworkMode: ->
-    $('#tree-handle').removeClass("noClick")
-    $('#tree-resize').draggable('enable')
-    @openTree()
     
   scenarioMode: ->
     $('#tree-handle').removeClass("noClick")
     $('#tree-resize').draggable('enable')
     @openTree()
-
-  closeScenarioMode: ->
+    
+  viewMode: ->
     $('#tree-handle').removeClass("noClick")
     $('#tree-resize').draggable('enable')
     @openTree()
