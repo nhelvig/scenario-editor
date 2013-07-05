@@ -235,6 +235,16 @@ class window.beats.TreeView extends Backbone.View
     $('#tree-resize').draggable('enable')
     @openTree()
     
+  scenarioMode: ->
+    $('#tree-handle').removeClass("noClick")
+    $('#tree-resize').draggable('enable')
+    @openTree()
+
+  closeScenarioMode: ->
+    $('#tree-handle').removeClass("noClick")
+    $('#tree-resize').draggable('enable')
+    @openTree()
+    
   _setUpTreeData: ->   
     @parentNodes = [
         {

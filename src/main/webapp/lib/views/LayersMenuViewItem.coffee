@@ -55,11 +55,11 @@ class window.beats.LayersMenuViewItem extends Backbone.View
       @$el.addClass "icon-ok"
     else
       @$el.removeClass "icon-ok"
-
+  
   # This function is called on the click if we are toggling the checkmark to
   # show/hide. Not every item operates like this. You can see in
   # menu-data.coffee which items call this method and which do not
-  toggleVisible: =>
+  toggleVisible: (e) ->
     if @isShowing
       @collection.trigger(@triggerHide, @event_arg) if @collection?
       @isShowing = false
@@ -68,16 +68,10 @@ class window.beats.LayersMenuViewItem extends Backbone.View
       @collection.trigger(@triggerShow, @event_arg) if @collection?
       @isShowing = true
       @check(true)
+    e.stopPropagation()
       
   # This function is called on the click if we are toggling the checkmark to
-  # show/hide. Not every item operates like this. You can see in
-  # menu-data.coffee which items call this method and which do not
-  toggleMapTypeVisible: =>
-    if @isShowing
-      $a.broker.trigger(@triggerHide, false)
-      @isShowing = false
-      @check(false)
-    else
-      $a.broker.trigger(@triggerShow, true)
-      @isShowing = true
-      @check(true)
+  # show/hide satellite tiles.
+  toggleMapTypeVisible: (e) ->
+    @event_arg = not @isShowing
+    @toggleVisible(e)

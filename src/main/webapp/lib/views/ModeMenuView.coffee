@@ -1,15 +1,13 @@
-# This class renders the Layers Menu. It's menu items can be found in
-# menu-data.coffee. In combination with LayersMenuViewItemit will
+# This class renders the Mode Menu. It's menu items can be found in
+# menu-data.coffee. In combination with ModeMenuViewItem it will
 # recursively render a menu and its submenus if they are defined
 # in the data file correctly.
-class window.beats.LayersMenuView extends Backbone.View
+class window.beats.ModeMenuView extends Backbone.View
   $a = window.beats
   tagName : 'ul'
   
   # used to create hover effects on the submenus
   events : {
-      'mouseenter .submenu'   : 'hoverSubOn',
-      'mouseleave .submenu'   : 'hoverSubOff',
       'mouseleave'            : 'displayOff',
       'mouseenter'            : 'displayOn'
   }
@@ -25,7 +23,7 @@ class window.beats.LayersMenuView extends Backbone.View
     @$el.attr 'id', @options.id if @options.id
     @$el.attr 'role', 'menu'
     @render()
-    _.each(@menuItems, (item) => new $a.LayersMenuViewItem(@id, item))
+    _.each(@menuItems, (item) => new $a.ModeMenuViewItem(@id, item))
     $a.Util.publishEvents($a.broker, @broker_events, @)
     $("##{@options.parentId}").click((e) => @toggleOpen(e))
   
@@ -45,15 +43,6 @@ class window.beats.LayersMenuView extends Backbone.View
     @$el.addClass "open"
   
   toggleOpen: (e) ->
-    $("#m_list").removeClass "open"
+    $("#l_list").removeClass "open"
     if @$el.hasClass "open" then @displayOff() else @displayOn()
     e.stopPropagation()
-  
-  # hover events that open and close submenus
-  hoverSubOn: (e) ->
-    ul = $("##{e.currentTarget.id}").children("ul")
-    ul.removeClass("submenu-hide").addClass "submenu-show"
-
-  hoverSubOff: (e) ->
-    ul = $("##{e.currentTarget.id}").children("ul")
-    ul.removeClass("submenu-show").addClass "submenu-hide"

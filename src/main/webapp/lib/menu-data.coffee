@@ -364,10 +364,10 @@ $a.layers_link_type_list = [
 $a.layers_menu = [
   {
     label: 'Show all nodes'
-    event: ((e) -> $a.broker.trigger('map:show_node_layer')) }
-  {
-    label: 'Hide all nodes'
-    event: ((e) -> $a.broker.trigger('map:hide_node_layer')) }
+    event: 'toggleVisible'
+    collection : '$a.broker' 
+    triggerShow: 'map:show_node_layer'
+    triggerHide: 'map:hide_node_layer' }
   {
     label: 'Nodes'
     className: 'dropdown submenu'
@@ -378,10 +378,10 @@ $a.layers_menu = [
   { className: 'divider' }
   {
     label: 'Show all links'
-    event: ((e) -> $a.linkList.trigger('links:show_link_layer')) }
-  {
-    label: 'Hide all links'
-    event: ((e) -> $a.linkList.trigger('links:hide_link_layer')) }
+    event: 'toggleVisible'
+    collection : '$a.linkList' 
+    triggerShow: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer" }
   {
     label: 'Links'
     className: 'dropdown submenu'
@@ -418,22 +418,21 @@ $a.layers_menu = [
     event: 'toggleMapTypeVisible'
     triggerShow: "map:show_satellite"
     triggerHide: "map:hide_satellite"
+    collection: '$a.broker'
     initiallyChecked: false}
 ]
 
 $a.mode_menu = [
   {
-    label: 'Network Edit Mode'
-    event: 'toggleVisible'
-    triggerShow: 'map:open_network_mode'
-    triggerHide: 'map:close_network_mode'
-    collection: '$a.broker'
+    label: 'View Only Mode'
+    triggerShow: 'map:open_view_mode'
     initiallyChecked: true}
   {
+    label: 'Network Edit Mode'
+    triggerShow: 'map:open_network_mode'
+    initiallyChecked: false}
+  {
     label: 'Scenario Edit Mode'
-    event: 'toggleVisible'
     triggerShow: 'map:open_scenario_mode'
-    triggerHide: 'map:close_scenario_mode'
-    collection: '$a.broker'
     initiallyChecked: false}
 ]

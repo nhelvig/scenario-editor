@@ -12,12 +12,12 @@ class window.beats.MapNetworkView extends Backbone.View
   ERROR_MSG = 'Directions API Error: Could not render link :'
   NETWORK_EDIT_MSG : 'Network Editting Mode'
   SCENARIO_EDIT_MSG : 'Scenario Editting Mode'
+  VIEW_ONLY_MSG : 'View Only Mode'
   
   broker_events: {
+    'map:open_view_mode' : 'viewModeConfig'
     'map:open_network_mode' : 'networkModeConfig'
     'map:open_scenario_mode' : 'scenarioModeConfig'
-    'map:close_network_mode' : 'closeNetworkModeConfig'
-    'map:close_scenario_mode' : 'closeScenarioModeConfig'
   }
   
   initialize: (@scenario) ->
@@ -41,18 +41,14 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.broker.trigger('app:main_tree')
     @
   
+  viewModeConfig: ->
+    $a.broker.trigger('app:display_message:info', @VIEW_ONLY_MSG)
+  
   networkModeConfig: ->
-    $a.broker.trigger('map:close_tree')
     $a.broker.trigger('app:display_message:info', @NETWORK_EDIT_MSG)
 
   scenarioModeConfig: ->
     $a.broker.trigger('app:display_message:info', @SCENARIO_EDIT_MSG)
-
-  closeNetworkModeConfig: ->
-    $a.broker.trigger('app:close_display_message')
-
-  closeScenarioModeConfig: ->
-    $a.broker.trigger('app:close_display_message')
 
   _setUpEvents: ->
     $a.broker.on('map:open_network_editor', @_editor, @)
@@ -81,7 +77,7 @@ class window.beats.MapNetworkView extends Backbone.View
     }
     @lmenu = new $a.LayersMenuView(attrs)
   
-    # This creates the layers menu bar
+  # This creates the layers menu bar
   _modeMenu: ->
     attrs = {
       className: 'dropdown-menu bottom-up'
@@ -89,7 +85,7 @@ class window.beats.MapNetworkView extends Backbone.View
       parentId: 'mh'
       menuItems: $a.mode_menu
     }
-    @mmenu = new $a.LayersMenuView(attrs)
+    @mmenu = new $a.ModeMenuView(attrs)
 
   #center the map based on network position
   _centerMap: () ->
