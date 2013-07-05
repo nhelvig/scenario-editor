@@ -356,7 +356,7 @@ $a.layers_link_type_list = [
     label: 'Streets'
     event: 'toggleVisible'
     triggerShow: "links:show_link_layer"
-    triggerHide: "links:show_link_layer"
+    triggerHide: "links:hide_link_layer"
     collection: '$a.linkList'
     param: 'streets'  }
 ]
