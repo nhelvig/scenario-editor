@@ -26,6 +26,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
     super @elem
     @_setSelectedType()
     @_checkDisableFields()
+    @_checkMode()
     @
 
   # if in browser we disable some fields from being editted

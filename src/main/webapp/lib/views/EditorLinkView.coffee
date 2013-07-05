@@ -54,6 +54,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     @_checkDisableTabs()
     @_checkDisableFields()
     @_setSelectedType()
+    @_checkMode()
     @
   
   #set selected type element

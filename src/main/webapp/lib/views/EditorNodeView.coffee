@@ -27,6 +27,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     @_setSelectedType()
     @_checkDisableTabs()
     @_disableBrowserFields() if (@models.length > 1)
+    @_checkMode()
     @
   
   # if tab doesn't have one of the profiles disable it

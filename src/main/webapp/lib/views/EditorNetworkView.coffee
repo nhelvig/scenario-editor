@@ -16,6 +16,7 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
   # call the super class to set up the dialog box and then set the select box
   render: ->
     super @elem
+    @_checkMode()
     @
 
   # creates a hash of values taken from the model for the html template

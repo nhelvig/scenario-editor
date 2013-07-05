@@ -22,7 +22,6 @@ class window.beats.EditorView extends Backbone.View
     @template = _.template($("##{@elem}-editor-dialog-template").html())
     @$el.html(@template(options.templateData))
     $a.Util.publishEvents($a.broker, @broker_events, @)
-    @_checkMode()
     
   # render the dialog box. The calling function has responsability for appending
   # it as well as calling el.tabs and el.diaload('open')
@@ -42,19 +41,19 @@ class window.beats.EditorView extends Backbone.View
      @$el.remove()
 
   # Once an editor is created we sets field to respond to the appropriate modes
-  checkMode: ->
-    @viewMode() if $a.VIEW_MODE
-    @scenarioMode() if $a.SCENARIO_MODE
-    @networkMode() if $a.NETWORK_MODE
+  _checkMode: ->
+    @viewMode() if $a.Mode.VIEW
+    @scenarioMode() if $a.Mode.SCENARIO
+    @networkMode() if $a.Mode.NETWORK
       
-  viewMode: () ->
-    $(":input").attr("disabled", true)
+  viewMode: ->
+    @$el.find(":input").attr("disabled", true)
 
-  scenarioMode: () ->
-    $(":input").attr("disabled", true)
+  scenarioMode: ->
+    @$el.find(":input").attr("disabled", true)
 
-  networkMode: () ->
-    $(":input").attr("disabled", false)
+  networkMode: ->
+    @$el.find(":input").attr("disabled", false)
   
   # Return the editor view DOM element
   getEditorElement: ->
