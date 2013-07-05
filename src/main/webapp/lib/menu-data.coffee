@@ -249,42 +249,49 @@ $a.layers_node_type_list = [
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_freeway"
     triggerHide: "map:nodes:hide_freeway"
+    collection : '$a.broker'
     nodeSubMenu: true }
   {
     label: 'Highway'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_highway"
     triggerHide: "map:nodes:hide_higway"
+    collection : '$a.broker'
     nodeSubMenu: true  }
   {
     label: 'Signalized Intersections'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_signalized_intersection"
     triggerHide: "map:nodes:hide_signalized_intersection"
+    collection : '$a.broker'
     nodeSubMenu: true  }
   {
     label: 'Simple'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_simple"
     triggerHide: "map:nodes:hide_simple"
+    collection : '$a.broker'
     nodeSubMenu: true }
   {
     label: 'Stop Intersections'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_stop_intersection"
     triggerHide: "map:nodes:hide_stop_intersection"
+    collection : '$a.broker'
     nodeSubMenu: true  }
   {
     label: 'Terminals'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_terminal"
     triggerHide: "map:nodes:hide_terminal"
+    collection : '$a.broker'
     nodeSubMenu: true  }
   {
     label: 'Other'
     event: 'toggleVisible'
     triggerShow: "map:nodes:show_other"
     triggerHide: "map:nodes:hide_other"
+    collection : '$a.broker'
     nodeSubMenu: true}
 ]
 
