@@ -15,9 +15,9 @@ class window.beats.MapNetworkView extends Backbone.View
   VIEW_ONLY_MSG : 'View Only Mode'
   
   broker_events: {
-    'map:open_view_mode' : 'viewModeConfig'
-    'map:open_network_mode' : 'networkModeConfig'
-    'map:open_scenario_mode' : 'scenarioModeConfig'
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
   }
   
   initialize: (@scenario) ->
@@ -41,13 +41,13 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.broker.trigger('app:main_tree')
     @
   
-  viewModeConfig: ->
+  viewMode: ->
     $a.broker.trigger('app:display_message:info', @VIEW_ONLY_MSG)
   
-  networkModeConfig: ->
+  networkMode: ->
     $a.broker.trigger('app:display_message:info', @NETWORK_EDIT_MSG)
 
-  scenarioModeConfig: ->
+  scenarioMode: ->
     $a.broker.trigger('app:display_message:info', @SCENARIO_EDIT_MSG)
 
   _setUpEvents: ->

@@ -26,7 +26,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
       @renderSplitRatioTable()
     @_setSelectedType()
     @_checkDisableTabs()
-    @_checkDisableFields()
+    @_disableBrowserFields() if (@models.length > 1)
     @
   
   # if tab doesn't have one of the profiles disable it
@@ -39,13 +39,12 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     disable = [3]
     @$el.tabs({ disabled: disable })
   
-  # if in browser we diable some fields from being editted
-  _checkDisableFields: ->
-    if (@models.length > 1)
-      $('#name').attr("disabled", true)
-      $('#lat').attr("disabled", true)
-      $('#lng').attr("disabled", true)
-      $('#elevation').attr("disabled", true)
+  # if in a node browser we disable some fields
+  _disableBrowserFields: ->
+    $('#name').attr("disabled", true)
+    $('#lat').attr("disabled", true)
+    $('#lng').attr("disabled", true)
+    $('#elevation').attr("disabled", true)
   
   #set selected type element
   _setSelectedType: ->

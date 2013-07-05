@@ -154,6 +154,11 @@ window.beats.Util =
     for key, value in events
       obj.off(key, context[value], context)  
 
+  setMode: (mode) ->
+    if mode is 'view' then $a.Mode.VIEW = true else $a.Mode.VIEW = false
+    if mode is 'network' then $a.Mode.NETWORK = true else $a.Mode.NETWORK = false
+    if mode is 'scenario' then $a.Mode.SCENARIO = true else $a.Mode.SCENARIO = false
+    
   #parallel lines
   parallelLines: (points, prj) ->
     pPts = [] #left side of center

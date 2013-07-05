@@ -161,6 +161,15 @@ class window.beats.AppView extends Backbone.View
     $a.broker.trigger('app:tree_clear')
     $a.broker.trigger('app:show_message:success', 'Cleared map')
 
+  viewMode: ->
+    $a.Util.setMode('view')
+
+  networkMode: ->
+    $a.Util.setMode('network')
+
+  scenarioMode: ->
+    $a.Util.setMode('scenario')
+  
   _messagePanel: ->
     @mpv = new $a.MessagePanelView()
 
@@ -200,7 +209,6 @@ class window.beats.AppView extends Backbone.View
       $a.map.setMapTypeId(google.maps.MapTypeId.SATELLITE)
     else
       $a.map.setMapTypeId(google.maps.MapTypeId.ROADMAP)
-    
   
   # Open network browser to choose newtork to load from DB
   _openNetworkBrowser: () ->
