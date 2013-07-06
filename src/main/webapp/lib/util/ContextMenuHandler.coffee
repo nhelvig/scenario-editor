@@ -6,7 +6,6 @@ class window.beats.ContextMenuHandler
   
   broker_events : {
     'map:open_network_mode' : 'networkMode'
-    'map:close_network_mode' : 'closeNetworkMode'
   }
   
   # set up the listener that allows for a menu to be created on 
@@ -22,9 +21,6 @@ class window.beats.ContextMenuHandler
   networkMode: ->
     @mode = $a.NETWORK_MODE
   
-  closeNetworkMode: ->
-    @mode = $a.BOTH
-    
   # sets up the options on the context menu and then populates the menu
   # latlng is used to place the menu
   _createMenu: (args, latLng) ->
@@ -41,7 +37,7 @@ class window.beats.ContextMenuHandler
   # context passed through args
   _populateMenu: (args) ->
     items = []
-    items.push item for item in args.items when item.mode is @mode
+    items.push i for i in args.items when i.mode is null or eval(i.mode) is true
     items = _.union(items, $a.node_selected) if $a.nodeList? and $a.nodeList.isOneSelected()
     items = _.union(items, $a.node_selected_node_clicked) if $a.nodeList? and $a.nodeList.isOneSelected() and args.model?
     items

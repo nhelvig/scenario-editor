@@ -48,7 +48,7 @@ class window.beats.AppView extends Backbone.View
     $a.broker.on("map:show_satellite", @_showSatelliteTiles, @)
     $a.broker.on("map:hide_satellite", @_showSatelliteTiles, @)
     @
-
+  
   # create the landing map. The latitude and longitude our arbitarily pointing
   # to the I80/Berkeley area
   _initializeMap: ->

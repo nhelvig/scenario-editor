@@ -9,7 +9,9 @@ describe = function(suiteName, method){
   $a.linkList = new $a.LinkListCollection($a.models.links(), network);
   return oldDescribe(suiteName, method);
 };
-      
+
+$a.Util.setMode('network');
+
 beforeEach(function() {
   window.beats.broker = _.clone(Backbone.Events);
 
