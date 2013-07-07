@@ -30,15 +30,16 @@ class window.beats.MapNetworkView extends Backbone.View
     @_modeMenu() 
     # handle network browser event
     @_setUpEvents()
+    $a.Util.publishEvents($a.broker, @broker_events, @)
 
     # This class creates the tree view of all the elements of the scenario
     $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
     @render()
-    $a.Util.publishEvents($a.broker, @broker_events, @)
   
   render: ->
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
+    $a.broker.trigger('map:open_view_mode')
     @
   
   viewMode: ->
