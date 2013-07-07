@@ -18,21 +18,29 @@ describe("AppView", function() {
   });
   
   describe("Rendering", function() {
-    beforeEach(function() {
-      this.view.render();
-      msg = "should instantiate the google map, File Upload View, Nav Bar, "
-      msg += "Context Menu, Layers Menu, and Message Panel"
-    });
+    var msg = "should instantiate the google map, File Upload View, Nav Bar, ";
+    msg += "Context Menu, Layers Menu, and Message Panel";
+    
     afterEach(function(){
       modelSetUp()
     });
     it(msg, function() {
-      expect($a.map).not.toBeNull();
-      expect(this.view.fuv).not.toBeNull();
-      expect(this.view.nbv).not.toBeNull();
-      expect($a.contextMenu).not.toBeNull();
-      expect(this.view.lmenu).not.toBeNull();
-      expect(this.view.mpv).not.toBeNull();
+     runs(function() {
+         flag = false;
+         this.view.render();
+         setTimeout(function() {flag = true;}, 1000);
+       });
+       waitsFor(function() {
+         return flag;
+       }, "The request should be done", 1500);
+       runs(function() { 
+         expect($a.map).not.toBeNull();
+         expect(this.view.fuv).not.toBeNull();
+         expect(this.view.nbv).not.toBeNull();
+         expect($a.contextMenu).not.toBeNull();
+         expect(this.view.lmenu).not.toBeNull();
+         expect(this.view.mpv).not.toBeNull();
+       });
     });
   });
 });
