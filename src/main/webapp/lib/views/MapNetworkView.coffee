@@ -14,6 +14,7 @@ class window.beats.MapNetworkView extends Backbone.View
   initialize: (@scenario) ->
     @networks =  @scenario.networks()
     @_initializeCollections()
+    # if there are networks in the scenario draw them
     _.each(@networks, (network) => @_drawNetwork(network))
     @_centerMap() if @networks[0].position()?
     @_drawScenarioItems()
@@ -72,8 +73,6 @@ class window.beats.MapNetworkView extends Backbone.View
     else
       $a.broker.trigger('app:show_message:info', "Error, No Network Display Position Set.")
 
-
-  
   _drawScenarioItems: () ->
     @_drawSensors()
     @_drawControllers()
@@ -84,7 +83,10 @@ class window.beats.MapNetworkView extends Backbone.View
   # instantiate the various elements of the network
   _drawNetwork: (network)->
     $a.map.setZoom($a.AppView.INITIAL_ZOOM_LEVEL)
-    @_drawLinks(network)
+    # if there are network links, draw them
+    if network.links()?
+      @_drawLinks(network)
+    # if there are network nodes, draw them
     if network.nodes()?
       @_drawNodes network.nodes(), network
   

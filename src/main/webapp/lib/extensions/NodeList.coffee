@@ -2,7 +2,7 @@ window.beats.NodeList::defaults =
   node: []
   
 window.beats.NodeList::initialize = ->
-  @set 'node', [] if node?
+  @set 'node', []
   
 # we need to remove the nodes that are deleted before saving to xml and then
 # put them back in the node list so the database can be updated correctly

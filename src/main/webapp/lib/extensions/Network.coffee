@@ -14,6 +14,9 @@ window.beats.Network::initialize = ->
 window.beats.Network::nodes = -> 
   @get('nodelist')?.get('node') || []
 
+window.beats.Network::links = ->
+  @get('linklist')?.get('link') || []
+
 window.beats.Network::name = ->
   @get('name')
 
