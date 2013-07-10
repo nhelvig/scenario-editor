@@ -74,19 +74,19 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   selectSelfandMyLinks: () ->
     @_triggerClearSelectEvents()
     @makeSelected()
-    $a.broker.trigger("app:tree_highlight:#{@model.get('link').cid}")
-    $a.broker.trigger("map:select_item:#{@model.get('link').cid}")
+    $a.broker.trigger("app:tree_highlight:#{@model.link_reference().cid}")
+    $a.broker.trigger("map:select_item:#{@model.link_reference().cid}")
    
   # This method is called from the context menu and de-selects itself and all
   # the sensor links.
   clearSelfandMyLinks: () ->
     @clearSelected()
-    $a.broker.trigger("map:clear_item:#{@model.get('link').cid}")
-    $a.broker.trigger("app:tree_remove_highlight:#{@model.get('link').cid}")
+    $a.broker.trigger("map:clear_item:#{@model.link_reference().cid}")
+    $a.broker.trigger("app:tree_remove_highlight:#{@model.link_reference().cid}")
  
   # This method swaps the icon for the selected icon
   makeSelected: () ->
-    $a.broker.trigger("app:tree_highlight:#{@model.get('link')?.cid}") if @model.get('link')?
+    $a.broker.trigger("app:tree_highlight:#{@model.link_reference()?.cid}") if @model.link_reference()?
     super MapSensorView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon

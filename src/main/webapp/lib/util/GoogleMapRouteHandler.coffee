@@ -56,10 +56,13 @@ class window.beats.GoogleMapRouteHandler
       link
   
   # check to see if the geometry exists before cycling to get route
+  # returns true if link geom and position are not set
   _geomDoesNotExist: (link) ->
      g = link.get('shape')?.get('text')
      pos = link.position()
-     return (pos is null or pos?.length is 0) and (g is undefined or g is null)
+     # if link position is null, undefined or has a zero length and
+     # the link shape string is null or undefined return true
+     return (pos is undefined or pos is null or pos?.length is 0) and (g is undefined or g is null)
   
   # _directionsRequest makes the actual route request to google. if we 
   # recieve any error, this method will wait 3 seconds and then 

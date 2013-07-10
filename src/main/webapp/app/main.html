@@ -14,8 +14,8 @@
   </head>
   <body id="body">
     <div class="btn-group">
-      <button id="lh" class="btn dropdown-toggle" data-toggle="dropdown" href="#l_list">Layers</button>
-      <button id="mh" class="btn">Mode</button>
+      <li id="lh" class="btn dropdown-toggle" data-toggle="dropdown" href="#l_list">Layers</li>
+      <li id="mh" class="btn">Mode</li>
     </div>
     <script type="text/template" id="demand-visualizer-window-template">
       <div id="demand-visualizer-{{elemId}}">
@@ -112,7 +112,7 @@
               <option value="13" name="Left Turn Pocket">Left Turn Pocket</option>
               <option value="14" name="Right Turn Pocket">Right Turn Pocket</option>
             </select><br/>
-            <label for="sensor-links">Links</label>
+            <label for="sensor-links">Link</label>
             <input type="text" name="sensor-links" id="sensor_links" class="text ui-widget-content ui-corner-all" value="{{links}}" readonly/>
           </fieldset>
         </form>

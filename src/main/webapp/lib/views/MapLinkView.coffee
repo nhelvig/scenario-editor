@@ -82,7 +82,7 @@ class window.beats.MapLinkView extends Backbone.View
   # publish polyline google events
   _publishGoogleEvents: ->
     gme = google.maps.event
-    @dblclckHandler = gme.addListener(@link, 'dblclick', (evt) => 
+    @dblclckHandler = gme.addListener(@link, 'dblclick', (evt) =>
       @model.set_editor_show(true)
       evt.stop()
     )
@@ -99,12 +99,14 @@ class window.beats.MapLinkView extends Backbone.View
   
   # this is the rollover window for the link
   _createInfoWindow: ->
-    google.maps.event.addListener(@link, 'mouseover', (e) =>
+    gme = google.maps.event
+    @mOHandler = gme.addListener(@link, 'mouseover', (e) =>
       if(not @_isInfoWindowOpen())
         @iWindow.setContent(@getLinkRollOverInfo())
-        @iWindow.setPosition(e.latLng)
-        trackMouseoverTimeout = setTimeout((() => @iWindow.open($a.map)), 1000)
-        google.maps.event.addListenerOnce(@link, 'mouseout', (e) =>
+        l = e.latLng
+        @iWindow.setPosition(new google.maps.LatLng(l.lat(),l.lng()+0.0001))
+        trackMouseoverTimeout = setTimeout(( => @iWindow.open($a.map)), 1000)
+        gme.addListenerOnce(@link, 'mouseout', (e) =>
           window.clearTimeout(trackMouseoverTimeout);
           @iWindow.close()
         );

@@ -111,23 +111,13 @@ class window.beats.AppView extends Backbone.View
   
   newScenario: ->
     $a.broker.trigger('map:clear_map')
+    $a.broker.trigger('app:tree_clear')
     $a.map.setZoom(AppView.INITIAL_ZOOM_LEVEL)
     $a.models = new $a.Scenario()
-    $a.models.networkset().set('network',[new $a.Network()])
     network = $a.models.network()
     # set default position to be at berkeley
     $a.models.network().set_position($a.DefaultPosition.Lat, $a.DefaultPosition.Long)
     $a.mapNetworkView = new $a.MapNetworkView $a.models
-    $a.nodeList = new $a.NodeListCollection([])
-    $a.nodeListView = new $a.NodeListView($a.nodeList, network)
-    $a.linkList = new $a.LinkListCollection([])
-    $a.linkListView = new $a.LinkListView($a.linkList, network)
-    $a.sensorList = new $a.SensorListCollection([])
-    $a.sensorListView = new $a.SensorListView($a.sensorList, network)
-    $a.controllerSet = new $a.ControllerSetCollection([])
-    $a.controllerSetView = new $a.ControllerSetView($a.controllerSet, network)
-    $a.eventSet = new $a.EventSetCollection([])
-    $a.eventSetView = new $a.EventSetView($a.eventSet, network)
     $a.settings = new $a.Settings()
 
   # Creates Log in screen

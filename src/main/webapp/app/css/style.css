@@ -118,6 +118,10 @@ hr {
   height: auto;
   display: block;
 }
+
+.btn-group li{
+  list-style-type: none;
+}
 /* allows the checkmark to be seen through the hover */
 .dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
   opacity: 0.8;

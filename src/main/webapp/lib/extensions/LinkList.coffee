@@ -2,7 +2,7 @@ window.beats.LinkList::defaults =
   link: []
   
 window.beats.LinkList::initialize = ->
-  @set 'link', [] if link?
+  @set 'link', []
 
 # we need to remove the links that are deleted before saving to xml and then
 # put them in the link list so the database can be updated correctly
