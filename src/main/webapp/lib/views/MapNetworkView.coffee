@@ -12,12 +12,14 @@ class window.beats.MapNetworkView extends Backbone.View
   ERROR_MSG = 'Directions API Error: Could not render link :'
   NETWORK_EDIT_MSG : 'Network Editting Mode'
   SCENARIO_EDIT_MSG : 'Scenario Editting Mode'
+  ROUTE_EDIT_MSG : 'Route Editting Mode'
   VIEW_ONLY_MSG : 'View Only Mode'
   
   broker_events: {
     'map:open_view_mode' : 'viewMode'
     'map:open_network_mode' : 'networkMode'
     'map:open_scenario_mode' : 'scenarioMode'
+    'map:open_route_mode' : 'routeMode'
   }
   
   initialize: (@scenario) ->
@@ -50,6 +52,9 @@ class window.beats.MapNetworkView extends Backbone.View
 
   scenarioMode: ->
     $a.broker.trigger('app:display_message:info', @SCENARIO_EDIT_MSG)
+  
+  routeMode: ->
+    $a.broker.trigger('app:display_message:info', @ROUTE_EDIT_MSG)
 
   _setUpEvents: ->
     $a.broker.on('map:open_network_editor', @_editor, @)

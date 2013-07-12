@@ -13,6 +13,7 @@ class window.beats.AppView extends Backbone.View
     'map:open_view_mode' : 'viewMode'
     'map:open_network_mode' : 'networkMode'
     'map:open_scenario_mode' : 'scenarioMode'
+    'map:open_route_mode' : 'routeMode'
     'map:upload_complete' :  '_displayMap'
     'map:clear_map' : 'clearMap'
     'app:new_scenario' : 'newScenario'
@@ -176,6 +177,9 @@ class window.beats.AppView extends Backbone.View
 
   scenarioMode: ->
     $a.Util.setMode('scenario')
+    
+  routeMode: ->
+    $a.Util.setMode('route')
   
   _messagePanel: ->
     @mpv = new $a.MessagePanelView()

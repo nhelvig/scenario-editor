@@ -87,7 +87,7 @@ input[disabled], select[disabled], textarea[disabled] {
   cursor:pointer; 
 }
 
-.context_menu_item_disable a{
+.menu_item_disable a{
   color: #111;
   text-decoration: none;
 }

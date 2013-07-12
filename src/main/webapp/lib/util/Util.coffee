@@ -158,6 +158,7 @@ window.beats.Util =
     if mode is 'view' then $a.Mode.VIEW = true else $a.Mode.VIEW = false
     if mode is 'network' then $a.Mode.NETWORK = true else $a.Mode.NETWORK = false
     if mode is 'scenario' then $a.Mode.SCENARIO = true else $a.Mode.SCENARIO = false
+    if mode is 'route' then $a.Mode.ROUTE = true else $a.Mode.ROUTE = false
     
   #parallel lines
   parallelLines: (points, prj) ->
