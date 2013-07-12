@@ -86,6 +86,11 @@ input[disabled], select[disabled], textarea[disabled] {
   white-space: nowrap;
   cursor:pointer; 
 }
+
+.context_menu_item_disable a{
+  color: #111;
+  text-decoration: none;
+}
 .context_menu_separator {
   height: 1px;
   margin: 5px 1px;

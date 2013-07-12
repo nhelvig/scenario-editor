@@ -2,12 +2,7 @@
 # system
 class window.beats.ContextMenuHandler
   $a = window.beats
-  mode: $a.SCENARIO_MODE
-  
-  broker_events : {
-    'map:open_network_mode' : 'networkMode'
-  }
-  
+
   # set up the listener that allows for a menu to be created on 
   # right-click
   constructor: (args) ->
@@ -16,10 +11,6 @@ class window.beats.ContextMenuHandler
                       'rightclick',
                       (mouseEvent) => @_createMenu(args, mouseEvent.latLng)
                     )
-    $a.Util.publishEvents($a.broker, @broker_events, @)
-  
-  networkMode: ->
-    @mode = $a.NETWORK_MODE
   
   # sets up the options on the context menu and then populates the menu
   # latlng is used to place the menu
@@ -38,6 +29,7 @@ class window.beats.ContextMenuHandler
   _populateMenu: (args) ->
     items = []
     items.push i for i in args.items when i.mode is null or eval(i.mode) is true
+    items.push $a.context_menu_item_disabled if(items.length is 0)
     items = _.union(items, $a.node_selected) if $a.nodeList? and $a.nodeList.isOneSelected()
     items = _.union(items, $a.node_selected_node_clicked) if $a.nodeList? and $a.nodeList.isOneSelected() and args.model?
     items

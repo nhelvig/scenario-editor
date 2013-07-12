@@ -51,6 +51,11 @@ $a.nav_bar_menu_items =
     Contact: noconfig
     Legal: noconfig
 
+$a.context_menu_item_disabled = {
+  className: 'context_menu_item context_menu_item_disable', 
+  label: 'No Events Available'
+}
+
 context_menu_item = (label, event, mode) ->
   className: 'context_menu_item',
   label: label,
