@@ -1,7 +1,7 @@
 describe("ContextMenuHandler", function() {
   $a = window.beats;
   
-  beforeEach(function() {
+    beforeEach(function() {
       googleMap();
       jasmine.getFixtures().load("context.menu.view.fixture.html");
       spyOn($a.ContextMenuView.prototype, 'show').andCallThrough();
@@ -10,6 +10,7 @@ describe("ContextMenuHandler", function() {
                                               element: $a.map,
                                           });
     });
+    
     describe("Instantiation", function() {
       it("should create the handler", function() {
         expect(this.cmh).not.toBeNull();

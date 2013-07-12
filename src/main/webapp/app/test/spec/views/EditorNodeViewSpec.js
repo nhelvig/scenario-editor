@@ -71,12 +71,13 @@ describe("EditorNodeView", function() {
 
   describe("Events", function() {
      beforeEach(function() {
+       $a.Util.setMode("network");
        this.view.render();
        this.point = this.view.models[0].get('position').get('point')[0]
      });
  
      describe("When name and type blur handler fired", function() {
-       it("name is saved", function() {     
+       it("name is saved", function() {
          $('#name').val("Name Changed");
          $("#name").blur();
          expect(this.view.models[0].name()).toEqual("Name Changed");
