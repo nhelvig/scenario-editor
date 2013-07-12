@@ -64,24 +64,20 @@ class window.beats.LayersMenuViewItem extends Backbone.View
   
   # this toggles the state of a submenu item (checked or unchecked)
   # if the Show All/Hide All event occured on the Layers Menu
-  toggleState: ->
-    if @isShowing
-      @isShowing = false
-      @check(false)
-    else
-      @isShowing = true
-      @check(true)
-  
+  toggleState: (flag) ->
+    @isShowing = not flag
+    @check(not flag)
+    
   # This function is called on the click if we are toggling the checkmark to
   # show/hide. Not every item operates like this. You can see in
   # menu-data.coffee which items call this method and which do not
   toggleVisible: (e) ->
-    @collection.trigger(@values.toggleSubs) if(@values.toggleSubs?)
-    if @isShowing
+    @collection.trigger(@values.toggleSubs, @isShowing) if(@values.toggleSubs?)
+    @toggleState(@isShowing)
+    if not @isShowing
       @collection.trigger(@triggerHide, @event_arg) if @collection?
     else
       @collection.trigger(@triggerShow, @event_arg) if @collection?
-    @toggleState()
     e.stopPropagation()
   
   # This function is called on the click if we are toggling the checkmark to
