@@ -4,6 +4,12 @@ class window.beats.MapMarkerView extends Backbone.View
   @IMAGE_PATH: '/scenario-editor-0.3-SNAPSHOT/app/images/'
   $a = window.beats
 
+  broker_events : {
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
+  }
+  
   initialize: (@model) ->
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
@@ -18,6 +24,7 @@ class window.beats.MapMarkerView extends Backbone.View
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on('map:init', @render, @)
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
 
   render: ->
     @marker.setMap($a.map)
@@ -89,6 +96,16 @@ class window.beats.MapMarkerView extends Backbone.View
     @marker.setTitle @_getTitle()
     @model.updatePosition(@latLng)
  
+   # set up the response for each mode
+  viewMode: ->
+    @marker.setDraggable(false)
+
+  networkMode: ->
+    @marker.setDraggable(false)
+
+  scenarioMode: ->
+    @marker.setDraggable(true)
+  
   ################# The following handles the show and hide of node layers
   hideMarker: ->
     @marker.setMap(null)

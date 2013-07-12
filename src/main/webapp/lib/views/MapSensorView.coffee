@@ -6,6 +6,12 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   @SELECTED_ICON: 'camera-selected'
   $a = window.beats
   
+  broker_events : {
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
+  }
+  
   initialize: (model) ->
     super model
     @_contextMenu()
@@ -50,7 +56,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # context menu
   _contextMenu: () ->
     super 'sensor', $a.sensor_context_menu
-
+    
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->

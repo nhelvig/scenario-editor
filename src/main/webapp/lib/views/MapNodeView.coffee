@@ -8,7 +8,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   @SELECTED_TERMINAL_ICON: 'red-square'
   @TERMINAL_TYPE: 'Terminal'
   $a = window.beats
-
+  
   initialize: (model, @network) ->
     super model
     @model.on('change:selected', @toggleSelected, @)
@@ -25,7 +25,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.on("map:nodes:hide_#{@model.type_name().toLowerCase()}", @hideMarker, @)
     $a.broker.on("map:select_network:#{@network.cid}", @makeSelected, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-
 
   getIcon: ->
     super @_getTypeIcon false
@@ -65,6 +64,13 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.off("map:remove_node:#{@model.cid}")
     super
 
+  # set up the response for each mode
+  networkMode: ->
+    @marker.setDraggable(true)
+
+  scenarioMode: ->
+    @marker.setDraggable(false)
+    
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately
