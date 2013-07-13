@@ -37,13 +37,14 @@ $a.collections = ['LinkListCollection', 'LinkListView',
 $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
-  'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView', 
-  'EditorNetworkView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem', 'LogInView'
-  'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView', 'MapSensorView', 
-  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView', 'MessageWindowView'
-  'NetworkBrowserView', 'ScenarioBrowserView', 'TreeView', 'TreeParentItemView', 'TreeChildItemView',
-  'TreeChildItemLinkView', 'TreeChildItemNetworkView', 'TreeChildItemNodeView',
-  'NavBarView','NavParentItemView','NavChildItemView'
+  'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView',
+  'EditorNetworkView', 'FileUploadView', 'LayersMenuView', 'LayersMenuViewItem',
+  'LogInView', 'MapLinkView', 'MapMarkerView', 'MapNetworkView', 'MapNodeView',
+  'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView',
+  'MapSensorView', 'MessageWindowView', 'ModeMenuView', 'ModeMenuViewItem',
+  'NetworkBrowserView', 'ScenarioBrowserView', 'TreeView', 'TreeParentItemView',
+  'TreeChildItemView', 'TreeChildItemLinkView', 'TreeChildItemNetworkView',
+  'TreeChildItemNodeView', 'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
 $a.utils = ['ArrayText',  'ContextMenuHandler', 'Constants', 'Environment',

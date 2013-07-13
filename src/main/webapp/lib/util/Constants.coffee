@@ -16,3 +16,10 @@ window.beats.DefaultPosition = {
   Lat: 37.864216,
   Long: -122.279506
 }
+
+window.beats.Mode = {
+  VIEW: true
+  NETWORK: false
+  SCENARIO: false
+}
+

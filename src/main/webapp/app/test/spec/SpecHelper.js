@@ -9,7 +9,9 @@ describe = function(suiteName, method){
   $a.linkList = new $a.LinkListCollection($a.models.links(), network);
   return oldDescribe(suiteName, method);
 };
-      
+
+$a.Util.setMode('network');
+
 beforeEach(function() {
   window.beats.broker = _.clone(Backbone.Events);
 
@@ -92,7 +94,7 @@ beforeEach(function() {
     link.set('demand', dp);
     
     link.set('link_type', new window.beats.Link_type)
-    link.get("link_type").set_name('electric_toll')
+    link.get("link_type").set_name('Freeway')
     link.set_link_name('Link ' + id);
     
     if(!node1.has('outputs')) {

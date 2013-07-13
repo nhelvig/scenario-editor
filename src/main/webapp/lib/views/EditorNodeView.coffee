@@ -27,6 +27,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     @_setSelectedType()
     @_checkDisableTabs()
     @_checkDisableFields()
+    @_checkMode()
     @
   
   # if tab doesn't have one of the profiles disable it
@@ -34,12 +35,12 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     # disabled until we implement
     $('body').find('#edit-signal').attr("disabled", true)
     $('body').find('#edit-signal').addClass('ui-state-disabled')
-
+    
     # For now disable the tools tab and the splitratio, if none exist
     disable = [3]
     @$el.tabs({ disabled: disable })
   
-  # if in browser we diable some fields from being editted
+  # if in a node browser we disable some fields
   _checkDisableFields: ->
     if (@models.length > 1)
       $('#name').attr("disabled", true)
@@ -47,6 +48,23 @@ class window.beats.EditorNodeView extends window.beats.EditorView
       $('#lng').attr("disabled", true)
       $('#elevation').attr("disabled", true)
   
+  # set up the mode correctly
+  scenarioMode: ->
+    super
+    @$el.find("#tabs-node-split-ratio :input").attr("disabled", false)
+
+  networkMode: ->
+    super
+    @$el.find("#tabs-node :input").attr("disabled", false)
+    @$el.find("#tabs-node-geo :input").attr("disabled", false)
+    @_checkDisableFields()
+  
+  # Once an editor is created we sets field to respond to the appropriate modes
+  _checkMode: ->
+    @viewMode() if $a.Mode.VIEW
+    @scenarioMode() if $a.Mode.SCENARIO
+    @networkMode() if $a.Mode.NETWORK
+    
   #set selected type element
   _setSelectedType: ->
     type = @models[0].type_id();

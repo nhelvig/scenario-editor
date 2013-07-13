@@ -1,7 +1,7 @@
 describe("ContextMenuHandler", function() {
   $a = window.beats;
   
-  beforeEach(function() {
+    beforeEach(function() {
       googleMap();
       jasmine.getFixtures().load("context.menu.view.fixture.html");
       spyOn($a.ContextMenuView.prototype, 'show').andCallThrough();
@@ -10,6 +10,7 @@ describe("ContextMenuHandler", function() {
                                               element: $a.map,
                                           });
     });
+    
     describe("Instantiation", function() {
       it("should create the handler", function() {
         expect(this.cmh).not.toBeNull();
@@ -27,18 +28,59 @@ describe("ContextMenuHandler", function() {
        latLng = new google.maps.LatLng(370, -122)
        opt = {class: 'context_menu', id: "main-context-menu"}       
      });
-     it("should create the menu correctly", function(){
+     it("should create the main context menu correctly in VIEW mode", function(){
        runs(function() {
          flag = false;
+         $a.Util.setMode("view");
          this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
-         setTimeout(function() {flag = true;}, 500);
+         setTimeout(function() {flag = true;}, 1000);
        });
        waitsFor(function() {
          return flag;
-       }, "The call back to create menu items should be done", 750);
+       }, "The call back to create menu items should be done", 1500);
        runs(function() { 
-        expect($a.contextMenu).not.toBeNull();
-        var expectedLength = $a.main_context_menu.length;
+        expect($a.contextMenu).not.toBeNull();  
+        var expectedLength = _.filter($a.main_context_menu, function(item){
+            return item.mode === null;
+          }).length;
+        expect($a.contextMenu.options.menuItems.length).toEqual(expectedLength);
+        expect($a.ContextMenuView.prototype.show).toHaveBeenCalled();       
+      });
+     });
+     it("should create the main context menu correctly in NETWORK mode", function(){
+       runs(function() {
+         flag = false;
+         $a.Util.setMode("network");
+         this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
+         setTimeout(function() {flag = true;}, 1000);
+       });
+       waitsFor(function() {
+         return flag;
+       }, "The call back to create menu items should be done", 1500);
+       runs(function() { 
+        expect($a.contextMenu).not.toBeNull();  
+        var expectedLength = _.filter($a.main_context_menu, function(item){
+            return item.mode === "$a.Mode.NETWORK" || item.mode === null;
+          }).length;
+        expect($a.contextMenu.options.menuItems.length).toEqual(expectedLength);
+        expect($a.ContextMenuView.prototype.show).toHaveBeenCalled();       
+      });
+     });
+     it("should create the main context menu correctly in SCENARIO mode", function(){
+       runs(function() {
+         flag = false;
+         $a.Util.setMode("scenario");
+         this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
+         setTimeout(function() {flag = true;}, 1000);
+       });
+       waitsFor(function() {
+         return flag;
+       }, "The call back to create menu items should be done", 1500);
+       runs(function() { 
+        expect($a.contextMenu).not.toBeNull();  
+        var expectedLength = _.filter($a.main_context_menu, function(item){
+            return item.mode === "$a.Mode.SCENARIO" || item.mode === null;
+          }).length;
         expect($a.contextMenu.options.menuItems.length).toEqual(expectedLength);
         expect($a.ContextMenuView.prototype.show).toHaveBeenCalled();       
       });
@@ -51,13 +93,11 @@ describe("ContextMenuHandler", function() {
          expect(this.items).not.toBeNull();
        });
        it("No Models: should return menu items with just standard", function(){
+         $a.Util.setMode("view");
          this.items = this.cmh._populateMenu({items:$a.main_context_menu});
-         var expectedLength =  $a.main_context_menu.length;
-         expect(this.items.length).toEqual(expectedLength);
-       });
-       it("Models but no node selected: return menu with just standard including add node", function(){
-         this.items = this.cmh._populateMenu({items:$a.main_context_menu});
-         var expectedLength = $a.main_context_menu.length;
+         var expectedLength = _.filter($a.main_context_menu, function(item){
+            return item.mode === null;
+         }).length;
          expect(this.items.length).toEqual(expectedLength);
        });
        it("Models node selected: return menu with standard and node selected actions", function(){
@@ -65,8 +105,12 @@ describe("ContextMenuHandler", function() {
          list = scen.scenario.nodes();  
          $a.nodeList = new $a.NodeListCollection(list);
          $a.nodeList.models[0].set('selected',true);
+         $a.Util.setMode("view");
          this.items = this.cmh._populateMenu({items:$a.main_context_menu});
-         var expectedLength = $a.main_context_menu.length + $a.node_selected.length
+         var expectedLength = _.filter($a.main_context_menu, function(item){
+            return item.mode === null;
+         }).length;
+         expectedLength += $a.node_selected.length
          expect(this.items.length).toEqual(expectedLength);
        });
      });

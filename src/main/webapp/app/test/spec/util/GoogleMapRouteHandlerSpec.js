@@ -123,7 +123,9 @@ describe("GoogleMapRouteHandler", function() {
        });
      });
      
-     it('directionsRequestOneLink: should have link position set', function() {
+     var msg = 'directionsRequestOneLink: should have link position set ';
+     msg += 'and no duplicate points';
+     it(msg , function() {
        runs(function() {
          flag = false;
          gmr._directionsRequestOneLink(l);
@@ -136,26 +138,10 @@ describe("GoogleMapRouteHandler", function() {
          expect(l).not.toBeNull();
          expect(l.position()).not.toBeNull();
 
-         // Set back geom and position
-         l.set_geometry(geometry);
-         l.set_position(position);
-       });
-     });
-
-     it('getPoints: should not contain duplicate points', function() {
-       runs(function() {
-         flag = false;
-         gmr._directionsRequestOneLink(l);
-         setTimeout(function() {flag = true;}, 1000);
-       });
-       waitsFor(function() {
-         return flag;
-       }, "The request should be done", 1500);
-       runs(function() {
          // Checked the route request defined in beforeEach and it returns 3 duplicate lat,longs
          // but 50 unique lat and longs - so ensure only 50 are kept
          expect(l.position().length).toBe(50);
-
+         
          // Set back geom and position
          l.set_geometry(geometry);
          l.set_position(position);

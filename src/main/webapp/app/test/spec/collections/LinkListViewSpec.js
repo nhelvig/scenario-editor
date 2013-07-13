@@ -35,21 +35,20 @@ describe("LinkListView", function() {
             });
         
             it("should be watching resetPath", function() {
-               link = this.lColl.models[0];
-               latLng = new google.maps.LatLng(37.8579, -122.2995);
-               runs(function() {
-                   flag = false;
-                   link.begin_node().updatePosition(latLng);
-                   setTimeout(function() {flag = true;}, 1000);
-               });
-               waitsFor(function() {
-                 return flag;
-               }, "The request should be done", 1500);
-               runs(function() { 
-                 expect($a.LinkListView.prototype.resetPath).toHaveBeenCalled();
-                 this.lColl.removeLink(link.cid);
-               });
-            });   
+                link = this.lColl.models[0];
+                latLng = new google.maps.LatLng(37.8579, -122.2995);
+                runs(function() {
+                    flag = false;
+                    link.begin_node().updatePosition(latLng);
+                    setTimeout(function() {flag = true;}, 1000);
+                });
+                waitsFor(function() {
+                  return flag;
+                }, "The request should be done", 1500);
+                runs(function() { 
+                  expect($a.LinkListView.prototype.resetPath).toHaveBeenCalled();
+                });
+             });   
            it("should be watching createAndDrawLink", function() {
              $a.broker.trigger('map:draw_link', scen.link1);
              expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();

@@ -13,16 +13,8 @@ class window.beats.NavBarView extends Backbone.View
         text: key
         textLower: keyLower
         attach: ".#{@className}"
-
+        items: values
       new $a.NavParentItemView(attrs)
-      for subkey, event of values
-        attrs =
-          text: subkey
-          textLower: $a.Util.toLowerCaseAndDashed(subkey)
-          event: event
-          attach: keyLower
-
-        new $a.NavChildItemView(attrs)
 
   render: ->
     $(@parent).append(@el)
