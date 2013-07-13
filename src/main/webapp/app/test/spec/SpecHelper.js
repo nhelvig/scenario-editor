@@ -94,7 +94,7 @@ beforeEach(function() {
     link.set('demand', dp);
     
     link.set('link_type', new window.beats.Link_type)
-    link.get("link_type").set_name('electric_toll')
+    link.get("link_type").set_name('Freeway')
     link.set_link_name('Link ' + id);
     
     if(!node1.has('outputs')) {

@@ -13,17 +13,22 @@
           <label for="link-name">Link Name</label>
           <input type="text" name="link-name" id="link_name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
           <label for="type">Type</label>
-          <select id="link_type" name ="type" class="ui-widget-content ui-corner-all">
-              <option value="1" name="electric_toll">Electric Toll Coll. Lane</option>
-              <option value="2" name="freeway">Freeway Mainline</option>
-              <option value="3" name="HOT">HOT lane</option>
-              <option value="4" name="HOV">HOV lane</option>
-              <option value="5" name="heavy_vehicle">Heavy Vehicle Lane</option>
-              <option value="6" name="intersection_approach">Intersection Approach</option>
-              <option value="7" name="freeway_connector">Interconnect</option>
-              <option value="8" name="offramp">Off-ramp</option>
-              <option value="9" name="onramp">On-ramp</option>
-              <option value="10" name="street">Street</option>
+          <select id="link_type" name ="type" class="ui-widget-content-select ui-corner-all">
+            <option value="0" name="">--------------</option>
+            <option value="1" name="Freeway" selected="selected">Freeway</option>
+            <option value="2" name="Highway">Highway</option>
+            <option value="3" name="On-Ramp">On-Ramp</option>
+            <option value="4" name="Off-Ramp">Off-Ramp</option>
+            <option value="5" name="Interconnect">Interconnect</option>
+            <option value="6" name="HOV">HOV</option>
+            <option value="7" name="HOT">HOT</option>
+            <option value="8" name="Toll Lane">Toll Lane</option>
+            <option value="9" name="Heavy Vehicle Lane">Heavy Vehicle Lane</option>
+            <option value="10" name="Bus Lane">Bus Lane</option>
+            <option value="11" name="Street">Street</option>
+            <option value="12" name="Intersection Approach">Intersection Approach</option>
+            <option value="13" name="Left Turn Pocket">Left Turn Pocket</option>
+            <option value="14" name="Right Turn Pocket">Right Turn Pocket</option>
           </select><br/>
           <input type="checkbox" name="in_sync" id="in_sync" class="text ui-widget-content ui-corner-all" {{insync}} />
           <span>In Sync</span>
@@ -37,7 +42,7 @@
           <input type="text" name="num-lanes" id="lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
           <label for="lane-offset">Lane Offset</label>
           <input type="text" name="lane-offset" id="lane_offset" class="text ui-widget-content ui-corner-all" value="{{laneOffset}}"/>
-          <label for="length">Length (miles)</label>
+          <label for="length">Length </label>
           <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
         </fieldset>
       </form>
@@ -69,7 +74,7 @@
     <div id="tabs-link-demand">
       <form>
         <fieldset>
-          <label for="knob">Coefficient</label>
+          <label for="knob">Coeffecient</label>
           <input type="text" name="knob" id="knob" class="text ui-widget-content ui-corner-all" value="{{knob}}"/><span> vphpl</span>
           
           <label>Start Time</label>
@@ -120,9 +125,10 @@
           
           <label for="link-capacity-sample-second" class="time">:: s</label>
           <input type="number" id="link_capacity_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpSampleTime['s']}}" />
-
+          
           <label for="capacity-profile">Capacity Profile (vph)</label>
           <textarea name="capacity-profile" id="cp_text" rows="10" class="text ui-widget-content ui-corner-all">{{capacityProfile}}</textarea>
+
         </fieldset>
       </form>
     </div>
@@ -131,9 +137,7 @@
         <fieldset>
           <label>Sub-divide this link every:</label>
           <input type="text" name="subdivide" id="subdivide" class="text ui-widget-content ui-corner-all" value=""/>
-          <span> miles OR </span>
-          <input type="checkbox" name="intersections" id="intersections" class="text ui-widget-content ui-corner-all" />
-          <span>at intersections</span>
+          <span> </span>
           <button id="do-subdivide" class="text ui-widget-content ui-corner-all" >Sub-divide Now</button>
           <hr/>
           <label for="split">Split this link into:</label>

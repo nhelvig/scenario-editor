@@ -72,18 +72,17 @@ describe("EditorNodeView", function() {
   describe("Events", function() {
      beforeEach(function() {
        this.view.render();
+       $(this.view.el).find(":input").prop("disabled", false)
        this.point = this.view.models[0].get('position').get('point')[0]
      });
  
      describe("When name and type blur handler fired", function() {
        it("name is saved", function() {
-         $a.broker.trigger('map:open_network_mode');
          $('#name').val("Name Changed");
          $("#name").blur();
          expect(this.view.models[0].name()).toEqual("Name Changed");
        });
        it("type is saved", function() {
-         $a.broker.trigger('map:open_network_mode');
          selected = $($(this.view.el)).find('#type option:selected')
          $(selected).attr('selected', false);
          options = $(this.view.el).find("select option");
@@ -114,7 +113,6 @@ describe("EditorNodeView", function() {
  
      describe("When the lock click handler fired", function() {
        it("lock is saved", function() {
-         $a.broker.trigger('map:open_network_mode');
          $('#lock').attr('checked', 'checked'); 
          $('#lock').click();
          expect(this.view.models[0].get('lock')).toBeTruthy();

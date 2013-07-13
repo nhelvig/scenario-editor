@@ -250,16 +250,17 @@ describe("EditorLinkView", function() {
   
    describe("Events", function() {  
      beforeEach(function() {
-    
-         this.view.render();
+        this.view.render();
+        $(this.view.el).find(":input").prop("disabled", false)
+
     });
 
       describe("When fields handler fired", function() {
-             it("Link Tab: 'Name' field calls save", function() { 
+             it("Link Tab: 'Name' field calls save", function() {
                    $('#link_name').blur();
                    expect($a.EditorLinkView.prototype.saveName).toHaveBeenCalled();
                  });
-             it("Link Tab: 'Type' field calls save", function() { 
+             it("Link Tab: 'Type' field calls save", function() {
                $('#link_type').blur();
                expect($a.EditorLinkView.prototype.saveType).toHaveBeenCalled();
              });
@@ -277,11 +278,11 @@ describe("EditorLinkView", function() {
             //     $('#length').blur();
             //     expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
             // });
-             it("FD Tab: 'Free Flow Speed' field calls saveFD", function() { 
+             it("FD Tab: 'Free Flow Speed' field calls saveFD", function() {
                    $('#free_flow_speed').blur();
                    expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
                  });
-                 it("FD Tab: 'Congestion Speed' field calls saveFD", function() { 
+                 it("FD Tab: 'Congestion Speed' field calls saveFD", function() {
                    $('#congestion_speed').blur();
                    expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
                  });
@@ -293,11 +294,11 @@ describe("EditorLinkView", function() {
                    $('#capacity').blur();
                    expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
                  });
-                 it("FD Tab: 'Capacity Drop' field calls saveFD", function() { 
+                 it("FD Tab: 'Capacity Drop' field calls saveFD", function() {
                    $('#capacity_drop').blur();
                    expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
                  });
-                 it("FD Tab: 'Standard Deviation Capacity' field calls saveFD", function() { 
+                 it("FD Tab: 'Standard Deviation Capacity' field calls saveFD", function() {
                    $('#std_dev_capacity').blur();
                    expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
                  });
@@ -309,7 +310,7 @@ describe("EditorLinkView", function() {
                    $('#std_dev_free_flow_speed').blur();
                    expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
                  });
-                 it("Demand Tab: 'Knob' field calls saveDP", function() { 
+                 it("Demand Tab: 'Knob' field calls saveDP", function() {
                    $('#knob').blur();
                    expect($a.EditorLinkView.prototype.saveDP).toHaveBeenCalled();
                  });
@@ -318,11 +319,11 @@ describe("EditorLinkView", function() {
                  //  $('#dp_text').blur();
                  //  expect($a.EditorLinkView.prototype.saveDP).toHaveBeenCalled();
                  //});
-                 it("Demand Tab: 'Start Time: hour' field calls saveDPTime", function() { 
+                 it("Demand Tab: 'Start Time: hour' field calls saveDPTime", function() {
                    $('#link_demand_start_hour').blur();
                    expect($a.EditorLinkView.prototype.saveDPTime).toHaveBeenCalled();
                  });
-                 it("Demand Tab: 'Start Time: minute' field calls saveDPTime", function() { 
+                 it("Demand Tab: 'Start Time: minute' field calls saveDPTime", function() {
                    $('#link_demand_start_minute').blur();
                    expect($a.EditorLinkView.prototype.saveDPTime).toHaveBeenCalled();
                  });
@@ -330,11 +331,11 @@ describe("EditorLinkView", function() {
                    $('#link_demand_start_second').blur();
                    expect($a.EditorLinkView.prototype.saveDPTime).toHaveBeenCalled();
                  });
-                 it("Demand Tab: 'Sampling Period: hour' field calls saveDPTime", function() { 
+                 it("Demand Tab: 'Sampling Period: hour' field calls saveDPTime", function() {
                    $('#link_demand_sample_hour').blur();
                    expect($a.EditorLinkView.prototype.saveDPTime).toHaveBeenCalled();
                  });
-                 it("Demand Tab: 'Sampling Period: minute' field calls saveDPTime", function() { 
+                 it("Demand Tab: 'Sampling Period: minute' field calls saveDPTime", function() {
                    $('#link_demand_sample_minute').blur();
                    expect($a.EditorLinkView.prototype.saveDPTime).toHaveBeenCalled();
                  });
@@ -347,7 +348,7 @@ describe("EditorLinkView", function() {
                    expect($a.EditorLinkView.prototype.saveCP).toHaveBeenCalled();
                  });
                  it("Capacity Tab: 'Start Time: hour' field calls saveCPTime", function() { 
-                   $('#link_capacity_start_hour').blur();
+                    $('#link_capacity_start_hour').blur();
                    expect($a.EditorLinkView.prototype.saveCPTime).toHaveBeenCalled();
                  });
                  it("Capacity Tab: 'Start Time: minute' field calls saveCPTime", function() { 
@@ -371,54 +372,61 @@ describe("EditorLinkView", function() {
                    expect($a.EditorLinkView.prototype.saveCPTime).toHaveBeenCalled();
                  });
                });
-              describe("When the In Sync click handler fired", function() {
-                  it("in_sync is saved", function() { 
-                    $('#in_sync').attr('checked', 'checked'); 
-                    $('#in_sync').click();
-                    expect(this.view.models[0].get('in_sync')).toBeTruthy();
-                  });
-                 });
+         describe("When the In Sync click handler fired", function() {
+            it("in_sync is saved", function() { 
+              $('#in_sync').attr('checked', 'checked'); 
+              $('#in_sync').click();
+              expect(this.view.models[0].get('in_sync')).toBeTruthy();
+            });
+         });
          
         describe("When buttons clicked handler fired", function() {
-                    it("'Sub Divide Now' button calls subDivide", function() { 
-                        $('#do-subdivide').click();
-                        expect($a.EditorLinkView.prototype.subDivide).toHaveBeenCalled();
-                      });
-                      it("'Split Now' button calls doSplit", function() { 
-                        $('#do-split').click();
-                        expect($a.EditorLinkView.prototype.doSplit).toHaveBeenCalled();
-                      });
-                      it("'Add Left Turn' button calls addLeftTurn", function() { 
-                        $('#add-lt').click();
-                        expect($a.EditorLinkView.prototype.addLeftTurn).toHaveBeenCalled();
-                      });
-                      it("'Add Right Turn' button calls addRightTurn", function() { 
-                        $('#add-rt').click();
-                        expect($a.EditorLinkView.prototype.addRightTurn).toHaveBeenCalled();
-                      });
-                      it("'Add Right Turn' button calls addRightTurn", function() { 
-                        $('#add-rt').click();
-                        expect($a.EditorLinkView.prototype.addRightTurn).toHaveBeenCalled();
-                      });
-                      it("'Choose Name' button calls chooseName", function() { 
-                        $('#choose-name').click();
-                        expect($a.EditorLinkView.prototype.chooseName).toHaveBeenCalled();
-                      });
-                      it("'Reverse Link' button calls reverseLink", function() { 
-                        $('#reverse-link').click();
-                        expect($a.EditorLinkView.prototype.reverseLink).toHaveBeenCalled();
-                      });
-                    it("'Set Geometry to Line' button calls geomLine", function() { 
-                       $('#geom-line').click();
-                       expect($a.EditorLinkView.prototype.geomLine).toHaveBeenCalled();
-                     });
-                     it("'Set Geometry to Roads' button calls geomRoad", function() { 
-                       $('#geom-road').click();
-                       expect($a.EditorLinkView.prototype.geomRoad).toHaveBeenCalled();
-                     });
-                   });
+              beforeEach(function() {
+                $(this.view.el).find(":input").prop("disabled", false)
+                $(this.view.el).find(":button").prop("disabled", false)
+              });
+              it("'Sub Divide Now' button calls subDivide", function() { 
+                  $('#do-subdivide').click();
+                  expect($a.EditorLinkView.prototype.subDivide).toHaveBeenCalled();
+                });
+                it("'Split Now' button calls doSplit", function() { 
+                  $('#do-split').click();
+                  expect($a.EditorLinkView.prototype.doSplit).toHaveBeenCalled();
+                });
+                it("'Add Left Turn' button calls addLeftTurn", function() { 
+                  $('#add-lt').click();
+                  expect($a.EditorLinkView.prototype.addLeftTurn).toHaveBeenCalled();
+                });
+                it("'Add Right Turn' button calls addRightTurn", function() { 
+                  $('#add-rt').click();
+                  expect($a.EditorLinkView.prototype.addRightTurn).toHaveBeenCalled();
+                });
+                it("'Add Right Turn' button calls addRightTurn", function() { 
+                  $('#add-rt').click();
+                  expect($a.EditorLinkView.prototype.addRightTurn).toHaveBeenCalled();
+                });
+                it("'Choose Name' button calls chooseName", function() { 
+                  $('#choose-name').click();
+                  expect($a.EditorLinkView.prototype.chooseName).toHaveBeenCalled();
+                });
+                it("'Reverse Link' button calls reverseLink", function() { 
+                  $('#reverse-link').click();
+                  expect($a.EditorLinkView.prototype.reverseLink).toHaveBeenCalled();
+                });
+              it("'Set Geometry to Line' button calls geomLine", function() { 
+                 $('#geom-line').click();
+                 expect($a.EditorLinkView.prototype.geomLine).toHaveBeenCalled();
+               });
+               it("'Set Geometry to Roads' button calls geomRoad", function() { 
+                 $('#geom-road').click();
+                 expect($a.EditorLinkView.prototype.geomRoad).toHaveBeenCalled();
+               });
+             });
                   
              describe("When fields handlers fired their information is saved", function() {
+              beforeEach(function() {
+                $(this.view.el).find(":input").prop("disabled", false)
+              });
               // _.each(testsLinkGeo, function(test) { 
               //              it(test.desc, function() {
               //                googleMap();
@@ -427,11 +435,12 @@ describe("EditorLinkView", function() {
               //                expect(this.view.models[0].get(test.field)).toEqual(test.val);
               //              });
               //            });
-                  it("Link Tab: 'Name' is saved", function() {
+              it("Link Tab: 'Name' is saved", function() {
+                    $a.broker.trigger('map:open_network_mode');
                     $("#link_name").val("changed");
                     $("#link_name").blur();      
                     expect(this.view.models[0].link_name()).toEqual("changed");
-                  });
+              });
                it("Link Tab: 'Type' is saved", function() {
                  selected = $($(this.view.el)).find('#link_name option:selected')
                  $(selected).attr('selected', false);
