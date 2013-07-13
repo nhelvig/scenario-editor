@@ -139,7 +139,6 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     id = e.currentTarget.id
     _.each(@models, (m) -> m.set_name($("##{id}").val()))
   
-  
   # This is used to save the latitude, longitude and elevation when focus is
   # lost from the element
   saveGeo: (e) ->
