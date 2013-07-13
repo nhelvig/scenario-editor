@@ -183,8 +183,8 @@ beforeEach(function() {
       splitratioset: srps,
       sensorset: sensorset
     });
-    scenario.set('networkset',networkset);
-    scenario.set('controllerset',cs);
+    scenario.set_nodes([node1, node2, node3])
+    scenario.set_links([link1, link2, link3])
     
     return {
       scenario: scenario,
