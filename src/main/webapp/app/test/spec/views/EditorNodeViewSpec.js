@@ -52,7 +52,7 @@ describe("EditorNodeView", function() {
     it("should should have correct type selected", function() {
       type = this.view.models[0].node_type().name();
       expected = $($(this.view.el).find('#type option:selected')).attr("name");
-      expect(expected).toEqual(type);
+      expect(expected.toLowerCase()).toEqual(type);
     });
     
     //checks that template was created correctly
@@ -71,18 +71,19 @@ describe("EditorNodeView", function() {
 
   describe("Events", function() {
      beforeEach(function() {
-       $a.Util.setMode("network");
        this.view.render();
        this.point = this.view.models[0].get('position').get('point')[0]
      });
  
      describe("When name and type blur handler fired", function() {
        it("name is saved", function() {
+         $a.broker.trigger('map:open_network_mode');
          $('#name').val("Name Changed");
          $("#name").blur();
          expect(this.view.models[0].name()).toEqual("Name Changed");
        });
        it("type is saved", function() {
+         $a.broker.trigger('map:open_network_mode');
          selected = $($(this.view.el)).find('#type option:selected')
          $(selected).attr('selected', false);
          options = $(this.view.el).find("select option");
@@ -112,7 +113,8 @@ describe("EditorNodeView", function() {
      });
  
      describe("When the lock click handler fired", function() {
-       it("lock is saved", function() { 
+       it("lock is saved", function() {
+         $a.broker.trigger('map:open_network_mode');
          $('#lock').attr('checked', 'checked'); 
          $('#lock').click();
          expect(this.view.models[0].get('lock')).toBeTruthy();
@@ -126,13 +128,17 @@ describe("EditorNodeView", function() {
            expect($a.EditorNodeView.prototype.signalEditor).toHaveBeenCalled();
          }
        });
-       it("choose-name button calls chooseName", function() { 
-         $('#choose-name').click();
-         expect($a.EditorNodeView.prototype.chooseName).toHaveBeenCalled();
+       it("choose-name button calls chooseName", function() {
+         if(!($('#choose-name').is(':disabled'))) {
+           $('#choose-name').click();
+           expect($a.EditorNodeView.prototype.chooseName).toHaveBeenCalled();
+         }
        });
-       it("remove-join-links button calls removeJoinLinks", function() { 
-         $('#remove-join-links').click();
-         expect($a.EditorNodeView.prototype.removeJoinLinks).toHaveBeenCalled();
+       it("remove-join-links button calls removeJoinLinks", function() {
+        if(!($('#remove-join-links').is(':disabled'))) {
+          $('#remove-join-links').click();
+          expect($a.EditorNodeView.prototype.removeJoinLinks).toHaveBeenCalled();
+        }
        });
      });
    });

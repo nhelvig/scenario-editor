@@ -6,6 +6,7 @@ class window.beats.EditorView extends Backbone.View
     'map:open_view_mode' : 'viewMode'
     'map:open_network_mode' : 'networkMode'
     'map:open_scenario_mode' : 'scenarioMode'
+    'map:open_route_mode' : 'routeMode'
   }
   
   # The options hash contains the type of dialog(eg. 'node'), the model
@@ -39,12 +40,6 @@ class window.beats.EditorView extends Backbone.View
   # This method removes the dialog box from the map when clear:map is triggered
   close: ->
      @$el.remove()
-
-  # Once an editor is created we sets field to respond to the appropriate modes
-  _checkMode: ->
-    @viewMode() if $a.Mode.VIEW
-    @scenarioMode() if $a.Mode.SCENARIO
-    @networkMode() if $a.Mode.NETWORK
       
   viewMode: ->
     @$el.find(":input").attr("disabled", true)
@@ -53,7 +48,10 @@ class window.beats.EditorView extends Backbone.View
     @$el.find(":input").attr("disabled", true)
 
   networkMode: ->
-    @$el.find(":input").attr("disabled", false)
+    @$el.find(":input").attr("disabled", true)
+  
+  routeMode: ->
+    @$el.find(":input").attr("disabled", true)
   
   # Return the editor view DOM element
   getEditorElement: ->

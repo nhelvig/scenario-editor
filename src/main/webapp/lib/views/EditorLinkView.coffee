@@ -77,6 +77,24 @@ class window.beats.EditorLinkView extends window.beats.EditorView
       $('#length').attr("disabled", true)
       $('#in_sync').attr("disabled", true)
   
+  # set up the mode correctly
+  scenarioMode: ->
+    super
+    @$el.find("#tabs-link-fd :input").attr("disabled", false)
+    @$el.find("#tabs-link-demand :input").attr("disabled", false)
+    @$el.find("#tabs-link-capacity :input").attr("disabled", false)
+
+  networkMode: ->
+    super
+    @$el.find("#tabs-link :input").attr("disabled", false)
+    @$el.find("#tabs-link-geo :input").attr("disabled", false)
+  
+  # Once an editor is created we sets field to respond to the appropriate modes
+  _checkMode: ->
+    @viewMode() if $a.Mode.VIEW
+    @scenarioMode() if $a.Mode.SCENARIO
+    @networkMode() if $a.Mode.NETWORK
+  
   # creates a hash of values taken from the model for the html template
   # I could have just passed the model but I did it this way because 
   # I didn't want the long retrieval lines in the html.

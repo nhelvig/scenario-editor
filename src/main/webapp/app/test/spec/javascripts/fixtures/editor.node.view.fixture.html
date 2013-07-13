@@ -1,48 +1,82 @@
-<script type="text/template" id="node-editor-dialog-template">
-<ul>
-  <li><a href="#tabs-1">Node</a></li>
-  <li><a href="#tabs-2">Geo</a></li>
-  <li><a href="#tabs-3">Tools</a></li>
-</ul>
-<div id="tabs-1">
-  <form>
-    <fieldset>
-      <label for="name">Name</label>
-      <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
-      <label for="type">Type</label>
-      <select id="type" name ="type" class="ui-widget-content ui-corner-all">
-        <option value="1" name="Freeway">Freeway</option>
-        <option value="2" name="Highway">Highway</option>
-        <option value="3" name="signalized_intersection">Signalized Intersection</option>
-        <option value="4" name="simple">Simple</option>
-        <option value="5" name="stop_intersection">Stop Intersection</option>
-        <option value="6" name="terminal">Terminal</option>
-        <option value="7" name="other">Other</option>
-      </select><br/>
-      <button id="edit-signal" class="text ui-widget-content ui-corner-all" >Edit Signal</button>
-    </fieldset>
-  </form>
-</div>
-<div id="tabs-2">
-  <form>
-    <fieldset>
-      <label for="latitude">Latitude</label>
-      <input type="text" name="latitude" id="lat" class="text ui-widget-content ui-corner-all" value="{{lat}}"/>
-      <label for="longitude">Longitude</label>
-      <input type="text" name="longitude" id="lng" class="text ui-widget-content ui-corner-all" value="{{lng}}"/>
-      <label for="elevation">Elevation</label>
-      <input type="text" name="elevation" id="elevation" class="text ui-widget-content ui-corner-all" value="{{elevation}}"/><br/>
-      <input type="checkbox" name="lock" id="lock" class="text ui-widget-content ui-corner-all" {{lock}} />
-      <span>Lock node position</span>
-    </fieldset>
-  </form>
-</div>
-<div id="tabs-3">
-  <form>
-    <fieldset>
-      <button id="remove-join-links" class="text ui-widget-content ui-corner-all" >Remove and join links</button>
-      <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
-    </fieldset>
-  </form>
-</div>
-</script>
+    <script type="text/template" id="node-editor-dialog-template">
+        <ul>
+          <li><a href="#tabs-node">Node</a></li>
+          <li><a href="#tabs-node-geo">Geo</a></li>
+          <li><a href="#tabs-node-split-ratio">Split Ratio</a></li>
+          <li><a href="#tabs-node-tools">Tools</a></li>
+        </ul>
+        <div id="tabs-node">
+          <form>
+            <fieldset>
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+              <label for="type">Type</label>
+              <select id="type" name ="type" class="ui-widget-content-select ui-corner-all">
+                <option value="0" name="">--------------</option>
+                <option value="1" name="Freeway">Freeway</option>
+                <option value="2" name="Highway">Highway</option>
+                <option value="3" name="Signalized Intersection">Signalized Intersection</option>
+                <option value="4" name="Simple">Simple</option>
+                <option value="5" name="Stop Intersection">Stop Intersection</option>
+                <option value="6" name="Terminal">Terminal</option>
+                <option value="7" name="Other">Other</option>
+              </select><br/>
+              <button id="edit-signal" class="text ui-widget-content ui-corner-all" >Edit Signal</button>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-node-geo">
+          <form>
+            <fieldset>
+              <label for="latitude">Latitude</label>
+              <input type="text" name="latitude" id="lat" class="text ui-widget-content ui-corner-all" disabled="true" value="{{lat}}"/>
+              <label for="longitude">Longitude</label>
+              <input type="text" name="longitude" id="lng" class="text ui-widget-content ui-corner-all" disabled="true" value="{{lng}}"/>
+              <label for="elevation">Elevation</label>
+              <input type="text" name="elevation" id="elevation" class="text ui-widget-content ui-corner-all" disabled="true" value="{{elevation}}"/><br/>
+              <input type="checkbox" name="lock" id="lock" class="text ui-widget-content ui-corner-all" {{lock}} />
+              <span>Lock node position</span>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-node-split-ratio">
+          <form>
+            <fieldset>
+              <label for="dest-network-id">Destination Network ID</label>
+              <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget-content ui-corner-all" value="{{destnetworkid}}"/>
+
+              <label>Start Time</label>
+              <label for="node-split-ratio-start-hour" class="time">h</label>
+              <input type="number"  id="node-split-ratio-start-hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{srpStartTime['h']}}" />
+
+              <label for="node-split-ratio-start-minute" class="time">: m</label>
+              <input type="number" id="node-split-ratio-start-minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['m']}}" />
+
+              <label for="node-split-ratio-start-second" class="time">:: s</label>
+              <input type="number" id="node-split-ratio-start-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['s']}}" />
+
+              <label>Sampling Period</label>
+              <label for="node-split-ratio-sample-hour" class="time">h</label>
+              <input type="number"  id="node-split-ratio-sample-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{srpSampleTime['h']}}" />
+
+              <label for="node-split-ratio-sample-minute" class="time">: m</label>
+              <input type="number" id="node-split-ratio-sample-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['m']}}" />
+
+              <label for="node-split-ratio-sample-second" class="time">:: s</label>
+              <input type="number" id="node-split-ratio-sample-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['s']}}" />
+
+              <div>
+                <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="node-split-ratio-table"></table>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div id="tabs-node-tools">
+          <form>
+            <fieldset>
+              <button id="remove-join-links" class="text ui-widget-content ui-corner-all" >Remove and join links</button>
+              <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
+            </fieldset>
+          </form>
+        </div>
+    </script>
