@@ -26,7 +26,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
       @renderSplitRatioTable()
     @_setSelectedType()
     @_checkDisableTabs()
-    @_disableBrowserFields() if (@models.length > 1)
+    @_checkDisableFields()
     @_checkMode()
     @
   
@@ -41,11 +41,12 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     @$el.tabs({ disabled: disable })
   
   # if in a node browser we disable some fields
-  _disableBrowserFields: ->
-    $('#name').attr("disabled", true)
-    $('#lat').attr("disabled", true)
-    $('#lng').attr("disabled", true)
-    $('#elevation').attr("disabled", true)
+  _checkDisableFields: ->
+    if (@models.length > 1)
+      $('#name').attr("disabled", true)
+      $('#lat').attr("disabled", true)
+      $('#lng').attr("disabled", true)
+      $('#elevation').attr("disabled", true)
   
   # set up the mode correctly
   scenarioMode: ->
@@ -56,6 +57,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     super
     @$el.find("#tabs-node :input").attr("disabled", false)
     @$el.find("#tabs-node-geo :input").attr("disabled", false)
+    @_checkDisableFields()
   
   # Once an editor is created we sets field to respond to the appropriate modes
   _checkMode: ->

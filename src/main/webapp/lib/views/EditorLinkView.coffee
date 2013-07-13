@@ -88,6 +88,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     super
     @$el.find("#tabs-link :input").attr("disabled", false)
     @$el.find("#tabs-link-geo :input").attr("disabled", false)
+    @_checkDisableFields()
   
   # Once an editor is created we sets field to respond to the appropriate modes
   _checkMode: ->

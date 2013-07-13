@@ -45,6 +45,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
     super
     @$el.find("#tabs-sensor :input").attr("disabled", false)
     @$el.find("#tabs-sensor-geo :input").attr("disabled", false)
+    @_checkDisableFields()
   
   # Once an editor is created we sets field to respond to the appropriate modes
   _checkMode: ->
