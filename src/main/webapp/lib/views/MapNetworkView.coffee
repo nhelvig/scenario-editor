@@ -42,7 +42,7 @@ class window.beats.MapNetworkView extends Backbone.View
   render: ->
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
-    $a.broker.trigger('map:open_view_mode')
+    $a.broker.trigger('map:open_scenario_mode')
     @
   
   viewMode: ->

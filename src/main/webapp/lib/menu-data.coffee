@@ -525,7 +525,7 @@ $a.mode_menu = [
   {
     label: 'View Only Mode'
     triggerShow: 'map:open_view_mode'
-    initiallyChecked: true}
+    initiallyChecked: false}
   {
     label: 'Network Edit Mode'
     triggerShow: 'map:open_network_mode'
@@ -533,7 +533,7 @@ $a.mode_menu = [
   {
     label: 'Scenario Edit Mode'
     triggerShow: 'map:open_scenario_mode'
-    initiallyChecked: false}
+    initiallyChecked: true}
   {
     label: 'Route Edit Mode'
     triggerShow: 'map:open_route_mode'
