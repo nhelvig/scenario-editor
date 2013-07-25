@@ -151,7 +151,7 @@ window.beats.Util =
       obj.on(key, context[value], context)
             
   unpublishEvents: (obj, events, context) ->
-    for key, value in events
+    for key, value of events
       obj.off(key, context[value], context)  
 
   setMode: (mode) ->
