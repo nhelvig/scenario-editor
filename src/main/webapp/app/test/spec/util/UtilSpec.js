@@ -13,4 +13,17 @@ describe("Util", function() {
     });
   });
 
+  describe("publish/unpublish Events", function() {
+    it("should publish an event and unpublish correctly", function() {
+      $a.test = function() {};
+      spyOn($a, 'test').andCallThrough();
+      $a.Util.publishEvents($a.broker, {'test_event' : 'test'}, $a);
+      $a.broker.trigger('test_event');
+      expect($a.test).toHaveBeenCalled();
+      $a.test.reset();
+      $a.Util.unpublishEvents($a.broker, {'test_event' : 'test'}, $a);
+      $a.broker.trigger('test_event');
+      expect($a.test).not.toHaveBeenCalled();
+    });
+  });
 });
