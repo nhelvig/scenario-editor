@@ -213,13 +213,11 @@ class window.beats.AppView extends Backbone.View
   
   # Open network browser to choose newtork to load from DB
   _openNetworkBrowser: () ->
-    # open network browser
     options = { title: 'Network List' }
     $a.networkbrowser = new $a.NetworkBrowserView(options)
 
   # Open scenario browser to choose scenario to load from DB
   _openScenarioBrowser: () ->
-    # open scenario browser
     options = { title: 'Scenario List' }
     $a.scenariobrowser = new $a.ScenarioBrowserView(options)
 

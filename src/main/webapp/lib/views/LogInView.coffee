@@ -58,4 +58,3 @@ class window.beats.LogInView extends Backbone.View
       # TODO: Enable DB menu options
     else
       $('#user-login-error').html('Invalid Username or Password')
-
