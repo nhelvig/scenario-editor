@@ -31,23 +31,23 @@ class window.beats.Sensor extends Backbone.Model
     id = $(xml).attr('id')
     obj.set('id', Number(id))
     link_position = $(xml).attr('link_position')
-    obj.set('link_position', Number(link_position))
+    obj.set('link_position', Number(link_position)) if link_position?
     link_id = $(xml).attr('link_id')
-    obj.set('link_id', Number(link_id))
+    obj.set('link_id', Number(link_id)) if link_id?
     java_class = $(xml).attr('java_class')
     obj.set('java_class', java_class)
     sensor_id_original = $(xml).attr('sensor_id_original')
     obj.set('sensor_id_original', sensor_id_original)
     data_feed_id = $(xml).attr('data_feed_id')
-    obj.set('data_feed_id', Number(data_feed_id))
+    obj.set('data_feed_id', Number(data_feed_id)) if data_feed_id?
     lane_number = $(xml).attr('lane_number')
-    obj.set('lane_number', Number(lane_number))
+    obj.set('lane_number', Number(lane_number)) if lane_number?
     link_offset = $(xml).attr('link_offset')
-    obj.set('link_offset', Number(link_offset))
+    obj.set('link_offset', Number(link_offset)) if link_offset?
     modStamp = $(xml).attr('modStamp')
     obj.set('modStamp', modStamp)
     health_status = $(xml).attr('health_status')
-    obj.set('health_status', Number(health_status))
+    obj.set('health_status', Number(health_status)) if health_status?
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
