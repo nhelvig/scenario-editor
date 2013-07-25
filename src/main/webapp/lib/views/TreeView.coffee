@@ -37,8 +37,7 @@ class window.beats.TreeView extends Backbone.View
   clearMap: () ->
     $('#toggle-tree-button-template').remove()
     @$el.remove()
-    $a.broker.off("map:toggle_tree")
-    $a.broker.off('app:main_tree')
+    $a.Util.publishEvents($a.broker, @broker_events, @)
     $('#collapseTree').off('click')
     $('#expand-all').off('click')
   

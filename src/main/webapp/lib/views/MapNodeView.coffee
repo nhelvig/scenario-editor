@@ -21,8 +21,8 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:show_node_layer', @showMarker, @)
     $a.broker.on('map:hide_node_layer', @hideMarker, @)
-    $a.broker.on("map:nodes:show_#{@model.type_name().toLowerCase()}", @showMarker, @)
-    $a.broker.on("map:nodes:hide_#{@model.type_name().toLowerCase()}", @hideMarker, @)
+    $a.broker.on("map:nodes:show_#{@model.type_name()?.toLowerCase()}", @showMarker, @)
+    $a.broker.on("map:nodes:hide_#{@model.type_name()?.toLowerCase()}", @hideMarker, @)
     $a.broker.on("map:select_network:#{@network.cid}", @makeSelected, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
 
