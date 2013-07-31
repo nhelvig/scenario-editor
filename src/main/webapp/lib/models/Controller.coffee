@@ -17,31 +17,31 @@ class window.beats.Controller extends Backbone.Model
             acc[wrapped_xml.attr('name')] = wrapped_xml.attr('value')
             acc
           {}
-    ))
+    )) if parameters? and parameters != ""
     display_position = xml.children('display_position')
-    obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
+    obj.set('display_position', $a.DisplayPosition.from_xml2(display_position, deferred, object_with_id)) if display_position? and display_position != ""
     targetElements = xml.children('targetElements')
-    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id))
+    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id)) if targetelements? and targetelements != ""
     feedbackElements = xml.children('feedbackElements')
-    obj.set('feedbackelements', $a.FeedbackElements.from_xml2(feedbackElements, deferred, object_with_id))
+    obj.set('feedbackelements', $a.FeedbackElements.from_xml2(feedbackElements, deferred, object_with_id)) if feedbackelements? and feedbackelements != ""
     queue_controller = xml.children('queue_controller')
-    obj.set('queue_controller', $a.Queue_controller.from_xml2(queue_controller, deferred, object_with_id))
+    obj.set('queue_controller', $a.QueueController.from_xml2(queue_controller, deferred, object_with_id)) if queue_controller? and queue_controller != ""
     ActivationIntervals = xml.children('ActivationIntervals')
-    obj.set('activationintervals', $a.ActivationIntervals.from_xml2(ActivationIntervals, deferred, object_with_id))
+    obj.set('activationintervals', $a.ActivationIntervals.from_xml2(ActivationIntervals, deferred, object_with_id)) if activationintervals? and activationintervals != ""
     table = xml.children('table')
-    obj.set('table', _.map($(table), (table_i) -> $a.Table.from_xml2($(table_i), deferred, object_with_id)))
+    obj.set('table', _.map($(table), (table_i) -> $a.Table.from_xml2($(table_i), deferred, object_with_id))) if table? and table != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
+    obj.set('name', name) if name? and name != ""
     type = $(xml).attr('type')
-    obj.set('type', type)
+    obj.set('type', type) if type? and type != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     dt = $(xml).attr('dt')
-    obj.set('dt', Number(dt))
+    obj.set('dt', Number(dt)) if dt? and dt != ""
     enabled = $(xml).attr('enabled')
-    obj.set('enabled', (enabled.toString().toLowerCase() == 'true') if enabled?)
+    obj.set('enabled', (enabled.toString().toLowerCase() == 'true') if enabled?) if enabled? and enabled != ""
     java_class = $(xml).attr('java_class')
-    obj.set('java_class', java_class)
+    obj.set('java_class', java_class) if java_class? and java_class != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

@@ -11,7 +11,7 @@ class window.beats.Outputs extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Outputs()
     output = xml.children('output')
-    obj.set('output', _.map($(output), (output_i) -> $a.Output.from_xml2($(output_i), deferred, object_with_id)))
+    obj.set('output', _.map($(output), (output_i) -> $a.Output.from_xml2($(output_i), deferred, object_with_id))) if output? and output != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

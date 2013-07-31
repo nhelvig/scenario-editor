@@ -11,9 +11,7 @@ class window.beats.Sensor extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Sensor()
     display_position = xml.children('display_position')
-    obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
-    link_reference = xml.children('link_reference')
-    obj.set('link_reference', $a.Link_reference.from_xml2(link_reference, deferred, object_with_id))
+    obj.set('display_position', $a.DisplayPosition.from_xml2(display_position, deferred, object_with_id)) if display_position? and display_position != ""
     parameters = xml.children('parameters')
     obj.set('parameters', _.reduce(parameters.find("parameter"),
           (acc,par_xml) ->
@@ -21,33 +19,35 @@ class window.beats.Sensor extends Backbone.Model
             acc[wrapped_xml.attr('name')] = wrapped_xml.attr('value')
             acc
           {}
-    ))
+    )) if parameters? and parameters != ""
     table = xml.children('table')
-    obj.set('table', $a.Table.from_xml2(table, deferred, object_with_id))
+    obj.set('table', $a.Table.from_xml2(table, deferred, object_with_id)) if table? and table != ""
     sensor_type = xml.children('sensor_type')
-    obj.set('sensor_type', $a.Sensor_type.from_xml2(sensor_type, deferred, object_with_id))
+    obj.set('sensor_type', $a.SensorType.from_xml2(sensor_type, deferred, object_with_id)) if sensor_type? and sensor_type != ""
     crudFlag = $(xml).attr('crudFlag')
-    obj.set('crudFlag', crudFlag)
+    obj.set('crudFlag', crudFlag) if crudFlag? and crudFlag != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     link_position = $(xml).attr('link_position')
-    obj.set('link_position', Number(link_position)) if link_position?
+    obj.set('link_position', Number(link_position)) if link_position? and link_position != ""
     link_id = $(xml).attr('link_id')
     obj.set('link_id', Number(link_id)) if link_id? and link_id != ""
     java_class = $(xml).attr('java_class')
-    obj.set('java_class', java_class)
+    obj.set('java_class', java_class) if java_class? and java_class != ""
     sensor_id_original = $(xml).attr('sensor_id_original')
-    obj.set('sensor_id_original', sensor_id_original)
+    obj.set('sensor_id_original', sensor_id_original) if sensor_id_original? and sensor_id_original != ""
     data_feed_id = $(xml).attr('data_feed_id')
-    obj.set('data_feed_id', Number(data_feed_id)) if data_feed_id?
+    obj.set('data_feed_id', Number(data_feed_id)) if data_feed_id? and data_feed_id != ""
     lane_number = $(xml).attr('lane_number')
-    obj.set('lane_number', Number(lane_number)) if lane_number?
+    obj.set('lane_number', Number(lane_number)) if lane_number? and lane_number != ""
     link_offset = $(xml).attr('link_offset')
-    obj.set('link_offset', Number(link_offset)) if link_offset?
+    obj.set('link_offset', Number(link_offset)) if link_offset? and link_offset != ""
     modStamp = $(xml).attr('modStamp')
-    obj.set('modStamp', modStamp)
+    obj.set('modStamp', modStamp) if modStamp? and modStamp != ""
     health_status = $(xml).attr('health_status')
-    obj.set('health_status', Number(health_status)) if health_status?
+    obj.set('health_status', Number(health_status)) if health_status? and health_status != ""
+    if object_with_id.sensor
+      object_with_id.sensor[obj.id] = obj
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -57,7 +57,6 @@ class window.beats.Sensor extends Backbone.Model
     if @encode_references
       @encode_references()
     xml.appendChild(@get('display_position').to_xml(doc)) if @has('display_position')
-    #xml.appendChild(@get('link_reference').to_xml(doc)) if @has('link_reference')
     if @has('parameters')
       parameters_xml = doc.createElement('parameters')
       _.each(@get('parameters'), (par_val, par_name) ->

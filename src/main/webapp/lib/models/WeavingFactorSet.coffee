@@ -11,17 +11,15 @@ class window.beats.WeavingFactorSet extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.WeavingFactorSet()
     description = xml.children('description')
-    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
-    VehicleTypeOrder = xml.children('VehicleTypeOrder')
-    obj.set('vehicletypeorder', $a.VehicleTypeOrder.from_xml2(VehicleTypeOrder, deferred, object_with_id))
+    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     weavingfactors = xml.children('weavingfactors')
-    obj.set('weavingfactors', _.map($(weavingfactors), (weavingfactors_i) -> $a.Weavingfactors.from_xml2($(weavingfactors_i), deferred, object_with_id)))
-    project_id = $(xml).attr('project_id')
-    obj.set('project_id', Number(project_id))
+    obj.set('weavingfactors', _.map($(weavingfactors), (weavingfactors_i) -> $a.Weavingfactors.from_xml2($(weavingfactors_i), deferred, object_with_id))) if weavingfactors? and weavingfactors != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
+    project_id = $(xml).attr('project_id')
+    obj.set('project_id', Number(project_id)) if project_id? and project_id != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
+    obj.set('name', name) if name? and name != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -31,10 +29,9 @@ class window.beats.WeavingFactorSet extends Backbone.Model
     if @encode_references
       @encode_references()
     xml.appendChild(@get('description').to_xml(doc)) if @has('description')
-    xml.appendChild(@get('vehicletypeorder').to_xml(doc)) if @has('vehicletypeorder')
     _.each(@get('weavingfactors') || [], (a_weavingfactors) -> xml.appendChild(a_weavingfactors.to_xml(doc)))
-    if @has('project_id') && @project_id != 0 then xml.setAttribute('project_id', @get('project_id'))
     xml.setAttribute('id', @get('id')) if @has('id')
+    xml.setAttribute('project_id', @get('project_id')) if @has('project_id')
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
     xml
   

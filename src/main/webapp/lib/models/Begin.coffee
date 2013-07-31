@@ -11,7 +11,7 @@ class window.beats.Begin extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Begin()
     node_id = $(xml).attr('node_id')
-    obj.set('node_id', Number(node_id))
+    obj.set('node_id', Number(node_id)) if node_id? and node_id != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

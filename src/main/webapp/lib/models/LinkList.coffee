@@ -11,7 +11,7 @@ class window.beats.LinkList extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.LinkList()
     link = xml.children('link')
-    obj.set('link', _.map($(link), (link_i) -> $a.Link.from_xml2($(link_i), deferred, object_with_id)))
+    obj.set('link', _.map($(link), (link_i) -> $a.Link.from_xml2($(link_i), deferred, object_with_id))) if link? and link != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
