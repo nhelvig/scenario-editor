@@ -33,7 +33,7 @@ class window.beats.Sensor extends Backbone.Model
     link_position = $(xml).attr('link_position')
     obj.set('link_position', Number(link_position)) if link_position?
     link_id = $(xml).attr('link_id')
-    obj.set('link_id', Number(link_id)) if link_id? and not link_id is ""
+    obj.set('link_id', Number(link_id)) if link_id? and link_id != ""
     java_class = $(xml).attr('java_class')
     obj.set('java_class', java_class)
     sensor_id_original = $(xml).attr('sensor_id_original')
@@ -57,7 +57,7 @@ class window.beats.Sensor extends Backbone.Model
     if @encode_references
       @encode_references()
     xml.appendChild(@get('display_position').to_xml(doc)) if @has('display_position')
-    xml.appendChild(@get('link_reference').to_xml(doc)) if @has('link_reference')
+    #xml.appendChild(@get('link_reference').to_xml(doc)) if @has('link_reference')
     if @has('parameters')
       parameters_xml = doc.createElement('parameters')
       _.each(@get('parameters'), (par_val, par_name) ->
