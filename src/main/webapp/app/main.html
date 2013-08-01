@@ -32,7 +32,7 @@
       <td class="demand-count">{{demandVehicleCount}}
         {% if(deviates) { %}
            &plusmn; {{demandDeviation}}
-        {% } %}  
+        {% } %}
       </td>
       <td>per<br/>hour</td>
       </tr>
@@ -50,8 +50,15 @@
         </script>
       </div>
     </div>
+    <!--log in status -->
+    <div id="login-nav" class="navbar">
+      <div id="login-nav-container" class="login-container container navbar-inner">
+        <span>Via</span> Login
+      </div>
+    </div>
+    <!--map -->
     <div id="map_canvas" class="map_canvas_narrow"></div>
-
+    <!--scenario tree -->
     <div id="right_tree">
       <script type="text/template" id="toggle-tree-handle-template">
       <div id="tree-resize">
