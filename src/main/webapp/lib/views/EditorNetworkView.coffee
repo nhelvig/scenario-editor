@@ -16,8 +16,23 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
   # call the super class to set up the dialog box and then set the select box
   render: ->
     super @elem
+    @_checkMode()
     @
 
+  # set up the mode correctly
+  scenarioMode: ->
+    super
+
+  networkMode: ->
+    super
+    @$el.find(".network-editor :input").attr("disabled", false)
+
+  # Once an editor is created we sets field to respond to the appropriate modes
+  _checkMode: ->
+    @viewMode() if $a.Mode.VIEW
+    @scenarioMode() if $a.Mode.SCENARIO
+    @networkMode() if $a.Mode.NETWORK
+  
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models) ->
     'name': models[0].name()

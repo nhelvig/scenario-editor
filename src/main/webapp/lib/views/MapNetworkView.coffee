@@ -10,7 +10,20 @@ class window.beats.MapNetworkView extends Backbone.View
   $a = window.beats
   WARNING_MSG = 'Directions API Warning(s):'
   ERROR_MSG = 'Directions API Error: Could not render link :'
-    
+  NETWORK_EDIT_MSG : 'Network Editting Mode'
+  SCENARIO_EDIT_MSG : 'Scenario Editting Mode'
+  ROUTE_EDIT_MSG : 'Route Editting Mode'
+  VIEW_ONLY_MSG : 'View Only Mode'
+  
+  broker_events: {
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
+    'map:open_route_mode' : 'routeMode'
+    'map:open_network_editor' : '_editor'
+    'map:clear_map' : '_tearDownEvents'
+  }
+  
   initialize: (@scenario) ->
     @networks =  @scenario.networks()
     @_initializeCollections()
@@ -19,8 +32,10 @@ class window.beats.MapNetworkView extends Backbone.View
     @_centerMap() if @networks[0].position()?
     @_drawScenarioItems()
     @_layersMenu()
+    @_modeMenu() 
     # handle network browser event
     @_setUpEvents()
+    $a.Util.publishEvents($a.broker, @broker_events, @)
 
     # This class creates the tree view of all the elements of the scenario
     $a.tree = new $a.TreeView({ scenario: @scenario, attach: "#tree_view"})
@@ -29,8 +44,21 @@ class window.beats.MapNetworkView extends Backbone.View
   render: ->
     $a.broker.trigger('map:init')
     $a.broker.trigger('app:main_tree')
+    $a.broker.trigger('map:open_scenario_mode')
     @
   
+  viewMode: ->
+    $a.broker.trigger('app:display_message:info', @VIEW_ONLY_MSG)
+  
+  networkMode: ->
+    $a.broker.trigger('app:display_message:info', @NETWORK_EDIT_MSG)
+
+  scenarioMode: ->
+    $a.broker.trigger('app:display_message:info', @SCENARIO_EDIT_MSG)
+  
+  routeMode: ->
+    $a.broker.trigger('app:display_message:info', @ROUTE_EDIT_MSG)
+
   _setUpEvents: ->
     $a.broker.on('map:open_network_editor', @_editor, @)
     $a.broker.on("map:clear_map", @_tearDownEvents, @)
@@ -38,8 +66,7 @@ class window.beats.MapNetworkView extends Backbone.View
   _tearDownEvents: ->
     # Commenting out since this ends up preventing the network properties editor from being lauched
     # after the map has been cleared (ie. New Scenario selected)
-    $a.broker.off('map:open_network_editor')
-    $a.broker.off("map:clear_map")
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
   
   _initializeCollections: () ->
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
@@ -49,7 +76,7 @@ class window.beats.MapNetworkView extends Backbone.View
     $a.eventSet = new $a.EventSetCollection($a.models.events())
   
   # This creates the layers menu bar
-  _layersMenu: () ->
+  _layersMenu: ->
     attrs = {
       className: 'dropdown-menu bottom-up'
       id: 'l_list'
@@ -58,6 +85,16 @@ class window.beats.MapNetworkView extends Backbone.View
     }
     @lmenu = new $a.LayersMenuView(attrs)
   
+  # This creates the layers menu bar
+  _modeMenu: ->
+    attrs = {
+      className: 'dropdown-menu bottom-up'
+      id: 'm_list'
+      parentId: 'mh'
+      menuItems: $a.mode_menu
+    }
+    @mmenu = new $a.ModeMenuView(attrs)
+
   #center the map based on network position
   _centerMap: () ->
     pts = $a.Util.convertPointsToGoogleLatLng(@networks[0].position().points())

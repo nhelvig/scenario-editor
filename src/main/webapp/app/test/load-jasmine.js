@@ -21,9 +21,10 @@
     //'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];
   
-  model_jasmine_specs = ['BeginSpec', 'EndSpec', 'InputSpec','OutputSpec',
+  model_jasmine_specs = [
+    'BeginSpec', 'EndSpec', 'InputSpec','OutputSpec',
     'LinkSpec', 'NodeSpec', 'LinkListSpec','NodeListSpec'
-    //'ControllerSpec', 'DemandProfileSpec','DensitySpec', , 'EventSpec', 
+    //'ControllerSpec', 'DemandProfileSpec','DensitySpec', 'EventSpec', 
     //'ScenarioSpec', 'SensorSpec','SignalSpec', 'SplitratioProfileSpec'
   ];
   

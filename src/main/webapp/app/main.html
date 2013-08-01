@@ -15,7 +15,7 @@
   <body id="body">
     <div class="btn-group">
       <li id="lh" class="btn dropdown-toggle" data-toggle="dropdown" href="#l_list">Layers</li>
-      <li id="mh" class="btn">Mode</li>
+      <li id="mh" class="btn dropdown-toggle" data-toggle="dropdown" href="#m_list">Mode</li>
     </div>
     <script type="text/template" id="demand-visualizer-window-template">
       <div id="demand-visualizer-{{elemId}}">
@@ -85,11 +85,11 @@
 
     <script type="text/template" id="sensor-editor-dialog-template">
       <ul>
-        <li><a href="#tabs-sensor-1">Sensor</a></li>
-        <li><a href="#tabs-sensor-2">Data</a></li>
-        <li><a href="#tabs-sensor-3">Geo</a></li>
+        <li><a href="#tabs-sensor">Sensor</a></li>
+        <li><a href="#tabs-sensor-data">Data</a></li>
+        <li><a href="#tabs-sensor-geo">Geo</a></li>
       </ul>
-      <div id="tabs-sensor-1">
+      <div id="tabs-sensor">
         <form>
           <fieldset>
             <label for="sensor-type">Type</label>
@@ -124,7 +124,7 @@
           </fieldset>
         </form>
       </div>
-      <div id="tabs-sensor-2">
+      <div id="tabs-sensor-data">
         <form>
           <fieldset>
             <label>URL *</label>
@@ -133,7 +133,7 @@
           </fieldset>
         </form>      
       </div>
-      <div id="tabs-sensor-3">
+      <div id="tabs-sensor-geo">
         <form>
           <fieldset>
             <label>Latitude</label>
@@ -494,7 +494,7 @@
     <div>
     </script>
     <script type="text/template" id="network-editor-dialog-template">
-      <div id="wrapper">
+      <div id="wrapper" class="network-editor">
         <form>
           <fieldset>
             <label>Network Name:</label>

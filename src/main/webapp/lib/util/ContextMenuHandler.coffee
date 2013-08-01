@@ -2,7 +2,7 @@
 # system
 class window.beats.ContextMenuHandler
   $a = window.beats
-  
+
   # set up the listener that allows for a menu to be created on 
   # right-click
   constructor: (args) ->
@@ -27,8 +27,9 @@ class window.beats.ContextMenuHandler
   # this method adds the correct items into the list depending on the 
   # context passed through args
   _populateMenu: (args) ->
-    items = {}
-    items = args.items
+    items = []
+    items.push i for i in args.items when i.mode is null or eval(i.mode) is true
+    items.push $a.context_menu_item_disabled if(items.length is 0)
     items = _.union(items, $a.node_selected) if $a.nodeList? and $a.nodeList.isOneSelected()
     items = _.union(items, $a.node_selected_node_clicked) if $a.nodeList? and $a.nodeList.isOneSelected() and args.model?
     items

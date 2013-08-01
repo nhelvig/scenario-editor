@@ -12,6 +12,12 @@ class window.beats.TreeChildItemView extends Backbone.View
   model_events: 
     'change:selected': 'toggleSelected'
   
+  broker_events: {
+    'app:child_trees' : 'render'
+    'app:tree_remove_highlight' : 'removeHighlight'
+    'app:tree_clear' :  'removeItem'
+  }
+  
   # The model attribute is the model for this class, the element
   # attribute is the name of the parent tree element this model should
   # be attached too
@@ -42,9 +48,7 @@ class window.beats.TreeChildItemView extends Backbone.View
   # specific types of tree items -- node or link.  All tree items
   # register for the links here
   setUpEvents: ->
-    $a.broker.on('app:child_trees', @render, @)
-    $a.broker.on('app:tree_remove_highlight', @removeHighlight, @)
-    $a.broker.on('app:tree_clear', @removeItem, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
 
   manageHighlight:  ->
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
@@ -79,13 +83,11 @@ class window.beats.TreeChildItemView extends Backbone.View
   # and remove it from the DOM
   removeItem: ->
     $(@el).remove()
-    $a.broker.off('app:child_trees')
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
     _.each(@targets, (target) =>
       $a.broker.off("app:tree_highlight:#{target.cid}")
       $a.broker.off("app:tree_remove_highlight:#{target.cid}")
     ) if @targets?
-    $a.broker.off('app:tree_remove_highlight')
-    $a.broker.off('app:tree_clear')
 
   hideItem: ->
     @$el.addClass('hide').removeClass('show')

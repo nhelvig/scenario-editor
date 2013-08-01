@@ -9,6 +9,28 @@ class window.beats.AppView extends Backbone.View
   @start: ->
     new window.beats.AppView().render()
   
+  broker_events: {
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
+    'map:open_route_mode' : 'routeMode'
+    'map:upload_complete' :  '_displayMap'
+    'map:clear_map' : 'clearMap'
+    'app:new_scenario' : 'newScenario'
+    'app:open_scenario' : 'openScenario'
+    'app:save_scenario' : 'saveScenario'
+    'map:alert' : 'showAlert'
+    'app:login' : '_login'
+    'app:open_network_browser_db' : '_openNetworkBrowser'
+    'app:open_scenario_browser_db' : '_openScenarioBrowser'
+    'app:load_network' : '_loadNetwork'
+    'app:import_network_db' : '_importNetwork'
+    'app:save_network_db' : '_saveNetwork'
+    'app:load_scenario' : '_loadScenario'
+    'map:show_satellite' : '_showSatelliteTiles'
+    'map:hide_satellite' : '_showSatelliteTiles'
+  }
+  
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
     _.templateSettings =
@@ -32,23 +54,9 @@ class window.beats.AppView extends Backbone.View
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
-    $a.broker.on('map:upload_complete', @_displayMap, @)
-    $a.broker.on("map:clear_map", @clearMap, @)
-    $a.broker.on("app:new_scenario", @newScenario, @)
-    $a.broker.on('app:open_scenario', @openScenario, @)
-    $a.broker.on("app:save_scenario", @saveScenario, @)
-    $a.broker.on("map:alert", @showAlert, @)
-    $a.broker.on("app:login", @_login, @)
-    $a.broker.on("app:open_network_browser_db", @_openNetworkBrowser, @)
-    $a.broker.on("app:open_scenario_browser_db", @_openScenarioBrowser, @)
-    $a.broker.on("app:load_network", @_loadNetwork, @)
-    $a.broker.on("app:import_network_db", @_importNetwork, @)
-    $a.broker.on("app:save_network_db", @_saveNetwork, @)
-    $a.broker.on("app:load_scenario", @_loadScenario, @)
-    $a.broker.on("map:show_satellite", @_showSatelliteTiles, @)
-    $a.broker.on("map:hide_satellite", @_showSatelliteTiles, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
     @
-
+  
   # create the landing map. The latitude and longitude our arbitarily pointing
   # to the I80/Berkeley area
   _initializeMap: ->
@@ -140,6 +148,7 @@ class window.beats.AppView extends Backbone.View
       $a.models = $a.Scenario.from_xml($(xml).children())
       $a.mapNetworkView = new $a.MapNetworkView $a.models
     catch error
+      console.log error.stack
       if error.message then errMessage = error.message else errMessage = error
       messageBox = new $a.MessageWindowView( {text: "Data file is badly formatted. " + errMessage, okButton: true} )
 
@@ -150,6 +159,18 @@ class window.beats.AppView extends Backbone.View
     $a.broker.trigger('app:tree_clear')
     $a.broker.trigger('app:show_message:success', 'Cleared map')
 
+  viewMode: ->
+    $a.Util.setMode('view')
+
+  networkMode: ->
+    $a.Util.setMode('network')
+
+  scenarioMode: ->
+    $a.Util.setMode('scenario')
+    
+  routeMode: ->
+    $a.Util.setMode('route')
+  
   _messagePanel: ->
     @mpv = new $a.MessagePanelView()
 
@@ -189,17 +210,14 @@ class window.beats.AppView extends Backbone.View
       $a.map.setMapTypeId(google.maps.MapTypeId.SATELLITE)
     else
       $a.map.setMapTypeId(google.maps.MapTypeId.ROADMAP)
-    
   
   # Open network browser to choose newtork to load from DB
   _openNetworkBrowser: () ->
-    # open network browser
     options = { title: 'Network List' }
     $a.networkbrowser = new $a.NetworkBrowserView(options)
 
   # Open scenario browser to choose scenario to load from DB
   _openScenarioBrowser: () ->
-    # open scenario browser
     options = { title: 'Scenario List' }
     $a.scenariobrowser = new $a.ScenarioBrowserView(options)
 

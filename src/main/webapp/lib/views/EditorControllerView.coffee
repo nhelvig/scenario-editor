@@ -33,6 +33,7 @@ class window.beats.EditorControllerView extends window.beats.EditorView
     @_setSelectedType()
     @renderTargetTable()
     @renderFeedbackTable()
+    @_checkMode()
     # Add event to map target table
     @
   
