@@ -10,14 +10,21 @@ body { height: 100%; margin: 5px; padding: 0 }
   position:absolute;
 }
 
-#login-nav-container span {
+.login-via-color {
   color: #3399FF;
 }
 
-.login-container {position:absolute; z-index:1; width: 60px; height:20px; margin-top:5px; margin-left:800px;
-  color: #FFFFFF; background-color: #444444; display:none; overflow:hidden;}
+.login-text-color {
+  color: #FFFFFF;
+}
+
 .alert-bottom {position:absolute; bottom:0; right:1%; max-width:200px}
-.container {position:absolute; z-index:1; width: 310px; margin-top:5px;margin-left:80px; background-color: #444444; display:none}
+.container {position:absolute; z-index:1; width: 310px; margin-top:5px; margin-left:80px;
+  background-color: #444444; display:none}
+.login-container {position:absolute; z-index:1; width: 90px; height:20px; margin-top:5px;
+  margin-left:66%; color: #FFFFFF; background-color: #444444; display:none; overflow:hidden;
+  text-align: center;}
+
 .ui-dialog .ui-dialog-content
 {
   padding: 1px 0;

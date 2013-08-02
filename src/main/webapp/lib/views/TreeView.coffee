@@ -215,6 +215,8 @@ class window.beats.TreeView extends Backbone.View
     $('#tree_view').hide(200)
     $('#right_tree').css('width', '1%')
     $('#map_canvas').css('width', '99.2%')
+    # change location of login indicator
+    $('.login-container').css('margin-left', '88%')
 
   openTree: ->
     @treeOpen = true
@@ -222,6 +224,8 @@ class window.beats.TreeView extends Backbone.View
     $('#right_tree').show(200)
     $('#tree_view').show(200)
     $('#map_canvas').css('width', '78.2%')
+    # change location of login indicator
+    $('.login-container').css('margin-left', '66%')
   
   networkMode: ->
     $('#tree-handle').addClass("noClick")

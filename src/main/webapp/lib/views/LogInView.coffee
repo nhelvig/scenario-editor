@@ -21,7 +21,6 @@ class window.beats.LogInView extends Backbone.View
     @$el.dialog
       autoOpen: false,
       modal: true,
-      closeOnEscape: false,
       minHeight: 240,
       open: ->
         $('.ui-state-default').blur() #hack to get ui dialog focus bug
@@ -55,6 +54,11 @@ class window.beats.LogInView extends Backbone.View
       # set authentication header
       $a.usersession.setHeaders()
       $('#user-dialog').remove()
+      # update login indicator container
+      $('#login-nav-container')
+        .html('<span class="login-via-color">Via</span> ' +
+          '<span class="login-text-color">Connected</span>' )
+
       # TODO: Enable DB menu options
     else
       $('#user-login-error').html('Invalid Username or Password')
