@@ -11,7 +11,7 @@ class window.beats.Inputs extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Inputs()
     input = xml.children('input')
-    obj.set('input', _.map($(input), (input_i) -> $a.Input.from_xml2($(input_i), deferred, object_with_id)))
+    obj.set('input', _.map($(input), (input_i) -> $a.Input.from_xml2($(input_i), deferred, object_with_id))) if input? and input != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

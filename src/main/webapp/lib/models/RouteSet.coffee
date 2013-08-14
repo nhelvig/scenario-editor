@@ -1,4 +1,4 @@
-class window.beats.FundamentalDiagramType extends Backbone.Model
+class window.beats.RouteSet extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,15 +9,15 @@ class window.beats.FundamentalDiagramType extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.FundamentalDiagramType()
+    obj = new window.beats.RouteSet()
+    route = xml.children('route')
+    obj.set('route', _.map($(route), (route_i) -> $a.Route.from_xml2($(route_i), deferred, object_with_id))) if route? and route != ""
+    project_id = $(xml).attr('project_id')
+    obj.set('project_id', Number(project_id)) if project_id? and project_id != ""
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     name = $(xml).attr('name')
     obj.set('name', name) if name? and name != ""
-    description = $(xml).attr('description')
-    obj.set('description', description) if description? and description != ""
-    in_use = $(xml).attr('in_use')
-    obj.set('in_use', Number(in_use)) if in_use? and in_use != ""
     mod_stamp = $(xml).attr('mod_stamp')
     obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     if obj.resolve_references
@@ -25,16 +25,16 @@ class window.beats.FundamentalDiagramType extends Backbone.Model
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('fundamentalDiagramType')
+    xml = doc.createElement('RouteSet')
     if @encode_references
       @encode_references()
+    _.each(@get('route') || [], (a_route) -> xml.appendChild(a_route.to_xml(doc)))
+    xml.setAttribute('project_id', @get('project_id')) if @has('project_id')
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('name', @get('name')) if @has('name')
-    xml.setAttribute('description', @get('description')) if @has('description')
-    xml.setAttribute('in_use', @get('in_use')) if @has('in_use')
     if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
-  deep_copy: -> FundamentalDiagramType.from_xml1(@to_xml(), {})
+  deep_copy: -> RouteSet.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

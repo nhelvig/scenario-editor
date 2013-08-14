@@ -10,12 +10,12 @@ class window.beats.VehicleTypeSet extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.VehicleTypeSet()
-    vehicleType = xml.children('vehicleType')
-    obj.set('vehicletype', _.map($(vehicleType), (vehicleType_i) -> $a.VehicleType.from_xml2($(vehicleType_i), deferred, object_with_id)))
-    project_id = $(xml).attr('project_id')
-    obj.set('project_id', Number(project_id))
+    VehicleType = xml.children('VehicleType')
+    obj.set('vehicletype', _.map($(VehicleType), (VehicleType_i) -> $a.VehicleType.from_xml2($(VehicleType_i), deferred, object_with_id))) if VehicleType? and VehicleType != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
+    project_id = $(xml).attr('project_id')
+    obj.set('project_id', Number(project_id)) if project_id? and project_id != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -25,8 +25,8 @@ class window.beats.VehicleTypeSet extends Backbone.Model
     if @encode_references
       @encode_references()
     _.each(@get('vehicletype') || [], (a_vehicletype) -> xml.appendChild(a_vehicletype.to_xml(doc)))
-    if @has('project_id') && @project_id != 0 then xml.setAttribute('project_id', @get('project_id'))
     xml.setAttribute('id', @get('id')) if @has('id')
+    if @has('project_id') && @project_id != 0 then xml.setAttribute('project_id', @get('project_id'))
     xml
   
   deep_copy: -> VehicleTypeSet.from_xml1(@to_xml(), {})

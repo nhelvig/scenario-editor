@@ -11,11 +11,11 @@ class window.beats.Point extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Point()
     lat = $(xml).attr('lat')
-    obj.set('lat', Number(lat))
+    obj.set('lat', Number(lat)) if lat? and lat != ""
     lng = $(xml).attr('lng')
-    obj.set('lng', Number(lng))
+    obj.set('lng', Number(lng)) if lng? and lng != ""
     elevation = $(xml).attr('elevation')
-    obj.set('elevation', Number(elevation))
+    obj.set('elevation', Number(elevation)) if elevation? and elevation != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

@@ -1,4 +1,4 @@
-class window.beats.Roadway_markers extends Backbone.Model
+class window.beats.LinkReference extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,20 +9,20 @@ class window.beats.Roadway_markers extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.Roadway_markers()
-    marker = xml.children('marker')
-    obj.set('marker', _.map($(marker), (marker_i) -> $a.Marker.from_xml2($(marker_i), deferred, object_with_id)))
+    obj = new window.beats.LinkReference()
+    id = $(xml).attr('id')
+    obj.set('id', Number(id)) if id? and id != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('roadway_markers')
+    xml = doc.createElement('link_reference')
     if @encode_references
       @encode_references()
-    _.each(@get('marker') || [], (a_marker) -> xml.appendChild(a_marker.to_xml(doc)))
+    xml.setAttribute('id', @get('id')) if @has('id')
     xml
   
-  deep_copy: -> Roadway_markers.from_xml1(@to_xml(), {})
+  deep_copy: -> LinkReference.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

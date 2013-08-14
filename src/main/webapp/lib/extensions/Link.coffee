@@ -11,7 +11,7 @@ window.beats.Link::initialize = ->
   @set('position', new window.beats.Position)
   @set('subdivide', false)
   @set('shape', new window.beats.Shape)
-  t = new window.beats.Link_type()
+  t = new window.beats.LinkType()
   @set('link_type',t)
 
 window.beats.Link::shape = -> @get("shape")
@@ -74,7 +74,7 @@ window.beats.Link::link_type = -> @get("link_type")
 window.beats.Link::type_id = -> @get("link_type").get("id") if @get("link_type")?
 window.beats.Link::type_name = -> @get("link_type").name() if @get("link_type")?
 window.beats.Link::set_type = (id, name) ->
-  @set('link_type', new window.beats.Link_type)  if not @get('link_type')?
+  @set('link_type', new window.beats.LinkType)  if not @get('link_type')?
   @get("link_type").set_name(name)
   @get("link_type").set_id(id)
   @defaults['link_type'] = id
@@ -170,7 +170,7 @@ window.beats.Link::copy_attributes = ->
     'selected': @selected()
     'speed_limit': @speed_limit()
     'subdivide': @subdivide()
-    'link_type': new $a.Link_type({id:@type_id(), name:@type_name()})
+    'link_type': new $a.LinkType({id:@type_id(), name:@type_name()})
     'dynamics': new $a.Dynamics({type:@dynamics().type()}) if @dynamics()?
     'roads': @roads() if @roads?
   }

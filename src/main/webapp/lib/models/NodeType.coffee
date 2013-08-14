@@ -1,4 +1,4 @@
-class window.beats.Link_type extends Backbone.Model
+class window.beats.NodeType extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,23 +9,23 @@ class window.beats.Link_type extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.Link_type()
+    obj = new window.beats.NodeType()
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
+    obj.set('name', name) if name? and name != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('link_type')
+    xml = doc.createElement('node_type')
     if @encode_references
       @encode_references()
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('name', @get('name')) if @has('name')
     xml
   
-  deep_copy: -> Link_type.from_xml1(@to_xml(), {})
+  deep_copy: -> NodeType.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null

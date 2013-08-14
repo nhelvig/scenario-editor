@@ -11,7 +11,7 @@ class window.beats.Dynamics extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Dynamics()
     type = $(xml).attr('type')
-    obj.set('type', type)
+    obj.set('type', type) if type? and type != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

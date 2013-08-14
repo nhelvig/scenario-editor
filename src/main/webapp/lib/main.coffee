@@ -3,16 +3,17 @@
 # classes and libraries into memory.
 # It also instantiates the AppView class and begin the rendering process.
 load_beats_classes = (after) ->
-  head.js "js/models/Beats.js", ->
-    class_paths = _.map(
-      window.beats.models_without_extensions, (cname) -> 
-        "js/models/#{cname}.js"
-    )
-    class_paths = class_paths.concat _.flatten(
+  head.js "js/util/Beats.js", ->
+    class_paths =
       _.map(
         window.beats.utils, (cname) -> 
           "js/util/#{cname}.js"
       )
+    class_paths =  class_paths.concat _.flatten(
+      _.map(
+        window.beats.models_without_extensions, (cname) -> 
+          "js/models/#{cname}.js"
+        )
     )
     class_paths = class_paths.concat _.flatten(
       _.map(
@@ -42,7 +43,7 @@ load_beats_classes = (after) ->
     head.js.apply(@, class_paths)
 
 window.load_beats = ->
-    head.js "js/models/Beats.js",
+    head.js "js/util/Beats.js",
             'js/menu-data.js',
             'js/vendor/simple-xml.js',
             'js/classes-load.js', ->

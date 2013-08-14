@@ -11,7 +11,7 @@ class window.beats.Settings extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Settings()
     units = xml.children('units')
-    obj.set('units', $a.Units.from_xml2(units, deferred, object_with_id))
+    obj.set('units', $a.Units.from_xml2(units, deferred, object_with_id)) if units? and units != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

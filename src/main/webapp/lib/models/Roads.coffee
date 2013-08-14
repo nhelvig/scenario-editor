@@ -11,7 +11,7 @@ class window.beats.Roads extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Roads()
     road = xml.children('road')
-    obj.set('road', _.map($(road), (road_i) -> $a.Road.from_xml2($(road_i), deferred, object_with_id)))
+    obj.set('road', _.map($(road), (road_i) -> $a.Road.from_xml2($(road_i), deferred, object_with_id))) if road? and road != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

@@ -10,12 +10,12 @@ class window.beats.ScenarioElement extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.ScenarioElement()
-    type = $(xml).attr('type')
-    obj.set('type', type)
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     usage = $(xml).attr('usage')
-    obj.set('usage', usage)
+    obj.set('usage', usage) if usage? and usage != ""
+    type = $(xml).attr('type')
+    obj.set('type', type) if type? and type != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -24,9 +24,9 @@ class window.beats.ScenarioElement extends Backbone.Model
     xml = doc.createElement('scenarioElement')
     if @encode_references
       @encode_references()
-    xml.setAttribute('type', @get('type')) if @has('type')
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('usage', @get('usage')) if @has('usage')
+    xml.setAttribute('type', @get('type')) if @has('type')
     xml
   
   deep_copy: -> ScenarioElement.from_xml1(@to_xml(), {})

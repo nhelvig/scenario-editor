@@ -11,37 +11,37 @@ class window.beats.Link extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Link()
     begin = xml.children('begin')
-    obj.set('begin', $a.Begin.from_xml2(begin, deferred, object_with_id))
+    obj.set('begin', $a.Begin.from_xml2(begin, deferred, object_with_id)) if begin? and begin != ""
     end = xml.children('end')
-    obj.set('end', $a.End.from_xml2(end, deferred, object_with_id))
+    obj.set('end', $a.End.from_xml2(end, deferred, object_with_id)) if end? and end != ""
     roads = xml.children('roads')
-    obj.set('roads', $a.Roads.from_xml2(roads, deferred, object_with_id))
+    obj.set('roads', $a.Roads.from_xml2(roads, deferred, object_with_id)) if roads? and roads != ""
     dynamics = xml.children('dynamics')
-    obj.set('dynamics', $a.Dynamics.from_xml2(dynamics, deferred, object_with_id))
+    obj.set('dynamics', $a.Dynamics.from_xml2(dynamics, deferred, object_with_id)) if dynamics? and dynamics != ""
     position = xml.children('position')
-    obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id))
+    obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id)) if position? and position != ""
     shape = xml.children('shape')
-    obj.set('shape', $a.Shape.from_xml2(shape, deferred, object_with_id))
+    obj.set('shape', $a.Shape.from_xml2(shape, deferred, object_with_id)) if shape? and shape != ""
     link_type = xml.children('link_type')
-    obj.set('link_type', $a.Link_type.from_xml2(link_type, deferred, object_with_id))
+    obj.set('link_type', $a.LinkType.from_xml2(link_type, deferred, object_with_id)) if link_type? and link_type != ""
     crudFlag = $(xml).attr('crudFlag')
-    obj.set('crudFlag', crudFlag)
+    obj.set('crudFlag', crudFlag) if crudFlag? and crudFlag != ""
     lanes = $(xml).attr('lanes')
-    obj.set('lanes', Number(lanes))
+    obj.set('lanes', Number(lanes)) if lanes? and lanes != ""
     lane_offset = $(xml).attr('lane_offset')
-    obj.set('lane_offset', Number(lane_offset))
+    obj.set('lane_offset', Number(lane_offset)) if lane_offset? and lane_offset != ""
     length = $(xml).attr('length')
-    obj.set('length', Number(length))
+    obj.set('length', Number(length)) if length? and length != ""
     speed_limit = $(xml).attr('speed_limit')
-    obj.set('speed_limit', Number(speed_limit))
+    obj.set('speed_limit', Number(speed_limit)) if speed_limit? and speed_limit != ""
     link_name = $(xml).attr('link_name')
-    obj.set('link_name', link_name)
+    obj.set('link_name', link_name) if link_name? and link_name != ""
     mod_stamp = $(xml).attr('mod_stamp')
-    obj.set('mod_stamp', mod_stamp)
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     in_sync = $(xml).attr('in_sync')
-    obj.set('in_sync', (in_sync.toString().toLowerCase() == 'true') if in_sync?)
+    obj.set('in_sync', (in_sync.toString().toLowerCase() == 'true') if in_sync?) if in_sync? and in_sync != ""
     if object_with_id.link
       object_with_id.link[obj.id] = obj
     if obj.resolve_references

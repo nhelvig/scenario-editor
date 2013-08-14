@@ -11,23 +11,23 @@ class window.beats.SplitRatioProfile extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.SplitRatioProfile()
     splitratio = xml.children('splitratio')
-    obj.set('splitratio', _.map($(splitratio), (splitratio_i) -> $a.Splitratio.from_xml2($(splitratio_i), deferred, object_with_id)))
+    obj.set('splitratio', _.map($(splitratio), (splitratio_i) -> $a.Splitratio.from_xml2($(splitratio_i), deferred, object_with_id))) if splitratio? and splitratio != ""
     crudFlag = $(xml).attr('crudFlag')
-    obj.set('crudFlag', crudFlag)
+    obj.set('crudFlag', crudFlag) if crudFlag? and crudFlag != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     node_id = $(xml).attr('node_id')
-    obj.set('node_id', Number(node_id))
+    obj.set('node_id', Number(node_id)) if node_id? and node_id != ""
     start_time = $(xml).attr('start_time')
-    obj.set('start_time', Number(start_time))
+    obj.set('start_time', Number(start_time)) if start_time? and start_time != ""
     dt = $(xml).attr('dt')
-    obj.set('dt', Number(dt))
+    obj.set('dt', Number(dt)) if dt? and dt != ""
     network_id = $(xml).attr('network_id')
-    obj.set('network_id', Number(network_id))
+    obj.set('network_id', Number(network_id)) if network_id? and network_id != ""
     destination_network_id = $(xml).attr('destination_network_id')
-    obj.set('destination_network_id', Number(destination_network_id))
+    obj.set('destination_network_id', Number(destination_network_id)) if destination_network_id? and destination_network_id != ""
     mod_stamp = $(xml).attr('mod_stamp')
-    obj.set('mod_stamp', mod_stamp)
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

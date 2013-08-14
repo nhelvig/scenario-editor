@@ -11,7 +11,7 @@ class window.beats.NodeList extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.NodeList()
     node = xml.children('node')
-    obj.set('node', _.map($(node), (node_i) -> $a.Node.from_xml2($(node_i), deferred, object_with_id)))
+    obj.set('node', _.map($(node), (node_i) -> $a.Node.from_xml2($(node_i), deferred, object_with_id))) if node? and node != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

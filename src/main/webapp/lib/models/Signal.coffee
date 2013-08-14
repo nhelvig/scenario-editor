@@ -11,11 +11,11 @@ class window.beats.Signal extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Signal()
     phase = xml.children('phase')
-    obj.set('phase', _.map($(phase), (phase_i) -> $a.Phase.from_xml2($(phase_i), deferred, object_with_id)))
+    obj.set('phase', _.map($(phase), (phase_i) -> $a.Phase.from_xml2($(phase_i), deferred, object_with_id))) if phase? and phase != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     node_id = $(xml).attr('node_id')
-    obj.set('node_id', Number(node_id))
+    obj.set('node_id', Number(node_id)) if node_id? and node_id != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

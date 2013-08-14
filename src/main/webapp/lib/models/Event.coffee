@@ -11,11 +11,11 @@ class window.beats.Event extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Event()
     description = xml.children('description')
-    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
+    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     display_position = xml.children('display_position')
-    obj.set('display_position', $a.Display_position.from_xml2(display_position, deferred, object_with_id))
+    obj.set('display_position', $a.DisplayPosition.from_xml2(display_position, deferred, object_with_id)) if display_position? and display_position != ""
     targetElements = xml.children('targetElements')
-    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id))
+    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id)) if targetElements? and targetElements != ""
     parameters = xml.children('parameters')
     obj.set('parameters', _.reduce(parameters.find("parameter"),
           (acc,par_xml) ->
@@ -23,19 +23,19 @@ class window.beats.Event extends Backbone.Model
             acc[wrapped_xml.attr('name')] = wrapped_xml.attr('value')
             acc
           {}
-    ))
+    )) if parameters? and parameters != ""
     splitratioEvent = xml.children('splitratioEvent')
-    obj.set('splitratioevent', $a.SplitratioEvent.from_xml2(splitratioEvent, deferred, object_with_id))
+    obj.set('splitratioevent', $a.SplitratioEvent.from_xml2(splitratioEvent, deferred, object_with_id)) if splitratioEvent? and splitratioEvent != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     tstamp = $(xml).attr('tstamp')
-    obj.set('tstamp', Number(tstamp))
+    obj.set('tstamp', Number(tstamp)) if tstamp? and tstamp != ""
     enabled = $(xml).attr('enabled')
-    obj.set('enabled', (enabled.toString().toLowerCase() == 'true') if enabled?)
+    obj.set('enabled', (enabled.toString().toLowerCase() == 'true') if enabled?) if enabled? and enabled != ""
     type = $(xml).attr('type')
-    obj.set('type', type)
+    obj.set('type', type) if type? and type != ""
     java_class = $(xml).attr('java_class')
-    obj.set('java_class', java_class)
+    obj.set('java_class', java_class) if java_class? and java_class != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

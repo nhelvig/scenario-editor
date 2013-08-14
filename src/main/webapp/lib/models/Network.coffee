@@ -11,25 +11,23 @@ class window.beats.Network extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Network()
     description = xml.children('description')
-    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
+    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     NodeList = xml.children('NodeList')
-    obj.set('nodelist', $a.NodeList.from_xml2(NodeList, deferred, object_with_id))
+    obj.set('nodelist', $a.NodeList.from_xml2(NodeList, deferred, object_with_id)) if NodeList? and NodeList != ""
     LinkList = xml.children('LinkList')
-    obj.set('linklist', $a.LinkList.from_xml2(LinkList, deferred, object_with_id))
+    obj.set('linklist', $a.LinkList.from_xml2(LinkList, deferred, object_with_id)) if LinkList? and LinkList != ""
     position = xml.children('position')
-    obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id))
-    crudFlag = $(xml).attr('crudFlag')
-    obj.set('crudFlag', crudFlag)
+    obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id)) if position? and position != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
+    obj.set('name', name) if name? and name != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     mod_stamp = $(xml).attr('mod_stamp')
-    obj.set('mod_stamp', mod_stamp)
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     lockedForEdit = $(xml).attr('lockedForEdit')
-    obj.set('lockedForEdit', (lockedForEdit.toString().toLowerCase() == 'true') if lockedForEdit?)
+    obj.set('lockedForEdit', (lockedForEdit.toString().toLowerCase() == 'true') if lockedForEdit?) if lockedForEdit? and lockedForEdit != ""
     lockedForHistory = $(xml).attr('lockedForHistory')
-    obj.set('lockedForHistory', (lockedForHistory.toString().toLowerCase() == 'true') if lockedForHistory?)
+    obj.set('lockedForHistory', (lockedForHistory.toString().toLowerCase() == 'true') if lockedForHistory?) if lockedForHistory? and lockedForHistory != ""
     if object_with_id.network
       object_with_id.network[obj.id] = obj
     if obj.resolve_references
@@ -44,7 +42,6 @@ class window.beats.Network extends Backbone.Model
     xml.appendChild(@get('nodelist').to_xml(doc)) if @has('nodelist')
     xml.appendChild(@get('linklist').to_xml(doc)) if @has('linklist')
     xml.appendChild(@get('position').to_xml(doc)) if @has('position')
-    xml.setAttribute('crudFlag', @get('crudFlag')) if @has('crudFlag')
     xml.setAttribute('name', @get('name')) if @has('name')
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')

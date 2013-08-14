@@ -11,25 +11,25 @@ class window.beats.Node extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Node()
     roadway_markers = xml.children('roadway_markers')
-    obj.set('roadway_markers', $a.Roadway_markers.from_xml2(roadway_markers, deferred, object_with_id))
+    obj.set('roadway_markers', $a.RoadwayMarkers.from_xml2(roadway_markers, deferred, object_with_id)) if roadway_markers? and roadway_markers != ""
     outputs = xml.children('outputs')
-    obj.set('outputs', $a.Outputs.from_xml2(outputs, deferred, object_with_id))
+    obj.set('outputs', $a.Outputs.from_xml2(outputs, deferred, object_with_id)) if outputs? and outputs != ""
     inputs = xml.children('inputs')
-    obj.set('inputs', $a.Inputs.from_xml2(inputs, deferred, object_with_id))
+    obj.set('inputs', $a.Inputs.from_xml2(inputs, deferred, object_with_id)) if inputs? and inputs != ""
     position = xml.children('position')
-    obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id))
+    obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id)) if position? and position != ""
     node_type = xml.children('node_type')
-    obj.set('node_type', $a.Node_type.from_xml2(node_type, deferred, object_with_id))
+    obj.set('node_type', $a.NodeType.from_xml2(node_type, deferred, object_with_id)) if node_type? and node_type != ""
     crudFlag = $(xml).attr('crudFlag')
-    obj.set('crudFlag', crudFlag)
+    obj.set('crudFlag', crudFlag) if crudFlag? and crudFlag != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     node_name = $(xml).attr('node_name')
-    obj.set('node_name', node_name)
+    obj.set('node_name', node_name) if node_name? and node_name != ""
     in_sync = $(xml).attr('in_sync')
-    obj.set('in_sync', (in_sync.toString().toLowerCase() == 'true') if in_sync?)
+    obj.set('in_sync', (in_sync.toString().toLowerCase() == 'true') if in_sync?) if in_sync? and in_sync != ""
     mod_stamp = $(xml).attr('mod_stamp')
-    obj.set('mod_stamp', mod_stamp)
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     if object_with_id.node
       object_with_id.node[obj.id] = obj
     if obj.resolve_references

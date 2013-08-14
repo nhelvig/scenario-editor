@@ -11,7 +11,7 @@ class window.beats.TargetElements extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.TargetElements()
     scenarioElement = xml.children('scenarioElement')
-    obj.set('scenarioelement', _.map($(scenarioElement), (scenarioElement_i) -> $a.ScenarioElement.from_xml2($(scenarioElement_i), deferred, object_with_id)))
+    obj.set('scenarioelement', _.map($(scenarioElement), (scenarioElement_i) -> $a.ScenarioElement.from_xml2($(scenarioElement_i), deferred, object_with_id))) if scenarioElement? and scenarioElement != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

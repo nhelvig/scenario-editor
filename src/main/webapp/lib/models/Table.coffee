@@ -11,11 +11,11 @@ class window.beats.Table extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Table()
     column_names = xml.children('column_names')
-    obj.set('column_names', $a.Column_names.from_xml2(column_names, deferred, object_with_id))
+    obj.set('column_names', $a.ColumnNames.from_xml2(column_names, deferred, object_with_id)) if column_names? and column_names != ""
     row = xml.children('row')
-    obj.set('row', _.map($(row), (row_i) -> $a.Row.from_xml2($(row_i), deferred, object_with_id)))
+    obj.set('row', _.map($(row), (row_i) -> $a.Row.from_xml2($(row_i), deferred, object_with_id))) if row? and row != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
+    obj.set('name', name) if name? and name != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

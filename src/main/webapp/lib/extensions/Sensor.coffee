@@ -29,7 +29,7 @@ window.beats.Sensor::type_id = -> @get("sensor_type").ident() if @get("sensor_ty
 window.beats.Sensor::type_name = -> @get("sensor_type").name() if @get("sensor_type")?
 
 window.beats.Sensor::set_type = (id, name) ->
-  @set('sensor_type', new window.beats.Sensor_type)  if not @get('sensor_type')?
+  @set('sensor_type', new window.beats.SensorType)  if not @get('sensor_type')?
   @get("sensor_type").set_name(name)
   @get("sensor_type").set_id(id)
   @defaults['sensor_type'] = id
@@ -53,11 +53,11 @@ window.beats.Sensor::set_display_position = (pointField, val) ->
   @get('display_position').get('point')[0].set(pointField, val)
 
 window.beats.Sensor::initialize = ->
-  @set('display_position', new window.beats.Display_position)
+  @set('display_position', new window.beats.DisplayPosition)
 
 window.beats.Sensor::from_position = (position, link) ->
   s = new window.beats.Sensor
-  p = new window.beats.Display_position()
+  p = new window.beats.DisplayPosition()
   pt = new window.beats.Point()
   pt.set(
           { 
@@ -87,7 +87,7 @@ window.beats.Sensor.from_station_row = (row) ->
     lat: row.lat
     lng: row.lng
     elevation: 0
-    display_position: new window.beats.Display_position()
+    display_position: new window.beats.DisplayPosition()
 
   sensor.set('link_type', 'HOV') if row.link_type is 'HV'
   sensor.set('link_type', 'FW') if row.link_type is 'ML'

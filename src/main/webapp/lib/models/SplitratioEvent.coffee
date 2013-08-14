@@ -10,10 +10,8 @@ class window.beats.SplitratioEvent extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.SplitratioEvent()
-    VehicleTypeOrder = xml.children('VehicleTypeOrder')
-    obj.set('vehicletypeorder', $a.VehicleTypeOrder.from_xml2(VehicleTypeOrder, deferred, object_with_id))
     splitratio = xml.children('splitratio')
-    obj.set('splitratio', _.map($(splitratio), (splitratio_i) -> $a.Splitratio.from_xml2($(splitratio_i), deferred, object_with_id)))
+    obj.set('splitratio', _.map($(splitratio), (splitratio_i) -> $a.Splitratio.from_xml2($(splitratio_i), deferred, object_with_id))) if splitratio? and splitratio != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -22,7 +20,6 @@ class window.beats.SplitratioEvent extends Backbone.Model
     xml = doc.createElement('splitratioEvent')
     if @encode_references
       @encode_references()
-    xml.appendChild(@get('vehicletypeorder').to_xml(doc)) if @has('vehicletypeorder')
     _.each(@get('splitratio') || [], (a_splitratio) -> xml.appendChild(a_splitratio.to_xml(doc)))
     xml
   

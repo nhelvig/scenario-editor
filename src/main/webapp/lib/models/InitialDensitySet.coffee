@@ -11,19 +11,19 @@ class window.beats.InitialDensitySet extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.InitialDensitySet()
     description = xml.children('description')
-    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id))
+    obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     density = xml.children('density')
-    obj.set('density', _.map($(density), (density_i) -> $a.Density.from_xml2($(density_i), deferred, object_with_id)))
-    project_id = $(xml).attr('project_id')
-    obj.set('project_id', Number(project_id))
+    obj.set('density', _.map($(density), (density_i) -> $a.Density.from_xml2($(density_i), deferred, object_with_id))) if density? and density != ""
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
+    project_id = $(xml).attr('project_id')
+    obj.set('project_id', Number(project_id)) if project_id? and project_id != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
+    obj.set('name', name) if name? and name != ""
     tstamp = $(xml).attr('tstamp')
-    obj.set('tstamp', Number(tstamp))
+    obj.set('tstamp', Number(tstamp)) if tstamp? and tstamp != ""
     modStamp = $(xml).attr('modStamp')
-    obj.set('modStamp', modStamp)
+    obj.set('modStamp', modStamp) if modStamp? and modStamp != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -34,8 +34,8 @@ class window.beats.InitialDensitySet extends Backbone.Model
       @encode_references()
     xml.appendChild(@get('description').to_xml(doc)) if @has('description')
     _.each(@get('density') || [], (a_density) -> xml.appendChild(a_density.to_xml(doc)))
-    if @has('project_id') && @project_id != 0 then xml.setAttribute('project_id', @get('project_id'))
     xml.setAttribute('id', @get('id')) if @has('id')
+    xml.setAttribute('project_id', @get('project_id')) if @has('project_id')
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
     if @has('tstamp') && @tstamp != 0.0 then xml.setAttribute('tstamp', @get('tstamp'))
     xml.setAttribute('modStamp', @get('modStamp')) if @has('modStamp')
