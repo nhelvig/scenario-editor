@@ -2,28 +2,28 @@ $a = window.beats
 
 $a.models_with_extensions = [ 'Begin',
   'Controller', 'ControllerSet', 'DemandProfile', 'Demand',
-  'Density', 'Display_position', 'Dynamics', 'End', 'Event', 'EventSet',
-  'FundamentalDiagramProfile', 'Input', 'Link', 'LinkList', 'Link_type',
-  'Marker', 'Network', 'NetworkSet', 'Node', 'Node_type', 'NodeList', 
+  'Density', 'DisplayPosition', 'Dynamics', 'End', 'Event', 'EventSet',
+  'FeedbackElements', 'FundamentalDiagramProfile', 'Input',
+  'Link', 'LinkList', 'LinkType',
+  'Marker', 'Network', 'NetworkSet', 'Node', 'NodeType', 'NodeList', 
   'Output', 'Phase', 'Point', 'Position', 'Road',
-  'Roads', 'Roadway_markers', 'Scenario', 'Sensor', 'SensorSet', 'Sensor_type',
+  'Roads', 'RoadwayMarkers', 'Scenario', 'Sensor', 'SensorSet', 'SensorType',
   'Settings', 'Signal', 'SignalSet', 'Splitratio', 'SplitRatioProfile'
 ]
 
-$a.models_without_extensions = [ 'ActivationIntervals', 'Beats'
-  'Column', 'Column_name', 'Column_names', 'DemandSet', 'Description',
+$a.models_without_extensions = [ 'ActivationIntervals',
+  'Column', 'ColumnName', 'ColumnNames', 'DemandSet', 'Description',
   'DestinationNetworks','DownstreamBoundaryCapacityProfile',
-  'DownstreamBoundaryCapacitySet', 'FeedbackElements',
+  'DownstreamBoundaryCapacitySet', 
   'FundamentalDiagram', 'FundamentalDiagramSet', 'FundamentalDiagramType',
   'InitialDensitySet', 'Inputs',
-  'Interval', 'Link_reference', 'Link_references',
-  'Linkpair','NetworkConnections', 'Networkpair',  'Node_type', 'Outputs',
-  'Parameter', 'Parameters', 'Queue_controller', 
-  'Route', 'Route_links', 'Row', 'ScenarioElement', 'Sensor_type', 
+  'Interval', 'LinkReference', 'LinkReferences',
+  'Linkpair','NetworkConnections', 'Networkpair', 'Outputs',
+  'Parameter', 'Parameters', 'QueueController', 
+  'Route', 'RouteLink', 'RouteSet', 'Row', 'ScenarioElement',  
   'Shape', 'SplitratioEvent',
   'SplitRatioSet', 'Table', 'TargetElements', 'Units',
-  'UserSession', 'VehicleType', 'VehicleTypeOrder',
-  'VehicleTypeSet','Weavingfactors', 'WeavingFactorSet' 
+  'VehicleType', 'VehicleTypeSet','Weavingfactors', 'WeavingFactorSet' 
   ]
 
 $a.collections = ['LinkListCollection', 'LinkListView',
@@ -47,8 +47,8 @@ $a.map_views = [
   'TreeChildItemNodeView', 'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.utils = ['ArrayText',  'ContextMenuHandler', 'Constants', 'Environment',
-  'GoogleMapRouteHandler', 'ReferenceHelper', 'Util'
+$a.utils = ['ArrayText', 'Beats', 'ContextMenuHandler', 'Constants', 'Environment',
+  'GoogleMapRouteHandler', 'ReferenceHelper', 'UserSession', 'Util'
 ]
 
 $a.overrides = [ 'Number', 'Sync' ]

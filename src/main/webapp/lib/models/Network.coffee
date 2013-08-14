@@ -13,9 +13,9 @@ class window.beats.Network extends Backbone.Model
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     NodeList = xml.children('NodeList')
-    obj.set('nodelist', $a.NodeList.from_xml2(NodeList, deferred, object_with_id)) if nodelist? and nodelist != ""
+    obj.set('nodelist', $a.NodeList.from_xml2(NodeList, deferred, object_with_id)) if NodeList? and NodeList != ""
     LinkList = xml.children('LinkList')
-    obj.set('linklist', $a.LinkList.from_xml2(LinkList, deferred, object_with_id)) if linklist? and linklist != ""
+    obj.set('linklist', $a.LinkList.from_xml2(LinkList, deferred, object_with_id)) if LinkList? and LinkList != ""
     position = xml.children('position')
     obj.set('position', $a.Position.from_xml2(position, deferred, object_with_id)) if position? and position != ""
     name = $(xml).attr('name')

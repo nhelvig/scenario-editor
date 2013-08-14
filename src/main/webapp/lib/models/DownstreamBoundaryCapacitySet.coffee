@@ -13,7 +13,7 @@ class window.beats.DownstreamBoundaryCapacitySet extends Backbone.Model
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     downstreamBoundaryCapacityProfile = xml.children('downstreamBoundaryCapacityProfile')
-    obj.set('downstreamboundarycapacityprofile', _.map($(downstreamBoundaryCapacityProfile), (downstreamBoundaryCapacityProfile_i) -> $a.DownstreamBoundaryCapacityProfile.from_xml2($(downstreamBoundaryCapacityProfile_i), deferred, object_with_id))) if downstreamboundarycapacityprofile? and downstreamboundarycapacityprofile != ""
+    obj.set('downstreamboundarycapacityprofile', _.map($(downstreamBoundaryCapacityProfile), (downstreamBoundaryCapacityProfile_i) -> $a.DownstreamBoundaryCapacityProfile.from_xml2($(downstreamBoundaryCapacityProfile_i), deferred, object_with_id))) if downstreamBoundaryCapacityProfile? and downstreamBoundaryCapacityProfile != ""
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     project_id = $(xml).attr('project_id')

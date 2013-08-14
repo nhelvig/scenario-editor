@@ -13,7 +13,7 @@ class window.beats.DemandSet extends Backbone.Model
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     demandProfile = xml.children('demandProfile')
-    obj.set('demandprofile', _.map($(demandProfile), (demandProfile_i) -> $a.DemandProfile.from_xml2($(demandProfile_i), deferred, object_with_id))) if demandprofile? and demandprofile != ""
+    obj.set('demandprofile', _.map($(demandProfile), (demandProfile_i) -> $a.DemandProfile.from_xml2($(demandProfile_i), deferred, object_with_id))) if demandProfile? and demandProfile != ""
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     project_id = $(xml).attr('project_id')

@@ -13,7 +13,7 @@ class window.beats.SplitRatioSet extends Backbone.Model
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     splitRatioProfile = xml.children('splitRatioProfile')
-    obj.set('splitratioprofile', _.map($(splitRatioProfile), (splitRatioProfile_i) -> $a.SplitRatioProfile.from_xml2($(splitRatioProfile_i), deferred, object_with_id))) if splitratioprofile? and splitratioprofile != ""
+    obj.set('splitratioprofile', _.map($(splitRatioProfile), (splitRatioProfile_i) -> $a.SplitRatioProfile.from_xml2($(splitRatioProfile_i), deferred, object_with_id))) if splitRatioProfile? and splitRatioProfile != ""
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     project_id = $(xml).attr('project_id')

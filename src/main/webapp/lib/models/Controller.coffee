@@ -21,13 +21,13 @@ class window.beats.Controller extends Backbone.Model
     display_position = xml.children('display_position')
     obj.set('display_position', $a.DisplayPosition.from_xml2(display_position, deferred, object_with_id)) if display_position? and display_position != ""
     targetElements = xml.children('targetElements')
-    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id)) if targetelements? and targetelements != ""
+    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id)) if targetElements? and targetElements != ""
     feedbackElements = xml.children('feedbackElements')
-    obj.set('feedbackelements', $a.FeedbackElements.from_xml2(feedbackElements, deferred, object_with_id)) if feedbackelements? and feedbackelements != ""
+    obj.set('feedbackelements', $a.FeedbackElements.from_xml2(feedbackElements, deferred, object_with_id)) if feedbackElements? and feedbackElements != ""
     queue_controller = xml.children('queue_controller')
     obj.set('queue_controller', $a.QueueController.from_xml2(queue_controller, deferred, object_with_id)) if queue_controller? and queue_controller != ""
     ActivationIntervals = xml.children('ActivationIntervals')
-    obj.set('activationintervals', $a.ActivationIntervals.from_xml2(ActivationIntervals, deferred, object_with_id)) if activationintervals? and activationintervals != ""
+    obj.set('activationintervals', $a.ActivationIntervals.from_xml2(ActivationIntervals, deferred, object_with_id)) if ActivationIntervals? and ActivationIntervals != ""
     table = xml.children('table')
     obj.set('table', _.map($(table), (table_i) -> $a.Table.from_xml2($(table_i), deferred, object_with_id))) if table? and table != ""
     name = $(xml).attr('name')

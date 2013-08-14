@@ -15,7 +15,7 @@ class window.beats.Event extends Backbone.Model
     display_position = xml.children('display_position')
     obj.set('display_position', $a.DisplayPosition.from_xml2(display_position, deferred, object_with_id)) if display_position? and display_position != ""
     targetElements = xml.children('targetElements')
-    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id)) if targetelements? and targetelements != ""
+    obj.set('targetelements', $a.TargetElements.from_xml2(targetElements, deferred, object_with_id)) if targetElements? and targetElements != ""
     parameters = xml.children('parameters')
     obj.set('parameters', _.reduce(parameters.find("parameter"),
           (acc,par_xml) ->
@@ -25,7 +25,7 @@ class window.beats.Event extends Backbone.Model
           {}
     )) if parameters? and parameters != ""
     splitratioEvent = xml.children('splitratioEvent')
-    obj.set('splitratioevent', $a.SplitratioEvent.from_xml2(splitratioEvent, deferred, object_with_id)) if splitratioevent? and splitratioevent != ""
+    obj.set('splitratioevent', $a.SplitratioEvent.from_xml2(splitratioEvent, deferred, object_with_id)) if splitratioEvent? and splitratioEvent != ""
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     tstamp = $(xml).attr('tstamp')

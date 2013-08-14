@@ -13,7 +13,7 @@ class window.beats.FundamentalDiagramSet extends Backbone.Model
     description = xml.children('description')
     obj.set('description', $a.Description.from_xml2(description, deferred, object_with_id)) if description? and description != ""
     fundamentalDiagramProfile = xml.children('fundamentalDiagramProfile')
-    obj.set('fundamentaldiagramprofile', _.map($(fundamentalDiagramProfile), (fundamentalDiagramProfile_i) -> $a.FundamentalDiagramProfile.from_xml2($(fundamentalDiagramProfile_i), deferred, object_with_id))) if fundamentaldiagramprofile? and fundamentaldiagramprofile != ""
+    obj.set('fundamentaldiagramprofile', _.map($(fundamentalDiagramProfile), (fundamentalDiagramProfile_i) -> $a.FundamentalDiagramProfile.from_xml2($(fundamentalDiagramProfile_i), deferred, object_with_id))) if fundamentalDiagramProfile? and fundamentalDiagramProfile != ""
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     project_id = $(xml).attr('project_id')

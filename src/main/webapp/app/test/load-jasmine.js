@@ -33,7 +33,7 @@
   ];
   
   load_app_classes = function(after) {
-    return head.js("../js/models/Beats.js",'../js/classes-load.js', function() {
+    return head.js("../js/util/Beats.js",'../js/classes-load.js', function() {
       var class_paths;
       class_paths = _.map(window.beats.models_without_extensions, function(cname) {
         return "../js/models/" + cname + ".js";
@@ -84,7 +84,7 @@
   };
   
   window.loadApp = function(after) {
-    return head.js("../js/models/Beats.js", '../js/menu-data.js', 'scenario-xml.js', function() {
+    return head.js("../js/util/Beats.js", '../js/menu-data.js', 'scenario-xml.js', function() {
       return load_app_classes(function() {
             return load_jasmine_specs_templates(after);
       });

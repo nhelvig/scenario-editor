@@ -11,9 +11,9 @@ class window.beats.FundamentalDiagramProfile extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.FundamentalDiagramProfile()
     fundamentalDiagram = xml.children('fundamentalDiagram')
-    obj.set('fundamentaldiagram', _.map($(fundamentalDiagram), (fundamentalDiagram_i) -> $a.FundamentalDiagram.from_xml2($(fundamentalDiagram_i), deferred, object_with_id))) if fundamentaldiagram? and fundamentaldiagram != ""
+    obj.set('fundamentaldiagram', _.map($(fundamentalDiagram), (fundamentalDiagram_i) -> $a.FundamentalDiagram.from_xml2($(fundamentalDiagram_i), deferred, object_with_id))) if fundamentalDiagram? and fundamentalDiagram != ""
     fundamentalDiagramType = xml.children('fundamentalDiagramType')
-    obj.set('fundamentaldiagramtype', $a.FundamentalDiagramType.from_xml2(fundamentalDiagramType, deferred, object_with_id)) if fundamentaldiagramtype? and fundamentaldiagramtype != ""
+    obj.set('fundamentaldiagramtype', $a.FundamentalDiagramType.from_xml2(fundamentalDiagramType, deferred, object_with_id)) if fundamentalDiagramType? and fundamentalDiagramType != ""
     crudFlag = $(xml).attr('crudFlag')
     obj.set('crudFlag', crudFlag) if crudFlag? and crudFlag != ""
     id = $(xml).attr('id')
