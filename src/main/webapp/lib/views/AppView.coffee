@@ -20,7 +20,6 @@ class window.beats.AppView extends Backbone.View
     'app:open_scenario' : 'openScenario'
     'app:save_scenario' : 'saveScenario'
     'map:alert' : 'showAlert'
-    'app:login' : '_login'
     'app:open_network_browser_db' : '_openNetworkBrowser'
     'app:open_scenario_browser_db' : '_openScenarioBrowser'
     'app:load_network' : '_loadNetwork'
@@ -50,6 +49,8 @@ class window.beats.AppView extends Backbone.View
       @_displayMap($a.fileText) if $a.Environment.DEV is true
       google.maps.event.clearListeners($a.map, 'idle')
     )
+    # add click event on log in screen
+    $('#login-nav-container').click(@_login)
     
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))

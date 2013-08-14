@@ -50,7 +50,7 @@ $a.nav_bar_menu_items =
     nav_bar_menu_item 'New Network',
         (-> $a.broker.trigger("app:new_network_browser_db")),
         [NETWORK]
-    nav_bar_menu_item 'Open Network',
+    nav_bar_menu_item 'Open Via Network',
         (-> $a.broker.trigger("app:open_network_browser_db")),
         [NETWORK]
     nav_bar_menu_item 'Save New Via Network',
@@ -62,7 +62,7 @@ $a.nav_bar_menu_items =
     nav_bar_menu_item 'New Route',
         (-> $a.broker.trigger("app:new_route_browser_db")),
         [ROUTE]
-    nav_bar_menu_item 'Open Route',
+    nav_bar_menu_item 'Open Via Route',
         (-> $a.broker.trigger("app:open_route_browser_db")),
         [ROUTE]
     nav_bar_menu_item 'Save New Via Route',
