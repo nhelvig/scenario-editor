@@ -28,6 +28,7 @@ class window.beats.AppView extends Backbone.View
     'app:load_scenario' : '_loadScenario'
     'map:show_satellite' : '_showSatelliteTiles'
     'map:hide_satellite' : '_showSatelliteTiles'
+    'map:import_pems' : '_importPems'
   }
   
   initialize: ->
@@ -95,6 +96,10 @@ class window.beats.AppView extends Backbone.View
     attrs = { menuItems: $a.nav_bar_menu_items, attach: '#main-nav div' }
     @nbv = new $a.NavBarView(attrs)
 
+  # This begins the ImportPems Polygon creation
+  _importPems: () ->
+    new $a.ImportPemsView()
+  
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
   # The two files passed to the writeAndDownloadXML method are scenario.php
