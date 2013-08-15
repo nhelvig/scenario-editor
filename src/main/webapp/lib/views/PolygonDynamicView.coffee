@@ -11,9 +11,15 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
         path: google.maps.SymbolPath.CIRCLE
         scale: 5
       }
+  gme = google.maps.event
   
   constructor: ->
     $a.map.setOptions({draggableCursor:'crosshair'})
+    gme = google.maps.event
+    gme.addDomListener(window, 'keydown', (e) => @exitPolygonMode(e))
+    modeMsg = 'Polygon Mode: Click the polygon to retrieve data or '
+    modeMsg += 'press \'Esc\' to exit.'
+    $a.broker.trigger('app:display_message:info', modeMsg)
     @drawPolygon()
   
   manageDraw : () ->
@@ -38,6 +44,7 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
       fillOpacity : 0.2
       editable: true
       draggable: true
+      clickable: true
     })
     gme = google.maps.event
     gme.addListener($a.map, 'click', (e) =>
@@ -45,8 +52,15 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
       @manageDraw()
     )
     gme.addListener(@poly, 'click', (e) =>
-      @vertices.splice(e.vertex, 1)
-      @manageDraw()
+      if !e.vertex?
+        $a.map.setOptions({draggableCursor:'hand'})
+        @vertices = []
+        @removePolygon()
+        $a.broker.trigger('app:show_message:success', 'Retrieving Pems Data')
+        $a.broker.trigger('app:display_message:info', 'Scenario Editing Mode')
+      else
+        @vertices.splice(e.vertex, 1)
+        @manageDraw()
     )
   
   removePolygon : ->
@@ -99,6 +113,13 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
   
   removeLine: ->
     @line?.setMap(null)
+  
+  exitPolygonMode: (e) ->
+    if e.keyCode == 27
+      @vertices = []
+      $a.map.setOptions({draggableCursor:'hand'})
+      @removePolygon()
+      $a.broker.trigger('app:display_message:info', 'Scenario Editing Mode') 
   
   _getMarkerOpts : (color) ->
     @markerIconOpts.fillColor = color
