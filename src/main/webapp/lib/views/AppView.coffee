@@ -98,7 +98,7 @@ class window.beats.AppView extends Backbone.View
 
   # This begins the ImportPems Polygon creation
   _importPems: () ->
-    new $a.ImportPemsView()
+    new $a.PolygonDynamicView()
   
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
