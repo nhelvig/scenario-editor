@@ -24,6 +24,10 @@ class window.beats.DemandSet extends Backbone.Model
     obj.set('crudFlag', crudFlag) if crudFlag? and crudFlag != ""
     mod_stamp = $(xml).attr('mod_stamp')
     obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
+    lockedForEdit = $(xml).attr('lockedForEdit')
+    obj.set('lockedForEdit', (lockedForEdit.toString().toLowerCase() == 'true') if lockedForEdit?) if lockedForEdit? and lockedForEdit != ""
+    lockedForHistory = $(xml).attr('lockedForHistory')
+    obj.set('lockedForHistory', (lockedForHistory.toString().toLowerCase() == 'true') if lockedForHistory?) if lockedForHistory? and lockedForHistory != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -39,6 +43,8 @@ class window.beats.DemandSet extends Backbone.Model
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
     xml.setAttribute('crudFlag', @get('crudFlag')) if @has('crudFlag')
     if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
+    if @has('lockedForEdit') && @lockedForEdit != false then xml.setAttribute('lockedForEdit', @get('lockedForEdit'))
+    if @has('lockedForHistory') && @lockedForHistory != false then xml.setAttribute('lockedForHistory', @get('lockedForHistory'))
     xml
   
   deep_copy: -> DemandSet.from_xml1(@to_xml(), {})

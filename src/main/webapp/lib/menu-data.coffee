@@ -100,7 +100,7 @@ $a.nav_bar_menu_items =
   ]
   Tools: [
     nav_bar_menu_item 'Import PeMS data',
-        noconfig,
+        (-> $a.broker.trigger("map:import_pems")),
         [SCENARIO]
     nav_bar_menu_item 'Calibrate',
         noconfig,

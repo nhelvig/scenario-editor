@@ -1,4 +1,4 @@
-class window.beats.VehicleType extends Backbone.Model
+class window.beats.CalibrationAlgorithmType extends Backbone.Model
   ### $a = alias for beats namespace ###
   $a = window.beats
   @from_xml1: (xml, object_with_id) ->
@@ -9,34 +9,32 @@ class window.beats.VehicleType extends Backbone.Model
   
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
-    obj = new window.beats.VehicleType()
+    obj = new window.beats.CalibrationAlgorithmType()
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     name = $(xml).attr('name')
     obj.set('name', name) if name? and name != ""
-    size_factor = $(xml).attr('size_factor')
-    obj.set('size_factor', Number(size_factor)) if size_factor? and size_factor != ""
-    is_standard = $(xml).attr('is_standard')
-    obj.set('is_standard', Number(is_standard)) if is_standard? and is_standard != ""
+    description = $(xml).attr('description')
+    obj.set('description', description) if description? and description != ""
+    in_use = $(xml).attr('in_use')
+    obj.set('in_use', Number(in_use)) if in_use? and in_use != ""
     mod_stamp = $(xml).attr('mod_stamp')
     obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
-    if object_with_id.vehicle_type
-      object_with_id.vehicle_type[obj.id] = obj
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
   
   to_xml: (doc) ->
-    xml = doc.createElement('vehicleType')
+    xml = doc.createElement('calibrationAlgorithmType')
     if @encode_references
       @encode_references()
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('name', @get('name')) if @has('name')
-    if @has('size_factor') && @size_factor != 1 then xml.setAttribute('size_factor', @get('size_factor'))
-    xml.setAttribute('is_standard', @get('is_standard')) if @has('is_standard')
+    xml.setAttribute('description', @get('description')) if @has('description')
+    xml.setAttribute('in_use', @get('in_use')) if @has('in_use')
     if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
-  deep_copy: -> VehicleType.from_xml1(@to_xml(), {})
+  deep_copy: -> CalibrationAlgorithmType.from_xml1(@to_xml(), {})
   inspect: (depth = 1, indent = false, orig_depth = -1) -> null
   make_tree: -> null
