@@ -10,8 +10,8 @@ class window.beats.VehicleTypeSet extends Backbone.Model
   @from_xml2: (xml, deferred, object_with_id) ->
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.VehicleTypeSet()
-    VehicleType = xml.children('VehicleType')
-    obj.set('vehicletype', _.map($(VehicleType), (VehicleType_i) -> $a.VehicleType.from_xml2($(VehicleType_i), deferred, object_with_id))) if VehicleType? and VehicleType != ""
+    vehicleType = xml.children('vehicleType')
+    obj.set('vehicletype', _.map($(vehicleType), (vehicleType_i) -> $a.VehicleType.from_xml2($(vehicleType_i), deferred, object_with_id))) if vehicleType? and vehicleType != ""
     id = $(xml).attr('id')
     obj.set('id', Number(id)) if id? and id != ""
     project_id = $(xml).attr('project_id')

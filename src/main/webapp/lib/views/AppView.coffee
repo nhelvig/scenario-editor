@@ -20,7 +20,6 @@ class window.beats.AppView extends Backbone.View
     'app:open_scenario' : 'openScenario'
     'app:save_scenario' : 'saveScenario'
     'map:alert' : 'showAlert'
-    'app:login' : '_login'
     'app:open_network_browser_db' : '_openNetworkBrowser'
     'app:open_scenario_browser_db' : '_openScenarioBrowser'
     'app:load_network' : '_loadNetwork'
@@ -29,6 +28,7 @@ class window.beats.AppView extends Backbone.View
     'app:load_scenario' : '_loadScenario'
     'map:show_satellite' : '_showSatelliteTiles'
     'map:hide_satellite' : '_showSatelliteTiles'
+    'map:import_pems' : '_importPems'
   }
   
   initialize: ->
@@ -50,6 +50,8 @@ class window.beats.AppView extends Backbone.View
       @_displayMap($a.fileText) if $a.Environment.DEV is true
       google.maps.event.clearListeners($a.map, 'idle')
     )
+    # add click event on log in screen
+    $('#login-nav-container').click(@_login)
     
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
@@ -94,6 +96,10 @@ class window.beats.AppView extends Backbone.View
     attrs = { menuItems: $a.nav_bar_menu_items, attach: '#main-nav div' }
     @nbv = new $a.NavBarView(attrs)
 
+  # This begins the ImportPems Polygon creation
+  _importPems: () ->
+    new $a.PolygonDynamicView()
+  
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
   # The two files passed to the writeAndDownloadXML method are scenario.php
