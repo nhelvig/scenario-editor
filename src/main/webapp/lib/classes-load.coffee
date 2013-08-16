@@ -12,9 +12,9 @@ $a.models_with_extensions = [ 'Begin',
 ]
 
 $a.models_without_extensions = [ 'ActivationIntervals',
-  'Column', 'ColumnName', 'ColumnNames', 'DemandSet', 'Description',
-  'DestinationNetworks','DownstreamBoundaryCapacityProfile',
-  'DownstreamBoundaryCapacitySet', 
+  'CalibrationAlgorithmType', 'Column', 'ColumnName', 'ColumnNames',
+  'DemandSet', 'Description', 'DestinationNetworks',
+  'DownstreamBoundaryCapacityProfile', 'DownstreamBoundaryCapacitySet', 
   'FundamentalDiagram', 'FundamentalDiagramSet', 'FundamentalDiagramType',
   'InitialDensitySet', 'Inputs',
   'Interval', 'LinkReference', 'LinkReferences',
