@@ -72,6 +72,8 @@ class window.beats.AppView extends Backbone.View
         style: google.maps.ZoomControlStyle.DEFAULT,
         position: google.maps.ControlPosition.TOP_LEFT
     }
+    # Enable the visual refresh (new maps)
+    google.maps.visualRefresh = true
     #attach the map to the namespace
     $a.map = new google.maps.Map $("#map_canvas")[0], mapOpts
     
