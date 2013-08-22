@@ -8,7 +8,8 @@ $a.models_with_extensions = [ 'Begin',
   'Marker', 'Network', 'NetworkSet', 'Node', 'NodeType', 'NodeList', 
   'Output', 'Phase', 'Point', 'Position', 'Road',
   'Roads', 'RoadwayMarkers', 'Scenario', 'Sensor', 'SensorSet', 'SensorType',
-  'Settings', 'Signal', 'SignalSet', 'Splitratio', 'SplitRatioProfile'
+  'Settings', 'Signal', 'SignalSet', 'SplitRatioSet', 'Splitratio',
+  'SplitRatioProfile'
 ]
 
 $a.models_without_extensions = [ 'ActivationIntervals',
@@ -22,7 +23,7 @@ $a.models_without_extensions = [ 'ActivationIntervals',
   'Parameter', 'Parameters', 'QueueController', 
   'Route', 'RouteLink', 'RouteSet', 'Row', 'ScenarioElement',  
   'Shape', 'SplitratioEvent',
-  'SplitRatioSet', 'Table', 'TargetElements', 'Units',
+  'Table', 'TargetElements', 'Units',
   'VehicleType', 'VehicleTypeSet','Weavingfactors', 'WeavingFactorSet' 
   ]
 

@@ -128,16 +128,16 @@ window.beats.Scenario::stampSchemaVersion = ->
   @set('schemaVersion', window.beats.SchemaVersion)
 
 window.beats.Scenario::encode_references = ->
-  demandprofileset = @get('demandprofileset')
+  demandset = @get('demandset')
   capacityprofileset = @get('downstreamboundarycapacityprofileset')
   initialdensityset = @get('initialdensityset')
-  splitratioprofileset = @get('splitratioprofileset')
+  splitratioset = @get('splitratioset')
   network = @network()
   linklist = network.get('linklist') if network
   nodelist = network.get('nodelist') if network
 
-  if demandprofileset && demandprofileset.has('demand')
-    demandprofileset.set('demand', [])
+  if demandset && demandset.has('demand')
+    demandset.set('demand', [])
 
   if capacityprofileset && capacityprofileset.has('capacity')
     capacityprofileset.set('capacity', [])
@@ -145,19 +145,19 @@ window.beats.Scenario::encode_references = ->
   if initialdensityset && initialdensityset.has('density')
     initialdensityset.set('density', [])
 
-  if splitratioprofileset && splitratioprofileset.has('splitratios')
-    splitratioprofileset.set('splitratios', [])
+  if splitratioset && splitratioset.has('splitratioprofile')
+    splitratioset.set('splitratioprofile', [])
 
   if linklist and linklist.has('link')
     _.each(linklist.get('link'),
           (link) =>
             if link.has('demand')
-              if(!demandprofileset)
-                @set('demandprofileset', new window.beats.DemandSet())
-                demandprofileset = @get('demandprofileset')
-              if(!demandprofileset.has('demandprofile'))
-                demandprofileset.set('demandprofile', [])
-              demandprofileset.get('demandprofile').push(link.get('demand'))
+              if(!demandset)
+                @set('demandset', new window.beats.DemandSet())
+                demandset = @get('demandset')
+              if(!demandset.has('demandprofile'))
+                demandset.set('demandprofile', [])
+              demandset.get('demandprofile').push(link.get('demand'))
 
             if link.has('capacity')
               if(!capacityprofileset)
@@ -180,12 +180,12 @@ window.beats.Scenario::encode_references = ->
       _.each(nodelist.get('node'),
         (node) =>
           if (node.has('splitratios'))
-            if(!splitratioprofileset)
-              @set('splitratioprofileset', new window.beats.SplitRatioSet())
-              splitratioprofileset = @get('splitratioprofileset')
-            if(!splitratioprofileset.has('splitratios'))
-              splitratioprofileset.set('splitratios', [])
-            splitratioprofileset.get('splitratios').push(node.get('splitratios'))
+            if(!splitratioset)
+              @set('splitratioset', new window.beats.SplitRatioSet())
+              splitratioset = @get('splitratioset')
+            if(!splitratioset.has('splitratioprofile'))
+              splitratioset.set('splitratioprofile', [])
+            splitratioset.get('splitratioprofile').push(node.get('splitratios'))
       )
 
 window.beats.Scenario::createController = ->
