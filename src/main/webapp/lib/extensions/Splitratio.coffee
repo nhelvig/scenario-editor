@@ -10,23 +10,23 @@ window.beats.Splitratio::encode_references = ->
 window.beats.Splitratio::in_link_id = ->
   @get('link_in')
 
-window.beats.Splitratio::set_in_link_id(id) = ->
+window.beats.Splitratio::set_in_link_id = (id) ->
   @set('link_in', id)
 
 window.beats.Splitratio::out_link_id = ->
   @get('link_out')
 
-window.beats.Splitratio::set_out_link_id(id)= ->
+window.beats.Splitratio::set_out_link_id = (id) ->
   @set('link_out', id)
 
 window.beats.Splitratio::vehicle_type_id = ->
   @get('vehicleType_id')
 
-window.beats.Splitratio::set_vehicle_type_id(id) = ->
+window.beats.Splitratio::set_vehicle_type_id = (id) ->
   @set('vehicleType_id', id)
 
 # get split ratio, at dt offset
-window.beats.Splitratio::split_ratio(offset) = ->
+window.beats.Splitratio::split_ratio = (offset) ->
   # create array of ratio values
   ratios = @get('text').split(',')
   ratio = null
@@ -36,7 +36,7 @@ window.beats.Splitratio::split_ratio(offset) = ->
   ratio
 
 # set split ratio, at dt offset
-window.beats.Splitratio::set_split_ratio(ratio, offset) = ->
+window.beats.Splitratio::set_split_ratio = (ratio, offset) ->
   # create array of ratio values
   ratios = @get('text').split(',')
   # check if offset is out of bounds
@@ -48,7 +48,7 @@ window.beats.Splitratio::set_split_ratio(ratio, offset) = ->
   @set('text', ratios.join())
 
 # get split ratio database id, at dt offset
-window.beats.Splitratio::ident(offset) = ->
+window.beats.Splitratio::ident = (offset) ->
   # create array of ids
   ids = @get('ids').split(',')
   id = null
@@ -58,7 +58,7 @@ window.beats.Splitratio::ident(offset) = ->
   id
 
 # set split ratio database id, at dt offset
-window.beats.Splitratio::set_ident(id, offset) = ->
+window.beats.Splitratio::set_ident = (id, offset) ->
   # create array of id values
   ids = @get('id').split(',')
   # check if offset is out of bounds
@@ -70,7 +70,7 @@ window.beats.Splitratio::set_ident(id, offset) = ->
   @set('ids', ids.join())
 
 # get split ratio crudflag, at dt offset
-window.beats.Splitratio::crud(offset) = ->
+window.beats.Splitratio::crud = (offset) ->
   # create array of crudFlags
   crudFlags = @get('crudFlags').split(',')
   crudFlag = null
@@ -80,7 +80,7 @@ window.beats.Splitratio::crud(offset) = ->
   crudFlag
 
 # set crudflag, at dt offset
-window.beats.Splitratio::set_split_ratio(crudFlag, offset) = ->
+window.beats.Splitratio::set_split_ratio = (crudFlag, offset) ->
   # create array of crudFlag values
   crudFlags = @get('crudFlags').split(',')
   # check if offset is out of bounds
