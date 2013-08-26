@@ -1,7 +1,7 @@
 $a = window.beats
 
 $a.models_with_extensions = [ 'Begin',
-  'Controller', 'ControllerSet', 'DemandProfile', 'Demand',
+  'Controller', 'ControllerSet', 'DemandSet', 'DemandProfile', 'Demand',
   'Density', 'DisplayPosition', 'Dynamics', 'End', 'Event', 'EventSet',
   'FeedbackElements', 'FundamentalDiagramProfile', 'Input',
   'Link', 'LinkList', 'LinkType',
@@ -14,7 +14,7 @@ $a.models_with_extensions = [ 'Begin',
 
 $a.models_without_extensions = [ 'ActivationIntervals',
   'CalibrationAlgorithmType', 'Column', 'ColumnName', 'ColumnNames',
-  'DemandSet', 'Description', 'DestinationNetworks',
+  'Description', 'DestinationNetworks',
   'DownstreamBoundaryCapacityProfile', 'DownstreamBoundaryCapacitySet', 
   'FundamentalDiagram', 'FundamentalDiagramSet', 'FundamentalDiagramType',
   'InitialDensitySet', 'Inputs',
