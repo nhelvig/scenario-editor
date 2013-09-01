@@ -15,8 +15,8 @@ window.beats.FundamentalDiagram::defaults =
 window.beats.FundamentalDiagram::crudflag = -> @get('crudFlag')
 window.beats.FundamentalDiagram::set_crudflag = (flag) -> @set('crudFlag', flag)
 
-window.beats.FundamentalDiagram::id = -> @get('id')
-window.beats.FundamentalDiagram::set_id = (id) -> @set('id', id)
+window.beats.FundamentalDiagram::fd_id = -> @get('id')
+window.beats.FundamentalDiagram::set_fd_id = (id) -> @set('id', id)
 
 window.beats.FundamentalDiagram::order = -> @get('order')
 window.beats.FundamentalDiagram::set_order = (order) -> @set('order', order)
@@ -55,4 +55,4 @@ window.beats.FundamentalDiagram::set_std_dev_congestion_speed = (free) ->
                                           @set('std_dev_congestion_speed', free)
 
 window.beats.FundamentalDiagram::jam_density = -> @get('jam_density')
-window.beats.FundamentalDiagram::jam_density = (jam) -> @set('jam_density', jam)
+window.beats.FundamentalDiagram::set_jam_density = (jam) -> @set('jam_density', jam)
