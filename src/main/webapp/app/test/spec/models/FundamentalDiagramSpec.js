@@ -6,7 +6,7 @@ describe("FundamentalDiagram", function() {
   });
 
   it("should have all fields set to defaults", function() {
-    expect(testFD.crudflag()).toEqual(window.beats.CrudFlag.CREATE);
+    expect(testFD.crudflag()).toBeNull();
     expect(testFD.fd_id()).toBeNull();
     expect(testFD.order()).toBeNull();
     expect(testFD.capacity()).toBeNull();

@@ -1,5 +1,5 @@
 window.beats.FundamentalDiagram::defaults =
-  crudFlag: window.beats.CrudFlag.CREATE
+  crudFlag: null
   id: null
   order: null
   capacity: null
