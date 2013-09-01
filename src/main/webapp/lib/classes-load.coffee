@@ -39,7 +39,7 @@ $a.map_views = [
   'AppView', 'BrowserView', 'BrowserTypeView',  
   'ContextMenuItemView', 'ContextMenuView', 'DemandVisualizer', 'EditorView',
   'EditorControllerView', 'EditorLinkView', 'EditorSensorView', 'EditorNodeView',
-  'EditorNetworkView', 'FileUploadView', 'LayersMenuView',
+  'EditorNetworkView', 'EditorScenarioView', 'FileUploadView', 'LayersMenuView',
   'LayersMenuViewItem', 'LogInView', 'MapLinkView', 'MapMarkerView',
   'MapNetworkView', 'MapNodeView',
   'MapControllerView', 'MapEventView', 'MapSignalView', 'MessagePanelView',
