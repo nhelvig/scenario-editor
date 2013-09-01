@@ -43,4 +43,21 @@ describe("AppView", function() {
        });
     });
   });
+  
+  describe("isNetworkNamed", function() {
+    it("should return false if network name undefined or empty", function(){
+      scen = scenarioAndFriends();
+      flag = this.view._isNetworkNamed(scen.network);
+      expect(flag).toBeFalsy();
+      scen.network.set_name(null);
+      flag = this.view._isNetworkNamed(scen.network);
+      expect(flag).toBeFalsy()
+      scen.network.set_name('');
+      flag = this.view._isNetworkNamed(scen.network);
+      expect(flag).toBeFalsy()
+      scen.network.set_name('hello');
+      flag = this.view._isNetworkNamed(scen.network);
+      expect(flag).toBeTruthy()
+    })
+  });
 });

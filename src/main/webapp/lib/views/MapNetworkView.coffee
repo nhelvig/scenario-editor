@@ -146,8 +146,8 @@ class window.beats.MapNetworkView extends Backbone.View
   _drawSignals: (signals) ->
     _.each(signals, (i) ->  new $a.MapSignalView(i) if $a.Util.getLatLng(i)?)
 
-  _editor: ->
-    env = new $a.EditorNetworkView(elem: 'network', models: @networks, width: 300)
+  _editor: (msg) ->
+    env = new $a.EditorNetworkView(elem: 'network', models: @networks, message: msg, width: 300)
     $('body').append(env.el)
     env.render()
     $(env.el).dialog('open')
