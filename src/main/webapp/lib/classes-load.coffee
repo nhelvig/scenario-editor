@@ -3,7 +3,7 @@ $a = window.beats
 $a.models_with_extensions = [ 'Begin',
   'Controller', 'ControllerSet', 'DemandProfile', 'Demand',
   'Density', 'DisplayPosition', 'Dynamics', 'End', 'Event', 'EventSet',
-  'FeedbackElements', 'FundamentalDiagramProfile', 'Input',
+  'FeedbackElements', 'FundamentalDiagram', 'FundamentalDiagramProfile', 'Input',
   'Link', 'LinkList', 'LinkType',
   'Marker', 'Network', 'NetworkSet', 'Node', 'NodeType', 'NodeList', 
   'Output', 'Phase', 'Point', 'Position', 'Road',
