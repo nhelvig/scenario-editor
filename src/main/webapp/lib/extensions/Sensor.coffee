@@ -14,7 +14,7 @@ window.beats.Sensor::updatePosition = (pos) ->
 
 window.beats.Sensor::point = ->
   p = @get('display_position').get('point')
-  p.push(new Point) unless p[0]
+  p.push(new window.beats.Point) unless p[0]
   p[0]
 
 window.beats.Sensor::display_point = ->
