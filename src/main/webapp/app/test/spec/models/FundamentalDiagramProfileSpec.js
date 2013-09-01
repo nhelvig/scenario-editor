@@ -29,6 +29,5 @@ describe("FundamentalDiagramProfile", function() {
     expect(testFDP.start_time()).toEqual(1);
     expect(testFDP.dt()).toEqual(1);
     expect(testFDP.agg_run_id()).toEqual(1);
-
   });
 });
