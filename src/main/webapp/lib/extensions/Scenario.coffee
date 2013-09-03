@@ -49,6 +49,23 @@ window.beats.Scenario::initialize = ->
   @set 'sensorset', new window.beats.SensorSet
   @set 'signalset', new window.beats.SignalSet
 
+window.beats.Scenario::name = -> @get('name')
+window.beats.Scenario::set_name = (name) -> @set('name', name)
+
+window.beats.Scenario::description = -> @get('description')
+window.beats.Scenario::set_description = (desc) -> @set('description', desc)
+
+window.beats.Scenario::locked_for_edit = -> @get('lockedForEdit')
+window.beats.Scenario::set_locked_for_edit = (s) ->
+  @set('lockedForEdit',(s.toString().toLowerCase() == 'true') if s?)
+
+window.beats.Scenario::locked_for_history = ->  @get('lockedForHistory')
+window.beats.Scenario::set_locked_for_history = (s) ->
+  @set('lockedForHistory',(s.toString().toLowerCase() == 'true') if s?)
+
+window.beats.Scenario::set_editor_show = (flag) ->
+  @set('editor_show', flag)
+  
 window.beats.Scenario::set_position = (lat, lng) ->
   @network().set_position(lat, lng)
 

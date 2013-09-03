@@ -154,7 +154,7 @@ class window.beats.MapNetworkView extends Backbone.View
     $(env.el).dialog('open')
   
   _scenarioEditor: (msg) ->
-    esv = new $a.EditorScenarioView(elem: 'scenario', model: @scenario, message: msg, width: 300)
+    esv = new $a.EditorScenarioView(elem: 'scenario', models: [@scenario], message: msg, width: 300)
     $('body').append(esv.el)
     esv.render()
     $(esv.el).dialog('open')
