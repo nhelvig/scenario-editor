@@ -35,7 +35,6 @@ class window.beats.MapNetworkView extends Backbone.View
     @_layersMenu()
     @_modeMenu() 
     # handle network browser event
-    @_setUpEvents()
     $a.Util.publishEvents($a.broker, @broker_events, @)
 
     # This class creates the tree view of all the elements of the scenario
@@ -59,10 +58,6 @@ class window.beats.MapNetworkView extends Backbone.View
   
   routeMode: ->
     $a.broker.trigger('app:display_message:info', @ROUTE_EDIT_MSG)
-
-  _setUpEvents: ->
-    $a.broker.on('map:open_network_editor', @_editor, @)
-    $a.broker.on("map:clear_map", @_tearDownEvents, @)
 
   _tearDownEvents: ->
     # Commenting out since this ends up preventing the network properties editor from being lauched
