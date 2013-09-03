@@ -553,6 +553,7 @@
       <div id="wrapper" class="network-editor">
         <form>
           <fieldset>
+            <label class="red big16">{{message}}</label>
             <label>Network Name:</label>
             <input type="text" name="network-name" id="network-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
             <label>Description:</label>
@@ -565,5 +566,23 @@
         </form>
       </div>
     </script>
+    <script type="text/template" id="scenario-editor-dialog-template">
+      <div id="wrapper" class="scenario-editor">
+        <form>
+          <fieldset>
+            <label class="red big16">{{message}}</label>
+            <label>Scenario Name:</label>
+            <input type="text" name="scenario-name" id="scenario-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+            <label>Description:</label>
+            <input type="text" name="scenario-description" id="scenario-description" class="text ui-widget-content ui-corner-all" value="{{description}}"/>
+            <label>Locked For Edit:</label>
+            <input type="checkbox" name="scenario-locked-for-edit" id="scenario-locked-for-edit" class="ui-widget-content ui-corner-all" value="locked-for-edit" {{lockedForEdit}}/>
+            <label>Locked For History:</label>
+            <input type="checkbox" name="scenario-locked-for-history" id="scenario-locked-for-history" class="ui-widget-content ui-corner-all" value="locked-for-history" {{lockedForHistory}}/>
+          </fieldset>
+        </form>
+      </div>
+    </script>
+
   </body>
 </html>
