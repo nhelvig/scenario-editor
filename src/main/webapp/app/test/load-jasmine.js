@@ -23,9 +23,12 @@
   
   model_jasmine_specs = [
     'BeginSpec', 'EndSpec', 'InputSpec','OutputSpec',
-    'LinkSpec', 'NodeSpec', 'LinkListSpec','NodeListSpec'
+    'LinkSpec', 'NodeSpec', 'LinkListSpec','NodeListSpec',
+    'SensorSpec', 'SensorTypeSpec', 'SensorSetSpec',
+    'FundamentalDiagramSpec', 'FundamentalDiagramProfileSpec',
+    'FundamentalDiagramSetSpec'
     //'ControllerSpec', 'DemandProfileSpec','DensitySpec', 'EventSpec', 
-    //'ScenarioSpec', 'SensorSpec','SignalSpec', 'SplitratioProfileSpec'
+    //'ScenarioSpec', 'SignalSpec', 'SplitratioProfileSpec'
   ];
   
   util_jasmine_specs = [
