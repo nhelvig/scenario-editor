@@ -1,8 +1,5 @@
-window.beats.SplitRatioSet::defaults =
-  sensor: []
-
 window.beats.SplitRatioSet::initialize = ->
-  @set 'splitratioset', []
+  @set 'splitratioprofile', []
 
 window.beats.SplitRatioSet::description_text = ->
   @get('description')?.get('text')

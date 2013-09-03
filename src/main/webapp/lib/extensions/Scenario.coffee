@@ -9,12 +9,12 @@ window.beats.Scenario.from_xml = (xml) ->
   sc = window.beats.Scenario.from_xml1(xml, object_with_id)
   sc.object_with_id = object_with_id
 
-  if sc.has('demandprofileset')
-    _.each(sc.get('demandprofileset').get('demandprofile'),
+  if sc.has('demandset')
+    _.each(sc.get('demandset').get('demandprofile'),
            (demand) ->
               demand.get('link').set('demand', demand)
     )
-    sc.get('demandprofileset').set('demand', [])
+    sc.get('demandset').set('demand', [])
 
   if sc.has('capacityprofileset')
     _.each(sc.get('capacityprofileset').get('capacity'),
@@ -30,12 +30,12 @@ window.beats.Scenario.from_xml = (xml) ->
     )
     sc.get('initialdensityset').set('density', [])
 
-  if sc.has('splitratioprofileset')
-    _.each(sc.get('splitratioprofileset').get('splitratioprofile'),
+  if sc.has('splitratioset')
+    _.each(sc.get('splitratioset').get('splitratioprofile'),
            (splitratios) ->
               splitratios.get('node').set('splitratios', splitratios)
     )
-    sc.get('splitratioprofileset').set('splitratios', [])
+    sc.get('splitratioset').set('splitratios', [])
 
   sc
 
@@ -81,6 +81,12 @@ window.beats.Scenario::events = ->
 
 window.beats.Scenario::set_events = (list) ->
   @get('eventset')?.set('event', list)
+
+window.beats.Scenario::splitratio_profiles = ->
+  @get('splitratioset')?.get('splitratioprofile') || @createSplitRatioSet()
+
+window.beats.Scenario::set_splitratio_profiles = (list) ->
+  @get('splitratioset')?.set('splitratioprofile', list)
 
 window.beats.Scenario::networkset = -> 
   @get('networkset')
@@ -195,3 +201,7 @@ window.beats.Scenario::createController = ->
 window.beats.Scenario::createEvent = ->
   @set('eventset', new window.beats.EventSet)
   @get('eventset').get('event')
+
+window.beats.Scenario::createSplitRatioSet = ->
+  @set('splitratioset', new window.beats.SplitRatioSet)
+  @get('splitratioset').get('splitratioprofile')

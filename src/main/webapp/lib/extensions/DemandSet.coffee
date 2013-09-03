@@ -1,8 +1,5 @@
-window.beats.DemandSet::defaults =
-  sensor: []
-
 window.beats.DemandSet::initialize = ->
-  @set 'demandset', []
+  @set 'demandprofile', []
 
 window.beats.DemandSet::description_text = ->
   @get('description')?.get('text')

@@ -1,6 +1,6 @@
-html { height: 100% }
-body { height: 100%; margin: 5px; padding: 0 }
-#map_canvas { height: 100%; width:100%; float:left}
+html { height: 100%; }
+body { height: 100%; margin: 5px; padding: 0; overflow: hidden;}
+#map_canvas { height: 100%; width:100%; float:left; }
 #map_canvas img { max-width:none; }
 #header {width:100%}
 .navbar {margin-bottom: 0px}
@@ -88,6 +88,41 @@ input[disabled], select[disabled], textarea[disabled] {
   *border-bottom-width: 2px;
   z-index:3;
 }
+
+/* bottom scenario profile editor styles */
+
+.bottom-profile-editor {
+  position: absolute;
+  bottom: 0;
+  width:99%;
+  height: 0%;
+  z-index: 3;
+  overflow: auto;
+}
+
+.inline-display select {
+  display: inline;
+  margin: 5px 5px 5px 5px;
+}
+
+.inline-display label {
+  display: inline;
+  margin: 5px 5px 5px 5px;
+}
+
+.inline-display input {
+  display: inline;
+  margin: 5px 5px 5px 5px;
+}
+
+.inline-display input[type="button"] {
+  float: right;
+}
+
+.time {
+  margin: 0px 0px 0px 0px;
+}
+
 .context_menu_item {
   display: block;
   padding: 3px 15px;
@@ -365,7 +400,7 @@ hr {
 .editor_table { 
                 width:100%;
                 color: #F58400;
-                font-size:1.1em;
+                font-size:0.9em;
                 padding: 1px;
                 }
 .editor_table th { color: #F58400; }

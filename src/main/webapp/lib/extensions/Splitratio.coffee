@@ -7,16 +7,16 @@ window.beats.Splitratio::encode_references = ->
   @set('link_in', @get('in_link').id)
   @set('link_out', @get('out_link').id)
 
-window.beats.Splitratio::in_link_id = ->
+window.beats.Splitratio::link_in_id = ->
   @get('link_in')
 
-window.beats.Splitratio::set_in_link_id = (id) ->
+window.beats.Splitratio::set_link_in_id = (id) ->
   @set('link_in', id)
 
-window.beats.Splitratio::out_link_id = ->
+window.beats.Splitratio::link_out_id = ->
   @get('link_out')
 
-window.beats.Splitratio::set_out_link_id = (id) ->
+window.beats.Splitratio::set_link_out_id = (id) ->
   @set('link_out', id)
 
 window.beats.Splitratio::vehicle_type_id = ->
@@ -28,7 +28,7 @@ window.beats.Splitratio::set_vehicle_type_id = (id) ->
 # get split ratio, at dt offset
 window.beats.Splitratio::split_ratio = (offset) ->
   # create array of ratio values
-  ratios = @get('text').split(',')
+  ratios = @get('text')?.split(',') || []
   ratio = null
   # check if offset is out of bounds
   if ratios.length > offset
@@ -38,7 +38,7 @@ window.beats.Splitratio::split_ratio = (offset) ->
 # set split ratio, at dt offset
 window.beats.Splitratio::set_split_ratio = (ratio, offset) ->
   # create array of ratio values
-  ratios = @get('text').split(',')
+  ratios = @get('text')?.split(',') || []
   # check if offset is out of bounds
   if ratios.length > offset
     ratios[offset] = ratio
@@ -50,7 +50,7 @@ window.beats.Splitratio::set_split_ratio = (ratio, offset) ->
 # get split ratio database id, at dt offset
 window.beats.Splitratio::ident = (offset) ->
   # create array of ids
-  ids = @get('ids').split(',')
+  ids = @get('ids')?.split(',') || []
   id = null
   # check if offset is out of bounds
   if ids.length > offset
@@ -60,7 +60,7 @@ window.beats.Splitratio::ident = (offset) ->
 # set split ratio database id, at dt offset
 window.beats.Splitratio::set_ident = (id, offset) ->
   # create array of id values
-  ids = @get('id').split(',')
+  ids = @get('ids')?.split(',') || []
   # check if offset is out of bounds
   if ids.length > offset
     ids[offset] = id
@@ -72,7 +72,7 @@ window.beats.Splitratio::set_ident = (id, offset) ->
 # get split ratio crudflag, at dt offset
 window.beats.Splitratio::crud = (offset) ->
   # create array of crudFlags
-  crudFlags = @get('crudFlags').split(',')
+  crudFlags = @get('crudFlags')?.split(',') || []
   crudFlag = null
   # check if offset is out of bounds
   if crudFlags.length > offset
@@ -80,9 +80,9 @@ window.beats.Splitratio::crud = (offset) ->
   crudFlag
 
 # set crudflag, at dt offset
-window.beats.Splitratio::set_split_ratio = (crudFlag, offset) ->
+window.beats.Splitratio::set_crud = (crudFlag, offset) ->
   # create array of crudFlag values
-  crudFlags = @get('crudFlags').split(',')
+  crudFlags = @get('crudFlags')?.split(',') || []
   # check if offset is out of bounds
   if crudFlags.length > offset
     crudFlags[offset] = crudFlag
@@ -90,3 +90,17 @@ window.beats.Splitratio::set_split_ratio = (crudFlag, offset) ->
   else
     crudFlags.push(crudFlag)
   @set('crudFlags', crudFlags.join())
+
+# Return True if split ratio has the same link_in, link_out and vehicle type id
+window.beats.Splitratio::equals = (link_in, link_out, vehicle_type_id) ->
+  # check if link_in, link_out and vehicle_type_id match
+  if @link_in_id() == link_in and @link_out_id() == link_out and @vehicle_type_id() == vehicle_type_id
+    return true
+  else
+    return false
+
+# Return the number of split ratios defined (ie. number of offsets)
+window.beats.Splitratio::max_offset = () ->
+  # get comma seperated ratio values, if none exist set ratios to empty array
+  ratios = @get('text')?.split(',') || []
+  ratios.length

@@ -13,10 +13,6 @@
     </script>
   </head>
   <body id="body">
-    <div class="btn-group">
-      <li id="lh" class="btn dropdown-toggle" data-toggle="dropdown" href="#l_list">Layers</li>
-      <li id="mh" class="btn dropdown-toggle" data-toggle="dropdown" href="#m_list">Mode</li>
-    </div>
     <script type="text/template" id="demand-visualizer-window-template">
       <div id="demand-visualizer-{{elemId}}">
         {{content}}
@@ -56,6 +52,11 @@
         <a href='#'><span class="login-via-color">Via</span> <span class="login-text-color">Login</span></a>
       </div>
     </div>
+    <!-- map bottom left corner buttons -->
+    <div class="btn-group">
+      <li id="lh" class="btn dropdown-toggle" data-toggle="dropdown" href="#l_list">Layers</li>
+      <li id="mh" class="btn dropdown-toggle" data-toggle="dropdown" href="#m_list">Mode</li>
+    </div>
     <!--map -->
     <div id="map_canvas" class="map_canvas_narrow"></div>
     <!--scenario tree -->
@@ -75,6 +76,86 @@
           <ol id='tree-parent-{{textLower}}' ></ol>
         </script>
     </div>
+    <!--bottom scenario profile editor -->
+    <script type="text/template" id="split-ratio-editor-template">
+      <div class="ui-dialog ui-widget ui-widget-content ui-corner-all bottom-profile-editor">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+          <span id="ui-dialog-title-node-dialog-form-c2132" class="ui-dialog-title">Split Ratio Profile Editor: Node Id {{nodeId}}</span>
+          <a class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
+            <span id="split-ratio-close-icon" class="ui-icon ui-icon-closethick">close</span>
+          </a>
+        </div>
+        <div class="bottom-profile-editor-form">
+          <form>
+            <fieldset>
+              <div class="inline-display">
+                <label for="dest-network-id" class="ui-widget">Destination Network ID:</label>
+                <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget ui-widget-content ui-corner-all" value="{{destNetworkId}}"/>
+
+                <label class="ui-widget">Start Time (h:m::s):</label>
+                <input type="number"  id="node-split-ratio-start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpStartTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="node-split-ratio-start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="node-split-ratio-start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['s']}}" />
+
+                <label class="ui-widget">Sampling Period (h:m::s):</label>
+                <input type="number"  id="node-split-ratio-sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpSampleTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="node-split-ratio-sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="node-split-ratio-sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['s']}}" />
+              </div>
+              <div class="inline-display">
+                <label for="vehicle-type" class="ui-widget">Vehicle Type:</label>
+                <select id="vehicle-type" name ="vehicle-type" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                  <option value="1" name="General">General</option>
+                  <option value="2" name="SOV">SOV</option>
+                  <option value="3" name="HOV">HOV</option>
+                  <option value="4" name="Hybrid">Hybrid</option>
+                  <option value="5" name="Electric">Electric</option>
+                  <option value="6" name="Truck 2">Truck 2</option>
+                  <option value="7" name="Truck 3">Truck 3</option>
+                  <option value="8" name="Truck 4">Truck 4</option>
+                  <option value="9" name="Truck 5">Truck 5</option>
+                  <option value="10" name="Truck 6">Truck 6</option>
+                  <option value="11" name="Bus">Bus</option>
+                  <option value="12" name="Bus 2">Bus 2</option>
+                  <option value="13" name="Motorcycle">Motorcycle</option>
+                </select>
+
+                <label for="link-in" class="ui-widget">Link In:</label>
+                <select id="link-in" name ="link-in" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                {% for (var index in inputLinks) { %}
+                  <option value="{{inputLinks[index]}}" name="">Link Id {{inputLinks[index]}}</option>
+                {% } %}
+                </select>
+
+                <label for="link-out" class="ui-widget">Link Out:</label>
+                <select id="link-out" name ="link-out" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                {% for (var index in outputLinks) { %}
+                  <option value="{{outputLinks[index]}}" name="">Link Id {{outputLinks[index]}}</option>
+                {% } %}
+                </select>
+
+                <input type="button" id="add-split-ratio-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Add Split Ratio"/>
+                <input type="button" id="delete-split-ratio-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Delete Split Ratio"/>
+
+                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="node-split-ratio-table"></table>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </script>
+    <!--floating view templates -->
     <script type="text/template" id="context-menu-template">
       <div id="{{elemId}}" class="{{elemClass}}">
       </div>
@@ -189,36 +270,11 @@
           </form>
         </div>
         <div id="tabs-node-split-ratio">
-          <form>
-            <fieldset>
-              <label for="dest-network-id">Destination Network ID</label>
-              <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget-content ui-corner-all" value="{{destnetworkid}}"/>
-
-              <label>Start Time</label>
-              <label for="node-split-ratio-start-hour" class="time">h</label>
-              <input type="number"  id="node-split-ratio-start-hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{srpStartTime['h']}}" />
-
-              <label for="node-split-ratio-start-minute" class="time">: m</label>
-              <input type="number" id="node-split-ratio-start-minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['m']}}" />
-
-              <label for="node-split-ratio-start-second" class="time">:: s</label>
-              <input type="number" id="node-split-ratio-start-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['s']}}" />
-
-              <label>Sampling Period</label>
-              <label for="node-split-ratio-sample-hour" class="time">h</label>
-              <input type="number"  id="node-split-ratio-sample-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{srpSampleTime['h']}}" />
-
-              <label for="node-split-ratio-sample-minute" class="time">: m</label>
-              <input type="number" id="node-split-ratio-sample-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['m']}}" />
-
-              <label for="node-split-ratio-sample-second" class="time">:: s</label>
-              <input type="number" id="node-split-ratio-sample-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['s']}}" />
-
-              <div>
-                <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="node-split-ratio-table"></table>
-              </div>
-            </fieldset>
-          </form>
+          {% if (!profile) { %}
+            <button id="create-split-ratio-profile" class="text ui-widget-content ui-corner-all">Create Split Ratio Profile</button>
+          {% } else { %}
+            <button id="edit-split-ratio-profile" class="text ui-widget-content ui-corner-all">Edit Split Ratio Profile</button>
+          {% } %}
         </div>
         <div id="tabs-node-tools">
           <form>
