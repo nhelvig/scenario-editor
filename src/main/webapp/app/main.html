@@ -93,22 +93,22 @@
                 <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget ui-widget-content ui-corner-all" value="{{destNetworkId}}"/>
 
                 <label class="ui-widget">Start Time (h:m::s):</label>
-                <input type="number"  id="node-split-ratio-start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpStartTime['h']}}" />
+                <input type="number"  id="split-ratio-start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpStartTime['h']}}" />
 
                 <span class="time">:</span>
-                <input type="number" id="node-split-ratio-start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['m']}}" />
+                <input type="number" id="split-ratio-start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['m']}}" />
 
                 <span class="time">::</span>
-                <input type="number" id="node-split-ratio-start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['s']}}" />
+                <input type="number" id="split-ratio-start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['s']}}" />
 
                 <label class="ui-widget">Sampling Period (h:m::s):</label>
-                <input type="number"  id="node-split-ratio-sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpSampleTime['h']}}" />
+                <input type="number"  id="split-ratio-sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpSampleTime['h']}}" />
 
                 <span class="time">:</span>
-                <input type="number" id="node-split-ratio-sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['m']}}" />
+                <input type="number" id="split-ratio-sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['m']}}" />
 
                 <span class="time">::</span>
-                <input type="number" id="node-split-ratio-sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['s']}}" />
+                <input type="number" id="split-ratio-sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['s']}}" />
               </div>
               <div class="inline-display">
                 <label for="vehicle-type" class="ui-widget">Vehicle Type:</label>
@@ -147,8 +147,9 @@
 
                 <input type="button" id="add-split-ratio-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Add Split Ratio"/>
                 <input type="button" id="delete-split-ratio-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Delete Split Ratio"/>
-
-                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="node-split-ratio-table"></table>
+              </div>
+              <div class="datatable-display">
+                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="split-ratio-table"></table>
               </div>
             </fieldset>
           </form>
