@@ -91,6 +91,9 @@ $a.nav_bar_menu_items =
     nav_bar_menu_item 'Sensor Browser',
         (-> $a.BrowserView.start('sensor')),
         [SCENARIO]
+    nav_bar_menu_item 'Scenario Properties',
+        (-> $a.broker.trigger("map:open_scenario_editor")),
+        [SCENARIO]
     nav_bar_menu_item 'Network Properties',
         (-> $a.broker.trigger("map:open_network_editor")),
         [NETWORK]
