@@ -43,9 +43,14 @@ fieldset button {
   margin-bottom:9px;
 }
 
+input[type=button] {
+  border-color: #CCCCCC;
+}
+
 input[disabled], select[disabled], textarea[disabled] {
   background-color: #000;
-  border-color: #CCC;
+  border-color: #666666;
+  color: #666666;
 }
 
 .time-input {
