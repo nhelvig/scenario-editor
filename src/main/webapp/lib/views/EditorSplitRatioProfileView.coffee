@@ -1,18 +1,18 @@
-# This creates the editor for split ratio elements
+# This creates the editor for split ratio profile
 class window.beats.EditorSplitRatioProfileView extends Backbone.View
   $a = window.beats
   events : {
-    'click #split-ratio-close-icon' : 'close'
+    'click #close-icon' : 'close'
     'blur #dest-network-id' : 'saveDestNetworkId'
-    'blur #split-ratio-start-hour, #split-ratio-start-minute, #split-ratio-start-second' : 'saveStartTime'
-    'blur #split-ratio-sample-hour, #split-ratio-sample-minute, #split-ratio-sample-second' : 'saveSampleTime'
+    'blur #start-hour, #start-minute, #start-second' : 'saveStartTime'
+    'blur #sample-hour, #sample-minute, #sample-second' : 'saveSampleTime'
     'change #vehicle-type, #link-in, #link-out' : 'regenerateSplitRatioTable'
     'click #add-split-ratio-button' : 'addSplitRatio'
     'click #delete-split-ratio-button' : 'deleteSplitRatio'
     'blur #split-ratio-value' : 'saveSplitRatio'
   }
 
-  # the options argument has the Node model and type of dialog to create('splitratio')
+  # the options argument has the split ratio model and type of dialog to create('splitratio')
   initialize: (options) ->
     @model = options.model
     @node = options.model.node()
@@ -70,13 +70,12 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   _getTemplateData: () ->
     nodeId: @model.node_id()
     destNetworkId: @model?.destination_network_id()
-    srpStartTime: $a.Util.convertSecondsToHoursMinSec(@model?.start_time() || 0)
-    srpSampleTime: $a.Util.convertSecondsToHoursMinSec(@model?.dt() || 0)
+    startTime: $a.Util.convertSecondsToHoursMinSec(@model?.start_time() || 0)
+    sampleTime: $a.Util.convertSecondsToHoursMinSec(@model?.dt() || 0)
     inputLinks: @_getInputLinks()
     outputLinks: @_getOutputLinks()
 
-  # the split ratio tab calls this to the column data for the table
-  # if 0's are passed in for the ids, all split ratios are returned
+  # gets the column data for the table if 0's are passed in for the ids, all split ratios are returned
   _getSplitRatioData: (vehicleTypeId, linkInId, linkOutId) ->
     dataArray = []
     splitratios = @model?.split_ratios()
@@ -169,9 +168,9 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # lost from the element
   saveStartTime: (e) ->
     hms = new Object()
-    hms['h'] =  $("#split-ratio-start-hour").val()
-    hms['m'] =  $("#split-ratio-start-minute").val()
-    hms['s'] =  $("#split-ratio-start-second").val()
+    hms['h'] =  $("#start-hour").val()
+    hms['m'] =  $("#start-minute").val()
+    hms['s'] =  $("#start-second").val()
     seconds = $a.Util.convertToSeconds(hms)
     @model.set_start_time(seconds)
 
@@ -180,9 +179,9 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # lost from the element
   saveSampleTime: (e) ->
     hms = new Object()
-    hms['h'] =  $("#split-ratio-sample-hour").val()
-    hms['m'] =  $("#split-ratio-sample-minute").val()
-    hms['s'] =  $("#split-ratio-sample-second").val()
+    hms['h'] =  $("#sample-hour").val()
+    hms['m'] =  $("#sample-minute").val()
+    hms['s'] =  $("#sample-second").val()
     seconds = $a.Util.convertToSeconds(hms)
     @model.set_dt(seconds)
 
@@ -206,15 +205,15 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # regenerate split ratio table based on selected vehicle type id, link in and link out
   regenerateSplitRatioTable: (e) ->
     # get vehicle type id for ratio
-    vehicleTypeId = $('#vehicle-type').find(":selected").val();
+    vehicleTypeId = @$el.find('#vehicle-type').find(":selected").val()
     # get link in id for ratio
-    linkInId = $('#link-in').find(":selected").val();
+    linkInId = @$el.find('#link-in').find(":selected").val()
     # get link out id for ratio
-    linkOutId = $('#link-out').find(":selected").val();
+    linkOutId = @$el.find('#link-out').find(":selected").val()
     # clear data table
-    @dTable.fnClearTable();
+    @dTable.fnClearTable()
     # regenerate it based on newly set vehicle type, link in and link out
-    @dTable.fnAddData(@_getSplitRatioData(vehicleTypeId, linkInId, linkOutId));
+    @dTable.fnAddData(@_getSplitRatioData(vehicleTypeId, linkInId, linkOutId))
 
     # if vehicle type, link in and link out are all set enable add split ratio button
     if vehicleTypeId != "0" and linkInId != "0" and linkOutId != "0"
@@ -226,16 +225,16 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # add split ratio to profile
   addSplitRatio: (e) ->
     # get vehicle type id for ratio
-    vehicleTypeId = $('#vehicle-type').find(":selected").val();
+    vehicleTypeId = @$el.find('#vehicle-type').find(":selected").val();
     # get link in id for ratio
-    linkInId = $('#link-in').find(":selected").val();
+    linkInId = @$el.find('#link-in').find(":selected").val();
     # get link out id for ratio
-    linkOutId = $('#link-out').find(":selected").val();
+    linkOutId = @$el.find('#link-out').find(":selected").val();
     # Find if there exists any split ratio with the given link in, link out and vehicle type id
     splitRatio = @model.split_ratio(linkInId, linkOutId, vehicleTypeId)
 
     # if no split ratio exits, create it and add it to profile
-    if splitRatio is null
+    if not splitRatio?
       splitRatio = new $a.Splitratio()
       splitRatio.set_link_in_id(linkInId)
       splitRatio.set_link_out_id(linkOutId)

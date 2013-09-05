@@ -1,3 +1,6 @@
+window.beats.DemandProfile::initialize = ->
+  @set 'demand', []
+
 window.beats.DemandProfile::resolve_references =
   window.beats.ReferenceHelper.resolver('link_id_org', 'link', 'link', 'demand', 'DemandProfile', true)
 
@@ -14,7 +17,7 @@ window.beats.DemandProfile::is_constant = ->
    @demands_by_vehicle_type()[0].length == 1
 
 window.beats.DemandProfile::add = ->
-  window.beats.models.split_ratio_profiles().push(@)
+  window.beats.models.demand().push(@)
 
 window.beats.DemandProfile::link_id = ->
   @get('link_id_org')
@@ -45,6 +48,18 @@ window.beats.DemandProfile::set_dt = (s) ->
 window.beats.DemandProfile::knob = ->
   @get('knob')
 
+window.beats.DemandProfile::set_std_dev_add = (s) ->
+  @set('std_dev_add', s)
+
+window.beats.DemandProfile::std_dev_add = ->
+  @get('std_dev_add')
+
+window.beats.DemandProfile::set_std_dev_mult = (s) ->
+  @set('std_dev_mult', s)
+
+window.beats.DemandProfile::std_dev_mult = ->
+  @get('std_dev_mult')
+
 window.beats.DemandProfile::set_knob = (s) ->
   @set('knob', s)
 
@@ -58,8 +73,8 @@ window.beats.DemandProfile::demands = ->
   @get('demand')
 
 # Returns demands for vehicle_type_id
-window.beats.DemandProfile::split_ratio = (vehicle_type_id) ->
-  demands =  @.split_ratios()
+window.beats.DemandProfile::demand = (vehicle_type_id) ->
+  demands =  @.demands()
   for demand in demands
     if demand.equals(vehicle_type_id)
       return demand

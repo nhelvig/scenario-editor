@@ -105,6 +105,40 @@ window.beats.Scenario::splitratio_profiles = ->
 window.beats.Scenario::set_splitratio_profiles = (list) ->
   @get('splitratioset')?.set('splitratioprofile', list)
 
+# Add the split ratio profile to the set for given node
+window.beats.Scenario::add_splitratio_profile = (node) ->
+  # create new Split Ratio Profile model
+  profile = new window.beats.SplitRatioProfile()
+  # set this node id and resolve the reference
+  profile.set_node_id(node.ident())
+  profile.set_node(node)
+  # add split ratio profile to set
+  @.splitratio_profiles().push(profile)
+  # add split ratio reference to node
+  node.set_splitratio_profile(profile)
+  # return split ratio profile
+  profile
+
+window.beats.Scenario::demand_profiles = ->
+  @get('demandset')?.get('demandprofile') || @createDemandSet()
+
+window.beats.Scenario::set_demand_profiles = (list) ->
+  @get('demandset')?.set('demandprofile', list)
+
+# Add the demand profile to the set for given link
+window.beats.Scenario::add_demand_profile = (link) ->
+  # create new Demand Profile model
+  profile = new window.beats.DemandProfile()
+  # set this link id and resolve the reference
+  profile.set_link_id(link.ident())
+  profile.set_link(link)
+  # add split ratio profile to set
+  @.demand_profiles().push(profile)
+  # add demand reference to link
+  link.set_demand_profile(profile)
+  # return split ratio profile
+  profile
+
 window.beats.Scenario::networkset = -> 
   @get('networkset')
 
@@ -222,3 +256,7 @@ window.beats.Scenario::createEvent = ->
 window.beats.Scenario::createSplitRatioSet = ->
   @set('splitratioset', new window.beats.SplitRatioSet)
   @get('splitratioset').get('splitratioprofile')
+
+window.beats.Scenario::createDemandSet = ->
+  @set('demandset', new window.beats.DemandSet)
+  @get('demandset').get('demandprofile')

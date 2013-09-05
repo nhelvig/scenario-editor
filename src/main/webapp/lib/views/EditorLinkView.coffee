@@ -37,10 +37,14 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     'click #geom-line' : 'geomLine'
     'click #geom-road' : 'geomRoad'
     'click #in_sync' : 'saveInSync'
+    'click #create-demand-profile' : 'createDemandProfile'
+    'click #edit-demand-profile' : 'editDemandProfile'
   }
 
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
+    # get profile data associated with link
+    @demandProfile = if options.models.length == 1 then options.models[0].demand_profile() else null
     options.templateData = @_getTemplateData(options.models)
     super options
   
@@ -65,8 +69,8 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   # if tab doesn't have one of the profiles disable it
   _checkDisableTabs: ->
     disable = []
-    disable.push(2) if !@models[0].get('fundamentaldiagramprofile')?
-    disable.push(3) if !@models[0].get('demand')? or @models.length > 1
+    #disable.push(2) if !@models[0].get('fundamentaldiagramprofile')?
+    #disable.push(3) if !@models[0].get('demand')? or @models.length > 1
     disable.push(4) if !@models[0].get('capacityprofile')? or @models.length > 1
     @$el.tabs({ disabled: disable })
   
@@ -125,50 +129,29 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     cpStartTime: $a.Util.convertSecondsToHoursMinSec(@cp?.get('start_time') || 0)
     cpSampleTime: $a.Util.convertSecondsToHoursMinSec(@cp?.get('dt') || 0)
     capacityProfile: @cp?.get('text') || ''
-    knob: @dp?.get('knob') || ''
-    dpStartTime: $a.Util.convertSecondsToHoursMinSec(@dp?.get('start_time') || 0)
-    dpSampleTime: $a.Util.convertSecondsToHoursMinSec(@dp?.get('dt') || 0)
+    demandProfile: if @demandProfile? then true else false
 
-  # the demand tab calls this to the column data for the table
-  _getDemandData: () ->
-    dataArray = []
-    demands = @dp?.demands()
-    # if demands exist create a data array of their attributes
-    if demands?
-      $.each(demands, (index, demand) ->
-        dataArray.push([
-          demand.ident(),
-          demand.demand_order(),
-          demand.vehicle_type_id(),
-          demand.demand(),
-        ])
-      )
-    dataArray
+  # Create a new demand profile model and display demands table editor
+  createDemandProfile: () ->
+    # add new demand profile to set and associate with node
+    @demandProfile = $a.models.add_demand_profile(@models?[0])
+    # open demand profile editor view
+    env = new $a.EditorDemandProfileView(model: @demandProfile)
+    $('body').append(env.el)
+    env.render()
+    # close current dialog box
+    @models[0].set_editor_show(false)
+    @close()
 
-  # set up demand columns and their titles for the browser
-  _getDemandColumns: () ->
-    columns =  [
-      { "sTitle": "Id","bVisible": false},
-      { "sTitle": "Demand Order","sWidth": "30%"},
-      { "sTitle": "Vehicle Type ID","sWidth": "30%"},
-      { "sTitle": "Demand","sWidth": "40%"}
-    ]
-
-  # render the demands table for link
-  renderDemandTable: () ->
-    @dTable = $('#link-demand-table').dataTable( {
-      "aaData": @_getDemandData(),
-      "aoColumns": @_getDemandColumns(),
-      "aaSorting": [[ 2, "desc" ]]
-      "bPaginate": true,
-      "bLengthChange": false,
-      "bFilter": false,
-      "bSort": true,
-      "bInfo": false,
-      "bDestroy": true,
-      "bAutoWidth": false,
-      "bJQueryUI": true,
-    })
+  # Edit demand profile model and display demands table editor
+  editDemandProfile: () ->
+    # open demand profile editor view
+    env = new $a.EditorDemandProfileView(model: @demandProfile)
+    $('body').append(env.el)
+    env.render()
+    # close current dialog box
+    @models[0].set_editor_show(false)
+    @close()
 
   # these are callback events for various elements in the interface
   # This is used to save the name, type and description when focus is

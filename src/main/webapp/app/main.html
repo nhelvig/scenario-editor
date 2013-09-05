@@ -76,13 +76,13 @@
           <ol id='tree-parent-{{textLower}}' ></ol>
         </script>
     </div>
-    <!--bottom scenario profile editor -->
+    <!--bottom split ratio profile editor -->
     <script type="text/template" id="split-ratio-editor-template">
       <div class="ui-dialog ui-widget ui-widget-content ui-corner-all bottom-profile-editor">
         <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-          <span id="ui-dialog-title-node-dialog-form-c2132" class="ui-dialog-title">Split Ratio Profile Editor: Node Id {{nodeId}}</span>
-          <a class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
-            <span id="split-ratio-close-icon" class="ui-icon ui-icon-closethick">close</span>
+          <span class="ui-dialog-title">Split Ratio Profile Editor: Node Id {{nodeId}}</span>
+          <a id="close-icon" class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
+            <span class="ui-icon ui-icon-closethick">close</span>
           </a>
         </div>
         <div class="bottom-profile-editor-form">
@@ -93,22 +93,22 @@
                 <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget ui-widget-content ui-corner-all" value="{{destNetworkId}}"/>
 
                 <label class="ui-widget">Start Time (h:m::s):</label>
-                <input type="number"  id="split-ratio-start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpStartTime['h']}}" />
+                <input type="number"  id="start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{startTime['h']}}" />
 
                 <span class="time">:</span>
-                <input type="number" id="split-ratio-start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['m']}}" />
+                <input type="number" id="start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['m']}}" />
 
                 <span class="time">::</span>
-                <input type="number" id="split-ratio-start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['s']}}" />
+                <input type="number" id="start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['s']}}" />
 
                 <label class="ui-widget">Sampling Period (h:m::s):</label>
-                <input type="number"  id="split-ratio-sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{srpSampleTime['h']}}" />
+                <input type="number"  id="sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{sampleTime['h']}}" />
 
                 <span class="time">:</span>
-                <input type="number" id="split-ratio-sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['m']}}" />
+                <input type="number" id="sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['m']}}" />
 
                 <span class="time">::</span>
-                <input type="number" id="split-ratio-sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['s']}}" />
+                <input type="number" id="sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['s']}}" />
               </div>
               <div class="inline-display">
                 <label for="vehicle-type" class="ui-widget">Vehicle Type:</label>
@@ -150,6 +150,76 @@
               </div>
               <div class="datatable-display">
                 <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="split-ratio-table"></table>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </script>
+    <!--bottom demand profile editor -->
+    <script type="text/template" id="demand-editor-template">
+      <div class="ui-dialog ui-widget ui-widget-content ui-corner-all bottom-profile-editor">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+          <span class="ui-dialog-title">Demand Profile Editor: Link Id {{linkId}}</span>
+          <a id="close-icon" class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
+            <span class="ui-icon ui-icon-closethick">close</span>
+          </a>
+        </div>
+        <div class="bottom-profile-editor-form">
+          <form>
+            <fieldset>
+              <div class="inline-display">
+                <label for="dest-network-id" class="ui-widget">Destination Network ID:</label>
+                <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget ui-widget-content ui-corner-all" value="{{destNetworkId}}"/>
+
+                <label class="ui-widget">Start Time (h:m::s):</label>
+                <input type="number"  id="start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{startTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['s']}}" />
+
+                <label class="ui-widget">Sampling Period (h:m::s):</label>
+                <input type="number"  id="sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{sampleTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['s']}}" />
+              </div>
+              <div class="inline-display">
+                <label for="std-dev-add" class="ui-widget">Additive Uncertainty:</label>
+                <input type="text" name="additive Uncertainty" id="std-dev-add" class="text ui-widget ui-widget-content ui-corner-all" value="{{stdDevAdd}}"/>
+
+                <label for="std_dev_mult" class="ui-widget">Multiplicative Uncertainty:</label>
+                <input type="text" name="multiplicative Uncertainty" id="std-dev-mult" class="text ui-widget ui-widget-content ui-corner-all" value="{{stdDevMult}}"/>
+
+                <label for="vehicle-type" class="ui-widget">Vehicle Type:</label>
+                <select id="vehicle-type" name ="vehicle-type" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                  <option value="1" name="General">General</option>
+                  <option value="2" name="SOV">SOV</option>
+                  <option value="3" name="HOV">HOV</option>
+                  <option value="4" name="Hybrid">Hybrid</option>
+                  <option value="5" name="Electric">Electric</option>
+                  <option value="6" name="Truck 2">Truck 2</option>
+                  <option value="7" name="Truck 3">Truck 3</option>
+                  <option value="8" name="Truck 4">Truck 4</option>
+                  <option value="9" name="Truck 5">Truck 5</option>
+                  <option value="10" name="Truck 6">Truck 6</option>
+                  <option value="11" name="Bus">Bus</option>
+                  <option value="12" name="Bus 2">Bus 2</option>
+                  <option value="13" name="Motorcycle">Motorcycle</option>
+                </select>
+
+                <input type="button" id="add-demand-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Add Demand"/>
+                <input type="button" id="delete-demand-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Delete Demand"/>
+              </div>
+              <div class="datatable-display">
+                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="demand-table"></table>
               </div>
             </fieldset>
           </form>
@@ -360,36 +430,11 @@
           </form>
         </div>
         <div id="tabs-link-demand">
-          <form>
-            <fieldset>
-              <label for="knob">Coeffecient</label>
-              <input type="text" name="knob" id="knob" class="text ui-widget-content ui-corner-all" value="{{knob}}"/><span> vphpl</span>
-              
-              <label>Start Time</label>
-              <label for="link-demand-start-hour" class="time">h</label>              
-              <input type="number"  id="link_demand_start_hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{dpStartTime['h']}}" />
-              
-              <label for="link-demand-start-minute" class="time">: m</label>
-              <input type="number" id="link_demand_start_minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['m']}}" />
-              
-              <label for="link-demand-start-second" class="time">:: s</label>
-              <input type="number" id="link_demand_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['s']}}" />
-              
-              <label>Sampling Period</label>
-              <label for="link-demand-sample-hour" class="time">h</label>              
-              <input type="number"  id="link_demand_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dpSampleTime['h']}}" />
-             
-              <label for="link-demand-sample-minute" class="time">: m</label>
-              <input type="number" id="link_demand_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['m']}}" />
-              
-              <label for="link-demand-sample-second" class="time">:: s</label>
-              <input type="number" id="link_demand_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['s']}}" />
-
-              <div>
-                <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="link-demand-table"></table>
-              </div>
-            </fieldset>
-          </form>
+          {% if (!demandProfile) { %}
+          <button id="create-demand-profile" class="text ui-widget-content ui-corner-all">Create Demand Profile</button>
+          {% } else { %}
+          <button id="edit-demand-profile" class="text ui-widget-content ui-corner-all">Edit Demand Profile</button>
+          {% } %}
         </div>
         <div id="tabs-link-capacity">
           <form>
