@@ -25,7 +25,6 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   render: ->
     super @elem
     @_setSelectedType()
-    @_checkDisableFields()
     @_checkMode()
     @
 
@@ -39,13 +38,14 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   # set up the mode correctly
   scenarioMode: ->
     super
-    @$el.find("#tabs-sensor-data :input").attr("disabled", false)
-
-  networkMode: ->
-    super
     @$el.find("#tabs-sensor :input").attr("disabled", false)
     @$el.find("#tabs-sensor-geo :input").attr("disabled", false)
     @_checkDisableFields()
+
+  networkMode: ->
+    super
+    @$el.find("#tabs-sensor :input").attr("disabled", true)
+    @$el.find("#tabs-sensor-geo :input").attr("disabled", true)
   
   # Once an editor is created we sets field to respond to the appropriate modes
   _checkMode: ->
