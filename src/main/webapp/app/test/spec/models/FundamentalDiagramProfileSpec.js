@@ -10,8 +10,8 @@ describe("FundamentalDiagramProfile", function() {
     expect(testFDP.fdp_id()).toBeNull();
     expect(testFDP.link_id()).toBeNull();
     expect(testFDP.sensor_id()).toBeNull();
-    expect(testFDP.start_time()).toBeNull();
-    expect(testFDP.dt()).toBeNull();
+    expect(testFDP.start_time()).toEqual(0);
+    expect(testFDP.dt()).toEqual(0);
     expect(testFDP.agg_run_id()).toBeNull();
   });
   it("should set all fields", function() {

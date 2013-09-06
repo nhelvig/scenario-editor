@@ -24,7 +24,8 @@ describe("EditorLinkView", function() {
         field:"length"
       }
   ];
-  var testsFD = [
+  // These tests should be moved into profile editor at a later point
+/*  var testsFD = [
       {
         desc: "FD Tab: 'Free Flow Speed' field calls saveFD",
         id: "#free_flow_speed",
@@ -98,7 +99,7 @@ describe("EditorLinkView", function() {
       //  field:"text"
       //},
     ];
-  
+*/
   var testsCapacity = [
       {
         desc: "Capacity Tab: 'Capecity Profile' field calls saveCP",
@@ -123,10 +124,10 @@ describe("EditorLinkView", function() {
     spyOn($a.EditorLinkView.prototype, 'saveName').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveType').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveInSync').andCallThrough();
-    spyOn($a.EditorLinkView.prototype, 'saveFD').andCallThrough();
-    spyOn($a.EditorLinkView.prototype, 'saveDP').andCallThrough();
+//    spyOn($a.EditorLinkView.prototype, 'saveFD').andCallThrough();
+//    spyOn($a.EditorLinkView.prototype, 'saveDP').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveCP').andCallThrough();
-    spyOn($a.EditorLinkView.prototype, 'saveDPTime').andCallThrough();
+//    spyOn($a.EditorLinkView.prototype, 'saveDPTime').andCallThrough();
     spyOn($a.EditorLinkView.prototype, 'saveCPTime').andCallThrough();
     scen = scenarioAndFriends();
     this.view = new $a.EditorLinkView({
@@ -186,10 +187,10 @@ describe("EditorLinkView", function() {
     it("has the correct text content", function() {
       var count = 0;
       var model = this.view.models[0];
-      fdp = model.get('fundamentaldiagramprofile');
-      fd = fdp.get('fundamentaldiagram')[0] || null;
+      //fdp = model.get('fundamentaldiagramprofile');
+      //fd = fdp.get('fundamentaldiagram')[0] || null;
       cp = model.get('capacity') || null;
-      dp = model.get('demand') || null;
+      //dp = model.get('demand') || null;
       
       var v = {
         name: model.link_name(),
@@ -197,21 +198,21 @@ describe("EditorLinkView", function() {
         insync: model.get('in_sync'),
         laneOffset: model.get('lane_offset'),
         length: model.get('length') || '',
-        freeFlowSpeed: fd.get('free_flow_speed') || '',
-        criticalSpeed: fd.get('critical_speed') || '',
-        capacity: fd.get('capacity') || '',
-        jamDensity: fd.get('jam_density') || '',
-        capacityDrop: fd.get('capacity_drop') || '',
-        congestionSpeed: fd.get('congestion_speed') || '',
-        capacityStandardDev: fd.get('std_dev_capacity') || '',
-        congestionStandardDev: fd.get('std_dev_congestion') || '',
-        freeFlowStdDev: fd.get('std_dev_free_flow') || '',
+        //freeFlowSpeed: fd.get('free_flow_speed') || '',
+        //criticalSpeed: fd.get('critical_speed') || '',
+        //capacity: fd.get('capacity') || '',
+        //jamDensity: fd.get('jam_density') || '',
+        //capacityDrop: fd.get('capacity_drop') || '',
+        //congestionSpeed: fd.get('congestion_speed') || '',
+        //capacityStandardDev: fd.get('std_dev_capacity') || '',
+        //congestionStandardDev: fd.get('std_dev_congestion') || '',
+        //freeFlowStdDev: fd.get('std_dev_free_flow') || '',
         cpStart: $a.Util.convertSecondsToHoursMinSec(0),
         cpSample: $a.Util.convertSecondsToHoursMinSec(0),
         capacityProfile: '',
-        knob: dp.get('knob') || '',
-        dpStart: $a.Util.convertSecondsToHoursMinSec(dp.get('start_time') || 0),
-        dpSample: $a.Util.convertSecondsToHoursMinSec(dp.get('dt') || 0),
+        //knob: dp.get('knob') || '',
+        //dpStart: $a.Util.convertSecondsToHoursMinSec(dp.get('start_time') || 0),
+        //dpSample: $a.Util.convertSecondsToHoursMinSec(dp.get('dt') || 0),
         // Demand Profile Text box no longer in use
         //demandProfile: dp.get('text') || '',
       };
@@ -278,7 +279,7 @@ describe("EditorLinkView", function() {
             //     $('#length').blur();
             //     expect($a.EditorLinkView.prototype.save).toHaveBeenCalled();
             // });
-             it("FD Tab: 'Free Flow Speed' field calls saveFD", function() {
+ /*            it("FD Tab: 'Free Flow Speed' field calls saveFD", function() {
                    $('#free_flow_speed').blur();
                    expect($a.EditorLinkView.prototype.saveFD).toHaveBeenCalled();
                  });
@@ -342,7 +343,7 @@ describe("EditorLinkView", function() {
                  it("Demand Tab: 'Sampling Period: second' field calls saveDPTime", function() { 
                    $('#link_demand_sample_second').blur();
                    expect($a.EditorLinkView.prototype.saveDPTime).toHaveBeenCalled();
-                 });
+                 });     */
                  it("Capacity Tab: 'Capacity Profile' field calls saveCP", function() { 
                    $('#cp_text').blur();
                    expect($a.EditorLinkView.prototype.saveCP).toHaveBeenCalled();
@@ -450,7 +451,7 @@ describe("EditorLinkView", function() {
                  $("#link_type").blur();
                  expect(this.view.models[0].link_type().name()).toEqual(newSelectedValue);
                 });
-               _.each(testsFD, function(test) { 
+  /*             _.each(testsFD, function(test) {
                  it(test.desc, function() {
                    $(test.id).val(test.val);
                    $(test.id).blur();
@@ -466,7 +467,7 @@ describe("EditorLinkView", function() {
                    dp = this.view.models[0].get('demand');
                    expect(dp.get(test.field)).toEqual(test.val);
                  });
-               });
+               });   */
                _.each(testsCapacity, function(test) { 
                  it(test.desc, function() {
                    $(test.id).val(test.val);
@@ -476,7 +477,7 @@ describe("EditorLinkView", function() {
                     expect(cp.get(test.field)).toEqual(test.val);
                   });
                });
-               it("Demand Tab: Start Time is saved", function() {
+/*               it("Demand Tab: Start Time is saved", function() {
                  $("#link_demand_start_hour").val(1);
                  $("#link_demand_start_minute").val(1);
                  $("#link_demand_start_second").val(1);
@@ -491,7 +492,7 @@ describe("EditorLinkView", function() {
                 $("#link_demand_sample_hour").blur();
                 dp = this.view.models[0].get('demand');
                 expect(dp.get("dt")).toEqual(3661);
-              });
+              });  */
               it("Capacity Tab: Start Time is saved", function() {
                 $("#link_capacity_start_hour").val(1);
                 $("#link_capacity_start_minute").val(1);
