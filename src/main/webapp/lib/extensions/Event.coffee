@@ -4,7 +4,7 @@ window.beats.Event::name = -> @get('name')
 
 window.beats.Event::from_position = (position, link) ->
   e = new window.beats.Event
-  p = new window.beats.Display_position()
+  p = new window.beats.DisplayPosition()
   pt = new window.beats.Point()
   pt.set(
           { 
