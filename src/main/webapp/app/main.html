@@ -226,6 +226,60 @@
         </div>
       </div>
     </script>
+    <!--bottom fd profile editor -->
+    <script type="text/template" id="fd-editor-template">
+      <div class="ui-dialog ui-widget ui-widget-content ui-corner-all bottom-profile-editor">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+          <span class="ui-dialog-title">Fundamental Diagram Profile Editor: Link Id {{linkId}}</span>
+          <a id="close-icon" class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
+            <span class="ui-icon ui-icon-closethick">close</span>
+          </a>
+        </div>
+        <div class="bottom-profile-editor-form">
+          <form>
+            <fieldset>
+              <div class="inline-display">
+
+                <label class="ui-widget">Start Time (h:m::s):</label>
+                <input type="number"  id="start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{startTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['s']}}" />
+
+                <label class="ui-widget">Sampling Period (h:m::s):</label>
+                <input type="number"  id="sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{sampleTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['s']}}" />
+              </div>
+              <div class="inline-display">
+
+                <label for="fd-type" class="ui-widget">FD Type:</label>
+                <select id="fd-type" name ="fd-type" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="" name="">-----------</option>
+                  <option value="1" name="Triangular">Triangular</option>
+                  <option value="2" name="Trapezoidal">Trapezoidal</option>
+                  <option value="3" name="Linear-Hyperbolic">Linear-Hyperbolic</option>
+                  <option value="4" name="Greenshields">Greenshields</option>
+                </select>
+
+                <input type="button" id="add-fd-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Add FD"/>
+                <input type="button" id="delete-fd-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Delete FD"/>
+              </div>
+              <div class="datatable-display">
+                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="fd-table"></table>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </script>
     <!--floating view templates -->
     <script type="text/template" id="context-menu-template">
       <div id="{{elemId}}" class="{{elemClass}}">
@@ -406,28 +460,11 @@
           </form>
         </div>
         <div id="tabs-link-fd">
-          <form>
-            <fieldset>
-              <label for="free-flow-speed">Free Flow Speed</label>
-              <input type="text" name="free-flow-speed" id="free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowSpeed}}"/><span> vpmpl</span>
-              <label for="critical-speed">Critical Speed</label>
-              <input type="text" name="critical-speed" id="critical_speed" class="text ui-widget-content ui-corner-all" value="{{criticalSpeed}}"/><span> vpmpl</span>
-              <label for="congestion-speed">Congestion Speed</label>
-              <input type="text" name="congestion-speed" id="congestion_speed" class="text ui-widget-content ui-corner-all" value="{{congestionSpeed}}"/><span> vpmpl</span>
-              <label for="capacity">Capacity</label>
-              <input type="text" name="capacity" id="capacity" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
-              <label for="jam-density">Jam Density</label>
-              <input type="text" name="jam-density" id="jam_density" class="text ui-widget-content ui-corner-all" value="{{jamDensity}}"/><span> vpmpl</span>
-              <label for="capacity-drop">Capacity Drop</label>
-              <input type="text" name="capacity-drop" id="capacity_drop" class="text ui-widget-content ui-corner-all" value="{{capacityDrop}}"/><span> vphpl</span>
-              <label for="capacity-standard-deviation">Capacity Standard Deviation</label>
-              <input type="text" name="capacity-standard-deviation" id="std_dev_capacity" class="text ui-widget-content ui-corner-all" value="{{capacityStandardDev}}"/><span> vphpl</span>
-              <label for="congestion-standard-deviation">Congestion Speed Standard Deviation</label>
-              <input type="text" name="congestion-standard-deviation" id="std_dev_congestion" class="text ui-widget-content ui-corner-all" value="{{congestionStandardDev}}"/><span> vphpl</span>
-              <label for="free-flow-standard-deviation">Free Flow Speed Standard Deviation</label>
-              <input type="text" name="free-flow-standard-deviation" id="std_dev_free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowStandardDev}}"/><span> vphpl</span>
-            </fieldset>
-          </form>
+          {% if (!fdProfile) { %}
+          <input type="button" id="create-fd-profile" class="text ui-widget-content ui-corner-all" value="Create FD Profile"/>
+          {% } else { %}
+          <input type="button" id="edit-fd-profile" class="text ui-widget-content ui-corner-all" value="Edit FD Profile"/>
+          {% } %}
         </div>
         <div id="tabs-link-demand">
           {% if (!demandProfile) { %}

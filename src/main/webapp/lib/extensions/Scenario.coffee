@@ -132,11 +132,31 @@ window.beats.Scenario::add_demand_profile = (link) ->
   # set this link id and resolve the reference
   profile.set_link_id(link.ident())
   profile.set_link(link)
-  # add split ratio profile to set
+  # add demand profile to set
   @.demand_profiles().push(profile)
   # add demand reference to link
   link.set_demand_profile(profile)
-  # return split ratio profile
+  # return demand profile
+  profile
+
+window.beats.Scenario::fundamentaldiagram_profiles = ->
+  @get('fundamentaldiagramset')?.get('fundamentaldiagramprofile') || @createFundamentalDiagramSet()
+
+window.beats.Scenario::set_fundamentaldiagram_profiles = (list) ->
+  @get('fundamentaldiagramset')?.set('fundamentaldiagramprofile', list)
+
+# Add the FD profile to the set for given link
+window.beats.Scenario::add_fundamentaldiagram_profile = (link) ->
+  # create new FD Profile model
+  profile = new window.beats.FundamentalDiagramProfile()
+  # set this link id and resolve the reference
+  profile.set_link_id(link.ident())
+  profile.set_link(link)
+  # add FD profile to set
+  @.fundamentaldiagram_profiles().push(profile)
+  # add FD reference to link
+  link.set_fundamental_diagram_profile(profile)
+  # return FD profile
   profile
 
 window.beats.Scenario::networkset = -> 
@@ -260,3 +280,7 @@ window.beats.Scenario::createSplitRatioSet = ->
 window.beats.Scenario::createDemandSet = ->
   @set('demandset', new window.beats.DemandSet)
   @get('demandset').get('demandprofile')
+
+window.beats.Scenario::createFundamentalDiagramSet = ->
+  @set('fundamentaldiagramset', new window.beats.FundamentalDiagramSet)
+  @get('fundamentaldiagramset').get('fundamentaldiagramprofile')

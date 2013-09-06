@@ -19,6 +19,7 @@ window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::ident = -> Number(@get("id"))
 window.beats.Link::demand = -> @get("demand")
 window.beats.Link::demand_profile = -> @get("demandprofile")
+window.beats.Link::fundamental_diagram_profile = -> @get("fundamentaldiagramprofile")
 window.beats.Link::crud = -> @get 'crudFlag'
 window.beats.Link::lanes = -> @get("lanes")
 window.beats.Link::lane_offset = -> @get("lane_offset")
@@ -63,6 +64,8 @@ window.beats.Link::set_crud_update = ->
       @set 'crudFlag', window.beats.CrudFlag.UPDATE
 
 window.beats.Link::set_demand_profile = (profile) -> @set('demandprofile',profile)
+
+window.beats.Link::set_fundamental_diagram_profile = (profile) -> @set('fundamentaldiagramprofile',profile)
 
 window.beats.Link::set_subdivide = (val) -> @set("subdivide", val)
 

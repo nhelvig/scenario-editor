@@ -5,22 +5,6 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     'blur #link_type' : 'saveType'
     'blur #link_name' : 'saveName'
     'blur #lanes, #lane_offset, #length' : 'save'
-    'blur #capacity,
-      #critical_speed, 
-      #capacity_drop,
-      #jam_density,
-      #free_flow_speed,
-      #congestion_speed,
-      #std_dev_capacity,
-      #std_dev_congestion,
-      #std_dev_free_flow_speed': 'saveFD'
-    'blur #knob, #dp_text': 'saveDP'
-    'blur #link_demand_start_hour, 
-      #link_demand_start_minute, 
-      #link_demand_start_second,
-      #link_demand_sample_hour, 
-      #link_demand_sample_minute, 
-      #link_demand_sample_second' : 'saveDPTime'
     'blur #cp_text': 'saveCP'
     'blur #link_capacity_start_hour, 
       #link_capacity_start_minute, 
@@ -39,12 +23,15 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     'click #in_sync' : 'saveInSync'
     'click #create-demand-profile' : 'createDemandProfile'
     'click #edit-demand-profile' : 'editDemandProfile'
+    'click #create-fd-profile' : 'createFDProfile'
+    'click #edit-fd-profile' : 'editFDProfile'
   }
 
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
     # get profile data associated with link
     @demandProfile = if options.models.length == 1 then options.models[0].demand_profile() else null
+    @fdProfile = if options.models.length == 1 then options.models[0].fundamental_diagram_profile() else null
     options.templateData = @_getTemplateData(options.models)
     super options
   
@@ -52,9 +39,6 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   # upon initializations of tabs you disable tabs that are not needed
   render: ->
     super @elem
-    # If there is demand profile for link, render demand data table
-    if @dp?
-      @renderDemandTable()
     @_checkDisableTabs()
     @_checkDisableFields()
     @_setSelectedType()
@@ -69,8 +53,6 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   # if tab doesn't have one of the profiles disable it
   _checkDisableTabs: ->
     disable = []
-    #disable.push(2) if !@models[0].get('fundamentaldiagramprofile')?
-    #disable.push(3) if !@models[0].get('demand')? or @models.length > 1
     disable.push(4) if !@models[0].get('capacityprofile')? or @models.length > 1
     @$el.tabs({ disabled: disable })
   
@@ -116,39 +98,45 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     insync: if models[0].has('in_sync') and models[0].get('in_sync') then 'checked' else ''
     lanes: _.map(models, (m) -> m.get('lanes')).join(", ") 
     laneOffset: _.map(models, (m) -> m.get('lane_offset')).join(", ")  
-    length: _.map(models, (m) -> m.get('length')).join(", ")  
-    freeFlowSpeed: _.map(@fds, (fd) -> fd?.get('free_flow_speed') || '').join(", ")
-    capacity:  _.map(@fds, (fd) -> fd?.get('capacity') || '').join(", ")
-    jamDensity: _.map(@fds, (fd) -> fd?.get('jam_density') || '').join(", ")
-    capacityDrop: _.map(@fds, (fd) -> fd?.get('capacity_drop') || '').join(", ")
-    criticalSpeed: _.map(@fds, (fd) -> fd?.get('critical_speed') || '').join(", ")
-    congestionSpeed: _.map(@fds, (fd) -> fd?.get('congestion_speed') || '').join(", ")
-    capacityStandardDev: _.map(@fds, (fd) -> fd?.get('std_dev_capacity') || '').join(", ")
-    congestionStandardDev: _.map(@fds, (fd) -> fd?.get('std_dev_congestion') || '').join(", ")
-    freeFlowStandardDev: _.map(@fds, (fd) -> fd?.get('std_dev_free_flow') || '').join(", ")
+    length: _.map(models, (m) -> m.get('length')).join(", ")
     cpStartTime: $a.Util.convertSecondsToHoursMinSec(@cp?.get('start_time') || 0)
     cpSampleTime: $a.Util.convertSecondsToHoursMinSec(@cp?.get('dt') || 0)
     capacityProfile: @cp?.get('text') || ''
     demandProfile: if @demandProfile? then true else false
+    fdProfile: if @fdProfile? then true else false
 
   # Create a new demand profile model and display demands table editor
   createDemandProfile: () ->
-    # add new demand profile to set and associate with node
+    # add new demand profile to set and associate with link
     @demandProfile = $a.models.add_demand_profile(@models?[0])
     # open demand profile editor view
     env = new $a.EditorDemandProfileView(model: @demandProfile)
-    $('body').append(env.el)
-    env.render()
-    # close current dialog box
-    @models[0].set_editor_show(false)
-    @close()
+    @._openProfileEditor(env)
 
   # Edit demand profile model and display demands table editor
   editDemandProfile: () ->
     # open demand profile editor view
     env = new $a.EditorDemandProfileView(model: @demandProfile)
-    $('body').append(env.el)
-    env.render()
+    @._openProfileEditor(env)
+
+  # Create a new FD profile model and display fd table editor
+  createFDProfile: () ->
+    # add new fd profile to set and associate with link
+    @fdProfile = $a.models.add_fundamentaldiagram_profile(@models?[0])
+    # open fd profile editor view
+    env = new $a.EditorFundamentalDiagramProfileView(model: @fdProfile)
+    @._openProfileEditor(env)
+
+  # Edit FD profile model and display fd table editor
+  editFDProfile: () ->
+    # open fd profile editor view
+    env = new $a.EditorFundamentalDiagramProfileView(model: @fdProfile)
+    @._openProfileEditor(env)
+
+  # opens given profile view associated with view
+  _openProfileEditor: (view) ->
+    $('body').append(view.el)
+    view.render()
     # close current dialog box
     @models[0].set_editor_show(false)
     @close()
@@ -181,30 +169,6 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   saveInSync: (e) ->
     id = e.currentTarget.id
     _.each(@models, (m) -> m.set_generic(id, $("##{id}").prop('checked')))
-
-  # this saves fields in the fundamental diagram
-  saveFD: (e) ->
-    id = e.currentTarget.id
-    _.each(@models, (m) ->
-      ps = m.get('fundamentaldiagramprofile')
-      p = ps?.get('fundamentaldiagram')[0]
-      p?.set(id, $("##{id}").val())
-    )
-  
-  # this saves fields in the demand profiles
-  saveDP: (e) ->
-    eid = e.currentTarget.id 
-    eid = 'text' if (e.currentTarget.id) is 'dp_text'
-    args = {
-        id : e.currentTarget.id 
-        fieldId: eid
-        profile: 'demand'
-      }
-    @_saveProfileData(args)
-  
-  saveDPTime: ->
-    args = {profile: 'demand'}
-    @_saveProfileTimeData(args)
   
   # this saves fields in the capacity profiles
   saveCP: (e) ->

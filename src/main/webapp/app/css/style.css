@@ -128,10 +128,15 @@ input[disabled], select[disabled], textarea[disabled] {
   margin: 0px 0px 0px 0px;
 }
 
+.fd-value-field {
+  width: 100px;
+}
+
 .time {
   margin: 0px 0px 0px 0px;
 }
 
+/* context menu stylings */
 .context_menu_item {
   display: block;
   padding: 3px 15px;
