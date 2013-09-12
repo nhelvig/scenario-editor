@@ -20,6 +20,9 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
     @
 
   # set up the mode correctly
+  routeMode: ->
+    super
+    
   scenarioMode: ->
     super
 
@@ -32,6 +35,7 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
     @viewMode() if $a.Mode.VIEW
     @scenarioMode() if $a.Mode.SCENARIO
     @networkMode() if $a.Mode.NETWORK
+    @routeMode() if $a.Mode.ROUTE
   
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models, message) ->

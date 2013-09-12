@@ -22,6 +22,7 @@ class window.beats.MapNetworkView extends Backbone.View
     'map:open_route_mode' : 'routeMode'
     'map:open_network_editor' : '_editor'
     'map:open_scenario_editor' : '_scenarioEditor'
+    'map:open_route_editor' : '_routeEditor'
     'map:clear_map' : '_tearDownEvents'
   }
   
@@ -150,6 +151,13 @@ class window.beats.MapNetworkView extends Backbone.View
   
   _scenarioEditor: (msg) ->
     esv = new $a.EditorScenarioView(elem: 'scenario', models: [@scenario], message: msg, width: 300)
+    $('body').append(esv.el)
+    esv.render()
+    $(esv.el).dialog('open')
+  
+  _routeEditor: (msg) ->
+    @route = new $a.Route() if !@route?
+    esv = new $a.EditorRouteView(elem: 'route', models: [@route], message: msg, width: 300)
     $('body').append(esv.el)
     esv.render()
     $(esv.el).dialog('open')
