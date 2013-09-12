@@ -7,7 +7,7 @@ describe("FundamentalDiagramSet", function() {
   describe("Default Attributes", function() {
     it("should be set", function() {
       expect(f.name()).toBeNull();
-      expect(f.description()).toBeNull();
+      expect(f.description_text()).toBeNull();
       expect(f.fds_id()).toBeNull();
       expect(f.project_id()).toBeNull();
       expect(f.fd_profiles().length).toEqual(0);
@@ -21,8 +21,8 @@ describe("FundamentalDiagramSet", function() {
       f.set_name('FDS test');
       expect(f.name()).toEqual('FDS test');
       
-      f.set_description('FDS Desc');
-      expect(f.description()).toEqual('FDS Desc');
+      f.set_description_text('FDS Desc');
+      expect(f.description_text()).toEqual('FDS Desc');
       
       f.set_id(12);
       expect(f.fds_id()).toEqual(12);

@@ -16,7 +16,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
     # get split ratio profile data associated with node
-    @splitRatioProfile = options.models[0].splitratio_profile() || null if options.models.length == 1
+    @splitRatioProfile = if options.models.length == 1 then options.models[0].splitratio_profile() else null
     options.templateData = @_getTemplateData(options.models)
     super options
 
@@ -80,23 +80,14 @@ class window.beats.EditorNodeView extends window.beats.EditorView
 
   # Create a new split ratio profile model and display split ratios table editor
   createSplitRatioProfile: () ->
-    # create new Split Ratio Profile model
-    @splitRatioProfile = new $a.SplitRatioProfile()
-    # set this node id and resolve the reference
-    @splitRatioProfile.set_node_id(@models?[0].ident())
-    @splitRatioProfile.set_node(@models?[0])
-
-    # add split ratio profile to set
-    $a.models.splitratio_profiles().push(@splitRatioProfile)
-
-    # add split ratio reference to node
-    @models[0].set_splitratio_profile(@splitRatioProfile)
-
+    # add new split ratio profile to set and associate with node
+    @splitRatioProfile = $a.models.add_splitratio_profile(@models?[0])
     # open split ratio profile editor view
     env = new $a.EditorSplitRatioProfileView(model: @splitRatioProfile)
     $('body').append(env.el)
     env.render()
     # close current dialog box
+    @models[0].set_editor_show(false)
     @close()
 
   # Edit split ratio profile model and display split ratios table editor
@@ -106,6 +97,7 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     $('body').append(env.el)
     env.render()
     # close current dialog box
+    @models[0].set_editor_show(false)
     @close()
 
   # these are callback events for various elements in the interface

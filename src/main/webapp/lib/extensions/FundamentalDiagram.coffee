@@ -15,8 +15,8 @@ window.beats.FundamentalDiagram::defaults =
 window.beats.FundamentalDiagram::crudflag = -> @get('crudFlag')
 window.beats.FundamentalDiagram::set_crudflag = (flag) -> @set('crudFlag', flag)
 
-window.beats.FundamentalDiagram::fd_id = -> @get('id')
-window.beats.FundamentalDiagram::set_fd_id = (id) -> @set('id', id)
+window.beats.FundamentalDiagram::ident = -> @get('id')
+window.beats.FundamentalDiagram::set_ident = (id) -> @set('id', id)
 
 window.beats.FundamentalDiagram::order = -> @get('order')
 window.beats.FundamentalDiagram::set_order = (order) -> @set('order', order)

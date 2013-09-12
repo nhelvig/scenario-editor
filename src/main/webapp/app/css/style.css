@@ -1,5 +1,5 @@
 html { height: 100%; }
-body { height: 100%; margin: 5px; padding: 0; overflow: hidden;}
+body { height: 100%; margin: 0px; padding: 0; overflow: hidden;}
 #map_canvas { height: 100%; width:100%; float:left; }
 #map_canvas img { max-width:none; }
 #header {width:100%}
@@ -43,9 +43,14 @@ fieldset button {
   margin-bottom:9px;
 }
 
+input[type=button] {
+  border-color: #CCCCCC;
+}
+
 input[disabled], select[disabled], textarea[disabled] {
   background-color: #000;
-  border-color: #CCC;
+  border-color: #666666;
+  color: #666666;
 }
 
 .time-input {
@@ -94,7 +99,7 @@ input[disabled], select[disabled], textarea[disabled] {
 .bottom-profile-editor {
   position: absolute;
   bottom: 0;
-  width:99%;
+  width:99.5%;
   height: 0%;
   z-index: 3;
   overflow: auto;
@@ -119,10 +124,19 @@ input[disabled], select[disabled], textarea[disabled] {
   float: right;
 }
 
+.datatable-display input {
+  margin: 0px 0px 0px 0px;
+}
+
+.fd-value-field {
+  width: 100px;
+}
+
 .time {
   margin: 0px 0px 0px 0px;
 }
 
+/* context menu stylings */
 .context_menu_item {
   display: block;
   padding: 3px 15px;

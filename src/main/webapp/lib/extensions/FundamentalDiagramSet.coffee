@@ -1,6 +1,6 @@
 window.beats.FundamentalDiagramSet::defaults =
   description: null
-  fundamentalDiagramProfile: []
+  fundamentaldiagramprofile: []
   id: null
   project_id: null
   name: null
@@ -8,7 +8,7 @@ window.beats.FundamentalDiagramSet::defaults =
   lockedForHistory: false
 
 window.beats.FundamentalDiagramSet::initialize = -> 
-  @set 'fundamentalDiagramProfile', []
+  @set 'fundamentaldiagramprofile', []
 
 window.beats.FundamentalDiagramSet::fds_id = -> @get 'id'
 window.beats.FundamentalDiagramSet::set_id = (id) -> @set 'id', id
@@ -20,14 +20,14 @@ window.beats.FundamentalDiagramSet::set_project_id = (pid) ->
 window.beats.FundamentalDiagramSet::name = -> @get 'name'
 window.beats.FundamentalDiagramSet::set_name = (name) -> @set 'name', name
 
-window.beats.FundamentalDiagramSet::description = -> @get('description')
-window.beats.FundamentalDiagramSet::set_description = (s) -> 
+window.beats.FundamentalDiagramSet::description_text = -> @get('description')
+window.beats.FundamentalDiagramSet::set_description_text = (s) ->
   @set('description', s)
 
 window.beats.FundamentalDiagramSet::fd_profiles = -> 
-  @get 'fundamentalDiagramProfile'
+  @get 'fundamentaldiagramprofile'
 window.beats.FundamentalDiagramSet::set_fd_profiles= (profs) -> 
-  @set 'fundamentalDiagramProfile', profs
+  @set 'fundamentaldiagramprofile', profs
 
 window.beats.FundamentalDiagramSet::locked_for_edit = -> @get('lockedForEdit')
 window.beats.FundamentalDiagramSet::set_locked_for_edit = (s) ->

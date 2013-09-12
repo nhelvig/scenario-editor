@@ -1,21 +1,22 @@
-# This creates the editor for split ratio elements
+# This creates the editor for split ratio profile
 class window.beats.EditorSplitRatioProfileView extends Backbone.View
   $a = window.beats
   events : {
-    'click #split-ratio-close-icon' : 'close'
+    'click #close-icon' : 'close'
     'blur #dest-network-id' : 'saveDestNetworkId'
-    'blur #node-split-ratio-start-hour, #node-split-ratio-start-minute, #node-split-ratio-start-second' : 'saveStartTime'
-    'blur #node-split-ratio-sample-hour, #node-split-ratio-sample-minute, #node-split-ratio-sample-second' : 'saveSampleTime'
+    'blur #start-hour, #start-minute, #start-second' : 'saveStartTime'
+    'blur #sample-hour, #sample-minute, #sample-second' : 'saveSampleTime'
     'change #vehicle-type, #link-in, #link-out' : 'regenerateSplitRatioTable'
     'click #add-split-ratio-button' : 'addSplitRatio'
     'click #delete-split-ratio-button' : 'deleteSplitRatio'
-    'click #node-split-ratio-table tbody td' : 'editSplitRatio'
+    'blur #split-ratio-value' : 'saveSplitRatio'
   }
 
-  # the options argument has the Node model and type of dialog to create('splitratio')
+  # the options argument has the split ratio model and type of dialog to create('splitratio')
   initialize: (options) ->
     @model = options.model
     @node = options.model.node()
+    @dataTableId = "split-ratio-table"
     options.templateData = @_getTemplateData()
     template = _.template($("#split-ratio-editor-template").html())
     title  = $a.Util.toStandardCasing("Split Ratio Profile")
@@ -33,6 +34,7 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
     @renderSplitRatioTable()
     @_checkMode()
     @_checkDisableFields()
+    @_attachRowSelection()
     # change size of map container to accomidate profile editor
     $('#map_canvas').css('height', '60%')
     $('#right_tree').css('height', '60%')
@@ -68,13 +70,12 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   _getTemplateData: () ->
     nodeId: @model.node_id()
     destNetworkId: @model?.destination_network_id()
-    srpStartTime: $a.Util.convertSecondsToHoursMinSec(@model?.start_time() || 0)
-    srpSampleTime: $a.Util.convertSecondsToHoursMinSec(@model?.dt() || 0)
+    startTime: $a.Util.convertSecondsToHoursMinSec(@model?.start_time() || 0)
+    sampleTime: $a.Util.convertSecondsToHoursMinSec(@model?.dt() || 0)
     inputLinks: @_getInputLinks()
     outputLinks: @_getOutputLinks()
 
-  # the split ratio tab calls this to the column data for the table
-  # if 0's are passed in for the ids, all split ratios are returned
+  # gets the column data for the table if 0's are passed in for the ids, all split ratios are returned
   _getSplitRatioData: (vehicleTypeId, linkInId, linkOutId) ->
     dataArray = []
     splitratios = @model?.split_ratios()
@@ -91,7 +92,7 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
           i=0
           while i < splitRatio.max_offset()
             dataArray.push([
-              splitRatio.ident(i),
+              splitRatio.ident(),
               i,
               splitRatio.vehicle_type_id()
               splitRatio.link_in_id(),
@@ -131,8 +132,8 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
 
   # render the table in the left pane
   renderSplitRatioTable: () ->
-    @dTable = $('#node-split-ratio-table').dataTable( {
-      "aaData": @_getSplitRatioData(0,0,0),
+    @dTable = @$el.find("##{@dataTableId}").dataTable( {
+      "aaData": @_getSplitRatioData("0","0","0"),
       "aoColumns": @_getSplitRatioColumns(),
       "aaSorting": [[ 2, "desc" ]]
       "bPaginate": true,
@@ -167,9 +168,9 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # lost from the element
   saveStartTime: (e) ->
     hms = new Object()
-    hms['h'] =  $("#node-split-ratio-start-hour").val()
-    hms['m'] =  $("#node-split-ratio-start-minute").val()
-    hms['s'] =  $("#node-split-ratio-start-second").val()
+    hms['h'] =  $("#start-hour").val()
+    hms['m'] =  $("#start-minute").val()
+    hms['s'] =  $("#start-second").val()
     seconds = $a.Util.convertToSeconds(hms)
     @model.set_start_time(seconds)
 
@@ -178,24 +179,41 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # lost from the element
   saveSampleTime: (e) ->
     hms = new Object()
-    hms['h'] =  $("#node-split-ratio-sample-hour").val()
-    hms['m'] =  $("#node-split-ratio-sample-minute").val()
-    hms['s'] =  $("#node-split-ratio-sample-second").val()
+    hms['h'] =  $("#sample-hour").val()
+    hms['m'] =  $("#sample-minute").val()
+    hms['s'] =  $("#sample-second").val()
     seconds = $a.Util.convertToSeconds(hms)
     @model.set_dt(seconds)
+
+  # these are callback events for various elements in the interface
+  # This is used to save a profiles split ratio when focus is
+  # lost from the element
+  saveSplitRatio: (e) ->
+    id = e.currentTarget.id
+    # get split ratio, offset, link in, link out and vehicle type ids
+    value = @$el.find("##{id}").val()
+    offset = @$el.find("##{id}").closest("tr").find("td:first").html()
+    vehicleTypeId = @$el.find("##{id}").closest("tr").find("td:nth-child(2)").html()
+    linkInId = @$el.find("##{id}").closest("tr").find("td:nth-child(3)").html()
+    linkOutId = @$el.find("##{id}").closest("tr").find("td:nth-child(4)").html()
+
+    # get split ratio model and save new value
+    splitRatio = @model.split_ratio(linkInId, linkOutId, vehicleTypeId)
+    splitRatio.set_split_ratio(value, offset)
+
 
   # regenerate split ratio table based on selected vehicle type id, link in and link out
   regenerateSplitRatioTable: (e) ->
     # get vehicle type id for ratio
-    vehicleTypeId = $('#vehicle-type').find(":selected").val();
+    vehicleTypeId = @$el.find('#vehicle-type').find(":selected").val()
     # get link in id for ratio
-    linkInId = $('#link-in').find(":selected").val();
+    linkInId = @$el.find('#link-in').find(":selected").val()
     # get link out id for ratio
-    linkOutId = $('#link-out').find(":selected").val();
+    linkOutId = @$el.find('#link-out').find(":selected").val()
     # clear data table
-    @dTable.fnClearTable();
+    @dTable.fnClearTable()
     # regenerate it based on newly set vehicle type, link in and link out
-    @dTable.fnAddData(@_getSplitRatioData(vehicleTypeId, linkInId, linkOutId));
+    @dTable.fnAddData(@_getSplitRatioData(vehicleTypeId, linkInId, linkOutId))
 
     # if vehicle type, link in and link out are all set enable add split ratio button
     if vehicleTypeId != "0" and linkInId != "0" and linkOutId != "0"
@@ -207,16 +225,16 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # add split ratio to profile
   addSplitRatio: (e) ->
     # get vehicle type id for ratio
-    vehicleTypeId = $('#vehicle-type').find(":selected").val();
+    vehicleTypeId = @$el.find('#vehicle-type').find(":selected").val();
     # get link in id for ratio
-    linkInId = $('#link-in').find(":selected").val();
+    linkInId = @$el.find('#link-in').find(":selected").val();
     # get link out id for ratio
-    linkOutId = $('#link-out').find(":selected").val();
+    linkOutId = @$el.find('#link-out').find(":selected").val();
     # Find if there exists any split ratio with the given link in, link out and vehicle type id
     splitRatio = @model.split_ratio(linkInId, linkOutId, vehicleTypeId)
 
     # if no split ratio exits, create it and add it to profile
-    if splitRatio is null
+    if not splitRatio?
       splitRatio = new $a.Splitratio()
       splitRatio.set_link_in_id(linkInId)
       splitRatio.set_link_out_id(linkOutId)
@@ -227,6 +245,7 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
     offset = splitRatio.max_offset()
     splitRatio.set_split_ratio("0.0", offset) # split ratio value added defaults to 0
 
+    # Add new record to data table
     @dTable.dataTable().fnAddData([
       -1, # set id of newly created ratios to -1, to better keep track of them until saved in DB
       offset,
@@ -240,13 +259,47 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   deleteSplitRatio: (e) ->
     alert("delete split ratio")
 
-  # edit split ratio
-  editSplitRatio: (e) ->
-    # get position on table where click event happened
-    pos = @dTable.fnGetPosition(e)
-    # if the fifth visible column was clicked (split ratio) make cell editable
-    # if pos[1] == 5
-      # get value in cell and put into input box
+  # highlights selected row
+  _attachRowSelection: () ->
+    instance = @
+    # attach click event listenor for row selection and editable data table
+    @$el.find("##{@dataTableId} tbody").on("click", "tr", (e) ->
+
+      # if row is not selected remove selection add row selection
+      if !$(@).hasClass('row_selected')
+        # remove row selected class to other selected split ratios
+        rows = instance.$el.find("##{instance.dataTableId} tbody tr.row_selected")
+        rows.removeClass('row_selected')
+        # remove input box for previous select row(s)
+        for row in rows
+          # asynchronously remove input box from row with delay to ensure blur event
+          # which saves data entered in it is handled first
+          setTimeout(instance._removeInputBoxFromRow(row), 200)
+
+        # add row selected class to row and create input box to make split ratio editable
+        $(@).addClass('row_selected')
+        instance._addInputBoxToRow(@)
+
+        # check if delete button should be enabled or disabled
+
+    )
+
+  # Add input box to split ratio column in selected row in datatable
+  _addInputBoxToRow: (row) ->
+    # get last column which is split ratio, and get it's value
+    cell = $(row).find("td:last")
+    splitRatio = $(cell).html()
+
+    # replace split ratio value in column with input box
+    $(cell).html('<input type="text" id="split-ratio-value" class="text ui-widget ui-widget-content ui-corner-all"' + \
+    'value="' + splitRatio + '"/>')
+
+  # Removes input box from row, and puts input box value back into datatable
+  _removeInputBoxFromRow: (row) ->
+    cell = $(row).find("td:last")
+    splitRatio = $(cell).find("input").val()
+    $(cell).html(splitRatio)
+
 
 
 
