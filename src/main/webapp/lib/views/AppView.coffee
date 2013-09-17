@@ -251,6 +251,7 @@ class window.beats.AppView extends Backbone.View
       type: 'GET'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
       success: (data) =>
         # remove modal message which disabled screen
@@ -295,6 +296,7 @@ class window.beats.AppView extends Backbone.View
         type: 'POST'
         beforeSend: (xhrObj) ->
           xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+          xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
         success: (data) =>
           # remove modal message which disabled screen
@@ -341,6 +343,7 @@ class window.beats.AppView extends Backbone.View
         type: 'PUT'
         beforeSend: (xhrObj) ->
           xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+          xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
         success: (data) =>
           # remove modal message which disabled screen
@@ -380,6 +383,7 @@ class window.beats.AppView extends Backbone.View
       type: 'GET'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
       success: (data) =>
         # remove modal message which disabled screen
