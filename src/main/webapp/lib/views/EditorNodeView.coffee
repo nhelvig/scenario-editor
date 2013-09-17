@@ -9,21 +9,20 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     'click #edit-signal' : 'signalEditor'
     'click #choose-name' : 'chooseName'
     'click #remove-join-links' : 'removeJoinLinks'
+    'click #create-split-ratio-profile' : 'createSplitRatioProfile'
+    'click #edit-split-ratio-profile' : 'editSplitRatioProfile'
   }
 
   # the options argument has the Node model and type of dialog to create('node')
   initialize: (options) ->
     # get split ratio profile data associated with node
-    @splitRatioProfile = options.models[0].get('splitratioprofile') || null if options.models.length == 1
+    @splitRatioProfile = if options.models.length == 1 then options.models[0].splitratio_profile() else null
     options.templateData = @_getTemplateData(options.models)
     super options
 
   # call the super class to set up the dialog box and then set the select box
   render: ->
     super @elem
-    # If there is split ratio profile for link, render split ratio data table
-    if @splitRatioProfile?
-      @renderSplitRatioTable()
     @_setSelectedType()
     @_checkDisableTabs()
     @_checkDisableFields()
@@ -77,54 +76,29 @@ class window.beats.EditorNodeView extends window.beats.EditorView
     lng: $a.Util.getGeometry({models:models, geom:'lng'})
     elevation: $a.Util.getGeometry({models:models, geom:'elevation'})
     lock: if models[0]? and models[0].locked() then 'checked' else ''
-    destnetworkid: @splitRatioProfile?.get('destination_network_id')
-    srpStartTime: $a.Util.convertSecondsToHoursMinSec(@splitRatioProfile?.get('start_time') || 0)
-    srpSampleTime: $a.Util.convertSecondsToHoursMinSec(@splitRatioProfile?.get('dt') || 0)
+    profile: if @splitRatioProfile? then true else false
 
-  # the split ratio tab calls this to the column data for the table
-  _getSplitRatioData: () ->
-    dataArray = []
-    splitratios = @splitRatioProfile?.split_ratios()
-    # if split ratios exist create a data array of their attributes
-    if splitratios?
-      $.each(splitratios, (index, splitRatio) ->
-        dataArray.push([
-          splitRatio.ident(),
-          splitRatio.vehicle_type_id(),
-          splitRatio.ratio_order(),
-          splitRatio.in_link_id(),
-          splitRatio.out_link_id(),
-          splitRatio.split_ratio()
-        ])
-      )
-    dataArray
+  # Create a new split ratio profile model and display split ratios table editor
+  createSplitRatioProfile: () ->
+    # add new split ratio profile to set and associate with node
+    @splitRatioProfile = $a.models.add_splitratio_profile(@models?[0])
+    # open split ratio profile editor view
+    env = new $a.EditorSplitRatioProfileView(model: @splitRatioProfile)
+    $('body').append(env.el)
+    env.render()
+    # close current dialog box
+    @models[0].set_editor_show(false)
+    @close()
 
-  # set up split ratio columns and their titles for the browser
-  _getSplitRatioColumns: () ->
-    columns =  [
-      { "sTitle": "Id","bVisible": false},
-      { "sTitle": "Vehcile Type ID","sWidth": "20%"},
-      { "sTitle": "Ratio Order","sWidth": "20%"},
-      { "sTitle": "Input Link Id","sWidth": "20%"},
-      { "sTitle": "Output Link Id","sWidth": "20%"},
-      { "sTitle": "Split Ratio","sWidth": "20%"},
-    ]
-
-  # render the table in the left pane
-  renderSplitRatioTable: () ->
-    @dTable = $('#node-split-ratio-table').dataTable( {
-      "aaData": @_getSplitRatioData(),
-      "aoColumns": @_getSplitRatioColumns(),
-      "aaSorting": [[ 2, "desc" ]]
-      "bPaginate": true,
-      "bLengthChange": false,
-      "bFilter": false,
-      "bSort": true,
-      "bInfo": false,
-      "bDestroy": true,
-      "bAutoWidth": false,
-      "bJQueryUI": true,
-    })
+  # Edit split ratio profile model and display split ratios table editor
+  editSplitRatioProfile: () ->
+    # open split ratio profile editor view
+    env = new $a.EditorSplitRatioProfileView(model: @splitRatioProfile)
+    $('body').append(env.el)
+    env.render()
+    # close current dialog box
+    @models[0].set_editor_show(false)
+    @close()
 
   # these are callback events for various elements in the interface
   # This is used to save the type when focus is

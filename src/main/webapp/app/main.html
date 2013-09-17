@@ -13,10 +13,6 @@
     </script>
   </head>
   <body id="body">
-    <div class="btn-group">
-      <li id="lh" class="btn dropdown-toggle" data-toggle="dropdown" href="#l_list">Layers</li>
-      <li id="mh" class="btn dropdown-toggle" data-toggle="dropdown" href="#m_list">Mode</li>
-    </div>
     <script type="text/template" id="demand-visualizer-window-template">
       <div id="demand-visualizer-{{elemId}}">
         {{content}}
@@ -56,6 +52,11 @@
         <a href='#'><span class="login-via-color">Via</span> <span class="login-text-color">Login</span></a>
       </div>
     </div>
+    <!-- map bottom left corner buttons -->
+    <div class="btn-group">
+      <li id="lh" class="btn dropdown-toggle" data-toggle="dropdown" href="#l_list">Layers</li>
+      <li id="mh" class="btn dropdown-toggle" data-toggle="dropdown" href="#m_list">Mode</li>
+    </div>
     <!--map -->
     <div id="map_canvas" class="map_canvas_narrow"></div>
     <!--scenario tree -->
@@ -75,6 +76,211 @@
           <ol id='tree-parent-{{textLower}}' ></ol>
         </script>
     </div>
+    <!--bottom split ratio profile editor -->
+    <script type="text/template" id="split-ratio-editor-template">
+      <div class="ui-dialog ui-widget ui-widget-content ui-corner-all bottom-profile-editor">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+          <span class="ui-dialog-title">Split Ratio Profile Editor: Node Id {{nodeId}}</span>
+          <a id="close-icon" class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
+            <span class="ui-icon ui-icon-closethick">close</span>
+          </a>
+        </div>
+        <div class="bottom-profile-editor-form">
+          <form>
+            <fieldset>
+              <div class="inline-display">
+                <label for="dest-network-id" class="ui-widget">Destination Network ID:</label>
+                <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget ui-widget-content ui-corner-all" value="{{destNetworkId}}"/>
+
+                <label class="ui-widget">Start Time (h:m::s):</label>
+                <input type="number"  id="start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{startTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['s']}}" />
+
+                <label class="ui-widget">Sampling Period (h:m::s):</label>
+                <input type="number"  id="sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{sampleTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['s']}}" />
+              </div>
+              <div class="inline-display">
+                <label for="vehicle-type" class="ui-widget">Vehicle Type:</label>
+                <select id="vehicle-type" name ="vehicle-type" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                  <option value="1" name="General">General</option>
+                  <option value="2" name="SOV">SOV</option>
+                  <option value="3" name="HOV">HOV</option>
+                  <option value="4" name="Hybrid">Hybrid</option>
+                  <option value="5" name="Electric">Electric</option>
+                  <option value="6" name="Truck 2">Truck 2</option>
+                  <option value="7" name="Truck 3">Truck 3</option>
+                  <option value="8" name="Truck 4">Truck 4</option>
+                  <option value="9" name="Truck 5">Truck 5</option>
+                  <option value="10" name="Truck 6">Truck 6</option>
+                  <option value="11" name="Bus">Bus</option>
+                  <option value="12" name="Bus 2">Bus 2</option>
+                  <option value="13" name="Motorcycle">Motorcycle</option>
+                </select>
+
+                <label for="link-in" class="ui-widget">Link In:</label>
+                <select id="link-in" name ="link-in" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                {% for (var index in inputLinks) { %}
+                  <option value="{{inputLinks[index]}}" name="">Link Id {{inputLinks[index]}}</option>
+                {% } %}
+                </select>
+
+                <label for="link-out" class="ui-widget">Link Out:</label>
+                <select id="link-out" name ="link-out" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                {% for (var index in outputLinks) { %}
+                  <option value="{{outputLinks[index]}}" name="">Link Id {{outputLinks[index]}}</option>
+                {% } %}
+                </select>
+
+                <input type="button" id="add-split-ratio-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Add Split Ratio"/>
+                <input type="button" id="delete-split-ratio-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Delete Split Ratio"/>
+              </div>
+              <div class="datatable-display">
+                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="split-ratio-table"></table>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </script>
+    <!--bottom demand profile editor -->
+    <script type="text/template" id="demand-editor-template">
+      <div class="ui-dialog ui-widget ui-widget-content ui-corner-all bottom-profile-editor">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+          <span class="ui-dialog-title">Demand Profile Editor: Link Id {{linkId}}</span>
+          <a id="close-icon" class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
+            <span class="ui-icon ui-icon-closethick">close</span>
+          </a>
+        </div>
+        <div class="bottom-profile-editor-form">
+          <form>
+            <fieldset>
+              <div class="inline-display">
+                <label for="dest-network-id" class="ui-widget">Destination Network ID:</label>
+                <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget ui-widget-content ui-corner-all" value="{{destNetworkId}}"/>
+
+                <label class="ui-widget">Start Time (h:m::s):</label>
+                <input type="number"  id="start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{startTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['s']}}" />
+
+                <label class="ui-widget">Sampling Period (h:m::s):</label>
+                <input type="number"  id="sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{sampleTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['s']}}" />
+              </div>
+              <div class="inline-display">
+                <label for="std-dev-add" class="ui-widget">Additive Uncertainty:</label>
+                <input type="text" name="additive Uncertainty" id="std-dev-add" class="text ui-widget ui-widget-content ui-corner-all" value="{{stdDevAdd}}"/>
+
+                <label for="std_dev_mult" class="ui-widget">Multiplicative Uncertainty:</label>
+                <input type="text" name="multiplicative Uncertainty" id="std-dev-mult" class="text ui-widget ui-widget-content ui-corner-all" value="{{stdDevMult}}"/>
+
+                <label for="vehicle-type" class="ui-widget">Vehicle Type:</label>
+                <select id="vehicle-type" name ="vehicle-type" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="0" name="">-----All-----</option>
+                  <option value="1" name="General">General</option>
+                  <option value="2" name="SOV">SOV</option>
+                  <option value="3" name="HOV">HOV</option>
+                  <option value="4" name="Hybrid">Hybrid</option>
+                  <option value="5" name="Electric">Electric</option>
+                  <option value="6" name="Truck 2">Truck 2</option>
+                  <option value="7" name="Truck 3">Truck 3</option>
+                  <option value="8" name="Truck 4">Truck 4</option>
+                  <option value="9" name="Truck 5">Truck 5</option>
+                  <option value="10" name="Truck 6">Truck 6</option>
+                  <option value="11" name="Bus">Bus</option>
+                  <option value="12" name="Bus 2">Bus 2</option>
+                  <option value="13" name="Motorcycle">Motorcycle</option>
+                </select>
+
+                <input type="button" id="add-demand-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Add Demand"/>
+                <input type="button" id="delete-demand-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Delete Demand"/>
+              </div>
+              <div class="datatable-display">
+                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="demand-table"></table>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </script>
+    <!--bottom fd profile editor -->
+    <script type="text/template" id="fd-editor-template">
+      <div class="ui-dialog ui-widget ui-widget-content ui-corner-all bottom-profile-editor">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+          <span class="ui-dialog-title">Fundamental Diagram Profile Editor: Link Id {{linkId}}</span>
+          <a id="close-icon" class="ui-dialog-titlebar-close ui-corner-all" href="#" role="button">
+            <span class="ui-icon ui-icon-closethick">close</span>
+          </a>
+        </div>
+        <div class="bottom-profile-editor-form">
+          <form>
+            <fieldset>
+              <div class="inline-display">
+
+                <label class="ui-widget">Start Time (h:m::s):</label>
+                <input type="number"  id="start-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{startTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="start-minute" class="time-input text ui-widget ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="start-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{startTime['s']}}" />
+
+                <label class="ui-widget">Sampling Period (h:m::s):</label>
+                <input type="number"  id="sample-hour" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" value="{{sampleTime['h']}}" />
+
+                <span class="time">:</span>
+                <input type="number" id="sample-minute" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['m']}}" />
+
+                <span class="time">::</span>
+                <input type="number" id="sample-second" class="time-input text ui-widget ui-widget-content ui-corner-all" min="0" max="59" value="{{sampleTime['s']}}" />
+              </div>
+              <div class="inline-display">
+
+                <label for="fd-type" class="ui-widget">FD Type:</label>
+                <select id="fd-type" name ="fd-type" class="ui-widget ui-widget-content-select ui-corner-all">
+                  <option value="" name="">-----------</option>
+                  <option value="1" name="Triangular">Triangular</option>
+                  <option value="2" name="Trapezoidal">Trapezoidal</option>
+                  <option value="3" name="Linear-Hyperbolic">Linear-Hyperbolic</option>
+                  <option value="4" name="Greenshields">Greenshields</option>
+                </select>
+
+                <input type="button" id="add-fd-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Add FD"/>
+                <input type="button" id="delete-fd-button" class="profile-button ui-widget ui-widget-content ui-corner-all" value="Delete FD"/>
+              </div>
+              <div class="datatable-display">
+                <table cellpadding="0" cellspacing="0" border="0" class="editor_table" id="fd-table"></table>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </script>
+    <!--floating view templates -->
     <script type="text/template" id="context-menu-template">
       <div id="{{elemId}}" class="{{elemClass}}">
       </div>
@@ -189,36 +395,11 @@
           </form>
         </div>
         <div id="tabs-node-split-ratio">
-          <form>
-            <fieldset>
-              <label for="dest-network-id">Destination Network ID</label>
-              <input type="text" name="destination network id" id="dest-network-id" class="text ui-widget-content ui-corner-all" value="{{destnetworkid}}"/>
-
-              <label>Start Time</label>
-              <label for="node-split-ratio-start-hour" class="time">h</label>
-              <input type="number"  id="node-split-ratio-start-hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{srpStartTime['h']}}" />
-
-              <label for="node-split-ratio-start-minute" class="time">: m</label>
-              <input type="number" id="node-split-ratio-start-minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['m']}}" />
-
-              <label for="node-split-ratio-start-second" class="time">:: s</label>
-              <input type="number" id="node-split-ratio-start-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpStartTime['s']}}" />
-
-              <label>Sampling Period</label>
-              <label for="node-split-ratio-sample-hour" class="time">h</label>
-              <input type="number"  id="node-split-ratio-sample-hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{srpSampleTime['h']}}" />
-
-              <label for="node-split-ratio-sample-minute" class="time">: m</label>
-              <input type="number" id="node-split-ratio-sample-minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['m']}}" />
-
-              <label for="node-split-ratio-sample-second" class="time">:: s</label>
-              <input type="number" id="node-split-ratio-sample-second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{srpSampleTime['s']}}" />
-
-              <div>
-                <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="node-split-ratio-table"></table>
-              </div>
-            </fieldset>
-          </form>
+          {% if (!profile) { %}
+            <input type="button" id="create-split-ratio-profile" class="text ui-widget-content ui-corner-all" value="Create Split Ratio Profile"/>
+          {% } else { %}
+            <input type="button" id="edit-split-ratio-profile" class="text ui-widget-content ui-corner-all" value="Edit Split Ratio Profile"/>
+          {% } %}
         </div>
         <div id="tabs-node-tools">
           <form>
@@ -241,9 +422,9 @@
         <div id="tabs-link">
           <form>
             <fieldset>
-              <label for="link-name">Link Name</label>
+              <label for="link_name">Link Name</label>
               <input type="text" name="link-name" id="link_name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
-              <label for="type">Type</label>
+              <label for="link_type">Type</label>
               <select id="link_type" name ="type" class="ui-widget-content-select ui-corner-all">
                 <option value="0" name="">--------------</option>
                 <option value="1" name="Freeway">Freeway</option>
@@ -279,60 +460,18 @@
           </form>
         </div>
         <div id="tabs-link-fd">
-          <form>
-            <fieldset>
-              <label for="free-flow-speed">Free Flow Speed</label>
-              <input type="text" name="free-flow-speed" id="free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowSpeed}}"/><span> vpmpl</span>
-              <label for="critical-speed">Critical Speed</label>
-              <input type="text" name="critical-speed" id="critical_speed" class="text ui-widget-content ui-corner-all" value="{{criticalSpeed}}"/><span> vpmpl</span>
-              <label for="congestion-speed">Congestion Speed</label>
-              <input type="text" name="congestion-speed" id="congestion_speed" class="text ui-widget-content ui-corner-all" value="{{congestionSpeed}}"/><span> vpmpl</span>
-              <label for="capacity">Capacity</label>
-              <input type="text" name="capacity" id="capacity" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
-              <label for="jam-density">Jam Density</label>
-              <input type="text" name="jam-density" id="jam_density" class="text ui-widget-content ui-corner-all" value="{{jamDensity}}"/><span> vpmpl</span>
-              <label for="capacity-drop">Capacity Drop</label>
-              <input type="text" name="capacity-drop" id="capacity_drop" class="text ui-widget-content ui-corner-all" value="{{capacityDrop}}"/><span> vphpl</span>
-              <label for="capacity-standard-deviation">Capacity Standard Deviation</label>
-              <input type="text" name="capacity-standard-deviation" id="std_dev_capacity" class="text ui-widget-content ui-corner-all" value="{{capacityStandardDev}}"/><span> vphpl</span>
-              <label for="congestion-standard-deviation">Congestion Speed Standard Deviation</label>
-              <input type="text" name="congestion-standard-deviation" id="std_dev_congestion" class="text ui-widget-content ui-corner-all" value="{{congestionStandardDev}}"/><span> vphpl</span>
-              <label for="free-flow-standard-deviation">Free Flow Speed Standard Deviation</label>
-              <input type="text" name="free-flow-standard-deviation" id="std_dev_free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowStandardDev}}"/><span> vphpl</span>
-            </fieldset>
-          </form>
+          {% if (!fdProfile) { %}
+          <input type="button" id="create-fd-profile" class="text ui-widget-content ui-corner-all" value="Create FD Profile"/>
+          {% } else { %}
+          <input type="button" id="edit-fd-profile" class="text ui-widget-content ui-corner-all" value="Edit FD Profile"/>
+          {% } %}
         </div>
         <div id="tabs-link-demand">
-          <form>
-            <fieldset>
-              <label for="knob">Coeffecient</label>
-              <input type="text" name="knob" id="knob" class="text ui-widget-content ui-corner-all" value="{{knob}}"/><span> vphpl</span>
-              
-              <label>Start Time</label>
-              <label for="link-demand-start-hour" class="time">h</label>              
-              <input type="number"  id="link_demand_start_hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{dpStartTime['h']}}" />
-              
-              <label for="link-demand-start-minute" class="time">: m</label>
-              <input type="number" id="link_demand_start_minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['m']}}" />
-              
-              <label for="link-demand-start-second" class="time">:: s</label>
-              <input type="number" id="link_demand_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['s']}}" />
-              
-              <label>Sampling Period</label>
-              <label for="link-demand-sample-hour" class="time">h</label>              
-              <input type="number"  id="link_demand_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dpSampleTime['h']}}" />
-             
-              <label for="link-demand-sample-minute" class="time">: m</label>
-              <input type="number" id="link_demand_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['m']}}" />
-              
-              <label for="link-demand-sample-second" class="time">:: s</label>
-              <input type="number" id="link_demand_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['s']}}" />
-
-              <div>
-                <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="link-demand-table"></table>
-              </div>
-            </fieldset>
-          </form>
+          {% if (!demandProfile) { %}
+          <input type="button" id="create-demand-profile" class="text ui-widget-content ui-corner-all" value="Create Demand Profile"/>
+          {% } else { %}
+          <input type="button" id="edit-demand-profile" class="text ui-widget-content ui-corner-all" value="Edit Demand Profile"/>
+          {% } %}
         </div>
         <div id="tabs-link-capacity">
           <form>
@@ -497,6 +636,7 @@
       <div id="wrapper" class="network-editor">
         <form>
           <fieldset>
+            <label class="red big16">{{message}}</label>
             <label>Network Name:</label>
             <input type="text" name="network-name" id="network-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
             <label>Description:</label>
@@ -505,6 +645,38 @@
             <input type="checkbox" name="locked-for-edit" id="locked-for-edit" class="ui-widget-content ui-corner-all" value="locked-for-edit" {{lockedForEdit}}/>
             <label>Locked For History:</label>
             <input type="checkbox" name="locked-for-history" id="locked-for-history" class="ui-widget-content ui-corner-all" value="locked-for-history" {{lockedForHistory}}/>
+          </fieldset>
+        </form>
+      </div>
+    </script>
+    <script type="text/template" id="scenario-editor-dialog-template">
+      <div id="wrapper" class="scenario-editor">
+        <form>
+          <fieldset>
+            <label class="red big16">{{message}}</label>
+            <label>Scenario Name:</label>
+            <input type="text" name="scenario-name" id="scenario-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+            <label>Description:</label>
+            <input type="text" name="scenario-description" id="scenario-description" class="text ui-widget-content ui-corner-all" value="{{description}}"/>
+            <label>Locked For Edit:</label>
+            <input type="checkbox" name="scenario-locked-for-edit" id="scenario-locked-for-edit" class="ui-widget-content ui-corner-all" value="locked-for-edit" {{lockedForEdit}}/>
+            <label>Locked For History:</label>
+            <input type="checkbox" name="scenario-locked-for-history" id="scenario-locked-for-history" class="ui-widget-content ui-corner-all" value="locked-for-history" {{lockedForHistory}}/>
+          </fieldset>
+        </form>
+      </div>
+    </script>
+    <script type="text/template" id="route-editor-dialog-template">
+      <div id="wrapper" class="route-editor">
+        <form>
+          <fieldset>
+            <label class="red big16">{{message}}</label>
+            <label>Route Name:</label>
+            <input type="text" name="route-name" id="route-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+            <label>Locked For Edit:</label>
+            <input type="checkbox" name="route-locked-for-edit" id="route-locked-for-edit" class="ui-widget-content ui-corner-all" value="locked-for-edit" {{lockedForEdit}}/>
+            <label>Locked For History:</label>
+            <input type="checkbox" name="route-locked-for-history" id="route-locked-for-history" class="ui-widget-content ui-corner-all" value="locked-for-history" {{lockedForHistory}}/>
           </fieldset>
         </form>
       </div>

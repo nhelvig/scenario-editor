@@ -21,6 +21,8 @@ class window.beats.MapNetworkView extends Backbone.View
     'map:open_scenario_mode' : 'scenarioMode'
     'map:open_route_mode' : 'routeMode'
     'map:open_network_editor' : '_editor'
+    'map:open_scenario_editor' : '_scenarioEditor'
+    'map:open_route_editor' : '_routeEditor'
     'map:clear_map' : '_tearDownEvents'
   }
   
@@ -34,7 +36,6 @@ class window.beats.MapNetworkView extends Backbone.View
     @_layersMenu()
     @_modeMenu() 
     # handle network browser event
-    @_setUpEvents()
     $a.Util.publishEvents($a.broker, @broker_events, @)
 
     # This class creates the tree view of all the elements of the scenario
@@ -58,10 +59,6 @@ class window.beats.MapNetworkView extends Backbone.View
   
   routeMode: ->
     $a.broker.trigger('app:display_message:info', @ROUTE_EDIT_MSG)
-
-  _setUpEvents: ->
-    $a.broker.on('map:open_network_editor', @_editor, @)
-    $a.broker.on("map:clear_map", @_tearDownEvents, @)
 
   _tearDownEvents: ->
     # Commenting out since this ends up preventing the network properties editor from being lauched
@@ -146,8 +143,21 @@ class window.beats.MapNetworkView extends Backbone.View
   _drawSignals: (signals) ->
     _.each(signals, (i) ->  new $a.MapSignalView(i) if $a.Util.getLatLng(i)?)
 
-  _editor: ->
-    env = new $a.EditorNetworkView(elem: 'network', models: @networks, width: 300)
+  _editor: (msg) ->
+    env = new $a.EditorNetworkView(elem: 'network', models: @networks, message: msg, width: 300)
     $('body').append(env.el)
     env.render()
     $(env.el).dialog('open')
+  
+  _scenarioEditor: (msg) ->
+    esv = new $a.EditorScenarioView(elem: 'scenario', models: [@scenario], message: msg, width: 300)
+    $('body').append(esv.el)
+    esv.render()
+    $(esv.el).dialog('open')
+  
+  _routeEditor: (msg) ->
+    @route = new $a.Route() if !@route?
+    esv = new $a.EditorRouteView(elem: 'route', models: [@route], message: msg, width: 300)
+    $('body').append(esv.el)
+    esv.render()
+    $(esv.el).dialog('open')

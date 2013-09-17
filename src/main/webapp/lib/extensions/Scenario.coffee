@@ -9,12 +9,12 @@ window.beats.Scenario.from_xml = (xml) ->
   sc = window.beats.Scenario.from_xml1(xml, object_with_id)
   sc.object_with_id = object_with_id
 
-  if sc.has('demandprofileset')
-    _.each(sc.get('demandprofileset').get('demandprofile'),
+  if sc.has('demandset')
+    _.each(sc.get('demandset').get('demandprofile'),
            (demand) ->
               demand.get('link').set('demand', demand)
     )
-    sc.get('demandprofileset').set('demand', [])
+    sc.get('demandset').set('demand', [])
 
   if sc.has('capacityprofileset')
     _.each(sc.get('capacityprofileset').get('capacity'),
@@ -30,12 +30,12 @@ window.beats.Scenario.from_xml = (xml) ->
     )
     sc.get('initialdensityset').set('density', [])
 
-  if sc.has('splitratioprofileset')
-    _.each(sc.get('splitratioprofileset').get('splitratioprofile'),
+  if sc.has('splitratioset')
+    _.each(sc.get('splitratioset').get('splitratioprofile'),
            (splitratios) ->
               splitratios.get('node').set('splitratios', splitratios)
     )
-    sc.get('splitratioprofileset').set('splitratios', [])
+    sc.get('splitratioset').set('splitratios', [])
 
   sc
 
@@ -49,6 +49,23 @@ window.beats.Scenario::initialize = ->
   @set 'sensorset', new window.beats.SensorSet
   @set 'signalset', new window.beats.SignalSet
 
+window.beats.Scenario::name = -> @get('name')
+window.beats.Scenario::set_name = (name) -> @set('name', name)
+
+window.beats.Scenario::description = -> @get('description')
+window.beats.Scenario::set_description = (desc) -> @set('description', desc)
+
+window.beats.Scenario::locked_for_edit = -> @get('lockedForEdit')
+window.beats.Scenario::set_locked_for_edit = (s) ->
+  @set('lockedForEdit',(s.toString().toLowerCase() == 'true') if s?)
+
+window.beats.Scenario::locked_for_history = ->  @get('lockedForHistory')
+window.beats.Scenario::set_locked_for_history = (s) ->
+  @set('lockedForHistory',(s.toString().toLowerCase() == 'true') if s?)
+
+window.beats.Scenario::set_editor_show = (flag) ->
+  @set('editor_show', flag)
+  
 window.beats.Scenario::set_position = (lat, lng) ->
   @network().set_position(lat, lng)
 
@@ -81,6 +98,66 @@ window.beats.Scenario::events = ->
 
 window.beats.Scenario::set_events = (list) ->
   @get('eventset')?.set('event', list)
+
+window.beats.Scenario::splitratio_profiles = ->
+  @get('splitratioset')?.get('splitratioprofile') || @createSplitRatioSet()
+
+window.beats.Scenario::set_splitratio_profiles = (list) ->
+  @get('splitratioset')?.set('splitratioprofile', list)
+
+# Add the split ratio profile to the set for given node
+window.beats.Scenario::add_splitratio_profile = (node) ->
+  # create new Split Ratio Profile model
+  profile = new window.beats.SplitRatioProfile()
+  # set this node id and resolve the reference
+  profile.set_node_id(node.ident())
+  profile.set_node(node)
+  # add split ratio profile to set
+  @.splitratio_profiles().push(profile)
+  # add split ratio reference to node
+  node.set_splitratio_profile(profile)
+  # return split ratio profile
+  profile
+
+window.beats.Scenario::demand_profiles = ->
+  @get('demandset')?.get('demandprofile') || @createDemandSet()
+
+window.beats.Scenario::set_demand_profiles = (list) ->
+  @get('demandset')?.set('demandprofile', list)
+
+# Add the demand profile to the set for given link
+window.beats.Scenario::add_demand_profile = (link) ->
+  # create new Demand Profile model
+  profile = new window.beats.DemandProfile()
+  # set this link id and resolve the reference
+  profile.set_link_id(link.ident())
+  profile.set_link(link)
+  # add demand profile to set
+  @.demand_profiles().push(profile)
+  # add demand reference to link
+  link.set_demand_profile(profile)
+  # return demand profile
+  profile
+
+window.beats.Scenario::fundamentaldiagram_profiles = ->
+  @get('fundamentaldiagramset')?.get('fundamentaldiagramprofile') || @createFundamentalDiagramSet()
+
+window.beats.Scenario::set_fundamentaldiagram_profiles = (list) ->
+  @get('fundamentaldiagramset')?.set('fundamentaldiagramprofile', list)
+
+# Add the FD profile to the set for given link
+window.beats.Scenario::add_fundamentaldiagram_profile = (link) ->
+  # create new FD Profile model
+  profile = new window.beats.FundamentalDiagramProfile()
+  # set this link id and resolve the reference
+  profile.set_link_id(link.ident())
+  profile.set_link(link)
+  # add FD profile to set
+  @.fundamentaldiagram_profiles().push(profile)
+  # add FD reference to link
+  link.set_fundamental_diagram_profile(profile)
+  # return FD profile
+  profile
 
 window.beats.Scenario::networkset = -> 
   @get('networkset')
@@ -128,16 +205,16 @@ window.beats.Scenario::stampSchemaVersion = ->
   @set('schemaVersion', window.beats.SchemaVersion)
 
 window.beats.Scenario::encode_references = ->
-  demandprofileset = @get('demandprofileset')
+  demandset = @get('demandset')
   capacityprofileset = @get('downstreamboundarycapacityprofileset')
   initialdensityset = @get('initialdensityset')
-  splitratioprofileset = @get('splitratioprofileset')
+  splitratioset = @get('splitratioset')
   network = @network()
   linklist = network.get('linklist') if network
   nodelist = network.get('nodelist') if network
 
-  if demandprofileset && demandprofileset.has('demand')
-    demandprofileset.set('demand', [])
+  if demandset && demandset.has('demand')
+    demandset.set('demand', [])
 
   if capacityprofileset && capacityprofileset.has('capacity')
     capacityprofileset.set('capacity', [])
@@ -145,19 +222,19 @@ window.beats.Scenario::encode_references = ->
   if initialdensityset && initialdensityset.has('density')
     initialdensityset.set('density', [])
 
-  if splitratioprofileset && splitratioprofileset.has('splitratios')
-    splitratioprofileset.set('splitratios', [])
+  if splitratioset && splitratioset.has('splitratioprofile')
+    splitratioset.set('splitratioprofile', [])
 
   if linklist and linklist.has('link')
     _.each(linklist.get('link'),
           (link) =>
             if link.has('demand')
-              if(!demandprofileset)
-                @set('demandprofileset', new window.beats.DemandSet())
-                demandprofileset = @get('demandprofileset')
-              if(!demandprofileset.has('demandprofile'))
-                demandprofileset.set('demandprofile', [])
-              demandprofileset.get('demandprofile').push(link.get('demand'))
+              if(!demandset)
+                @set('demandset', new window.beats.DemandSet())
+                demandset = @get('demandset')
+              if(!demandset.has('demandprofile'))
+                demandset.set('demandprofile', [])
+              demandset.get('demandprofile').push(link.get('demand'))
 
             if link.has('capacity')
               if(!capacityprofileset)
@@ -180,12 +257,12 @@ window.beats.Scenario::encode_references = ->
       _.each(nodelist.get('node'),
         (node) =>
           if (node.has('splitratios'))
-            if(!splitratioprofileset)
-              @set('splitratioprofileset', new window.beats.SplitRatioSet())
-              splitratioprofileset = @get('splitratioprofileset')
-            if(!splitratioprofileset.has('splitratios'))
-              splitratioprofileset.set('splitratios', [])
-            splitratioprofileset.get('splitratios').push(node.get('splitratios'))
+            if(!splitratioset)
+              @set('splitratioset', new window.beats.SplitRatioSet())
+              splitratioset = @get('splitratioset')
+            if(!splitratioset.has('splitratioprofile'))
+              splitratioset.set('splitratioprofile', [])
+            splitratioset.get('splitratioprofile').push(node.get('splitratios'))
       )
 
 window.beats.Scenario::createController = ->
@@ -195,3 +272,15 @@ window.beats.Scenario::createController = ->
 window.beats.Scenario::createEvent = ->
   @set('eventset', new window.beats.EventSet)
   @get('eventset').get('event')
+
+window.beats.Scenario::createSplitRatioSet = ->
+  @set('splitratioset', new window.beats.SplitRatioSet)
+  @get('splitratioset').get('splitratioprofile')
+
+window.beats.Scenario::createDemandSet = ->
+  @set('demandset', new window.beats.DemandSet)
+  @get('demandset').get('demandprofile')
+
+window.beats.Scenario::createFundamentalDiagramSet = ->
+  @set('fundamentaldiagramset', new window.beats.FundamentalDiagramSet)
+  @get('fundamentaldiagramset').get('fundamentaldiagramprofile')

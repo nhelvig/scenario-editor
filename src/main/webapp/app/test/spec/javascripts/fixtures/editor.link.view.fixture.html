@@ -1,160 +1,118 @@
 <script type="text/template" id="link-editor-dialog-template">
-    <ul>
-      <li><a href="#tabs-link">Link</a></li>
-      <li><a href="#tabs-link-geo">Geo</a></li>
-      <li><a href="#tabs-link-fd">FD</a></li>
-      <li><a href="#tabs-link-demand">Demand</a></li>
-      <li><a href="#tabs-link-capacity">Capacity</a></li>
-      <li><a href="#tabs-link-tools">Tools</a></li>
-    </ul>
-    <div id="tabs-link">
-      <form>
-        <fieldset>
-          <label for="link-name">Link Name</label>
-          <input type="text" name="link-name" id="link_name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
-          <label for="type">Type</label>
-          <select id="link_type" name ="type" class="ui-widget-content-select ui-corner-all">
-            <option value="0" name="">--------------</option>
-            <option value="1" name="Freeway" selected="selected">Freeway</option>
-            <option value="2" name="Highway">Highway</option>
-            <option value="3" name="On-Ramp">On-Ramp</option>
-            <option value="4" name="Off-Ramp">Off-Ramp</option>
-            <option value="5" name="Interconnect">Interconnect</option>
-            <option value="6" name="HOV">HOV</option>
-            <option value="7" name="HOT">HOT</option>
-            <option value="8" name="Toll Lane">Toll Lane</option>
-            <option value="9" name="Heavy Vehicle Lane">Heavy Vehicle Lane</option>
-            <option value="10" name="Bus Lane">Bus Lane</option>
-            <option value="11" name="Street">Street</option>
-            <option value="12" name="Intersection Approach">Intersection Approach</option>
-            <option value="13" name="Left Turn Pocket">Left Turn Pocket</option>
-            <option value="14" name="Right Turn Pocket">Right Turn Pocket</option>
-          </select><br/>
-          <input type="checkbox" name="in_sync" id="in_sync" class="text ui-widget-content ui-corner-all" {{insync}} />
-          <span>In Sync</span>
-        </fieldset>
-      </form>
-    </div>
-    <div id="tabs-link-geo">
-      <form>
-        <fieldset>
-          <label for="num-lanes">Number of Lanes</label>
-          <input type="text" name="num-lanes" id="lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
-          <label for="lane-offset">Lane Offset</label>
-          <input type="text" name="lane-offset" id="lane_offset" class="text ui-widget-content ui-corner-all" value="{{laneOffset}}"/>
-          <label for="length">Length </label>
-          <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
-        </fieldset>
-      </form>
-    </div>
-    <div id="tabs-link-fd">
-      <form>
-        <fieldset>
-          <label for="free-flow-speed">Free Flow Speed</label>
-          <input type="text" name="free-flow-speed" id="free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowSpeed}}"/><span> vpmpl</span>
-          <label for="critical-speed">Critical Speed</label>
-          <input type="text" name="critical-speed" id="critical_speed" class="text ui-widget-content ui-corner-all" value="{{criticalSpeed}}"/><span> vpmpl</span>
-          <label for="congestion-speed">Congestion Speed</label>
-          <input type="text" name="congestion-speed" id="congestion_speed" class="text ui-widget-content ui-corner-all" value="{{congestionSpeed}}"/><span> vpmpl</span>
-          <label for="capacity">Capacity</label>
-          <input type="text" name="capacity" id="capacity" class="text ui-widget-content ui-corner-all" value="{{capacity}}"/><span> vphpl</span>
-          <label for="jam-density">Jam Density</label>
-          <input type="text" name="jam-density" id="jam_density" class="text ui-widget-content ui-corner-all" value="{{jamDensity}}"/><span> vpmpl</span>
-          <label for="capacity-drop">Capacity Drop</label>
-          <input type="text" name="capacity-drop" id="capacity_drop" class="text ui-widget-content ui-corner-all" value="{{capacityDrop}}"/><span> vphpl</span>
-          <label for="capacity-standard-deviation">Capacity Standard Deviation</label>
-          <input type="text" name="capacity-standard-deviation" id="std_dev_capacity" class="text ui-widget-content ui-corner-all" value="{{capacityStandardDev}}"/><span> vphpl</span>
-          <label for="congestion-standard-deviation">Congestion Speed Standard Deviation</label>
-          <input type="text" name="congestion-standard-deviation" id="std_dev_congestion" class="text ui-widget-content ui-corner-all" value="{{congestionStandardDev}}"/><span> vphpl</span>
-          <label for="free-flow-standard-deviation">Free Flow Speed Standard Deviation</label>
-          <input type="text" name="free-flow-standard-deviation" id="std_dev_free_flow_speed" class="text ui-widget-content ui-corner-all" value="{{freeFlowStandardDev}}"/><span> vphpl</span>
-        </fieldset>
-      </form>
-    </div>
-    <div id="tabs-link-demand">
-      <form>
-        <fieldset>
-          <label for="knob">Coeffecient</label>
-          <input type="text" name="knob" id="knob" class="text ui-widget-content ui-corner-all" value="{{knob}}"/><span> vphpl</span>
-          
-          <label>Start Time</label>
-          <label for="link-demand-start-hour" class="time">h</label>              
-          <input type="number"  id="link_demand_start_hour" class="time-input text ui-widget-content ui-corner-all" min="0" value="{{dpStartTime['h']}}" />
-          
-          <label for="link-demand-start-minute" class="time">: m</label>
-          <input type="number" id="link_demand_start_minute" class=" time-input text ui-widget-content ui-corner-all text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['m']}}" />
-          
-          <label for="link-demand-start-second" class="time">:: s</label>
-          <input type="number" id="link_demand_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpStartTime['s']}}" />
-          
-          <label>Sampling Period</label>
-          <label for="link-demand-sample-hour" class="time">h</label>              
-          <input type="number"  id="link_demand_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{dpSampleTime['h']}}" />
-         
-          <label for="link-demand-sample-minute" class="time">: m</label>
-          <input type="number" id="link_demand_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['m']}}" />
-          
-          <label for="link-demand-sample-second" class="time">:: s</label>
-          <input type="number" id="link_demand_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{dpSampleTime['s']}}" />
+  <ul>
+    <li><a href="#tabs-link">Link</a></li>
+    <li><a href="#tabs-link-geo">Geo</a></li>
+    <li><a href="#tabs-link-fd">FD</a></li>
+    <li><a href="#tabs-link-demand">Demand</a></li>
+    <li><a href="#tabs-link-capacity">Capacity</a></li>
+    <li><a href="#tabs-link-tools">Tools</a></li>
+  </ul>
+  <div id="tabs-link">
+    <form>
+      <fieldset>
+        <label for="link-name">Link Name</label>
+        <input type="text" name="link-name" id="link_name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+        <label for="type">Type</label>
+        <select id="link_type" name ="type" class="ui-widget-content-select ui-corner-all">
+          <option value="0" name="">--------------</option>
+          <option value="1" name="Freeway">Freeway</option>
+          <option value="2" name="Highway">Highway</option>
+          <option value="3" name="On-Ramp">On-Ramp</option>
+          <option value="4" name="Off-Ramp">Off-Ramp</option>
+          <option value="5" name="Interconnect">Interconnect</option>
+          <option value="6" name="HOV">HOV</option>
+          <option value="7" name="HOT">HOT</option>
+          <option value="8" name="Toll Lane">Toll Lane</option>
+          <option value="9" name="Heavy Vehicle Lane">Heavy Vehicle Lane</option>
+          <option value="10" name="Bus Lane">Bus Lane</option>
+          <option value="11" name="Street">Street</option>
+          <option value="12" name="Intersection Approach">Intersection Approach</option>
+          <option value="13" name="Left Turn Pocket">Left Turn Pocket</option>
+          <option value="14" name="Right Turn Pocket">Right Turn Pocket</option>
+        </select><br/>
+        <input type="checkbox" name="in_sync" id="in_sync" class="text ui-widget-content ui-corner-all" {{insync}} />
+        <span>In Sync</span>
+      </fieldset>
+    </form>
+  </div>
+  <div id="tabs-link-geo">
+    <form>
+      <fieldset>
+        <label for="num-lanes">Number of Lanes</label>
+        <input type="text" name="num-lanes" id="lanes" class="text ui-widget-content ui-corner-all" value="{{lanes}}"/>
+        <label for="lane-offset">Lane Offset</label>
+        <input type="text" name="lane-offset" id="lane_offset" class="text ui-widget-content ui-corner-all" value="{{laneOffset}}"/>
+        <label for="length">Length </label>
+        <input type="text" name="length" id="length" class="text ui-widget-content ui-corner-all" value="{{length}}"/><br/>
+      </fieldset>
+    </form>
+  </div>
+  <div id="tabs-link-fd">
+    {% if (!fdProfile) { %}
+    <input type="button" id="create-fd-profile" class="text ui-widget-content ui-corner-all" value="Create FD Profile"/>
+    {% } else { %}
+    <input type="button" id="edit-fd-profile" class="text ui-widget-content ui-corner-all" value="Edit FD Profile"/>
+    {% } %}
+  </div>
+  <div id="tabs-link-demand">
+    {% if (!demandProfile) { %}
+    <input type="button" id="create-demand-profile" class="text ui-widget-content ui-corner-all" value="Create Demand Profile"/>
+    {% } else { %}
+    <input type="button" id="edit-demand-profile" class="text ui-widget-content ui-corner-all" value="Edit Demand Profile"/>
+    {% } %}
+  </div>
+  <div id="tabs-link-capacity">
+    <form>
+      <fieldset>
+        <label>Start Time</label>
+        <label for="link-capacity-start-hour" class="time">h</label>
+        <input type="number"  id="link_capacity_start_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{cpStartTime['h']}}" />
 
-          <div>
-            <table cellpadding="0" cellspacing="0" border="0" class="browser_table" id="link-demand-table"></table>
-          </div>
-        </fieldset>
-      </form>
-    </div>
-    <div id="tabs-link-capacity">
-      <form>
-        <fieldset>
-          <label>Start Time</label>
-          <label for="link-capacity-start-hour" class="time">h</label>              
-          <input type="number"  id="link_capacity_start_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{cpStartTime['h']}}" />
-         
-          <label for="link-capacity-start-minute" class="time">: m</label>
-          <input type="number" id="link_capacity_start_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpStartTime['m']}}" />
-          
-          <label for="link-capacity-start-second" class="time">:: s</label>
-          <input type="number" id="link_capacity_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpStartTime['s']}}" />
-          
-          <label>Sampling Period</label>
-          <label for="link-capacity-sample-hour" class="time">h</label>              
-          <input type="number"  id="link_capacity_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{cpSampleTime['h']}}" />
-         
-          <label for="link-capacity-sample-minute" class="time">: m</label>
-          <input type="number" id="link_capacity_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpSampleTime['m']}}" />
-          
-          <label for="link-capacity-sample-second" class="time">:: s</label>
-          <input type="number" id="link_capacity_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpSampleTime['s']}}" />
-          
-          <label for="capacity-profile">Capacity Profile (vph)</label>
-          <textarea name="capacity-profile" id="cp_text" rows="10" class="text ui-widget-content ui-corner-all">{{capacityProfile}}</textarea>
+        <label for="link-capacity-start-minute" class="time">: m</label>
+        <input type="number" id="link_capacity_start_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpStartTime['m']}}" />
 
-        </fieldset>
-      </form>
-    </div>
-    <div id="tabs-link-tools">
-      <form>
-        <fieldset>
-          <label>Sub-divide this link every:</label>
-          <input type="text" name="subdivide" id="subdivide" class="text ui-widget-content ui-corner-all" value=""/>
-          <span> </span>
-          <button id="do-subdivide" class="text ui-widget-content ui-corner-all" >Sub-divide Now</button>
-          <hr/>
-          <label for="split">Split this link into:</label>
-          <input type="text" name="split" id="split" class="text ui-widget-content ui-corner-all" value=""/>
-          <span> lanes</span>
-          <button id="do-split" class="text ui-widget-content ui-corner-all" >Split Now</button>
-          <hr/>
-          <label for="turn-pockets">Turn Pockets</label>
-          <button id="add-lt" class="text ui-widget-content ui-corner-all" >Add Left Turn</button>
-          <button id="add-rt" class="text ui-widget-content ui-corner-all" >Add Right Turn</button>
-          <hr/>
-          <label for="buttons">Miscellaneous</label>
-          <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
-          <button id="reverse-link" class="text ui-widget-content ui-corner-all" >Create reverse link</button><br/>
-          <button id="geom-line" class="text ui-widget-content ui-corner-all" >Set geometry to line</button>
-          <button id="geom-road" class="text ui-widget-content ui-corner-all" >Set geometry to roads</button>
-        </fieldset>
-      </form>
-    </div>
+        <label for="link-capacity-start-second" class="time">:: s</label>
+        <input type="number" id="link_capacity_start_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpStartTime['s']}}" />
+
+        <label>Sampling Period</label>
+        <label for="link-capacity-sample-hour" class="time">h</label>
+        <input type="number"  id="link_capacity_sample_hour" class=" time-input text ui-widget-content ui-corner-all" min="0" value="{{cpSampleTime['h']}}" />
+
+        <label for="link-capacity-sample-minute" class="time">: m</label>
+        <input type="number" id="link_capacity_sample_minute" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpSampleTime['m']}}" />
+
+        <label for="link-capacity-sample-second" class="time">:: s</label>
+        <input type="number" id="link_capacity_sample_second" class=" time-input text ui-widget-content ui-corner-all" min="0" max="59" value="{{cpSampleTime['s']}}" />
+
+        <label for="capacity-profile">Capacity Profile (vph)</label>
+        <textarea name="capacity-profile" id="cp_text" rows="10" class="text ui-widget-content ui-corner-all">{{capacityProfile}}</textarea>
+
+      </fieldset>
+    </form>
+  </div>
+  <div id="tabs-link-tools">
+    <form>
+      <fieldset>
+        <label>Sub-divide this link every:</label>
+        <input type="text" name="subdivide" id="subdivide" class="text ui-widget-content ui-corner-all" value=""/>
+        <span> </span>
+        <button id="do-subdivide" class="text ui-widget-content ui-corner-all" >Sub-divide Now</button>
+        <hr/>
+        <label for="split">Split this link into:</label>
+        <input type="text" name="split" id="split" class="text ui-widget-content ui-corner-all" value=""/>
+        <span> lanes</span>
+        <button id="do-split" class="text ui-widget-content ui-corner-all" >Split Now</button>
+        <hr/>
+        <label for="turn-pockets">Turn Pockets</label>
+        <button id="add-lt" class="text ui-widget-content ui-corner-all" >Add Left Turn</button>
+        <button id="add-rt" class="text ui-widget-content ui-corner-all" >Add Right Turn</button>
+        <hr/>
+        <label for="buttons">Miscellaneous</label>
+        <button id="choose-name" class="text ui-widget-content ui-corner-all" >Choose name</button>
+        <button id="reverse-link" class="text ui-widget-content ui-corner-all" >Create reverse link</button><br/>
+        <button id="geom-line" class="text ui-widget-content ui-corner-all" >Set geometry to line</button>
+        <button id="geom-road" class="text ui-widget-content ui-corner-all" >Set geometry to roads</button>
+      </fieldset>
+    </form>
+  </div>
 </script>

@@ -12,6 +12,12 @@ window.beats.Node::initialize = ->
   t.set_id("4")
   @set('node_type',t)
 
+window.beats.Node::splitratio_profile = ->
+  @get("splitratioprofile")
+
+window.beats.Node::set_splitratio_profile = (profile) ->
+  @set("splitratioprofile", profile)
+
 window.beats.Node::crud = -> @get 'crudFlag'
 window.beats.Node::set_crud = (flag) ->
   if @crud() != $a.CrudFlag.CREATE

@@ -10,7 +10,7 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
 
   # the options argument has the network model and type of dialog to create('network')
   initialize: (options) ->
-    options.templateData = @_getTemplateData(options.models)
+    options.templateData = @_getTemplateData(options.models, options.message)
     super options
 
   # call the super class to set up the dialog box and then set the select box
@@ -20,6 +20,9 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
     @
 
   # set up the mode correctly
+  routeMode: ->
+    super
+    
   scenarioMode: ->
     super
 
@@ -32,11 +35,13 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
     @viewMode() if $a.Mode.VIEW
     @scenarioMode() if $a.Mode.SCENARIO
     @networkMode() if $a.Mode.NETWORK
+    @routeMode() if $a.Mode.ROUTE
   
   # creates a hash of values taken from the model for the html template
-  _getTemplateData: (models) ->
+  _getTemplateData: (models, message) ->
     'name': models[0].name()
     'description': models[0].description_text()
+    'message': message if message?
     'lockedForEdit': if models[0].locked_for_edit() then "checked" else ""
     'lockedForHistory': if models[0].locked_for_history() then "checked" else ""
 

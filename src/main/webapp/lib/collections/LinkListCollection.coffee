@@ -303,17 +303,17 @@ class window.beats.LinkListCollection extends Backbone.Collection
   # This method adds a sensor to the link id passed in
   addSensorToLink: (cid) ->
     link =  @getByCid(cid)
-    pos = link.get('contextMenu').position
+    pos = $a.contextMenu.position
     $a.broker.trigger("sensors:add", pos, link)
     
   # This method adds a controller to the link id passed in
   addControllerToLink: (cid) ->
     link =  @getByCid(cid)
-    pos = link.get('contextMenu').position
+    pos = $a.contextMenu.position
     $a.broker.trigger("controllers:add", pos, link)
     
   # This method adds an event to the link id passed in
   addEventToLink: (cid) ->
     link =  @getByCid(cid)
-    pos = link.get('contextMenu').position
+    pos = $a.contextMenu.position
     $a.broker.trigger("events:add", pos, link)
