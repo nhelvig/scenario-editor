@@ -2,7 +2,6 @@
 # based on mouse clicks
 class window.beats.PolygonDynamicView extends google.maps.OverlayView
   $a = window.beats
-  vertices : []
   markerIconOpts: {
         strokeColor: '#FF0000'
         strokeWeight: 1
@@ -20,6 +19,7 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
     modeMsg = 'Polygon Mode: Click the polygon to retrieve data or '
     modeMsg += 'press \'Esc\' to exit.'
     $a.broker.trigger('app:display_message:info', modeMsg)
+    @vertices = []
     @drawPolygon()
   
   manageDraw : () ->
@@ -35,7 +35,6 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
 
   drawPolygon: () ->
     @poly = new google.maps.Polygon({
-      path: []
       map: $a.map
       strokeColor: '#FF0000'
       strokeWeight: 2
@@ -47,15 +46,16 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
       clickable: true
     })
     gme = google.maps.event
-    gme.addListener($a.map, 'click', (e) =>
+    @mapClickHandler = gme.addListener($a.map, 'click', (e) =>
       @vertices.push e.latLng
       @manageDraw()
     )
-    gme.addListener(@poly, 'click', (e) =>
+    @polyClickHandler = gme.addListener(@poly, 'click', (e) =>
       if !e.vertex?
         $a.map.setOptions({draggableCursor:'hand'})
         @vertices = []
         @removePolygon()
+        @_tearDownListeners()
         $a.broker.trigger('app:show_message:success', 'Retrieving Pems Data')
         $a.broker.trigger('app:display_message:info', 'Scenario Editing Mode')
       else
@@ -77,17 +77,17 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
       icon: @_getMarkerOpts("#FFFFFF")
     })
     gme = google.maps.event
-    gme.addListener(@marker, 'click', (e) =>
+    @markerClickHandler = gme.addListener(@marker, 'click', (e) =>
       @vertices.splice(e.vertex, 1)
       @manageDraw()
     )
-    gme.addListener(@marker, 'mouseover', (e) =>
+    @markerOverHandler = gme.addListener(@marker, 'mouseover', (e) =>
       @marker.setIcon(@_getMarkerOpts("#FF0000"))
     )
-    gme.addListener(@marker, 'mouseout', (e) =>
+    @markerOutHandler = gme.addListener(@marker, 'mouseout', (e) =>
       @marker.setIcon(@_getMarkerOpts("#FFFFFF"))
     )
-    gme.addListener(@marker, 'dragend', (e) =>
+    @markerDragHandler = gme.addListener(@marker, 'dragend', (e) =>
       @vertices.pop()
       @vertices.push(e.latLng)
     )
@@ -106,7 +106,7 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
       icon: @markerIconOpts
     })
     gme = google.maps.event
-    gme.addListener(@line, 'click', (e) =>
+    @lineClickHandler = gme.addListener(@line, 'click', (e) =>
       @vertices.splice(e.vertex, 1)
       @manageDraw()
     )
@@ -119,8 +119,19 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
       @vertices = []
       $a.map.setOptions({draggableCursor:'hand'})
       @removePolygon()
-      $a.broker.trigger('app:display_message:info', 'Scenario Editing Mode') 
-  
+      @_tearDownListeners()
+      $a.broker.trigger('app:display_message:info', 'Scenario Editing Mode')
+      
+  _tearDownListeners: () ->
+    gme = google.maps.event
+    gme.removeListener(@mapClickHandler) if @mapClickHandler?
+    gme.removeListener(@polyClickHandler) if @polyClickHandler?
+    gme.removeListener(@markerClickHandler) if @markerClickHandler?
+    gme.removeListener(@markerOverHandler) if @markerOverHandler?
+    gme.removeListener(@markerOutHandler) if @markerOutHandler?
+    gme.removeListener(@markerDragHandler) if @markerDragHandler?
+    gme.removeListener(@lineClickHandler) if @lineClickHandler?
+
   _getMarkerOpts : (color) ->
     @markerIconOpts.fillColor = color
     @markerIconOpts

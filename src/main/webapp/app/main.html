@@ -666,6 +666,20 @@
         </form>
       </div>
     </script>
-
+    <script type="text/template" id="route-editor-dialog-template">
+      <div id="wrapper" class="route-editor">
+        <form>
+          <fieldset>
+            <label class="red big16">{{message}}</label>
+            <label>Route Name:</label>
+            <input type="text" name="route-name" id="route-name" class="text ui-widget-content ui-corner-all" value="{{name}}"/>
+            <label>Locked For Edit:</label>
+            <input type="checkbox" name="route-locked-for-edit" id="route-locked-for-edit" class="ui-widget-content ui-corner-all" value="locked-for-edit" {{lockedForEdit}}/>
+            <label>Locked For History:</label>
+            <input type="checkbox" name="route-locked-for-history" id="route-locked-for-history" class="ui-widget-content ui-corner-all" value="locked-for-history" {{lockedForHistory}}/>
+          </fieldset>
+        </form>
+      </div>
+    </script>
   </body>
 </html>
