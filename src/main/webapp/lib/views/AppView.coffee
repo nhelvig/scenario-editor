@@ -27,6 +27,7 @@ class window.beats.AppView extends Backbone.View
     'app:import_network_db' : '_importNetwork'
     'app:save_network_db' : '_saveNetwork'
     'app:load_scenario' : '_loadScenario'
+    'app:load_pems' : '_loadPEMS'
     'map:show_satellite' : '_showSatelliteTiles'
     'map:hide_satellite' : '_showSatelliteTiles'
     'map:import_pems' : '_importPems'
@@ -399,6 +400,37 @@ class window.beats.AppView extends Backbone.View
         $a.broker.trigger('app:loading_complete')
         # Display Error Message
         messageBox = new $a.MessageWindowView( {text: "Error Loading Scenario, " + errorThrown, okButton: true} )
+
+      contentType: 'text/json'
+      dataType: 'json'
+    )
+
+  # Load PEMS From DB
+  _loadPEMS: (scenarioId) ->
+    # add overlay to disable screen
+    messageBox = new $a.MessageWindowView( {text: "Loading PEMS...", okButton: false} )
+    # one off ajax request to get pems from DB in JSON form
+    $.ajax(
+      url: '/via-rest-api/project/1/scenario/' + scenarioId + '/pems'
+      type: 'GET'
+      beforeSend: (xhrObj) ->
+        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
+
+      success: (data) =>
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        if data.success == true
+          console.log "working"
+        else
+          # Display Error Message
+          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+
+      error: (xhr, textStatus, errorThrown) =>
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
+        messageBox = new $a.MessageWindowView( {text: "Error Loading PEMS, " + errorThrown, okButton: true} )
 
       contentType: 'text/json'
       dataType: 'json'

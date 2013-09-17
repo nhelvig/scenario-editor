@@ -56,6 +56,8 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
         @vertices = []
         @removePolygon()
         @_tearDownListeners()
+        console.log "here"
+        $a.broker.trigger('app:load_pems')
         $a.broker.trigger('app:show_message:success', 'Retrieving Pems Data')
         $a.broker.trigger('app:display_message:info', 'Scenario Editing Mode')
       else
