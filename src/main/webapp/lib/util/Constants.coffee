@@ -23,3 +23,6 @@ window.beats.Mode = {
   SCENARIO: false
 }
 
+window.beats.CCORADB = "ccoradb.path.berkeley.edu"
+window.beats.CCTEST = "cctest.path.berkeley.edu"
+

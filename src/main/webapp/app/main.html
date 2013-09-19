@@ -615,6 +615,11 @@
           <input type="text" name="user-name" id="user-name" class="text ui-widget-content ui-corner-all" value=""/>
           <label>Password:</label>
           <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all" value=""/>
+          <label>Database:</label>
+          <select id="database" name ="database" class="ui-widget-content ui-corner-all">
+            <option value="{{ccoradb}}">ccoradb</option>
+            <option value="{{cctest}}">cctest</option>
+          </select><br/>
           <div>
             <input type="submit" name="submit" id="login-button"  class="ui-widget-content ui-corner-all" value="Submit">
           </div>

@@ -10,7 +10,11 @@ class window.beats.LogInView extends Backbone.View
     @$el.attr 'title', attrs.title
     @$el.attr 'id', "user-dialog"
     @template = _.template($("#login-template").html())
-    @$el.html(@template())
+    @options = {
+      ccoradb: $a.CCORADB
+      cctest: $a.CCTEST
+    }
+    @$el.html(@template(@options))
     $a.broker.on("app:logInCallback", @logInCallback)
     @render()
     @$el.dialog('open')
@@ -37,6 +41,7 @@ class window.beats.LogInView extends Backbone.View
     args = {
       username: $('body').find('#user-name').val()
       password: $('body').find('#password').val()
+      database: $('body').find('#database :selected').val()
     }
 
     # Create Session Model and attempt to log in
