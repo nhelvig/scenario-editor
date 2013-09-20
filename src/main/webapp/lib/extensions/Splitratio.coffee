@@ -11,19 +11,19 @@ window.beats.Splitratio::link_in_id = ->
   @get('link_in')
 
 window.beats.Splitratio::set_link_in_id = (id) ->
-  @set('link_in', id)
+  @set('link_in', Number(id))
 
 window.beats.Splitratio::link_out_id = ->
   @get('link_out')
 
 window.beats.Splitratio::set_link_out_id = (id) ->
-  @set('link_out', id)
+  @set('link_out', Number(id))
 
 window.beats.Splitratio::vehicle_type_id = ->
-  @get('vehicleType_id')
+  @get('vehicle_type_id')
 
 window.beats.Splitratio::set_vehicle_type_id = (id) ->
-  @set('vehicleType_id', id)
+  @set('vehicle_type_id', Number(id))
 
 # get split ratio, at dt offset
 window.beats.Splitratio::split_ratio = (offset) ->
@@ -94,7 +94,8 @@ window.beats.Splitratio::set_crud = (crudFlag, offset) ->
 # Return True if split ratio has the same link_in, link_out and vehicle type id
 window.beats.Splitratio::equals = (link_in, link_out, vehicle_type_id) ->
   # check if link_in, link_out and vehicle_type_id match
-  if @link_in_id() == link_in and @link_out_id() == link_out and @vehicle_type_id() == vehicle_type_id
+  if @link_in_id() == Number(link_in) and @link_out_id() == Number(link_out) and \
+  @vehicle_type_id() == Number(vehicle_type_id)
     return true
   else
     return false

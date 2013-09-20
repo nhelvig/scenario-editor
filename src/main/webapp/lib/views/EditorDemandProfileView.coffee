@@ -86,7 +86,7 @@ class window.beats.EditorDemandProfileView extends Backbone.View
       $.each(demands, (index, demand) ->
 
         # check if demand is applicable, based on vehicleTypeId
-        if vehicleTypeId == "0" or demand.vehicle_type_id() == vehicleTypeId
+        if vehicleTypeId == "0" or demand.vehicle_type_id() == Number(vehicleTypeId)
 
           # for each demand offset, create datatable row array of data
           i=0
@@ -225,6 +225,7 @@ class window.beats.EditorDemandProfileView extends Backbone.View
     # get last set dt offset of demand
     offset = demand.max_offset()
     demand.set_demand("0.0", offset) # demand value added defaults to 0
+    demand.set_crud_flag($a.CrudFlag.CREATE, offset)
 
     # Add new record to data table
     @dTable.dataTable().fnAddData([

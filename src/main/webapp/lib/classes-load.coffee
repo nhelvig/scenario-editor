@@ -5,7 +5,7 @@ $a.models_with_extensions = [ 'Begin',
   'Density', 'DisplayPosition', 'Dynamics', 'End', 'Event', 'EventSet',
   'FeedbackElements', 'FundamentalDiagram', 'FundamentalDiagramProfile',
   'FundamentalDiagramSet', 'Input', 'Link', 'LinkList', 'LinkType',
-  'Marker', 'Network', 'NetworkSet', 'Node', 'NodeType', 'NodeList', 
+  'Marker', 'Network', 'NetworkSet', 'Node', 'NodeType', 'NodeList',
   'Output', 'Phase', 'Point', 'Position', 'Road', 'Roads',
   'RoadwayMarkers', 'Route', 'Scenario', 'Sensor', 'SensorSet', 'SensorType',
   'Settings', 'Signal', 'SignalSet', 'SplitRatioSet', 'Splitratio',
@@ -56,4 +56,4 @@ $a.utils = ['ArrayText', 'Beats', 'ContextMenuHandler', 'Constants', 'Environmen
   'GoogleMapRouteHandler', 'ReferenceHelper', 'UserSession', 'Util'
 ]
 
-$a.overrides = [ 'Number', 'Sync' ]
+$a.overrides = [ 'Model', 'Number', 'Sync' ]

@@ -1,8 +1,8 @@
 window.beats.Demand::vehicle_type_id = ->
-  @get('vehicleType_id')
+  @get('vehicle_type_id')
 
 window.beats.Demand::set_vehicle_type_id = (id) ->
-  @set('vehicleType_id', id)
+  @set('vehicle_type_id', Number(id))
 
 # get demand, at dt offset
 window.beats.Demand::demand = (offset) ->
@@ -73,7 +73,7 @@ window.beats.Demand::set_crud = (crudFlag, offset) ->
 # Return True if demand has the same vehicle type id
 window.beats.Demand::equals = (vehicle_type_id) ->
   # check if vehicle_type_id matches
-  if @vehicle_type_id() == vehicle_type_id
+  if @vehicle_type_id() == Number(vehicle_type_id)
     return true
   else
     return false

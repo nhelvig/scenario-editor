@@ -145,7 +145,6 @@ window.beats.Link::remove = ->
   else
     # remove link from input output
     @set_crud($a.CrudFlag.DELETE)
-
   @stopListening
 
 window.beats.Link::add = ->
