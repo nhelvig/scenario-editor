@@ -192,6 +192,7 @@ class window.beats.EditorDemandProfileView extends Backbone.View
     # get demand model and save new value
     demand = @model.demand(vehicleTypeId)
     demand.set_demand(value, offset)
+    demand.set_crud_flag($a.CrudFlag.UPDATE, offset)
 
   # regenerate demand table based on selected vehicle type id
   regenerateDemandTable: (e) ->
