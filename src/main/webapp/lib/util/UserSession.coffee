@@ -7,6 +7,7 @@ class window.beats.UserSession extends Backbone.Model
     username: ""
     password: ""
     headers: ""
+    database: ""
     authenticated: false
 
   # Url to post to try and validate user 
@@ -30,7 +31,7 @@ class window.beats.UserSession extends Backbone.Model
   setHeaders: () ->
     # Encode Username and password into Base64 to be passed into authorization header
     userPass = window.btoa(@.get("username") + ':' + @.get("password"))
-    header = {'Authorization' :'Basic ' + userPass, 'DB' :'ccoradb.path.berkeley.edu'}
+    header = {'Authorization' :'Basic ' + userPass, 'DB' : @.get("database")}
     @.set("headers", header)
 
   # Returns true if user is authenticated, false if not
