@@ -406,12 +406,12 @@ class window.beats.AppView extends Backbone.View
     )
 
   # Load PEMS From DB
-  _loadPEMS: (scenarioId) ->
+  _loadPEMS: () ->
     # add overlay to disable screen
     messageBox = new $a.MessageWindowView( {text: "Loading PEMS...", okButton: false} )
     # one off ajax request to get pems from DB in JSON form
     $.ajax(
-      url: '/via-rest-api/project/1/scenario/' + scenarioId + '/pems'
+      url: '/via-rest-api/project/0/scenario/0/pems'
       type: 'GET'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
@@ -421,12 +421,12 @@ class window.beats.AppView extends Backbone.View
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         if data.success == true
-          console.log "working"
+          console.log data.resource
         else
           # Display Error Message
           messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
 
-      error: (xhr, textStatus, errorThrown) =>
+      error: (xhr, textStatus, errorThrown) =>      
         # Remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         # Display Error Message
