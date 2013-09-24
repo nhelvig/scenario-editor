@@ -445,7 +445,7 @@ class window.beats.AppView extends Backbone.View
         $a.broker.trigger('app:loading_complete')
         if data.success == true
           set = new $a.SensorSet()
-          $a.SensorSet.from_xml1(data.resource, set)
+          $a.SensorSet.from_xml1($($.parseXML(data.resource)).children()[0], set)
           $a.sensorList = new $a.SensorListCollection(set)
           $a.sensorListView = new $a.SensorListView($a.sensorList)
           $a.sensorListView.render()
