@@ -198,13 +198,16 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
       when 'fd-value-9' then fd.set_critical_speed(value)
       when 'fd-value-10' then fd.set_jam_density(value)
 
+    # set crudflag to update
+    fd.set_crud_flag($a.CrudFlag.UPDATE)
+
 
   # add FD to profile
   addFD: (e) ->
     # make sure delete button is disabled
     @.$el.find("#delete-fd-button").attr('disabled', true)
 
-    fd = new $a.FundamentalDiagram()
+    fd = new $a.FundamentalDiagram({crudFlag: window.beats.CrudFlag.CREATE})
     # get maximut order in profile + 1
     maxOrder = @model.max_order() + 1
     fd.set_order(maxOrder)

@@ -11,9 +11,30 @@ window.beats.FundamentalDiagram::defaults =
   std_dev_free_flow_speed: null
   std_dev_congestion_speed: null
   jam_density: null
+
+window.beats.FundamentalDiagram::initialize = () ->
+  # add onchange event listener to following attributes to set CrudFlag to update
+  @on('change:
+          order,
+          capacity,
+          capacity_drop,
+          std_dev_capacity,
+          free_flow_speed,
+          congestion_speed,
+          critical_speed,
+          std_dev_free_flow_speed,
+          std_dev_congestion_speed,
+          jam_density',
+    @set_crud_flag(window.beats.CrudFlag.UPDATE))
   
-window.beats.FundamentalDiagram::crudflag = -> @get('crudFlag')
-window.beats.FundamentalDiagram::set_crudflag = (flag) -> @set('crudFlag', flag)
+window.beats.FundamentalDiagram::crud = -> @get('crudFlag')
+window.beats.FundamentalDiagram::set_crud = (flag) ->
+  @set('crudFlag', flag)
+  # set FD Profile to update if flag is create, update, delete
+  if flag == window.beats.CrudFlag.CREATE or
+  flag == window.beats.CrudFlag.UPDATE or
+  flag == window.beats.CrudFlag.DELETE
+    window.beats.models.fundamentaldiagram_set().fundamentaldiagramprofile.set_crud_flag(window.beats.CrudFlag.UPDATE)
 
 window.beats.FundamentalDiagram::ident = -> @get('id')
 window.beats.FundamentalDiagram::set_ident = (id) -> @set('id', id)

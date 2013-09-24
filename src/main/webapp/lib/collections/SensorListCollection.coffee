@@ -43,6 +43,8 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # sensor
   addSensor: (position, link) ->
     s = new $a.Sensor().from_position(position, link)
+    # set crudflag to indicate sensor has been added
+    s.set_crud_flag($a.CrudFlag.CREATE)
     @_setUpEvents(s)
     @add(s)
     s
