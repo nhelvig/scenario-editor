@@ -84,9 +84,9 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
       $.each(splitratios, (index, splitRatio) ->
 
         # check if split ratio is applicable, based on vehicleTypeId, linkInId and linkOutId filter
-        if (linkInId == "0" or splitRatio.link_in_id() == linkInId) \
-        and (linkOutId == "0" or splitRatio.link_out_id() == linkOutId) \
-        and (vehicleTypeId == "0" or splitRatio.vehicle_type_id() == vehicleTypeId)
+        if (linkInId == "0" or splitRatio.link_in_id() == Number(linkInId)) \
+        and (linkOutId == "0" or splitRatio.link_out_id() == Number(linkOutId)) \
+        and (vehicleTypeId == "0" or splitRatio.vehicle_type_id() == Number(vehicleTypeId))
 
           # for each split ratio offset, create datatable row array of data
           i=0
@@ -200,6 +200,7 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
     # get split ratio model and save new value
     splitRatio = @model.split_ratio(linkInId, linkOutId, vehicleTypeId)
     splitRatio.set_split_ratio(value, offset)
+    splitRatio.set_crud_flag($a.CrudFlag.UPDATE, offset)
 
 
   # regenerate split ratio table based on selected vehicle type id, link in and link out
@@ -244,6 +245,7 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
     # get last set dt offset of split ratio
     offset = splitRatio.max_offset()
     splitRatio.set_split_ratio("0.0", offset) # split ratio value added defaults to 0
+    splitRatio.set_crud_flag($a.CrudFlag.CREATE, offset)
 
     # Add new record to data table
     @dTable.dataTable().fnAddData([

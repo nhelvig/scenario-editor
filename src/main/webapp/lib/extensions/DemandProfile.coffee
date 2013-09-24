@@ -2,7 +2,7 @@ window.beats.DemandProfile::initialize = ->
   @set 'demand', []
 
 window.beats.DemandProfile::resolve_references =
-  window.beats.ReferenceHelper.resolver('link_id_org', 'link', 'link', 'demand', 'DemandProfile', true)
+  window.beats.ReferenceHelper.resolver('link_id_org', 'link', 'link', 'demandprofile', 'DemandProfile', true)
 
 window.beats.DemandProfile::encode_references = ->
   @set('link_id_org', @get('link').ident())

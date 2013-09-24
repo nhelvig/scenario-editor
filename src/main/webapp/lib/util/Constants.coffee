@@ -9,7 +9,8 @@ window.beats.CrudFlag = {
     CREATE: 'CREATE',
     RETRIEVE: 'RETRIEVE',
     UPDATE: 'UPDATE',
-    DELETE: 'DELETE'
+    DELETE: 'DELETE',
+    NONE: 'NONE'
   }
 
 window.beats.DefaultPosition = {

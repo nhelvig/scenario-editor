@@ -9,13 +9,6 @@ window.beats.Scenario.from_xml = (xml) ->
   sc = window.beats.Scenario.from_xml1(xml, object_with_id)
   sc.object_with_id = object_with_id
 
-  if sc.has('demandset')
-    _.each(sc.get('demandset').get('demandprofile'),
-           (demand) ->
-              demand.get('link').set('demand', demand)
-    )
-    sc.get('demandset').set('demand', [])
-
   if sc.has('capacityprofileset')
     _.each(sc.get('capacityprofileset').get('capacity'),
            (capacity) ->
@@ -29,13 +22,6 @@ window.beats.Scenario.from_xml = (xml) ->
              density.get('link').set('density',density)
     )
     sc.get('initialdensityset').set('density', [])
-
-  if sc.has('splitratioset')
-    _.each(sc.get('splitratioset').get('splitratioprofile'),
-           (splitratios) ->
-              splitratios.get('node').set('splitratios', splitratios)
-    )
-    sc.get('splitratioset').set('splitratios', [])
 
   sc
 
@@ -228,13 +214,6 @@ window.beats.Scenario::encode_references = ->
   if linklist and linklist.has('link')
     _.each(linklist.get('link'),
           (link) =>
-            if link.has('demand')
-              if(!demandset)
-                @set('demandset', new window.beats.DemandSet())
-                demandset = @get('demandset')
-              if(!demandset.has('demandprofile'))
-                demandset.set('demandprofile', [])
-              demandset.get('demandprofile').push(link.get('demand'))
 
             if link.has('capacity')
               if(!capacityprofileset)
@@ -253,17 +232,6 @@ window.beats.Scenario::encode_references = ->
               initialdensityset.get('density').push(link.get('density'))
     )
 
-    if nodelist and nodelist.has('node')
-      _.each(nodelist.get('node'),
-        (node) =>
-          if (node.has('splitratios'))
-            if(!splitratioset)
-              @set('splitratioset', new window.beats.SplitRatioSet())
-              splitratioset = @get('splitratioset')
-            if(!splitratioset.has('splitratioprofile'))
-              splitratioset.set('splitratioprofile', [])
-            splitratioset.get('splitratioprofile').push(node.get('splitratios'))
-      )
 
 window.beats.Scenario::createController = ->
   @set('controllerset', new window.beats.ControllerSet)
