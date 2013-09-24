@@ -35,6 +35,11 @@ window.beats.Scenario::initialize = ->
   @set 'sensorset', new window.beats.SensorSet
   @set 'signalset', new window.beats.SignalSet
 
+window.beats.Scenario::ident = ->
+  @get('id')
+window.beats.Scenario::set_id = (id) ->
+  @set('id', id)
+
 window.beats.Scenario::name = ->
   @get('name')
 window.beats.Scenario::set_name = (name) ->

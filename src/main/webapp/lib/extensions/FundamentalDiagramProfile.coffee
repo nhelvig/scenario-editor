@@ -53,7 +53,7 @@ window.beats.FundamentalDiagramProfile::set_crud = (flag) ->
   if flag == window.beats.CrudFlag.CREATE or
   flag == window.beats.CrudFlag.UPDATE or
   flag == window.beats.CrudFlag.DELETE
-    window.beats.models.fundamentaldiagramset.set_crud_flag(window.beats.CrudFlag.UPDATE)
+    window.beats.models.fundamentaldiagram_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
 
 window.beats.FundamentalDiagramProfile::fdp_id = -> @get('id')
 window.beats.FundamentalDiagramProfile::set_fdp_id = (id) -> @set('id', id)

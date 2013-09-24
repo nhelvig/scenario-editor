@@ -84,15 +84,16 @@ class window.beats.AjaxRequestHandler
 
       # get project id of fd set otherwise from senario
       projectId = if fdSet.project_id()? then fdSet.project_id() else $a.models.project_id()
+      scenarioId = if $a.models.ident()? then $a.models.ident() else 0
       fdSet.set_project_id(projectId)
       request = {}
 
       # Choose which REST API method based on CRUD Flag
       if fdSet.crud() == $a.CrudFlag.CREATE
-        request.url = $a.RESTURL + '/project/' + projectId + '/fdset/'
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/fdset/'
         request.type = 'POST'
       else if fdSet.crud() == $a.CrudFlag.UPDATE
-        request.url = $a.RESTURL + '/project/' + projectId + '/fdset/' + fdSet.ident()
+        request.url = $a.RESTURL + '/project/' + projectId + + '/scenario/' + scenarioId + '/fdset/' + fdSet.ident()
         request.type = 'PUT'
 
       request.errorMessage = 'Error saving FD Set: '
