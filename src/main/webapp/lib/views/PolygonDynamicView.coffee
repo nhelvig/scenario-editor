@@ -47,6 +47,7 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
     })
     gme = google.maps.event
     @mapClickHandler = gme.addListener($a.map, 'click', (e) =>
+      @_addPoints e.latLng
       @vertices.push e.latLng
       @manageDraw()
     )
@@ -56,7 +57,7 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
         @vertices = []
         @removePolygon()
         @_tearDownListeners()
-        $a.broker.trigger('app:load_pems', 1)
+        $a.broker.trigger('app:load_pems', @position)
         $a.broker.trigger('app:show_message:success', 'Retrieving Pems Data')
         $a.broker.trigger('app:display_message:info', 'Scenario Editing Mode')
       else
@@ -136,3 +137,10 @@ class window.beats.PolygonDynamicView extends google.maps.OverlayView
   _getMarkerOpts : (color) ->
     @markerIconOpts.fillColor = color
     @markerIconOpts
+  
+  _addPoints : (latLng) ->
+    @position = new $a.Position() unless @position?
+    pt = new $a.Point()
+    pt.set_lat(latLng.lat())
+    pt.set_lng(latLng.lng())
+    @position.add_point pt

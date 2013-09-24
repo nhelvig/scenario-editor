@@ -406,13 +406,14 @@ class window.beats.AppView extends Backbone.View
     )
 
   # Load PEMS From DB
-  _loadPEMS: () ->
+  _loadPEMS: (pos) ->
     # add overlay to disable screen
+    doc = document.implementation.createDocument(null, null, null)
     messageBox = new $a.MessageWindowView( {text: "Loading PEMS...", okButton: false} )
     # one off ajax request to get pems from DB in JSON form
     $.ajax(
       url: '/via-rest-api/project/0/scenario/0/pems'
-      type: 'GET'
+      type: 'POST'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
         xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
@@ -431,7 +432,10 @@ class window.beats.AppView extends Backbone.View
         $a.broker.trigger('app:loading_complete')
         # Display Error Message
         messageBox = new $a.MessageWindowView( {text: "Error Loading PEMS, " + errorThrown, okButton: true} )
-
+      
       contentType: 'text/json'
       dataType: 'json'
+      
+      # TODO: Data should be changed to be JSON
+      data: new XMLSerializer().serializeToString(pos.to_xml(doc))
     )
