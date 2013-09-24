@@ -423,6 +423,11 @@ class window.beats.AppView extends Backbone.View
         $a.broker.trigger('app:loading_complete')
         if data.success == true
           console.log data.resource
+          set = new $a.SensorSet()
+          $a.SensorSet.from_xml1(data.resource, set)
+          $a.sensorList = new $a.SensorListCollection(set)
+          $a.sensorListView = new $a.SensorListView($a.sensorList)
+          $a.sensorListView.render()
         else
           # Display Error Message
           messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
@@ -433,7 +438,7 @@ class window.beats.AppView extends Backbone.View
         # Display Error Message
         messageBox = new $a.MessageWindowView( {text: "Error Loading PEMS, " + errorThrown, okButton: true} )
       
-      contentType: 'text/json'
+      contentType: 'application/json'
       dataType: 'json'
       
       # TODO: Data should be changed to be JSON
