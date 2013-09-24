@@ -27,7 +27,9 @@ window.beats.Network::description_text = ->
   @get('description')?.get('text')
 
 window.beats.Network::set_description_text = (s) ->
-  @get('description').set('text',s)
+  description = new window.beats.Description()
+  description.set('text',s)
+  @set('description',description)
 
 window.beats.Network::locked_for_edit = ->
   @get('lockedForEdit')

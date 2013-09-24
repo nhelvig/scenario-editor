@@ -35,11 +35,21 @@ window.beats.Scenario::initialize = ->
   @set 'sensorset', new window.beats.SensorSet
   @set 'signalset', new window.beats.SignalSet
 
-window.beats.Scenario::name = -> @get('name')
-window.beats.Scenario::set_name = (name) -> @set('name', name)
+window.beats.Scenario::name = ->
+  @get('name')
+window.beats.Scenario::set_name = (name) ->
+  @set('name', name)
 
-window.beats.Scenario::description = -> @get('description')
-window.beats.Scenario::set_description = (desc) -> @set('description', desc)
+window.beats.Scenario::description_text = ->
+  @get('description')?.get('text')
+window.beats.Scenario::set_description_text = (s) ->
+  description = new window.beats.Description()
+  description.set('text',s)
+  @set('description',description)
+
+window.beats.Scenario::project_id = -> @get 'project_id'
+window.beats.Scenario::set_project_id = (pid) ->
+  @set 'project_id', pid
 
 window.beats.Scenario::locked_for_edit = -> @get('lockedForEdit')
 window.beats.Scenario::set_locked_for_edit = (s) ->
@@ -67,6 +77,9 @@ window.beats.Scenario::links = ->
 window.beats.Scenario::set_links = (list) ->
   @network().get('linklist')?.set('link', list)
 
+window.beats.Scenario::sensor_set = ->
+  @get('sensorset')
+
 window.beats.Scenario::sensors = ->
   @get('sensorset')?.get('sensor') || []
 
@@ -84,6 +97,9 @@ window.beats.Scenario::events = ->
 
 window.beats.Scenario::set_events = (list) ->
   @get('eventset')?.set('event', list)
+
+window.beats.Scenario::splitratio_set = ->
+  @get('splitratioset')
 
 window.beats.Scenario::splitratio_profiles = ->
   @get('splitratioset')?.get('splitratioprofile') || @createSplitRatioSet()
@@ -105,6 +121,9 @@ window.beats.Scenario::add_splitratio_profile = (node) ->
   # return split ratio profile
   profile
 
+window.beats.Scenario::demand_set = ->
+  @get('demandset')
+
 window.beats.Scenario::demand_profiles = ->
   @get('demandset')?.get('demandprofile') || @createDemandSet()
 
@@ -125,6 +144,12 @@ window.beats.Scenario::add_demand_profile = (link) ->
   # return demand profile
   profile
 
+window.beats.Scenario::fundamentaldiagram_set = ->
+  @get('fundamentaldiagramset')
+
+window.beats.Scenario::set_fundamentaldiagram_set = (set) ->
+  @set('fundamentaldiagramset', set)
+
 window.beats.Scenario::fundamentaldiagram_profiles = ->
   @get('fundamentaldiagramset')?.get('fundamentaldiagramprofile') || @createFundamentalDiagramSet()
 
@@ -134,7 +159,7 @@ window.beats.Scenario::set_fundamentaldiagram_profiles = (list) ->
 # Add the FD profile to the set for given link
 window.beats.Scenario::add_fundamentaldiagram_profile = (link) ->
   # create new FD Profile model
-  profile = new window.beats.FundamentalDiagramProfile()
+  profile = new window.beats.FundamentalDiagramProfile({crudFlag: window.beats.CrudFlag.CREATE})
   # set this link id and resolve the reference
   profile.set_link_id(link.ident())
   profile.set_link(link)
@@ -250,5 +275,5 @@ window.beats.Scenario::createDemandSet = ->
   @get('demandset').get('demandprofile')
 
 window.beats.Scenario::createFundamentalDiagramSet = ->
-  @set('fundamentaldiagramset', new window.beats.FundamentalDiagramSet)
+  @set('fundamentaldiagramset', new window.beats.FundamentalDiagramSet({crudFlag: window.beats.CrudFlag.CREATE}))
   @get('fundamentaldiagramset').get('fundamentaldiagramprofile')

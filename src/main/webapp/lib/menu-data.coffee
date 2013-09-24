@@ -35,8 +35,11 @@ $a.nav_bar_menu_items =
     nav_bar_menu_item 'Open Via Scenario',
         (-> $a.broker.trigger("app:open_scenario_browser_db")),
         [SCENARIO]
+    nav_bar_menu_item 'Save New Via Scenario',
+        (->  $a.broker.trigger("app:import_scenario_db")),
+        [SCENARIO]
     nav_bar_menu_item 'Save Via Scenario',
-        (->  $a.broker.trigger("app:save_scenario")),
+        (->  $a.broker.trigger("app:save_scenario_db")),
         [SCENARIO]
     nav_bar_menu_item 'Open Local Scenario',
         (-> $a.broker.trigger("app:open_scenario")),

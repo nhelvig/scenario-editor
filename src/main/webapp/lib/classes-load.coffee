@@ -52,8 +52,8 @@ $a.map_views = [
   'TreeChildItemNodeView', 'NavBarView','NavParentItemView','NavChildItemView'
 ]
 
-$a.utils = ['ArrayText', 'Beats', 'ContextMenuHandler', 'Constants', 'Environment',
-  'GoogleMapRouteHandler', 'ReferenceHelper', 'UserSession', 'Util'
+$a.utils = ['AjaxRequestHandler', 'ArrayText', 'Beats', 'ContextMenuHandler', 'Constants',
+  'Environment', 'GoogleMapRouteHandler', 'ReferenceHelper', 'UserSession', 'Util'
 ]
 
 $a.overrides = [ 'Model', 'Number', 'Sync' ]

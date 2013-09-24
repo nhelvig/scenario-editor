@@ -10,8 +10,15 @@ window.beats.FundamentalDiagramProfile::defaults =
   dt: 0
   agg_run_id: null
 
-window.beats.FundamentalDiagramProfile::initialize = ->
+window.beats.FundamentalDiagramProfile::initialize = () ->
   @set 'fundamentaldiagram', []
+  @on('change:
+            link_id,
+            sensor_id,
+            start_time,
+            dt,
+            agg_run_id',
+    @set_crud_flag(window.beats.CrudFlag.UPDATE))
 
 window.beats.FundamentalDiagramProfile::resolve_references =
   window.beats.ReferenceHelper.resolver('link_id', 'link', 'link', 'fundamentaldiagramprofile', 'FundamentalDiagramProfile', true)
@@ -39,9 +46,14 @@ window.beats.FundamentalDiagramProfile::calibration_algorithm_type = ->
 window.beats.FundamentalDiagramProfile::set_calibration_algorithm_type= (type) ->
   @set('calibrationalgorithmtype', type)
 
-window.beats.FundamentalDiagramProfile::crudflag = -> @get('crudFlag')
-window.beats.FundamentalDiagramProfile::set_crudflag= (flag) -> 
+window.beats.FundamentalDiagramProfile::crud = -> @get('crudFlag')
+window.beats.FundamentalDiagramProfile::set_crud = (flag) ->
   @set('crudFlag', flag)
+  # set FD Set to update if flag is create, update, delete
+  if flag == window.beats.CrudFlag.CREATE or
+  flag == window.beats.CrudFlag.UPDATE or
+  flag == window.beats.CrudFlag.DELETE
+    window.beats.models.fundamentaldiagramset.set_crud_flag(window.beats.CrudFlag.UPDATE)
 
 window.beats.FundamentalDiagramProfile::fdp_id = -> @get('id')
 window.beats.FundamentalDiagramProfile::set_fdp_id = (id) -> @set('id', id)

@@ -18,6 +18,9 @@ class window.beats.LogInView extends Backbone.View
     $a.broker.on("app:logInCallback", @logInCallback)
     @render()
     @$el.dialog('open')
+    # re-enable dialog close button
+    $('.ui-dialog-titlebar-close').css('visibility', 'visible')
+
 
   # render the dialog box. The calling function has responsability for appending
   # it as well as calling el.tabs and el.diaload('open')

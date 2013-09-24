@@ -27,6 +27,8 @@ class window.beats.AppView extends Backbone.View
     'app:import_network_db' : '_importNetwork'
     'app:save_network_db' : '_saveNetwork'
     'app:load_scenario' : '_loadScenario'
+    'app:import_scenario_db' : '_importScenario'
+    'app:save_scenario_db' : '_saveScenario'
     'map:show_satellite' : '_showSatelliteTiles'
     'map:hide_satellite' : '_showSatelliteTiles'
     'map:import_pems' : '_importPems'
@@ -46,6 +48,7 @@ class window.beats.AppView extends Backbone.View
     @_contextMenu()
     @_messagePanel()
     @newScenario() if $a.Environment.DEV is false
+    #@_loginDev() if $a.Environment.DEV is true
     # Wait for idle map so that we can get projection
     google.maps.event.addListener($a.map, 'idle', =>
       @_displayMap($a.fileText) if $a.Environment.DEV is true
@@ -59,7 +62,17 @@ class window.beats.AppView extends Backbone.View
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
     $a.Util.publishEvents($a.broker, @broker_events, @)
     @
-  
+
+  # login automatically
+  _loginDev: () ->
+    args = new Object()
+    args.username = ''
+    args.password = ''
+    args.database = $a.CCTEST
+    args.authenticated = true
+    $a.usersession = new $a.UserSession(args)
+    $a.usersession.setHeaders()
+
   # create the landing map. The latitude and longitude our arbitarily pointing
   # to the I80/Berkeley area
   _initializeMap: ->
@@ -234,10 +247,19 @@ class window.beats.AppView extends Backbone.View
   _isNetworkNamed: (network) ->
     name = network.name()
     return name? and not (name is '');
+
+  #check if scenario is named
+  _isScenarioNamed: (scenario) ->
+    name = scenario.name()
+    return name? and not (name is '');
   
   #open the network editor when trying to save and network is not named
   _openNetworkEditor: (msg) ->
     $a.broker.trigger("map:open_network_editor", msg)
+
+  #open the scenario editor when trying to save and scenario is not named
+  _openScenarioEditor: (msg) ->
+    $a.broker.trigger("map:open_scenario_editor", msg)
     
   # Load Network From DB
   _loadNetwork: (networkId) ->
@@ -403,3 +425,25 @@ class window.beats.AppView extends Backbone.View
       contentType: 'text/json'
       dataType: 'json'
     )
+
+  # Import new scenario into DB
+  _importScenario: () ->
+    alert('Import new network')
+
+  # Save scenario set information one by one to DB
+  _saveScenario: () ->
+    if(not @_isScenarioNamed($a.models.network()))
+      @_openScenarioEditor AppView.NAME_SAVE_MSG
+    else
+      # set up ajax request handler to save modified scenario sets
+      ajaxRequests = new $a.AjaxRequestHandler()
+      fdSet = $a.models.fundamentaldiagram_set()
+
+      # if fd set has changed add to request
+      if fdSet?
+        ajaxRequests.saveFDSetRequest(fdSet)
+
+      # now process queue of ajax requests
+      ajaxRequests.processRequests()
+
+
