@@ -422,7 +422,6 @@ class window.beats.AppView extends Backbone.View
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         if data.success == true
-          console.log data.resource
           set = new $a.SensorSet()
           $a.SensorSet.from_xml1(data.resource, set)
           $a.sensorList = new $a.SensorListCollection(set)
