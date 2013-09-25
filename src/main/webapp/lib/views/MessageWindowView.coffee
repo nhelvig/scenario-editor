@@ -15,8 +15,6 @@ class window.beats.MessageWindowView extends Backbone.View
     $a.broker.on("app:loading_complete", @close)
     @render(@options.okButton)
     @$el.dialog('open')
-    # set style width to auto so dialog grows if more text is added
-    @$el.parent().css('width', 'auto')
 
   # render the dialog box.
   # it as well as calling el.tabs and el.diaload('open')
@@ -43,10 +41,14 @@ class window.beats.MessageWindowView extends Backbone.View
   addToMessage: (text) ->
     oldText = @$el.find('#message-text').text()
     @$el.find('#message-text').html(oldText + "<br>" + text)
+    # set style width to auto so dialog grows if more text is added
+    @$el.parent().css('width', 'auto')
 
   # Replaces message box text
   replaceMessage: (text) ->
-    @$el.find('#message-text').text(text)
+    @$el.find('#message-text').html(text)
+    # set style width to auto so dialog grows if more text is added
+    @$el.parent().css('width', 'auto')
 
   # Dynamically create OK button on message box
   addOKButton: () ->

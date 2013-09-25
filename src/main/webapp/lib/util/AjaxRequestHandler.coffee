@@ -48,6 +48,7 @@ class window.beats.AjaxRequestHandler
               $a.fileSaveMode = false
               xml = $.parseXML(data.resource)
               request.success($(xml).children())
+              @messageBox.addToMessage(data.message)
             else
               # Display Error Message
               @messageBox.addToMessage(request.errorMessage + data.message)
@@ -93,14 +94,14 @@ class window.beats.AjaxRequestHandler
         request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/fdset/'
         request.type = 'POST'
       else if fdSet.crud() == $a.CrudFlag.UPDATE
-        request.url = $a.RESTURL + '/project/' + projectId + + '/scenario/' + scenarioId + '/fdset/' + fdSet.ident()
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/fdset/' + fdSet.ident()
         request.type = 'PUT'
 
       request.errorMessage = 'Error saving FD Set: '
       request.messageText = 'Saving FD Set... '
       # Define Success callback method, which updateds FD Set in backbone models with new DB ids
       request.success = (xml) ->
-        $a.models.set_fundamentaldiagram_set($a.FundamentalDiagramSet.from_xml1(xml))
+        $a.models.set_fundamentaldiagram_set($a.FundamentalDiagramSet.from_xml1(xml, $a.models.object_with_id))
       # Serialize FDSet to xml to pass to rest API
       doc = document.implementation.createDocument(null, null, null)
       request.data = new XMLSerializer().serializeToString(fdSet.to_xml(doc))
