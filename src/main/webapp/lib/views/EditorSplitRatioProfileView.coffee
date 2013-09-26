@@ -47,7 +47,7 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # Set up profiles on change events
   _setupEvents: ->
     # Setup profile model change events
-    @model.on('change:node_id change:destination_network_id network_id change:dt change:start_time',
+    @model.on('change:node_id change:destination_network_id change:network_id change:dt change:start_time',
       => @_updateProfile())
     splits = @model?.split_ratios()
     # for each split in profile add changed events
@@ -59,8 +59,8 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
       )
 
   # Update set's and profile's CrudFlag
-  _updateProfile: (fd) ->
-    # set crud flag to update for fd set, fd profile and fd if passed in
+  _updateProfile: () ->
+    # set crud flag to update for split ratio set, split ratio profile
     $a.models.splitratio_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
     @model.set_crud_flag($a.CrudFlag.UPDATE)
 
@@ -170,7 +170,7 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
   # removes all event listeners
   _clearEvents: () ->
     # remove profile model change events
-    @model.off('change:node_id change:destination_network_id network_id change:dt change:start_time')
+    @model.off('change:node_id change:destination_network_id change:network_id change:dt change:start_time')
     splits = @model?.split_ratios()
     # for each split in profile remove change events
     if splits?
@@ -290,6 +290,8 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
       linkOutId,
       splitRatio.split_ratio(offset)
     ])
+    # update Split ratio profile crudflag
+    @_updateProfile()
 
   # add split ratio to profile
   deleteSplitRatio: (e) ->

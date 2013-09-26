@@ -132,6 +132,9 @@ window.beats.Scenario::add_splitratio_profile = (node) ->
 window.beats.Scenario::demand_set = ->
   @get('demandset')
 
+window.beats.Scenario::set_demand_set = (set) ->
+  @set('demandset', set)
+
 window.beats.Scenario::demand_profiles = ->
   @get('demandset')?.get('demandprofile') || @createDemandSet()
 

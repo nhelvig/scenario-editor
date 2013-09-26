@@ -429,6 +429,7 @@ class window.beats.AppView extends Backbone.View
       ajaxRequests = new $a.AjaxRequestHandler()
       fdSet = $a.models.fundamentaldiagram_set()
       splitRatioSet = $a.models.splitratio_set()
+      demandSet = $a.models.demand_set()
 
       # if there is a fd set add to request
       if fdSet?
@@ -438,7 +439,14 @@ class window.beats.AppView extends Backbone.View
       if splitRatioSet?
         ajaxRequests.createSaveSplitRatioSetRequest(splitRatioSet)
 
+      # demand set
+      if demandSet?
+        ajaxRequests.createSaveDemandSetRequest(demandSet)
+
       # now process queue of ajax requests
-      ajaxRequests.processRequests()
+      if ajaxRequests.requestQueue.length > 0
+        ajaxRequests.processRequests()
+      else
+        message = new $a.MessageWindowView( {text: "No scenario changes to save.", okButton: true} )
 
 

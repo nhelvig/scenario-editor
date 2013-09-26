@@ -265,6 +265,8 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
     @dTable.dataTable().fnAddData(
       @._getFDRow(fd)
     )
+    # update FD profile
+    @_updateProfile()
 
   # add fd to profile
   deleteFD: (e) ->

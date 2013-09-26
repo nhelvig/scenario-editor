@@ -143,6 +143,41 @@ class window.beats.AjaxRequestHandler
 
       @requestQueue.push(request)
 
+  # Creates Request object for Demand Set Request and adds it to request queue
+  createSaveDemandSetRequest : (demandSet) ->
+    # only create request if Demand set has changed
+    if demandSet.crud() == $a.CrudFlag.UPDATE or demandSet.crud() == $a.CrudFlag.CREATE
+      # if name and description are not set, use name and description from scenario
+      if demandSet.name() is null or demandSet.name() is undefined
+        demandSet.set_name($a.models.name() + ' Demand  Set')
+      if demandSet.description_text() is null or demandSet.description_text() is undefined
+        demandSet.set_description_text($a.models.description_text() + ' Demand  Set')
+
+      # get project id of demand set otherwise from senario
+      projectId = if demandSet.project_id()? then demandSet.project_id() else $a.models.project_id()
+      scenarioId = if $a.models.ident()? then $a.models.ident() else 0
+      demandSet.set_project_id(projectId)
+      request = {}
+
+      # Choose which REST API method based on CRUD Flag
+      if demandSet.crud() == $a.CrudFlag.CREATE
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/demandset/'
+        request.type = 'POST'
+      else if demandSet.crud() == $a.CrudFlag.UPDATE
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/demandset/' + demandSet.ident()
+        request.type = 'PUT'
+
+      request.errorMessage = '<span style="color: red;">Error Saving Demand Set:</span> '
+      request.messageText = '<b>Saving Demand Set...<b> '
+      # Define Success callback method, which updateds Demand  Set in backbone models with new DB ids
+      request.success = (xml) ->
+        $a.models.set_demand_set($a.DemandSet.from_xml1(xml, $a.models.object_with_id))
+      # Serialize Demand  Set to xml to pass to rest API
+      doc = document.implementation.createDocument(null, null, null)
+      request.data = new XMLSerializer().serializeToString(demandSet.to_xml(doc))
+
+      @requestQueue.push(request)
+
 
 
 

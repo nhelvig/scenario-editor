@@ -1,3 +1,9 @@
+window.beats.Demand::defaults =
+  crudFlag: null
+  id: null
+  vehicle_type_id: null
+  text: null
+
 window.beats.Demand::vehicle_type_id = ->
   @get('vehicle_type_id')
 

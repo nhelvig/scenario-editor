@@ -28,7 +28,8 @@ class window.beats.EditorDemandProfileView extends Backbone.View
     # Populate Underscore.js template
     @template = _.template($("#demand-editor-template").html())
     @$el.html(@template(options.templateData))
-    $a.Util.publishEvents($a.broker, @broker_events, @)
+    # setup models change events
+    @_setupEvents()
 
   # call the super class to set up the dialog box and then set the select box
   render: ->
@@ -44,6 +45,21 @@ class window.beats.EditorDemandProfileView extends Backbone.View
     # change size of demand profile editor container
     $('.bottom-profile-editor ').css('height', '40%')
     @
+
+  # Set up profiles on change events
+  _setupEvents: ->
+    # Setup profile model change events
+    @model.on('change:link_id change:destination_network_id change:dt change:start_time
+      change:std_dev_mult change:std_dev_add change:knob',
+      => @_updateProfile())
+    demands = @model?.demands()
+    # for each demand in profile add changed events
+    if demands?
+      $.each(demands, (index, demand) =>
+        # for each demand in profile setup model change events
+        demand.on('change:text',
+          => @_updateProfile())
+      )
 
   # if in a demand we disable some fields
   _checkDisableFields: ->
@@ -126,8 +142,28 @@ class window.beats.EditorDemandProfileView extends Backbone.View
       "bJQueryUI": true,
     })
 
+  # removes all event listeners
+  _clearEvents: () ->
+    # remove profile model change events
+    @model.off('change:link_id change:destination_network_id change:dt change:start_time
+          change:std_dev_mult change:std_dev_add change:knob')
+    demands = @model?.demands()
+    # for each demand in profile remove change events
+    if demands?
+      $.each(demands, (index, demand) =>
+        # for each demand in profile setup model change events
+        demand.off('change:text')
+      )
+
+  # Update set's and profile's CrudFlag
+  _updateProfile: () ->
+    # set crud flag to update for demand set and demand profile
+    $a.models.demand_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
+    @model.set_crud_flag($a.CrudFlag.UPDATE)
+
   # Closes the dialog box
   close: () ->
+    @_clearEvents()
     # change size of demand profile editor container to 0%
     $('.bottom-profile-editor ').css('height', '0%')
     # restore size of map container
@@ -235,6 +271,8 @@ class window.beats.EditorDemandProfileView extends Backbone.View
       vehicleTypeId,
       demand.demand(offset)
     ])
+    # update Demand profile crudflag
+    @_updateProfile()
 
   # add demand to profile
   deleteDemand: (e) ->

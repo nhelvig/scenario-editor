@@ -1,3 +1,15 @@
+window.beats.DemandProfile::defaults =
+  demand: []
+  destination_network_id: null
+  crudFlag: null
+  id: null
+  link_id: null
+  std_dev_add: 0
+  std_dev_mult: 1
+  start_time: 0
+  knob: 0
+  dt: 0
+
 window.beats.DemandProfile::initialize = ->
   @set 'demand', []
 
@@ -15,6 +27,10 @@ window.beats.DemandProfile::demands_by_vehicle_type = ->
 
 window.beats.DemandProfile::is_constant = ->
    @demands_by_vehicle_type()[0].length == 1
+
+window.beats.DemandProfile::crud = -> @get('crudFlag')
+window.beats.DemandProfile::set_crud = (flag) ->
+  @set('crudFlag', flag)
 
 window.beats.DemandProfile::add = ->
   window.beats.models.demand().push(@)
