@@ -106,6 +106,9 @@ window.beats.Scenario::set_events = (list) ->
 window.beats.Scenario::splitratio_set = ->
   @get('splitratioset')
 
+window.beats.Scenario::set_splitratio_set = (set) ->
+  @set('splitratioset', set)
+
 window.beats.Scenario::splitratio_profiles = ->
   @get('splitratioset')?.get('splitratioprofile') || @createSplitRatioSet()
 
@@ -115,7 +118,7 @@ window.beats.Scenario::set_splitratio_profiles = (list) ->
 # Add the split ratio profile to the set for given node
 window.beats.Scenario::add_splitratio_profile = (node) ->
   # create new Split Ratio Profile model
-  profile = new window.beats.SplitRatioProfile()
+  profile = new window.beats.SplitRatioProfile({crudFlag: window.beats.CrudFlag.CREATE})
   # set this node id and resolve the reference
   profile.set_node_id(node.ident())
   profile.set_node(node)
@@ -138,7 +141,7 @@ window.beats.Scenario::set_demand_profiles = (list) ->
 # Add the demand profile to the set for given link
 window.beats.Scenario::add_demand_profile = (link) ->
   # create new Demand Profile model
-  profile = new window.beats.DemandProfile()
+  profile = new window.beats.DemandProfile({crudFlag: window.beats.CrudFlag.CREATE})
   # set this link id and resolve the reference
   profile.set_link_id(link.ident())
   profile.set_link(link)
@@ -268,15 +271,15 @@ window.beats.Scenario::createController = ->
   @get('controllerset').get('controller')
 
 window.beats.Scenario::createEvent = ->
-  @set('eventset', new window.beats.EventSet)
+  @set('eventset', new window.beats.EventSet())
   @get('eventset').get('event')
 
 window.beats.Scenario::createSplitRatioSet = ->
-  @set('splitratioset', new window.beats.SplitRatioSet)
+  @set('splitratioset', new window.beats.SplitRatioSet({crudFlag: window.beats.CrudFlag.CREATE}))
   @get('splitratioset').get('splitratioprofile')
 
 window.beats.Scenario::createDemandSet = ->
-  @set('demandset', new window.beats.DemandSet)
+  @set('demandset', new window.beats.DemandSet({crudFlag: window.beats.CrudFlag.CREATE}))
   @get('demandset').get('demandprofile')
 
 window.beats.Scenario::createFundamentalDiagramSet = ->

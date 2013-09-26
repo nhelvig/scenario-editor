@@ -1,3 +1,13 @@
+window.beats.SplitRatioProfile::defaults =
+  splitratio: []
+  destination_network_id: null
+  network_id: null
+  crudFlag: null
+  id: null
+  node_id: null
+  start_time: 0
+  dt: 0
+
 window.beats.SplitRatioProfile::initialize = ->
   @set 'splitratio', []
 
@@ -50,6 +60,10 @@ window.beats.SplitRatioProfile::set_destintation_network_id = (id) ->
 
 window.beats.SplitRatioProfile::split_ratios = ->
   @get('splitratio')
+
+window.beats.SplitRatioProfile::crud = -> @get('crudFlag')
+window.beats.SplitRatioProfile::set_crud = (flag) ->
+  @set('crudFlag', flag)
 
 # Returns split ratios which have given link_in, link_out and vehicle_type_id
 window.beats.SplitRatioProfile::split_ratio = (link_in, link_out, vehicle_type_id) ->

@@ -74,7 +74,7 @@ class window.beats.AjaxRequestHandler
       @messageBox = new $a.MessageWindowView( {text: "Error must be logged in to Save to Via.", okButton: true} )
 
   # Creates Request object for FDSet Request and adds it to request queue
-  saveFDSetRequest : (fdSet) ->
+  createSaveFDSetRequest : (fdSet) ->
     # only create request if FD set has changed
     if fdSet.crud() == $a.CrudFlag.UPDATE or fdSet.crud() == $a.CrudFlag.CREATE
       # if name and description are not set, use name and description from scenario
@@ -97,14 +97,49 @@ class window.beats.AjaxRequestHandler
         request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/fdset/' + fdSet.ident()
         request.type = 'PUT'
 
-      request.errorMessage = 'Error saving FD Set: '
-      request.messageText = 'Saving FD Set... '
+      request.errorMessage = '<span style="color: red;">Error saving FD Set:</span> '
+      request.messageText = '<b>Saving FD Set...<b> '
       # Define Success callback method, which updateds FD Set in backbone models with new DB ids
       request.success = (xml) ->
         $a.models.set_fundamentaldiagram_set($a.FundamentalDiagramSet.from_xml1(xml, $a.models.object_with_id))
       # Serialize FDSet to xml to pass to rest API
       doc = document.implementation.createDocument(null, null, null)
       request.data = new XMLSerializer().serializeToString(fdSet.to_xml(doc))
+
+      @requestQueue.push(request)
+
+  # Creates Request object for Split Ratio Set Request and adds it to request queue
+  createSaveSplitRatioSetRequest : (splitSet) ->
+    # only create request if Split Ratio set has changed
+    if splitSet.crud() == $a.CrudFlag.UPDATE or splitSet.crud() == $a.CrudFlag.CREATE
+      # if name and description are not set, use name and description from scenario
+      if splitSet.name() is null or splitSet.name() is undefined
+        splitSet.set_name($a.models.name() + ' Split Ratio Set')
+      if splitSet.description_text() is null or splitSet.description_text() is undefined
+        splitSet.set_description_text($a.models.description_text() + ' Split Ratio Set')
+
+      # get project id of split ratio set otherwise from senario
+      projectId = if splitSet.project_id()? then splitSet.project_id() else $a.models.project_id()
+      scenarioId = if $a.models.ident()? then $a.models.ident() else 0
+      splitSet.set_project_id(projectId)
+      request = {}
+
+      # Choose which REST API method based on CRUD Flag
+      if splitSet.crud() == $a.CrudFlag.CREATE
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/splitratioset/'
+        request.type = 'POST'
+      else if splitSet.crud() == $a.CrudFlag.UPDATE
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/splitratioset/' + splitSet.ident()
+        request.type = 'PUT'
+
+      request.errorMessage = '<span style="color: red;">Error Saving Split Ratio Set:</span> '
+      request.messageText = '<b>Saving Split Ratio Set...<b> '
+      # Define Success callback method, which updateds Split Ratio Set in backbone models with new DB ids
+      request.success = (xml) ->
+        $a.models.set_splitratio_set($a.SplitRatioSet.from_xml1(xml, $a.models.object_with_id))
+      # Serialize Split Ratio Set to xml to pass to rest API
+      doc = document.implementation.createDocument(null, null, null)
+      request.data = new XMLSerializer().serializeToString(splitSet.to_xml(doc))
 
       @requestQueue.push(request)
 

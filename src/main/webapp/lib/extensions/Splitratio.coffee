@@ -1,3 +1,11 @@
+window.beats.Splitratio::defaults =
+  crudFlag: null
+  id: null
+  link_in: null
+  link_out: null
+  vehicle_type_id: null
+  text: null
+
 window.beats.Splitratio::resolve_references = (deferred, object_with_id) ->
   deferred.push =>
     @set('in_link', object_with_id.link[@get('link_in')])

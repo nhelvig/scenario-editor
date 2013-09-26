@@ -48,7 +48,7 @@ class window.beats.AppView extends Backbone.View
     @_contextMenu()
     @_messagePanel()
     @newScenario() if $a.Environment.DEV is false
-    #@_loginDev() if $a.Environment.DEV is true
+    @_loginDev() if $a.Environment.DEV is true
     # Wait for idle map so that we can get projection
     google.maps.event.addListener($a.map, 'idle', =>
       @_displayMap($a.fileText) if $a.Environment.DEV is true
@@ -66,8 +66,8 @@ class window.beats.AppView extends Backbone.View
   # login automatically
   _loginDev: () ->
     args = new Object()
-    args.username = ''
-    args.password = ''
+    args.username = 'test_user'
+    args.password = 'via_test'
     args.database = $a.CCTEST
     args.authenticated = true
     $a.usersession = new $a.UserSession(args)
@@ -438,10 +438,15 @@ class window.beats.AppView extends Backbone.View
       # set up ajax request handler to save modified scenario sets
       ajaxRequests = new $a.AjaxRequestHandler()
       fdSet = $a.models.fundamentaldiagram_set()
+      splitRatioSet = $a.models.splitratio_set()
 
-      # if fd set has changed add to request
+      # if there is a fd set add to request
       if fdSet?
-        ajaxRequests.saveFDSetRequest(fdSet)
+        ajaxRequests.createSaveFDSetRequest(fdSet)
+
+      # if there is a split ratio set add to request
+      if splitRatioSet?
+        ajaxRequests.createSaveSplitRatioSetRequest(splitRatioSet)
 
       # now process queue of ajax requests
       ajaxRequests.processRequests()

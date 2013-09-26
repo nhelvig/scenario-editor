@@ -26,7 +26,8 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
     # Populate Underscore.js template
     @template = _.template($("#split-ratio-editor-template").html())
     @$el.html(@template(options.templateData))
-    $a.Util.publishEvents($a.broker, @broker_events, @)
+    # setup models change events
+    @_setupEvents()
 
   # call the super class to set up the dialog box and then set the select box
   render: ->
@@ -42,6 +43,26 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
     # change size of split ratio profile editor container
     $('.bottom-profile-editor ').css('height', '40%')
     @
+
+  # Set up profiles on change events
+  _setupEvents: ->
+    # Setup profile model change events
+    @model.on('change:node_id change:destination_network_id network_id change:dt change:start_time',
+      => @_updateProfile())
+    splits = @model?.split_ratios()
+    # for each split in profile add changed events
+    if splits?
+      $.each(splits, (index, split) =>
+        # for each split in profile setup model change events
+        split.on('change:text',
+          => @_updateProfile())
+      )
+
+  # Update set's and profile's CrudFlag
+  _updateProfile: (fd) ->
+    # set crud flag to update for fd set, fd profile and fd if passed in
+    $a.models.splitratio_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
+    @model.set_crud_flag($a.CrudFlag.UPDATE)
 
   # if in a split ratio we disable some fields
   _checkDisableFields: ->
@@ -144,10 +165,23 @@ class window.beats.EditorSplitRatioProfileView extends Backbone.View
       "bDestroy": true,
       "bAutoWidth": false,
       "bJQueryUI": true,
-    })
+    } )
+
+  # removes all event listeners
+  _clearEvents: () ->
+    # remove profile model change events
+    @model.off('change:node_id change:destination_network_id network_id change:dt change:start_time')
+    splits = @model?.split_ratios()
+    # for each split in profile remove change events
+    if splits?
+      $.each(splits, (index, split) =>
+        # for each split in profile setup model change events
+        split.off('change:text')
+      )
 
   # Closes the dialog box
   close: () ->
+    @_clearEvents()
     # change size of split ratio profile editor container to 0%
     $('.bottom-profile-editor ').css('height', '0%')
     # restore size of map container

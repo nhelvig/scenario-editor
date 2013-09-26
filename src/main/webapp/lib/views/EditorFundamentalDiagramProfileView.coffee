@@ -69,6 +69,14 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
             => @_updateProfile(fd))
       )
 
+  # Update Profile's CRUD flag
+  _updateProfile: (fd) ->
+    # set crud flag to update for fd set, fd profile and fd if passed in
+    $a.models.fundamentaldiagram_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
+    @model.set_crud_flag($a.CrudFlag.UPDATE)
+    if fd?
+      fd.set_crud_flag($a.CrudFlag.UPDATE)
+
   # if in a fd we disable some fields
   _checkDisableFields: ->
     # disable the only the delete fd button
@@ -84,14 +92,6 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
 
   viewMode: ->
     @$el.find(":input").attr("disabled", true)
-
-  _updateProfile: (fd) ->
-    # set crud flag to update for fd set, fd profile and fd if passed in
-    $a.models.fundamentaldiagram_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
-    @model.set_crud_flag($a.CrudFlag.UPDATE)
-    if fd?
-      fd.set_crud_flag($a.CrudFlag.UPDATE)
-
 
   # Once an editor is created we sets field to respond to the appropriate modes
   _checkMode: ->
@@ -173,13 +173,7 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
   # removes all event listeners
   _clearEvents: () ->
     # remove profile model change events
-    @model.off('change:
-                      link_id,
-                      sensor_id,
-                      start_time,
-                      dt,
-                      agg_run_id,
-                      fundamentaldiagram')
+    @model.off('change:link_id change:sensor_id change:start_time change:dt change:agg_run_id')
     fds = @model?.fundamental_diagrams()
     # if fds exist remove change event listener for each one
     fdType = @model?.fundamental_diagram_type()
@@ -187,20 +181,10 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
     if fds?
       $.each(fds, (index, fd) =>
         # for each fd in profile remove model change events
-        fd.off('change:
-                      order,
-                      capacity,
-                      capacity_drop,
-                      std_dev_capacity,
-                      free_flow_speed,
-                      congestion_speed,
-                      critical_speed,
-                      std_dev_free_flow_speed,
-                      std_dev_congestion_speed,
-                      jam_density')
+        fd.off('change:order change:capacity change:capacity_drop change:std_dev_capacity
+                  change:free_flow_speed change:congestion_speed change:critical_speed
+                  change:std_dev_free_flow_speed change:std_dev_congestion_speed change:jam_density')
       )
-    # unpublish events
-    $a.Util.unpublishEvents($a.broker, @broker_events, @)
 
   # Closes the dialog box
   close: () ->

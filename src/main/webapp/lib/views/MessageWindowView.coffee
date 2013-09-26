@@ -39,7 +39,7 @@ class window.beats.MessageWindowView extends Backbone.View
 
   # Adds text to end of message box text
   addToMessage: (text) ->
-    oldText = @$el.find('#message-text').text()
+    oldText = @$el.find('#message-text').html()
     @$el.find('#message-text').html(oldText + "<br>" + text)
     # set style width to auto so dialog grows if more text is added
     @$el.parent().css('width', 'auto')
