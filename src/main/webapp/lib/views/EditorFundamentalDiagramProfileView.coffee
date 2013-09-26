@@ -25,7 +25,9 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
     # Populate Underscore.js template
     @template = _.template($("#fd-editor-template").html())
     @$el.html(@template(options.templateData))
-    $a.Util.publishEvents($a.broker, @broker_events, @)
+    # setup models change events
+    @_setupEvents()
+
 
   # call the super class to set up the dialog box and then set the select box
   render: ->
@@ -42,6 +44,38 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
     # change size of fd profile editor container
     $('.bottom-profile-editor ').css('height', '40%')
     @
+
+  # Set up profiles on change events
+  _setupEvents: ->
+    # Setup profile model change events
+    @model.on('change:link_id change:sensor_id change:start_time change:dt change:agg_run_id',
+                => @_updateProfile())
+    # Set up fd profile type model change events
+    fdType = @model?.fundamental_diagram_type()
+    # if there is no FD Type set default to id 1
+    if not fdType?
+      @model.set_fundamental_diagram_type(1)
+      fdType = @model?.fundamental_diagram_type()
+    fdType.on('change:id', => @_updateProfile())
+
+    fds = @model?.fundamental_diagrams()
+    # for each fd in profile add changed events
+    if fds?
+      $.each(fds, (index, fd) =>
+        # for each fd in profile setup model change events
+        fd.on('change:order change:capacity change:capacity_drop change:std_dev_capacity
+          change:free_flow_speed change:congestion_speed change:critical_speed
+          change:std_dev_free_flow_speed change:std_dev_congestion_speed change:jam_density',
+            => @_updateProfile(fd))
+      )
+
+  # Update Profile's CRUD flag
+  _updateProfile: (fd) ->
+    # set crud flag to update for fd set, fd profile and fd if passed in
+    $a.models.fundamentaldiagram_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
+    @model.set_crud_flag($a.CrudFlag.UPDATE)
+    if fd?
+      fd.set_crud_flag($a.CrudFlag.UPDATE)
 
   # if in a fd we disable some fields
   _checkDisableFields: ->
@@ -136,8 +170,25 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
       "bJQueryUI": true,
     })
 
+  # removes all event listeners
+  _clearEvents: () ->
+    # remove profile model change events
+    @model.off('change:link_id change:sensor_id change:start_time change:dt change:agg_run_id')
+    fds = @model?.fundamental_diagrams()
+    # if fds exist remove change event listener for each one
+    fdType = @model?.fundamental_diagram_type()
+    fdType.off('change:id')
+    if fds?
+      $.each(fds, (index, fd) =>
+        # for each fd in profile remove model change events
+        fd.off('change:order change:capacity change:capacity_drop change:std_dev_capacity
+                  change:free_flow_speed change:congestion_speed change:critical_speed
+                  change:std_dev_free_flow_speed change:std_dev_congestion_speed change:jam_density')
+      )
+
   # Closes the dialog box
   close: () ->
+    @_clearEvents()
     # change size fd profile editor container to 0%
     $('.bottom-profile-editor ').css('height', '0%')
     # restore size of map container
@@ -145,6 +196,7 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
     $('#right_tree').css('height', '100%')
     #remove element
     @$el.remove()
+
 
   # these are callback events for various elements in the interface
   # This is used to save the profiles start time when focus is
@@ -198,10 +250,6 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
       when 'fd-value-9' then fd.set_critical_speed(value)
       when 'fd-value-10' then fd.set_jam_density(value)
 
-    # set crudflag to update
-    fd.set_crud_flag($a.CrudFlag.UPDATE)
-
-
   # add FD to profile
   addFD: (e) ->
     # make sure delete button is disabled
@@ -244,7 +292,7 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
 
         # add row selected class to row and create input box to make fd editable
         $(@).addClass('row_selected')
-        instance._addInputBoxToRow(@)
+        instance._addInputBoxToRow(@, order)
 
         # if last order fd is highlighted delete button should be enabled
         if instance.model.max_order() == Number(order)
