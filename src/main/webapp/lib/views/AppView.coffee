@@ -48,7 +48,6 @@ class window.beats.AppView extends Backbone.View
     @_contextMenu()
     @_messagePanel()
     @newScenario() if $a.Environment.DEV is false
-    @_loginDev() if $a.Environment.DEV is true
     # Wait for idle map so that we can get projection
     google.maps.event.addListener($a.map, 'idle', =>
       @_displayMap($a.fileText) if $a.Environment.DEV is true
@@ -63,15 +62,6 @@ class window.beats.AppView extends Backbone.View
     $a.Util.publishEvents($a.broker, @broker_events, @)
     @
 
-  # login automatically
-  _loginDev: () ->
-    args = new Object()
-    args.username = 'test_user'
-    args.password = 'via_test'
-    args.database = $a.CCTEST
-    args.authenticated = true
-    $a.usersession = new $a.UserSession(args)
-    $a.usersession.setHeaders()
 
   # create the landing map. The latitude and longitude our arbitarily pointing
   # to the I80/Berkeley area
