@@ -244,9 +244,6 @@ window.beats.Scenario::encode_references = ->
   if initialdensityset && initialdensityset.has('density')
     initialdensityset.set('density', [])
 
-  if splitratioset && splitratioset.has('splitratioprofile')
-    splitratioset.set('splitratioprofile', [])
-
   if linklist and linklist.has('link')
     _.each(linklist.get('link'),
           (link) =>

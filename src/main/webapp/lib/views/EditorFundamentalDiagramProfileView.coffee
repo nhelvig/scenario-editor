@@ -53,6 +53,7 @@ class window.beats.EditorFundamentalDiagramProfileView extends Backbone.View
     # Set up fd profile type model change events
     fdType = @model?.fundamental_diagram_type()
     # if there is no FD Type set default to id 1
+
     if not fdType?
       @model.set_fundamental_diagram_type(1)
       fdType = @model?.fundamental_diagram_type()
