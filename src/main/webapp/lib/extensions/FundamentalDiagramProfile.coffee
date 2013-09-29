@@ -32,10 +32,9 @@ window.beats.FundamentalDiagramProfile::fundamental_diagram_type_name = ->
 window.beats.FundamentalDiagramProfile::fundamental_diagram_type = ->
   @get('fundamentaldiagramtype')
 window.beats.FundamentalDiagramProfile::set_fundamental_diagram_type = (id, name) ->
-  @set('fundamentaldiagramtype', new window.beats.FundamentalDiagramType)  if not @fundamental_diagram_type()?
+  @set('fundamentaldiagramtype', new window.beats.FundamentalDiagramType())  if not @fundamental_diagram_type()?
   @get('fundamentaldiagramtype').set('name', name)
   @get('fundamentaldiagramtype').set('id', id)
-  @defaults['fundamentaldiagramtype'] = id
 
 window.beats.FundamentalDiagramProfile::calibration_algorithm_type = ->
   @get('calibrationalgorithmtype')

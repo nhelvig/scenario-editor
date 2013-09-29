@@ -32,9 +32,6 @@ class window.beats.EditorLinkView extends window.beats.EditorView
     # get profile data associated with link
     @demandProfile = if options.models.length == 1 then options.models[0].demand_profile() else null
     @fdProfile = if options.models.length == 1 then options.models[0].fundamental_diagram_profile() else null
-    # set fd type default to 1
-    if @fdProfile
-      @fdProfile.set_fundamental_diagram_type(1)
     options.templateData = @_getTemplateData(options.models)
     super options
   
@@ -126,6 +123,7 @@ class window.beats.EditorLinkView extends window.beats.EditorView
   createFDProfile: () ->
     # add new fd profile to set and associate with link
     @fdProfile = $a.models.add_fundamentaldiagram_profile(@models?[0])
+    @fdProfile.set_fundamental_diagram_type(1)
     # open fd profile editor view
     env = new $a.EditorFundamentalDiagramProfileView(model: @fdProfile)
     @._openProfileEditor(env)
