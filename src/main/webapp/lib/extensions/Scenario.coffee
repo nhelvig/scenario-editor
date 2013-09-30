@@ -82,7 +82,11 @@ window.beats.Scenario::links = ->
 window.beats.Scenario::set_links = (list) ->
   @network().get('linklist')?.set('link', list)
 
+window.beats.Scenario::set_sensor_set = (set) ->
+  @set('sensorset', set)
+  
 window.beats.Scenario::sensor_set = ->
+  @set('sensorset', new window.beats.SensorSet()) if !@get('sensorset')?
   @get('sensorset')
 
 window.beats.Scenario::sensors = ->

@@ -146,4 +146,13 @@ describe("Scenario", function() {
       expect(scenario.get('downstreamboundarycapacityprofileset').get('capacityprofile')).toContain(sAndFriends.cp);
     });
   });
+  
+  describe("sensor_set", function() {
+    it("should create a new one if does not exist", function() {
+       var scenario = sAndFriends.scenario;
+       scenario.set_sensor_set(null);
+       var set = scenario.sensor_set();
+       expect(set).not.toBeNull();
+    });
+  });
 });

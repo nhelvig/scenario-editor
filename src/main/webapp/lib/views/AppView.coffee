@@ -27,6 +27,7 @@ class window.beats.AppView extends Backbone.View
     'app:import_network_db' : '_importNetwork'
     'app:save_network_db' : '_saveNetwork'
     'app:load_scenario' : '_loadScenario'
+    'app:load_pems' : '_loadPEMS'
     'app:import_scenario_db' : '_importScenario'
     'app:save_scenario_db' : '_saveScenario'
     'map:show_satellite' : '_showSatelliteTiles'
@@ -416,6 +417,51 @@ class window.beats.AppView extends Backbone.View
       dataType: 'json'
     )
 
+  # Load PEMS From DB
+  _loadPEMS: (pos) ->
+    # add overlay to disable screen
+    doc = document.implementation.createDocument(null, null, null)
+    msg = {text: "Loading PEMS...", okButton: false}
+    messageBox = new $a.MessageWindowView(msg)
+    # one off ajax request to get pems from DB in JSON form
+    $.ajax(
+      url: '/via-rest-api/project/0/scenario/0/pems'
+      type: 'POST'
+      beforeSend: (xhrObj) ->
+        auth = $a.usersession.getHeaders()['Authorization']
+        xhrObj.setRequestHeader('Authorization', auth)
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
+
+      success: (data) =>
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        if data.success == true
+          set = new $a.SensorSet()
+          moSensors = $($.parseXML(data.resource)).children()
+          set = $a.SensorSet.from_xml1(moSensors, set)
+          set.sensors().forEach((sensor) => 
+            flag = $a.models.sensor_set().containsPemsSensor(sensor)
+            if(!flag)
+              sensor.id = sensor.sensor_id_original()
+              $a.broker.trigger('sensors:add_sensor', sensor)
+          )
+        else
+          # Display Error Message
+          msg = {text: data.message, okButton: true}
+          messageBox = new $a.MessageWindowView(msg)
+
+      error: (xhr, textStatus, errorThrown) =>      
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
+        msg = {text: "Error Loading PEMS, " + errorThrown, okButton: true}
+        messageBox = new $a.MessageWindowView(msg)
+      
+      contentType: 'application/json'
+      dataType: 'json'
+      data: new XMLSerializer().serializeToString(pos.to_xml(doc))
+    )
+
   # Import new scenario into DB
   _importScenario: () ->
     alert('Import new network')
@@ -448,5 +494,3 @@ class window.beats.AppView extends Backbone.View
         ajaxRequests.processRequests()
       else
         message = new $a.MessageWindowView( {text: "No scenario changes to save.", okButton: true} )
-
-

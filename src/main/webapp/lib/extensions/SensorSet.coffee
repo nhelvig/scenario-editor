@@ -7,7 +7,9 @@ window.beats.SensorSet::defaults =
   lockedForEdit: false
   lockedForHistory: false
 
-window.beats.SensorSet::initialize = -> @set 'sensor', []
+window.beats.SensorSet::initialize = -> 
+  @set 'sensor', []
+  @set_crud window.beats.CrudFlag.CREATE
 
 window.beats.SensorSet::ident = -> @get 'id'
 window.beats.SensorSet::set_id = (id) -> @set 'id', id
@@ -31,3 +33,14 @@ window.beats.SensorSet::set_locked_for_edit = (s) ->
 window.beats.SensorSet::locked_for_history = -> @get('lockedForHistory')
 window.beats.SensorSet::set_locked_for_history = (s) ->
   @set('lockedForHistory',(s.toString().toLowerCase() == 'true') if s?)
+
+window.beats.SensorSet::crud = -> @get 'crudFlag'
+window.beats.SensorSet::set_crud = (flag) ->
+  if @crud() != window.beats.CrudFlag.CREATE
+    @set 'crudFlag', flag
+    
+window.beats.SensorSet::containsPemsSensor = (s) ->
+  obj  = _.find(@sensors(), (sensor) => 
+              sensor.sensor_id_original() is s.sensor_id_original()
+            )
+  return obj?
