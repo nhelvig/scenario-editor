@@ -421,13 +421,15 @@ class window.beats.AppView extends Backbone.View
   _loadPEMS: (pos) ->
     # add overlay to disable screen
     doc = document.implementation.createDocument(null, null, null)
-    messageBox = new $a.MessageWindowView( {text: "Loading PEMS...", okButton: false} )
+    msg = {text: "Loading PEMS...", okButton: false}
+    messageBox = new $a.MessageWindowView(msg)
     # one off ajax request to get pems from DB in JSON form
     $.ajax(
       url: '/via-rest-api/project/0/scenario/0/pems'
       type: 'POST'
       beforeSend: (xhrObj) ->
-        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+        auth = $a.usersession.getHeaders()['Authorization']
+        xhrObj.setRequestHeader('Authorization', auth)
         xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
       success: (data) =>
@@ -435,24 +437,28 @@ class window.beats.AppView extends Backbone.View
         $a.broker.trigger('app:loading_complete')
         if data.success == true
           set = new $a.SensorSet()
-          $a.SensorSet.from_xml1($($.parseXML(data.resource)).children()[0], set)
-          $a.sensorList = new $a.SensorListCollection(set)
-          $a.sensorListView = new $a.SensorListView($a.sensorList)
-          $a.sensorListView.render()
+          moSensors = $($.parseXML(data.resource)).children()
+          set = $a.SensorSet.from_xml1(moSensors, set)
+          set.sensors().forEach((sensor) => 
+            flag = $a.models.sensor_set().containsPemsSensor(sensor)
+            if(!flag)
+              sensor.id = sensor.sensor_id_original()
+              $a.broker.trigger('sensors:add_sensor', sensor)
+          )
         else
           # Display Error Message
-          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+          msg = {text: data.message, okButton: true}
+          messageBox = new $a.MessageWindowView(msg)
 
       error: (xhr, textStatus, errorThrown) =>      
         # Remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         # Display Error Message
-        messageBox = new $a.MessageWindowView( {text: "Error Loading PEMS, " + errorThrown, okButton: true} )
+        msg = {text: "Error Loading PEMS, " + errorThrown, okButton: true}
+        messageBox = new $a.MessageWindowView(msg)
       
       contentType: 'application/json'
       dataType: 'json'
-      
-      # TODO: Data should be changed to be JSON
       data: new XMLSerializer().serializeToString(pos.to_xml(doc))
     )
 

@@ -6,7 +6,7 @@ describe("FundamentalDiagram", function() {
   });
 
   it("should have all fields set to defaults", function() {
-    expect(testFD.crudflag()).toBeNull();
+    expect(testFD.crud()).toBeNull();
     expect(testFD.ident()).toBeNull();
     expect(testFD.order()).toBeNull();
     expect(testFD.capacity()).toBeNull();
@@ -20,7 +20,7 @@ describe("FundamentalDiagram", function() {
     expect(testFD.jam_density()).toBeNull();
   });
   it("should set all fields", function() {
-    testFD.set_crudflag(window.beats.CrudFlag.DELETE);
+    testFD.set_crud(window.beats.CrudFlag.DELETE);
     testFD.set_ident(1);
     testFD.set_order(1);
     testFD.set_capacity(1);
@@ -32,7 +32,7 @@ describe("FundamentalDiagram", function() {
     testFD.set_std_dev_free_flow_speed(1);
     testFD.set_std_dev_congestion_speed(1);
     testFD.set_jam_density(1);
-    expect(testFD.crudflag()).toEqual(window.beats.CrudFlag.DELETE);
+    expect(testFD.crud()).toEqual(window.beats.CrudFlag.DELETE);
     expect(testFD.ident()).toEqual(1);
     expect(testFD.order()).toEqual(1);
     expect(testFD.capacity()).toEqual(1);

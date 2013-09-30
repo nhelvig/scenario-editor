@@ -13,6 +13,7 @@ describe("SensorSet", function() {
       expect(s.sensors().length).toEqual(0);
       expect(s.locked_for_edit()).toBeFalsy();
       expect(s.locked_for_history()).toBeFalsy();
+      expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
     });
   });
   
@@ -38,6 +39,9 @@ describe("SensorSet", function() {
 
       s.set_locked_for_history(true)
       expect(s.locked_for_history()).toBeTruthy();
+
+      s.set_crud(window.beats.CrudFlag.UPDATE)      
+      expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
     });
   });
 });
