@@ -29,6 +29,7 @@ class window.beats.AppView extends Backbone.View
     'app:load_scenario' : '_loadScenario'
     'app:import_scenario_db' : '_importScenario'
     'app:save_scenario_db' : '_saveScenario'
+    'app:import_scenario_db' : '_importScenario'
     'map:show_satellite' : '_showSatelliteTiles'
     'map:hide_satellite' : '_showSatelliteTiles'
     'map:import_pems' : '_importPems'
@@ -448,5 +449,14 @@ class window.beats.AppView extends Backbone.View
         ajaxRequests.processRequests()
       else
         message = new $a.MessageWindowView( {text: "No scenario changes to save.", okButton: true} )
+
+  # Import new scenario
+  _importScenario: () ->
+    if(not @_isScenarioNamed($a.models.network()))
+      @_openScenarioEditor AppView.NAME_SAVE_MSG
+    else
+      # set up ajax request handler to import whole senario
+      ajaxRequests = new $a.AjaxRequestHandler()
+      ajaxRequests.createImportScenario($a.models)
 
 
