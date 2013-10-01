@@ -10,7 +10,36 @@ describe("Sensor", function() {
     p.get('point').push(pt)
     s.set('display_position', p)
   });
-  
+
+  describe("add", function() {
+    var msg = "should add the sensor to the models schema and update the ";
+    msg += "SensorSet crud flag";
+    it(msg, function() {
+      var lengthBefore = $a.models.sensors().length;
+      s.add();
+      expect(lengthBefore + 1).toEqual($a.models.sensors().length);
+      var crud = window.beats.models.sensor_set().crud();
+      if(crud == window.beats.CrudFlag.CREATE)
+        expect(crud).toEqual(window.beats.CrudFlag.CREATE);
+      else
+        expect(crud).toEqual(window.beats.CrudFlag.UPDATE);
+    });
+  });
+  describe("remove", function() {
+    var msg = "should remove the sensor from he models schema and update the ";
+    msg += "SensorSet crud flag";
+    it(msg, function() {
+      s.add();
+      var lengthBefore = $a.models.sensors().length;
+      s.remove();
+      expect(lengthBefore - 1).toEqual($a.models.sensors().length);
+      var crud = window.beats.models.sensor_set().crud();
+      if(crud == window.beats.CrudFlag.CREATE)
+        expect(crud).toEqual(window.beats.CrudFlag.CREATE);
+      else
+        expect(crud).toEqual(window.beats.CrudFlag.UPDATE);
+    });
+  });  
   describe("updatePosition", function() {
     it("should change the sensor's position", function() {
       var latLng = new google.maps.LatLng(37.83999, -122.29681);

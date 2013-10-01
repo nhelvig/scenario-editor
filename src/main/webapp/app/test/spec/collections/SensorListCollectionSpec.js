@@ -3,6 +3,7 @@ describe("SensorListCollection", function() {
   var models;
   
   beforeEach(function() {
+    spyOn($a.SensorListCollection.prototype, 'addSensorWithPositionLink').andCallThrough();
     spyOn($a.SensorListCollection.prototype, 'addSensor').andCallThrough();
     spyOn($a.SensorListCollection.prototype, 'removeSensor').andCallThrough();
     models = $a.models.sensors();
@@ -19,10 +20,17 @@ describe("SensorListCollection", function() {
       arrSel = mod.filter(function(sens){ return sens.selected() == false});
       expect(arrSel.length).toEqual(this.sColl.length);
     });
-    it("should be watching addSensor", function() {
+    it("should be watching addSensorWithPositionLink", function() {
       $a.broker.trigger("sensors:add", new google.maps.LatLng(37,-122));
+      expect($a.SensorListCollection.prototype.addSensorWithPositionLink).toHaveBeenCalled();
+    });
+    it("should be watching addSensor", function() {
+      s = new $a.Sensor();
+      s.updatePosition(new google.maps.LatLng(37,-122));
+      $a.broker.trigger("sensors:add_sensor", s);
       expect($a.SensorListCollection.prototype.addSensor).toHaveBeenCalled();
     });
+
     it("should be watching removeSensor", function() {
       this.sColl.trigger("sensors:remove", 1);
       expect($a.SensorListCollection.prototype.removeSensor).toHaveBeenCalled();
@@ -51,18 +59,36 @@ describe("SensorListCollection", function() {
     });
   });
   
-  describe("addSensor ", function() {
+  describe("addSensorWithPositionLink", function() {
     it("should create a new sensor and add it to the collection", function() {
      var lengthBefore = this.sColl.length;
-     this.sColl.addSensor(new google.maps.LatLng(37,-122));
+     this.sColl.addSensorWithPositionLink(new google.maps.LatLng(37,-122));
      expect(lengthBefore + 1).toEqual(this.sColl.length);
     });
     it("should create a new sensor and add it to the models schema", function() {
      var lengthBefore = $a.models.sensors().length;
-     this.sColl.addSensor(new google.maps.LatLng(37,-122));
+     this.sColl.addSensorWithPositionLink(new google.maps.LatLng(37,-122));
      expect(lengthBefore + 1).toEqual($a.models.sensors().length);
     });
   });
+  
+  describe("addSensor", function() {
+    it("should create a new sensor and add it to the collection", function() {
+     var lengthBefore = this.sColl.length;
+     var s = new $a.Sensor();
+     s.updatePosition(new google.maps.LatLng(37,-122));
+     this.sColl.addSensor(s);
+     expect(lengthBefore + 1).toEqual(this.sColl.length);
+    });
+    it("should create a new sensor and add it to the models schema", function() {
+     var lengthBefore = $a.models.sensors().length;
+     var s = new $a.Sensor();
+     s.updatePosition(new google.maps.LatLng(37,-122));
+     this.sColl.addSensor(s);
+     expect(lengthBefore + 1).toEqual($a.models.sensors().length);
+    });
+  });
+  
   describe("removeSensor ", function() {
     it("should remove it from collection and schema", function() {
      sensor = scenarioAndFriends().sensor

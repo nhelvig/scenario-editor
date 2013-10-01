@@ -66,9 +66,10 @@ window.beats.Sensor::set_link_reference = (link) ->
   @set('link_reference', link)
 
 window.beats.Sensor::resolve_references = (deferred, object_with_id) ->
-  deferred.push =>
-    link = object_with_id.link[@link_id()]
-    @set('link_reference', link)
+  if object_with_id.link?
+    deferred.push =>
+      link = object_with_id.link[@link_id()]
+      @set('link_reference', link)
 window.beats.Sensor::road_names = -> @get('link_reference')?.link_name() || ''
 
 window.beats.Sensor::sensor_id_original = -> @get('sensor_id_original')
@@ -134,9 +135,11 @@ window.beats.Sensor::remove = ->
   sensors = window.beats.models.sensors()
   sensors = _.reject(sensors, (s) => s is @)
   window.beats.models.set_sensors(sensors)
+  window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
 
 window.beats.Sensor::add = ->
   window.beats.models.sensors().push(@)
+  window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
 
 window.beats.Sensor::set_generic = (id, val) -> 
   @set(id, val)

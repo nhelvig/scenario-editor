@@ -21,7 +21,8 @@ window.beats.FundamentalDiagramSet::name = -> @get 'name'
 window.beats.FundamentalDiagramSet::set_name = (name) -> @set 'name', name
 
 window.beats.FundamentalDiagramSet::description_text = ->
-  @get('description')?.get('text')
+  @get('description')?.get('text') || null
+  
 window.beats.FundamentalDiagramSet::set_description_text = (s) ->
   description = new window.beats.Description()
   description.set('text',s)

@@ -4,6 +4,7 @@ class window.beats.EditorScenarioView extends window.beats.EditorView
   events : {
     'blur #scenario-name' : 'saveScenarioName'
     'blur #scenario-description' : 'saveScenarioDescription'
+    'blur #scenario-project' : 'saveScenarioProject'
     'click #scenario-locked-for-edit' : 'saveLockedForEdit'
     'click #scenario-locked-for-history' : 'saveLockedForHistory'
   }
@@ -23,7 +24,7 @@ class window.beats.EditorScenarioView extends window.beats.EditorView
   # set up the mode correctly
   scenarioMode: ->
     super
-    @$el.find(".route-editor :input").attr("disabled", false)
+    @$el.find(".scenario-editor :input").attr("disabled", false)
 
   networkMode: ->
     super
@@ -41,8 +42,9 @@ class window.beats.EditorScenarioView extends window.beats.EditorView
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (model, message) ->
     'name': model.name()
-    'description': model.description()
+    'description': model.description_text()
     'message': message if message?
+    'projectId': model.project_id()
     'lockedForEdit': if model.locked_for_edit() then "checked" else ""
     'lockedForHistory': if model.locked_for_history() then "checked" else ""
 
@@ -56,7 +58,13 @@ class window.beats.EditorScenarioView extends window.beats.EditorView
   # lost from the element
   saveScenarioDescription: (e) ->
     id = e.currentTarget.id
-    @models[0].set_description($("##{id}").val())
+    @models[0].set_description_text($("##{id}").val())
+
+  # This is used to save the scenario project id when focus is
+  # lost from the element
+  saveScenarioProject: (e) ->
+    id = e.currentTarget.id
+    @models[0].set_project_id($("##{id}").val())
 
   # This saves the checkbox indicating the scenario is locked for edit
   saveLockedForEdit: (e) ->

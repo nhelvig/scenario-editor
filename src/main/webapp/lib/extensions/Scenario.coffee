@@ -82,7 +82,11 @@ window.beats.Scenario::links = ->
 window.beats.Scenario::set_links = (list) ->
   @network().get('linklist')?.set('link', list)
 
+window.beats.Scenario::set_sensor_set = (set) ->
+  @set('sensorset', set)
+  
 window.beats.Scenario::sensor_set = ->
+  @set('sensorset', new window.beats.SensorSet()) if !@get('sensorset')?
   @get('sensorset')
 
 window.beats.Scenario::sensors = ->
@@ -285,3 +289,13 @@ window.beats.Scenario::createDemandSet = ->
 window.beats.Scenario::createFundamentalDiagramSet = ->
   @set('fundamentaldiagramset', new window.beats.FundamentalDiagramSet({crudFlag: window.beats.CrudFlag.CREATE}))
   @get('fundamentaldiagramset').get('fundamentaldiagramprofile')
+
+# This method copies project id to all set sub-elements
+window.beats.Scenario::copy_project_id = ->
+  projectId = @project_id()
+  # Set all sets to have same project id to all sets
+  @sensor_set().project_id(projectId)
+  @splitratio_set().project_id(projectId)
+  @fundamentaldiagram_set().project_id(projectId)
+  @demand_set().project_id(projectId)
+  @networkset().project_id(projectId)

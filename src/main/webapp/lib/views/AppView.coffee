@@ -5,7 +5,8 @@ class window.beats.AppView extends Backbone.View
   $a = window.beats
   $evt = google.maps.event
   @INITIAL_ZOOM_LEVEL = 16
-  @NAME_SAVE_MSG = "Please name your network, close this form and save again"
+  @NAME_SAVE_MSG = "Please name your scenario/network, close this form and save again"
+  @PROJECT_SAVE_MSG = "Please give your scenario a project id, close this form and save again"
   
   @start: ->
     new window.beats.AppView().render()
@@ -15,7 +16,7 @@ class window.beats.AppView extends Backbone.View
     'map:open_network_mode' : 'networkMode'
     'map:open_scenario_mode' : 'scenarioMode'
     'map:open_route_mode' : 'routeMode'
-    'map:upload_complete' :  '_displayMap'
+    'map:upload_complete' :  'displayMap'
     'map:clear_map' : 'clearMap'
     'app:new_scenario' : 'newScenario'
     'app:open_scenario' : 'openScenario'
@@ -27,6 +28,7 @@ class window.beats.AppView extends Backbone.View
     'app:import_network_db' : '_importNetwork'
     'app:save_network_db' : '_saveNetwork'
     'app:load_scenario' : '_loadScenario'
+    'app:load_pems' : '_loadPEMS'
     'app:import_scenario_db' : '_importScenario'
     'app:save_scenario_db' : '_saveScenario'
     'app:import_scenario_db' : '_importScenario'
@@ -51,7 +53,7 @@ class window.beats.AppView extends Backbone.View
     @newScenario() if $a.Environment.DEV is false
     # Wait for idle map so that we can get projection
     google.maps.event.addListener($a.map, 'idle', =>
-      @_displayMap($a.fileText) if $a.Environment.DEV is true
+      @displayMap($a.fileText) if $a.Environment.DEV is true
       google.maps.event.clearListeners($a.map, 'idle')
     )
     # add click event on log in screen
@@ -154,7 +156,7 @@ class window.beats.AppView extends Backbone.View
   
   # displayMap takes the uploaded file or serialized model object from database and parses the
   # xml into backbone model objects, and creates the MapNetworkView
-  _displayMap: (fileText) ->
+  displayMap: (fileText) ->
     $a.broker.trigger("map:clear_map")
     try
       xml = $.parseXML(fileText)
@@ -243,6 +245,11 @@ class window.beats.AppView extends Backbone.View
   _isScenarioNamed: (scenario) ->
     name = scenario.name()
     return name? and not (name is '');
+
+  #check if scenario has project id
+  _isScenarioProject: (scenario) ->
+    projectId = scenario.project_id()
+    return projectId? and not (projectId is '') and not (projectId is '0');
   
   #open the network editor when trying to save and network is not named
   _openNetworkEditor: (msg) ->
@@ -275,7 +282,7 @@ class window.beats.AppView extends Backbone.View
           data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
           end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
           data = data + end
-          @_displayMap(data)
+          @displayMap(data)
         else
           # Display Error Message
           messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
@@ -320,7 +327,7 @@ class window.beats.AppView extends Backbone.View
             data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
             end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
             data = data + end
-            @_displayMap(data)
+            @displayMap(data)
           else
             # Display Error Message
             messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
@@ -367,7 +374,7 @@ class window.beats.AppView extends Backbone.View
             data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
             end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
             data = data + end
-            @_displayMap(data)
+            @displayMap(data)
           else
             # Display Error Message
             messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
@@ -402,7 +409,7 @@ class window.beats.AppView extends Backbone.View
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         if data.success == true
-          @_displayMap(data.resource)
+          @displayMap(data.resource)
         else
           # Display Error Message
           messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
@@ -417,14 +424,57 @@ class window.beats.AppView extends Backbone.View
       dataType: 'json'
     )
 
-  # Import new scenario into DB
-  _importScenario: () ->
-    alert('Import new network')
+  # Load PEMS From DB
+  _loadPEMS: (pos) ->
+    # add overlay to disable screen
+    doc = document.implementation.createDocument(null, null, null)
+    msg = {text: "Loading PEMS...", okButton: false}
+    messageBox = new $a.MessageWindowView(msg)
+    # one off ajax request to get pems from DB in JSON form
+    $.ajax(
+      url: '/via-rest-api/project/0/scenario/0/pems'
+      type: 'POST'
+      beforeSend: (xhrObj) ->
+        auth = $a.usersession.getHeaders()['Authorization']
+        xhrObj.setRequestHeader('Authorization', auth)
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
+
+      success: (data) =>
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        if data.success == true
+          set = new $a.SensorSet()
+          moSensors = $($.parseXML(data.resource)).children()
+          set = $a.SensorSet.from_xml1(moSensors, set)
+          set.sensors().forEach((sensor) => 
+            flag = $a.models.sensor_set().containsPemsSensor(sensor)
+            if(!flag)
+              sensor.id = sensor.sensor_id_original()
+              $a.broker.trigger('sensors:add_sensor', sensor)
+          )
+        else
+          # Display Error Message
+          msg = {text: data.message, okButton: true}
+          messageBox = new $a.MessageWindowView(msg)
+
+      error: (xhr, textStatus, errorThrown) =>      
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
+        msg = {text: "Error Loading PEMS, " + errorThrown, okButton: true}
+        messageBox = new $a.MessageWindowView(msg)
+      
+      contentType: 'application/json'
+      dataType: 'json'
+      data: new XMLSerializer().serializeToString(pos.to_xml(doc))
+    )
 
   # Save scenario set information one by one to DB
   _saveScenario: () ->
-    if(not @_isScenarioNamed($a.models.network()))
+    if(not @_isScenarioNamed($a.models))
       @_openScenarioEditor AppView.NAME_SAVE_MSG
+    else if(not @_isNetworkNamed($a.models.network()))
+      @_openNetworkEditor AppView.NAME_SAVE_MSG
     else
       # set up ajax request handler to save modified scenario sets
       ajaxRequests = new $a.AjaxRequestHandler()
@@ -452,11 +502,18 @@ class window.beats.AppView extends Backbone.View
 
   # Import new scenario
   _importScenario: () ->
-    if(not @_isScenarioNamed($a.models.network()))
+    # if scenario does not have a name or a project id
+    if(not @_isScenarioNamed($a.models))
       @_openScenarioEditor AppView.NAME_SAVE_MSG
+    else if (not @_isScenarioProject($a.models))
+      @_openScenarioEditor AppView.PROJECT_SAVE_MSG
     else
+
+      scenario = $a.models
+      # make sure all sets have same project id as scenario
+      scenario.copy_project_id()
+
       # set up ajax request handler to import whole senario
-      ajaxRequests = new $a.AjaxRequestHandler()
-      ajaxRequests.createImportScenario($a.models)
-
-
+      ajaxRequest = new $a.AjaxRequestHandler()
+      ajaxRequest.createImportScenarioRequest(scenario)
+      ajaxRequest.processRequests()
