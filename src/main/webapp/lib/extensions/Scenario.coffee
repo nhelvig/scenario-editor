@@ -290,12 +290,62 @@ window.beats.Scenario::createFundamentalDiagramSet = ->
   @set('fundamentaldiagramset', new window.beats.FundamentalDiagramSet({crudFlag: window.beats.CrudFlag.CREATE}))
   @get('fundamentaldiagramset').get('fundamentaldiagramprofile')
 
-# This method copies project id to all set sub-elements
-window.beats.Scenario::copy_project_id = ->
-  projectId = @project_id()
+# This method copies the scenario project id, name and description to all set sub-elements
+window.beats.Scenario::copy_info_to_sets = ->
   # Set all sets to have same project id to all sets
-  @sensor_set().project_id(projectId)
-  @splitratio_set().project_id(projectId)
-  @fundamentaldiagram_set().project_id(projectId)
-  @demand_set().project_id(projectId)
-  @networkset().project_id(projectId)
+  if @sensor_set()?
+    # copy project id if not set
+    if @sensor_set().project_id() is null or @sensor_set().project_id() is undefined
+      @sensor_set().set_project_id(@project_id())
+    # copy scenario name if not set
+    if @sensor_set().name() is null or @sensor_set().name() is undefined
+      @sensor_set().set_name(@name() + ' Sensor Set')
+    # copy description if not set
+    if @sensor_set().description_text() is null or @sensor_set().description_text() is undefined
+      @sensor_set().set_description_text(@description_text() + ' Sensor Set')
+
+  if @splitratio_set()?
+    # copy project id if not set
+    if @splitratio_set().project_id() is null or @splitratio_set().project_id() is undefined
+      @splitratio_set().set_project_id(@project_id())
+    # copy scenario name if not set
+    if @splitratio_set().name() is null or @splitratio_set().name() is undefined
+      @splitratio_set().set_name(@name() + ' Split Ratio Set')
+    # copy description if not set
+    if @splitratio_set().description_text() is null or @splitratio_set().description_text() is undefined
+      @splitratio_set().set_description_text(@description_text() + ' Split Ratio Set')
+
+  if @fundamentaldiagram_set()?
+    # copy project id if not set
+    if @fundamentaldiagram_set().project_id() is null or @fundamentaldiagram_set().project_id() is undefined
+      @fundamentaldiagram_set().set_project_id(@project_id())
+    # copy scenario name if not set
+    if @fundamentaldiagram_set().name() is null or @fundamentaldiagram_set().name() is undefined
+      @fundamentaldiagram_set().set_name(@name() + ' FD Set')
+    # copy description if not set
+    if @fundamentaldiagram_set().description_text() is null or @fundamentaldiagram_set().description_text() is undefined
+      @fundamentaldiagram_set().set_description_text(@description_text() + ' FD Set')
+
+  if @demand_set()?
+    # copy project id if not set
+    if @demand_set().project_id() is null or @demand_set().project_id() is undefined
+      @demand_set().set_project_id(@project_id())
+    # copy scenario name if not set
+    if @demand_set().name() is null or @demand_set().name() is undefined
+      @demand_set().set_name(@name() + ' Demand Set')
+    # copy description if not set
+    if @demand_set().description_text() is null or @demand_set().description_text() is undefined
+      @demand_set().set_description_text(@description_text() + ' Demand Set')
+
+  if @networkset()?
+    # copy project id if not set
+    if @networkset().project_id() is null or @networkset().project_id() is undefined
+      @networkset().set_project_id(@project_id())
+    # copy scenario name if not set
+    if @network().name() is null or @network().name() is undefined
+      @network().set_name(@name() + ' Network')
+    # copy description if not set
+    if @network().description_text() is null or @network().description_text() is undefined
+      @network().set_description_text(@description_text() + ' Network')
+
+

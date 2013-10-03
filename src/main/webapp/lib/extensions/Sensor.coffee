@@ -1,5 +1,4 @@
 window.beats.Sensor::defaults =
-  type: ''
   parameters: {}
 
 window.beats.Sensor::initialize = ->
@@ -47,7 +46,10 @@ window.beats.Sensor::set_crud = (flag) ->
   if @crud() != window.beats.CrudFlag.CREATE
     @set 'crudFlag', flag
 
-window.beats.Sensor::sensor_type = -> @get("sensor_type")
+window.beats.Sensor::sensor_type = ->
+  @set('sensor_type', new window.beats.SensorType)  if not @get('sensor_type')?
+  @get("sensor_type")
+
 window.beats.Sensor::type_id = -> @get("sensor_type").ident() if @get("sensor_type")?
 window.beats.Sensor::type_name = -> @get("sensor_type").name() if @get("sensor_type")?
 window.beats.Sensor::set_type = (id, name) ->
@@ -132,14 +134,20 @@ window.beats.Sensor.from_station_row = (row) ->
   sensor
 
 window.beats.Sensor::remove = ->
-  sensors = window.beats.models.sensors()
-  sensors = _.reject(sensors, (s) => s is @)
-  window.beats.models.set_sensors(sensors)
-  window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
+  # if sensor has been marked to be created, then just remove model
+  if @crud() is window.beats.CrudFlag.CREATE
+    sensors = window.beats.models.sensors()
+    sensors = _.reject(sensors, (s) => s is @)
+    window.beats.models.set_sensors(sensors)
+  else
+    # set crudflag for delete
+    @set_crud(window.beats.CrudFlag.DELETE)
+    # set sensor set crudflag to update
+    window.beats.models.sensor_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
+  @stopListening
 
 window.beats.Sensor::add = ->
   window.beats.models.sensors().push(@)
-  window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
 
 window.beats.Sensor::set_generic = (id, val) -> 
   @set(id, val)

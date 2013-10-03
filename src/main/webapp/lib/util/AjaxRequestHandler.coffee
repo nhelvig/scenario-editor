@@ -76,12 +76,6 @@ class window.beats.AjaxRequestHandler
   createSaveFDSetRequest : (fdSet) ->
     # only create request if FD set has changed
     if fdSet.crud() == $a.CrudFlag.UPDATE or fdSet.crud() == $a.CrudFlag.CREATE
-      # if name and description are not set, use name and description from scenario
-      if fdSet.name() is null or fdSet.name() is undefined
-        fdSet.set_name($a.models.name() + ' FD Set')
-      if fdSet.description_text() is null or fdSet.description_text() is undefined
-        fdSet.set_description_text($a.models.description_text() + ' FD Set')
-
       # get project id of fd set otherwise from senario
       projectId = if fdSet.project_id()? then fdSet.project_id() else $a.models.project_id()
       scenarioId = if $a.models.ident()? then $a.models.ident() else 0
@@ -112,12 +106,6 @@ class window.beats.AjaxRequestHandler
   createSaveSplitRatioSetRequest : (splitSet) ->
     # only create request if Split Ratio set has changed
     if splitSet.crud() == $a.CrudFlag.UPDATE or splitSet.crud() == $a.CrudFlag.CREATE
-      # if name and description are not set, use name and description from scenario
-      if splitSet.name() is null or splitSet.name() is undefined
-        splitSet.set_name($a.models.name() + ' Split Ratio Set')
-      if splitSet.description_text() is null or splitSet.description_text() is undefined
-        splitSet.set_description_text($a.models.description_text() + ' Split Ratio Set')
-
       # get project id of split ratio set otherwise from senario
       projectId = if splitSet.project_id()? then splitSet.project_id() else $a.models.project_id()
       scenarioId = if $a.models.ident()? then $a.models.ident() else 0
@@ -148,12 +136,6 @@ class window.beats.AjaxRequestHandler
   createSaveDemandSetRequest : (demandSet) ->
     # only create request if Demand set has changed
     if demandSet.crud() == $a.CrudFlag.UPDATE or demandSet.crud() == $a.CrudFlag.CREATE
-      # if name and description are not set, use name and description from scenario
-      if demandSet.name() is null or demandSet.name() is undefined
-        demandSet.set_name($a.models.name() + ' Demand  Set')
-      if demandSet.description_text() is null or demandSet.description_text() is undefined
-        demandSet.set_description_text($a.models.description_text() + ' Demand  Set')
-
       # get project id of demand set otherwise from senario
       projectId = if demandSet.project_id()? then demandSet.project_id() else $a.models.project_id()
       scenarioId = if $a.models.ident()? then $a.models.ident() else 0
@@ -177,6 +159,43 @@ class window.beats.AjaxRequestHandler
       # Serialize Demand  Set to xml to pass to rest API
       doc = document.implementation.createDocument(null, null, null)
       request.data = new XMLSerializer().serializeToString(demandSet.to_xml(doc))
+
+      @requestQueue.push(request)
+
+  # Creates Request object for Sensor Set Request and adds it to request queue
+  createSaveSensorSetRequest : (sensorSet) ->
+    # only create request if Sensor set has changed
+    if sensorSet.crud() == $a.CrudFlag.UPDATE or sensorSet.crud() == $a.CrudFlag.CREATE
+      # get project id of Sensor set otherwise from senario
+      projectId = if sensorSet.project_id()? then sensorSet.project_id() else $a.models.project_id()
+      scenarioId = if $a.models.ident()? then $a.models.ident() else 0
+      sensorSet.set_project_id(projectId)
+      request = {}
+
+      # Choose which REST API method based on CRUD Flag
+      if sensorSet.crud() == $a.CrudFlag.CREATE
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/sensorset/'
+        request.type = 'POST'
+      else if sensorSet.crud() == $a.CrudFlag.UPDATE
+        request.url = $a.RESTURL + '/project/' + projectId + '/scenario/' + scenarioId + '/sensorset/' + sensorSet.ident()
+        request.type = 'PUT'
+
+      request.errorMessage = '<span style="color: red;">Error Saving Sensor Set:</span> '
+      request.messageText = '<b>Saving Sensor Set...</b> '
+      # Define Success callback method, which updateds Demand  Set in backbone models with new DB ids
+      request.success = (resource) ->
+        xml = $.parseXML(resource)
+        $a.models.set_sensor_set($a.SensorSet.from_xml1($(xml).children(), $a.models.object_with_id))
+        # clear old sensor list collection and sensors from map, add new ones
+        $a.sensorList.clear()
+        $a.sensorListView.clear()
+        $a.sensorList = new $a.SensorListCollection($a.models.sensors())
+        $a.sensorListView = new $a.SensorListView($a.sensorList)
+        $a.sensorListView.render()
+
+      # Serialize Sensor Set to xml to pass to rest API
+      doc = document.implementation.createDocument(null, null, null)
+      request.data = new XMLSerializer().serializeToString(sensorSet.to_xml(doc))
 
       @requestQueue.push(request)
 

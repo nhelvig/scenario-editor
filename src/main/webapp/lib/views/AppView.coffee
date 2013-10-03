@@ -444,6 +444,8 @@ class window.beats.AppView extends Backbone.View
         $a.broker.trigger('app:loading_complete')
         if data.success == true
           set = new $a.SensorSet()
+          # set crud flag to create
+          set.set_crud(window.beats.CrudFlag.CREATE)
           moSensors = $($.parseXML(data.resource)).children()
           set = $a.SensorSet.from_xml1(moSensors, set)
           set.sensors().forEach((sensor) => 
@@ -471,16 +473,21 @@ class window.beats.AppView extends Backbone.View
 
   # Save scenario set information one by one to DB
   _saveScenario: () ->
-    if(not @_isScenarioNamed($a.models))
+    scenario = $a.models
+    if(not @_isScenarioNamed(scenario))
       @_openScenarioEditor AppView.NAME_SAVE_MSG
-    else if(not @_isNetworkNamed($a.models.network()))
+    else if(not @_isNetworkNamed(scenario.network()))
       @_openNetworkEditor AppView.NAME_SAVE_MSG
     else
+      # make sure all sets have a name, description and project id
+      scenario.copy_info_to_sets()
+
       # set up ajax request handler to save modified scenario sets
       ajaxRequests = new $a.AjaxRequestHandler()
-      fdSet = $a.models.fundamentaldiagram_set()
-      splitRatioSet = $a.models.splitratio_set()
-      demandSet = $a.models.demand_set()
+      fdSet = scenario.fundamentaldiagram_set()
+      splitRatioSet = scenario.splitratio_set()
+      demandSet = scenario.demand_set()
+      sensorSet = scenario.sensor_set()
 
       # if there is a fd set add to request
       if fdSet?
@@ -490,9 +497,13 @@ class window.beats.AppView extends Backbone.View
       if splitRatioSet?
         ajaxRequests.createSaveSplitRatioSetRequest(splitRatioSet)
 
-      # demand set
+      # if there is a demand set, add to request
       if demandSet?
         ajaxRequests.createSaveDemandSetRequest(demandSet)
+
+      # if there is a demand set, add to request
+      if sensorSet?
+        ajaxRequests.createSaveSensorSetRequest(sensorSet)
 
       # now process queue of ajax requests
       if ajaxRequests.requestQueue.length > 0
@@ -508,10 +519,9 @@ class window.beats.AppView extends Backbone.View
     else if (not @_isScenarioProject($a.models))
       @_openScenarioEditor AppView.PROJECT_SAVE_MSG
     else
-
       scenario = $a.models
-      # make sure all sets have same project id as scenario
-      scenario.copy_project_id()
+      # make sure all sets have a name, description and project id
+      scenario.copy_info_to_sets()
 
       # set up ajax request handler to import whole senario
       ajaxRequest = new $a.AjaxRequestHandler()

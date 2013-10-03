@@ -243,7 +243,8 @@ $a.sensor_context_menu = [
       ((e) -> $a.sensorList.trigger("sensors:remove", e.currentTarget.id)),
       SCENARIO
   context_menu_item 'Attach to selected link',
-                    ((e) -> $a.sensorList.trigger("sensors:attach_to_link", e.currentTarget.id))
+      ((e) -> $a.sensorList.trigger("sensors:attach_to_link", e.currentTarget.id)),
+      SCENARIO
   context_menu_item 'Select sensor link',
       ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")),
       SCENARIO
