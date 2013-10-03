@@ -105,4 +105,5 @@ class window.beats.SensorListCollection extends Backbone.Collection
     @remove(@models)
     $a.sensorList = {}
     $a.broker.off('sensors:add')
+    $a.broker.off('sensors:add_sensor')
     @off(null, null, @)

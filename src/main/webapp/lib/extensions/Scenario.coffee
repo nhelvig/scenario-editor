@@ -86,7 +86,7 @@ window.beats.Scenario::set_sensor_set = (set) ->
   @set('sensorset', set)
   
 window.beats.Scenario::sensor_set = ->
-  @set('sensorset', new window.beats.SensorSet()) if !@get('sensorset')?
+  @set('sensorset', new window.beats.SensorSet({'crudFlag': window.beats.CrudFlag.CREATE})) if !@get('sensorset')?
   @get('sensorset')
 
 window.beats.Scenario::sensors = ->

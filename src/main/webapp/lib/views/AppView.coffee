@@ -443,16 +443,17 @@ class window.beats.AppView extends Backbone.View
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         if data.success == true
-          set = new $a.SensorSet()
-          # set crud flag to create
-          set.set_crud(window.beats.CrudFlag.CREATE)
+          # First check if sensor set already exists
+          set = $a.models.sensor_set()
+          # set crud flag to update
+          set.set_crud_flag(window.beats.CrudFlag.UPDATE)
           moSensors = $($.parseXML(data.resource)).children()
           set = $a.SensorSet.from_xml1(moSensors, set)
           set.sensors().forEach((sensor) => 
             flag = $a.models.sensor_set().containsPemsSensor(sensor)
             if(!flag)
               sensor.id = sensor.sensor_id_original()
-              $a.broker.trigger('sensors:add_sensor', sensor)
+              $a.sensorList.addSensor(sensor)
           )
         else
           # Display Error Message
