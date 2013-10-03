@@ -23,7 +23,7 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
     $a.broker.off('map:hide_controller_layer')
     $a.broker.off('map:show_controller_layer')
     super
-
+  
   ################# select events for marker
   # Callback for the markers click event
   # Callback for the markers click event. It decided whether we are selecting 

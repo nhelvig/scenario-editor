@@ -11,11 +11,11 @@ class window.beats.Networkpair extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Networkpair()
     linkpair = xml.children('linkpair')
-    obj.set('linkpair', _.map($(linkpair), (linkpair_i) -> $a.Linkpair.from_xml2($(linkpair_i), deferred, object_with_id)))
+    obj.set('linkpair', _.map($(linkpair), (linkpair_i) -> $a.Linkpair.from_xml2($(linkpair_i), deferred, object_with_id))) if linkpair? and linkpair != ""
     network_a = $(xml).attr('network_a')
-    obj.set('network_a', Number(network_a))
+    obj.set('network_a', Number(network_a)) if network_a? and network_a != ""
     network_b = $(xml).attr('network_b')
-    obj.set('network_b', Number(network_b))
+    obj.set('network_b', Number(network_b)) if network_b? and network_b != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

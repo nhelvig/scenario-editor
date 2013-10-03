@@ -11,11 +11,11 @@ class window.beats.DownstreamBoundaryCapacityProfile extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.DownstreamBoundaryCapacityProfile()
     link_id = $(xml).attr('link_id')
-    obj.set('link_id', Number(link_id))
+    obj.set('link_id', Number(link_id)) if link_id? and link_id != ""
     start_time = $(xml).attr('start_time')
-    obj.set('start_time', Number(start_time))
+    obj.set('start_time', Number(start_time)) if start_time? and start_time != ""
     dt = $(xml).attr('dt')
-    obj.set('dt', Number(dt))
+    obj.set('dt', Number(dt)) if dt? and dt != ""
     obj.set('text', xml.text())
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)

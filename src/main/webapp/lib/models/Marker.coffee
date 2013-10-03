@@ -11,13 +11,13 @@ class window.beats.Marker extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Marker()
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
-    mod_stamp = $(xml).attr('mod_stamp')
-    obj.set('mod_stamp', mod_stamp)
+    obj.set('name', name) if name? and name != ""
     postmile = $(xml).attr('postmile')
-    obj.set('postmile', Number(postmile))
+    obj.set('postmile', Number(postmile)) if postmile? and postmile != ""
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -28,8 +28,8 @@ class window.beats.Marker extends Backbone.Model
       @encode_references()
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('name', @get('name')) if @has('name')
-    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml.setAttribute('postmile', @get('postmile')) if @has('postmile')
+    if @has('mod_stamp') && @mod_stamp != "0" then xml.setAttribute('mod_stamp', @get('mod_stamp'))
     xml
   
   deep_copy: -> Marker.from_xml1(@to_xml(), {})

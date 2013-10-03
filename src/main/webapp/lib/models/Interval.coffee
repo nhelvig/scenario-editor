@@ -11,9 +11,9 @@ class window.beats.Interval extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Interval()
     start_time = $(xml).attr('start_time')
-    obj.set('start_time', Number(start_time))
+    obj.set('start_time', Number(start_time)) if start_time? and start_time != ""
     end_time = $(xml).attr('end_time')
-    obj.set('end_time', Number(end_time))
+    obj.set('end_time', Number(end_time)) if end_time? and end_time != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

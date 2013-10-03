@@ -7,7 +7,8 @@ class window.beats.SensorListCollection extends Backbone.Collection
   initialize:(@models) ->
     @models.forEach((sensor) => @_setUpEvents(sensor))
     $a.broker.on("map:clear_map", @clear, @)
-    $a.broker.on('sensors:add', @addSensor, @)
+    $a.broker.on('sensors:add', @addSensorWithPositionLink, @)
+    $a.broker.on('sensors:add_sensor', @addSensor, @)
     @on('sensors:attach_to_link', @attachToLink, @)
     @on('sensors:remove', @removeSensor, @)
   
@@ -35,18 +36,33 @@ class window.beats.SensorListCollection extends Backbone.Collection
     sensor = @getByCid(sID) 
     @remove(sensor)
   
-  # addSensor creates a sensor st the position passed in and adds
-  # it to the collection as well as to the models schema. 
+  # addSensorWithPositionLink creates a sensor at the position passed in and
+  # adds it to the collection as well as to the models schema. 
   # It is called from the context menu's add sensor event as well as triggered
   # when a sensor is added to a link. If link is null it will add sensor
   # at position with no link attached; otherwise it attaches the link to the 
   # sensor
-  addSensor: (position, link) ->
+  addSensorWithPositionLink: (position, link) ->
     s = new $a.Sensor().from_position(position, link)
+    # set crudflag to indicate sensor has been added
+    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
+    s.set_crud_flag($a.CrudFlag.CREATE)
     @_setUpEvents(s)
     @add(s)
     s
 
+  # addSensor add this sensor model object to the SensorCollection as well as 
+  # to the model's schema. It is placed on the map using the display_position.
+  # The function can be used whenever a sensor is already encapsulated as a 
+  # Sensor Model Object needs to placed on the map 
+  addSensor: (sensor) ->
+    # set crudflag to indicate sensor has been added
+    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
+    sensor.set_crud_flag($a.CrudFlag.CREATE)
+    @_setUpEvents(sensor)
+    @add(sensor)
+    sensor
+    
   # Attach Sensor to Link on map
   attachToLink: (sID) ->
     # get selected sensor
@@ -61,16 +77,33 @@ class window.beats.SensorListCollection extends Backbone.Collection
 
   # This method sets up the events each sensor should listen too
   _setUpEvents: (sensor) ->
+    # map any change in sensor object to change crudflag accordingly
+    # Setup profile model change events
+    sensor.on('change:sensor_type change:link_position change:link_id change:java_class /
+      change:sensor_id_original change:data_feed_id change:lane_number change:link_offset change:health_status'
+        => @_updateSensor(sensor))
+    # have event listener if display lat or long changes
+    sensor.display_point().on('change',
+        => @_updateSensor(sensor))
+    # have event listener if sensor type changes
+    sensor.sensor_type().on('change',
+      => @_updateSensor(sensor))
     sensor.bind('remove', =>
                             sensor.remove()
                             @destroy
                       )
     sensor.bind('add', => sensor.add())
     sensor.set('selected', false)
-  
+
+  # Update Sensor and Set's CRUD flag to indicate it has changed
+  _updateSensor: (sensor) ->
+    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
+    sensor.set_crud_flag($a.CrudFlag.UPDATE)
+
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)
     $a.sensorList = {}
     $a.broker.off('sensors:add')
+    $a.broker.off('sensors:add_sensor')
     @off(null, null, @)

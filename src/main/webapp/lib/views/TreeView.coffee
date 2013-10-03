@@ -4,7 +4,15 @@ class window.beats.TreeView extends Backbone.View
   $a = window.beats
   tagName: 'ol'
   id: 'tree'
-
+  
+  broker_events : {
+    'map:clear_map': 'clearMap'
+    'map:toggle_tree': 'toggleTree'
+    'app:main_tree': 'render'
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
+  }
   # The args contains the @scenario models as well as what parent div it
   # should attach the tree too.
   initialize: (args) ->
@@ -12,11 +20,8 @@ class window.beats.TreeView extends Backbone.View
     @parent = args.attach
     @_setUpTreeData()
     @_createTree()
-    $a.broker.on("map:clear_map", @clearMap, @)
-    $a.broker.on("map:toggle_tree", @toggleTree, @)
-    $a.broker.on('app:main_tree', @render, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
     $(window).bind("resize", @positionHandle);
-
 
   # Attach itself as well as trigger events for the parent and child
   # nodes to be rendered
@@ -32,8 +37,7 @@ class window.beats.TreeView extends Backbone.View
   clearMap: () ->
     $('#toggle-tree-button-template').remove()
     @$el.remove()
-    $a.broker.off("map:toggle_tree")
-    $a.broker.off('app:main_tree')
+    $a.Util.publishEvents($a.broker, @broker_events, @)
     $('#collapseTree').off('click')
     $('#expand-all').off('click')
   
@@ -61,7 +65,8 @@ class window.beats.TreeView extends Backbone.View
     
     @positionHandle()
     $('#tree-handle').click( ->
-      $a.broker.trigger('map:toggle_tree')
+      if ($('#tree-handle').hasClass('noClick') is false)
+        $a.broker.trigger('map:toggle_tree') 
     )
     
     prevPos = 0
@@ -201,17 +206,42 @@ class window.beats.TreeView extends Backbone.View
       display = not @treeOpen
       
     if display
-      @treeOpen = true
-      $('#right_tree').css('width', '22%')
-      $('#right_tree').show(200)
-      $('#tree_view').show(200)
-      $('#map_canvas').css('width', '78.2%')
+      @openTree()
     else
-      @treeOpen = false
-      $('#tree_view').hide(200)
-      $('#right_tree').css('width', '1%')
-      $('#map_canvas').css('width', '99.2%')
+      @closeTree()
   
+  closeTree: ->
+    @treeOpen = false
+    $('#tree_view').hide(200)
+    $('#right_tree').css('width', '1%')
+    $('#map_canvas').css('width', '99.2%')
+    # change location of login indicator
+    $('.login-container').css('margin-left', '87%')
+
+  openTree: ->
+    @treeOpen = true
+    $('#right_tree').css('width', '22%')
+    $('#right_tree').show(200)
+    $('#tree_view').show(200)
+    $('#map_canvas').css('width', '78.2%')
+    # change location of login indicator
+    $('.login-container').css('margin-left', '66%')
+  
+  networkMode: ->
+    $('#tree-handle').addClass("noClick")
+    $('#tree-resize').draggable('disable')
+    @closeTree()
+    
+  scenarioMode: ->
+    $('#tree-handle').removeClass("noClick")
+    $('#tree-resize').draggable('enable')
+    @openTree()
+    
+  viewMode: ->
+    $('#tree-handle').removeClass("noClick")
+    $('#tree-resize').draggable('enable')
+    @openTree()
+    
   _setUpTreeData: ->   
     @parentNodes = [
         {

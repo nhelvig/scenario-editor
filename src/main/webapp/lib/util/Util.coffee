@@ -73,6 +73,7 @@ window.beats.Util =
       label: item.label
       className: item.className
       event: item.event
+      mode: item.mode
 
   # This makes an ajax call to the server in order to write the model's xml 
   # file and download it back to the user. Call From "Save Local Network" menu 
@@ -150,9 +151,15 @@ window.beats.Util =
       obj.on(key, context[value], context)
             
   unpublishEvents: (obj, events, context) ->
-    for key, value in events
+    for key, value of events
       obj.off(key, context[value], context)  
 
+  setMode: (mode) ->
+    if mode is 'view' then $a.Mode.VIEW = true else $a.Mode.VIEW = false
+    if mode is 'network' then $a.Mode.NETWORK = true else $a.Mode.NETWORK = false
+    if mode is 'scenario' then $a.Mode.SCENARIO = true else $a.Mode.SCENARIO = false
+    if mode is 'route' then $a.Mode.ROUTE = true else $a.Mode.ROUTE = false
+    
   #parallel lines
   parallelLines: (points, prj) ->
     pPts = [] #left side of center

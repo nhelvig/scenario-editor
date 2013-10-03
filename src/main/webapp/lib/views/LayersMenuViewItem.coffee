@@ -16,7 +16,6 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     @template = _.template($('#child-item-menu-template').html())
     displayText = values.label
     # values.link indicates a submenu and we display '>>' in the view
-    # to indicate a menu
     displayText = "#{values.label} &raquo; " if @values.link
     @$el.html @template({text: displayText}) if @values.label
     @$el.attr 'class', @values.className if @values.className
@@ -24,7 +23,7 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     @$el.attr 'id', @values.link if @values.link
     @events = {'click': @values.event } if @values.event
     @render()
-    # again we'll create a submenu if values.link is set
+    #create a submenu if values.link is set
     @_createSubMenu @values.items, @values.link if @values.link
     # puts a check mark if this item needs checkmarks
     if @values.triggerShow
@@ -33,7 +32,8 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     if @values.initiallyChecked is false
       @check(false)
       @isShowing = false
-
+    @_setUpSubMenuEvents()
+  
   render: ->
     $("##{@parent}").append(@el)
     @
@@ -49,35 +49,39 @@ class window.beats.LayersMenuViewItem extends Backbone.View
     }
     new $a.LayersMenuView(attrs)
 
+  _setUpSubMenuEvents : ->
+    if @values.linkSubMenu?
+      @collection.on("links:toggle_link_subs", @toggleState, @)
+    if @values.nodeSubMenu?
+      $a.broker.on("map:toggle_node_subs", @toggleState, @)
+  
   # adds the checkmark to the item or takes it aways
   check: (show) ->
     if show
       @$el.addClass "icon-ok"
     else
       @$el.removeClass "icon-ok"
-
+  
+  # this toggles the state of a submenu item (checked or unchecked)
+  # if the Show All/Hide All event occured on the Layers Menu
+  toggleState: (flag) ->
+    @isShowing = not flag
+    @check(not flag)
+    
   # This function is called on the click if we are toggling the checkmark to
   # show/hide. Not every item operates like this. You can see in
   # menu-data.coffee which items call this method and which do not
-  toggleVisible: =>
-    if @isShowing
-      @collection.trigger(@triggerHide, @event_arg)
-      @isShowing = false
-      @check(false)
+  toggleVisible: (e) ->
+    @collection.trigger(@values.toggleSubs, @isShowing) if(@values.toggleSubs?)
+    @toggleState(@isShowing)
+    if not @isShowing
+      @collection.trigger(@triggerHide, @event_arg) if @collection?
     else
-      @collection.trigger(@triggerShow, @event_arg)
-      @isShowing = true
-      @check(true)
-      
+      @collection.trigger(@triggerShow, @event_arg) if @collection?
+    e.stopPropagation()
+  
   # This function is called on the click if we are toggling the checkmark to
-  # show/hide. Not every item operates like this. You can see in
-  # menu-data.coffee which items call this method and which do not
-  toggleMapTypeVisible: =>
-    if @isShowing
-      $a.broker.trigger(@triggerHide, false)
-      @isShowing = false
-      @check(false)
-    else
-      $a.broker.trigger(@triggerShow, true)
-      @isShowing = true
-      @check(true)
+  # show/hide satellite tiles.
+  toggleMapTypeVisible: (e) ->
+    @event_arg = not @isShowing
+    @toggleVisible(e)

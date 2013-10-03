@@ -11,9 +11,9 @@ class window.beats.Parameters extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Parameters()
     parameter = xml.children('parameter')
-    obj.set('parameter', _.map($(parameter), (parameter_i) -> $a.Parameter.from_xml2($(parameter_i), deferred, object_with_id)))
+    obj.set('parameter', _.map($(parameter), (parameter_i) -> $a.Parameter.from_xml2($(parameter_i), deferred, object_with_id))) if parameter? and parameter != ""
     mod_stamp = $(xml).attr('mod_stamp')
-    obj.set('mod_stamp', mod_stamp)
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

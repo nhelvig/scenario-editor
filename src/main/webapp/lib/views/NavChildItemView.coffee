@@ -11,7 +11,7 @@ class window.beats.NavChildItemView extends Backbone.View
     @parent = args.attach
     @template = _.template($("#child-item-menu-template").html())
     @$el.html(@template({text: args.text}))
-    @events = { 'click' : args.event }
+    @events = { 'click' : args.event } if args.event?
     $a.broker.on('app:nav-menu', @render, @)
     @render()
 

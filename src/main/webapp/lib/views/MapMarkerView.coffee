@@ -1,9 +1,17 @@
 # MapMarkerView is base class for scenario elements represented by a
 # single latitude and longitude on the Map
 class window.beats.MapMarkerView extends Backbone.View
-  @IMAGE_PATH: '/scenario-editor-0.3-SNAPSHOT/app/images/'
+  @IMAGE_PATH: '/scenario-editor-0.4-SNAPSHOT/app/images/'
   $a = window.beats
 
+  broker_events : {
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
+    'map:init' : 'render'
+    'map:clear_selected' : 'clearSelected'
+  }
+  
   initialize: (@model) ->
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
@@ -13,11 +21,10 @@ class window.beats.MapMarkerView extends Backbone.View
     gevent.addListener(@marker, 'dragend', => @dragMarker())
     gevent.addListener(@marker, 'click', (event) => @manageMarkerSelect())
     gevent.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
-    $a.broker.on('map:clear_selected', @clearSelected, @)
     $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
-    $a.broker.on('map:init', @render, @)
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
 
   render: ->
     @marker.setMap($a.map)
@@ -54,8 +61,7 @@ class window.beats.MapMarkerView extends Backbone.View
   # in order to remove an element you need to unpublish the events,
   # hide the marker and set it to null
   removeElement: ->
-    $a.broker.off('map:init')
-    $a.broker.off('map:clear_selected')
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
     $a.broker.off("map:select_item:#{@model.cid}")
     $a.broker.off("map:clear_item:#{@model.cid}")
     $a.broker.off("map:open_editor:#{@model.cid}")
@@ -89,6 +95,16 @@ class window.beats.MapMarkerView extends Backbone.View
     @marker.setTitle @_getTitle()
     @model.updatePosition(@latLng)
  
+   # set up the response for each mode
+  viewMode: ->
+    @marker.setDraggable(false)
+
+  networkMode: ->
+    @marker.setDraggable(false)
+
+  scenarioMode: ->
+    @marker.setDraggable(true)
+  
   ################# The following handles the show and hide of node layers
   hideMarker: ->
     @marker.setMap(null)

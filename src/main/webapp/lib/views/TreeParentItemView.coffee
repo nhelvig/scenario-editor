@@ -6,15 +6,19 @@ class window.beats.TreeParentItemView extends Backbone.View
   $a = window.beats
   tagName: 'li'
   className: 'tree-parent-node'
-
+  
+  broker_events: {
+    'app:parent_tree' : 'render'
+    'app:tree_clear' : 'removeItem'
+  }
+  
   initialize: (element) ->
     @template = _.template($("#parent-item-tree-template").html())
     params =
       textLower: $a.Util.toLowerCaseAndDashed(element)
       text: element
     @$el.html(@template(params))
-    $a.broker.on('app:parent_tree', @render, @)
-    $a.broker.on('app:tree_clear', @removeItem, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
 
   render: ->
     $("#tree").append(@el)
@@ -24,5 +28,4 @@ class window.beats.TreeParentItemView extends Backbone.View
   # and remove it from the DOM
   removeItem: ->
     $(@el).remove()
-    $a.broker.off('app:parent_tree')
-    $a.broker.off('app:tree_clear')
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)

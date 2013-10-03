@@ -11,13 +11,15 @@ window.beats.Link::initialize = ->
   @set('position', new window.beats.Position)
   @set('subdivide', false)
   @set('shape', new window.beats.Shape)
-  t = new window.beats.Link_type()
+  t = new window.beats.LinkType()
   @set('link_type',t)
 
 window.beats.Link::shape = -> @get("shape")
 window.beats.Link::geometry = -> @get("shape")?.get('text') || undefined
 window.beats.Link::ident = -> Number(@get("id"))
 window.beats.Link::demand = -> @get("demand")
+window.beats.Link::demand_profile = -> @get("demandprofile")
+window.beats.Link::fundamental_diagram_profile = -> @get("fundamentaldiagramprofile")
 window.beats.Link::crud = -> @get 'crudFlag'
 window.beats.Link::lanes = -> @get("lanes")
 window.beats.Link::lane_offset = -> @get("lane_offset")
@@ -61,6 +63,10 @@ window.beats.Link::set_crud_update = ->
     if @crud() != window.beats.CrudFlag.CREATE
       @set 'crudFlag', window.beats.CrudFlag.UPDATE
 
+window.beats.Link::set_demand_profile = (profile) -> @set('demandprofile',profile)
+
+window.beats.Link::set_fundamental_diagram_profile = (profile) -> @set('fundamentaldiagramprofile',profile)
+
 window.beats.Link::set_subdivide = (val) -> @set("subdivide", val)
 
 window.beats.Link::set_geometry = (text) ->
@@ -74,7 +80,7 @@ window.beats.Link::link_type = -> @get("link_type")
 window.beats.Link::type_id = -> @get("link_type").get("id") if @get("link_type")?
 window.beats.Link::type_name = -> @get("link_type").name() if @get("link_type")?
 window.beats.Link::set_type = (id, name) ->
-  @set('link_type', new window.beats.Link_type)  if not @get('link_type')?
+  @set('link_type', new window.beats.LinkType)  if not @get('link_type')?
   @get("link_type").set_name(name)
   @get("link_type").set_id(id)
   @defaults['link_type'] = id
@@ -139,7 +145,6 @@ window.beats.Link::remove = ->
   else
     # remove link from input output
     @set_crud($a.CrudFlag.DELETE)
-
   @stopListening
 
 window.beats.Link::add = ->
@@ -170,7 +175,7 @@ window.beats.Link::copy_attributes = ->
     'selected': @selected()
     'speed_limit': @speed_limit()
     'subdivide': @subdivide()
-    'link_type': new $a.Link_type({id:@type_id(), name:@type_name()})
+    'link_type': new $a.LinkType({id:@type_id(), name:@type_name()})
     'dynamics': new $a.Dynamics({type:@dynamics().type()}) if @dynamics()?
     'roads': @roads() if @roads?
   }

@@ -64,7 +64,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # It is called from the context menu's add node event
   addNode: (position, type) ->
     n = new $a.Node()
-    t = new $a.Node_type();
+    t = new $a.NodeType();
     t.set_name(type.name()) if type?
     
     p = new $a.Position()
@@ -98,14 +98,14 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # similar to addLink above except it creates a terminal node and draws the link
   # from this position to the other selected node
   addLinkOrigin: (position) ->
-    node = @addNode(position, new $a.Node_type({name: 'terminal'}))
+    node = @addNode(position, new $a.NodeType({name: 'terminal'}))
     selNode = @_getSelectedNode()
     $a.broker.trigger('links_collection:add', {begin:node, end:selNode[0] })
   
   # similar to addLink above except it creates a terminal node and draws the link
   # to this position from the other selected node
   addLinkDest: (position) ->
-    node = @addNode(position, new $a.Node_type({name: 'terminal'}))
+    node = @addNode(position, new $a.NodeType({name: 'terminal'}))
     selNode = @_getSelectedNode()
     $a.broker.trigger('links_collection:add', {begin:selNode[0], end:node})
   

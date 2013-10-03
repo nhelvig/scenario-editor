@@ -5,9 +5,37 @@ class window.beats.AppView extends Backbone.View
   $a = window.beats
   $evt = google.maps.event
   @INITIAL_ZOOM_LEVEL = 16
-
+  @NAME_SAVE_MSG = "Please name your scenario/network, close this form and save again"
+  @PROJECT_SAVE_MSG = "Please give your scenario a project id, close this form and save again"
+  
   @start: ->
     new window.beats.AppView().render()
+  
+  broker_events: {
+    'map:open_view_mode' : 'viewMode'
+    'map:open_network_mode' : 'networkMode'
+    'map:open_scenario_mode' : 'scenarioMode'
+    'map:open_route_mode' : 'routeMode'
+    'map:upload_complete' :  'displayMap'
+    'map:clear_map' : 'clearMap'
+    'app:new_scenario' : 'newScenario'
+    'app:open_scenario' : 'openScenario'
+    'app:save_scenario' : 'saveScenario'
+    'map:alert' : 'showAlert'
+    'app:open_network_browser_db' : '_openNetworkBrowser'
+    'app:open_scenario_browser_db' : '_openScenarioBrowser'
+    'app:load_network' : '_loadNetwork'
+    'app:import_network_db' : '_importNetwork'
+    'app:save_network_db' : '_saveNetwork'
+    'app:load_scenario' : '_loadScenario'
+    'app:load_pems' : '_loadPEMS'
+    'app:import_scenario_db' : '_importScenario'
+    'app:save_scenario_db' : '_saveScenario'
+    'app:import_scenario_db' : '_importScenario'
+    'map:show_satellite' : '_showSatelliteTiles'
+    'map:hide_satellite' : '_showSatelliteTiles'
+    'map:import_pems' : '_importPems'
+  }
   
   initialize: ->
     #change underscores symbols for handling interpolation to {{}}
@@ -25,29 +53,18 @@ class window.beats.AppView extends Backbone.View
     @newScenario() if $a.Environment.DEV is false
     # Wait for idle map so that we can get projection
     google.maps.event.addListener($a.map, 'idle', =>
-      @_displayMap($a.fileText) if $a.Environment.DEV is true
+      @displayMap($a.fileText) if $a.Environment.DEV is true
       google.maps.event.clearListeners($a.map, 'idle')
     )
+    # add click event on log in screen
+    $('#login-nav-container').click(@_login)
     
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
-    $a.broker.on('map:upload_complete', @_displayMap, @)
-    $a.broker.on("map:clear_map", @clearMap, @)
-    $a.broker.on("app:new_scenario", @newScenario, @)
-    $a.broker.on('app:open_scenario', @openScenario, @)
-    $a.broker.on("app:save_scenario", @saveScenario, @)
-    $a.broker.on("map:alert", @showAlert, @)
-    $a.broker.on("app:login", @_login, @)
-    $a.broker.on("app:open_network_browser_db", @_openNetworkBrowser, @)
-    $a.broker.on("app:open_scenario_browser_db", @_openScenarioBrowser, @)
-    $a.broker.on("app:load_network", @_loadNetwork, @)
-    $a.broker.on("app:import_network_db", @_importNetwork, @)
-    $a.broker.on("app:save_network_db", @_saveNetwork, @)
-    $a.broker.on("app:load_scenario", @_loadScenario, @)
-    $a.broker.on("map:show_satellite", @_showSatelliteTiles, @)
-    $a.broker.on("map:hide_satellite", @_showSatelliteTiles, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
     @
+
 
   # create the landing map. The latitude and longitude our arbitarily pointing
   # to the I80/Berkeley area
@@ -62,6 +79,8 @@ class window.beats.AppView extends Backbone.View
         style: google.maps.ZoomControlStyle.DEFAULT,
         position: google.maps.ControlPosition.TOP_LEFT
     }
+    # Enable the visual refresh (new maps)
+    google.maps.visualRefresh = true
     #attach the map to the namespace
     $a.map = new google.maps.Map $("#map_canvas")[0], mapOpts
     
@@ -86,6 +105,10 @@ class window.beats.AppView extends Backbone.View
     attrs = { menuItems: $a.nav_bar_menu_items, attach: '#main-nav div' }
     @nbv = new $a.NavBarView(attrs)
 
+  # This begins the ImportPems Polygon creation
+  _importPems: () ->
+    new $a.PolygonDynamicView()
+  
   # creates a DOM document for the models xml to written to.
   # if no scenario has been loaded show a message indicating this.
   # The two files passed to the writeAndDownloadXML method are scenario.php
@@ -133,13 +156,14 @@ class window.beats.AppView extends Backbone.View
   
   # displayMap takes the uploaded file or serialized model object from database and parses the
   # xml into backbone model objects, and creates the MapNetworkView
-  _displayMap: (fileText) ->
+  displayMap: (fileText) ->
     $a.broker.trigger("map:clear_map")
     try
       xml = $.parseXML(fileText)
       $a.models = $a.Scenario.from_xml($(xml).children())
       $a.mapNetworkView = new $a.MapNetworkView $a.models
     catch error
+      console.log error.stack
       if error.message then errMessage = error.message else errMessage = error
       messageBox = new $a.MessageWindowView( {text: "Data file is badly formatted. " + errMessage, okButton: true} )
 
@@ -150,6 +174,18 @@ class window.beats.AppView extends Backbone.View
     $a.broker.trigger('app:tree_clear')
     $a.broker.trigger('app:show_message:success', 'Cleared map')
 
+  viewMode: ->
+    $a.Util.setMode('view')
+
+  networkMode: ->
+    $a.Util.setMode('network')
+
+  scenarioMode: ->
+    $a.Util.setMode('scenario')
+    
+  routeMode: ->
+    $a.Util.setMode('route')
+  
   _messagePanel: ->
     @mpv = new $a.MessagePanelView()
 
@@ -189,20 +225,40 @@ class window.beats.AppView extends Backbone.View
       $a.map.setMapTypeId(google.maps.MapTypeId.SATELLITE)
     else
       $a.map.setMapTypeId(google.maps.MapTypeId.ROADMAP)
-    
   
   # Open network browser to choose newtork to load from DB
   _openNetworkBrowser: () ->
-    # open network browser
     options = { title: 'Network List' }
     $a.networkbrowser = new $a.NetworkBrowserView(options)
 
   # Open scenario browser to choose scenario to load from DB
   _openScenarioBrowser: () ->
-    # open scenario browser
     options = { title: 'Scenario List' }
     $a.scenariobrowser = new $a.ScenarioBrowserView(options)
+  
+  #check if network is named
+  _isNetworkNamed: (network) ->
+    name = network.name()
+    return name? and not (name is '');
 
+  #check if scenario is named
+  _isScenarioNamed: (scenario) ->
+    name = scenario.name()
+    return name? and not (name is '');
+
+  #check if scenario has project id
+  _isScenarioProject: (scenario) ->
+    projectId = scenario.project_id()
+    return projectId? and not (projectId is '') and not (projectId is '0');
+  
+  #open the network editor when trying to save and network is not named
+  _openNetworkEditor: (msg) ->
+    $a.broker.trigger("map:open_network_editor", msg)
+
+  #open the scenario editor when trying to save and scenario is not named
+  _openScenarioEditor: (msg) ->
+    $a.broker.trigger("map:open_scenario_editor", msg)
+    
   # Load Network From DB
   _loadNetwork: (networkId) ->
     # add overlay to disable screen
@@ -215,6 +271,7 @@ class window.beats.AppView extends Backbone.View
       type: 'GET'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
       success: (data) =>
         # remove modal message which disabled screen
@@ -225,7 +282,7 @@ class window.beats.AppView extends Backbone.View
           data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
           end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
           data = data + end
-          @_displayMap(data)
+          @displayMap(data)
         else
           # Display Error Message
           messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
@@ -242,89 +299,97 @@ class window.beats.AppView extends Backbone.View
 
   # Import Network into DB
   _importNetwork: () ->
-    # add overlay to disable screen
-    messageBox = new $a.MessageWindowView( {text: "Importing Network...", okButton:false} )
-    doc = document.implementation.createDocument(null, null, null)
-    # Set save mode to db
-    $a.fileSaveMode = false
+    if(not @_isNetworkNamed($a.models.network()))
+      @_openNetworkEditor AppView.NAME_SAVE_MSG
+    else
+      # add overlay to disable screen
+      messageBox = new $a.MessageWindowView( {text: "Importing Network...", okButton:false} )
+      doc = document.implementation.createDocument(null, null, null)
+      # Set save mode to db
+      $a.fileSaveMode = false
 
-    # one off ajax request to get network from DB in XML form
-    # TODO: Implement backbone parse in each model to cascade model creadtion
-    # and pass in JSON instead of XML
-    $.ajax(
-      url: '/via-rest-api/project/1/scenario/1/network/'
-      type: 'POST'
-      beforeSend: (xhrObj) ->
-        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+      # one off ajax request to get network from DB in XML form
+      # TODO: Implement backbone parse in each model to cascade model creadtion
+      # and pass in JSON instead of XML
+      $.ajax(
+        url: '/via-rest-api/project/1/scenario/1/network/'
+        type: 'POST'
+        beforeSend: (xhrObj) ->
+          xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+          xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
-      success: (data) =>
-        # remove modal message which disabled screen
-        $a.broker.trigger('app:loading_complete')
-        if data.success == true
-          # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
-          beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
-          data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
-          end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
-          data = data + end
-          @_displayMap(data)
-        else
+        success: (data) =>
+          # remove modal message which disabled screen
+          $a.broker.trigger('app:loading_complete')
+          if data.success == true
+            # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
+            beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
+            data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
+            end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
+            data = data + end
+            @displayMap(data)
+          else
+            # Display Error Message
+            messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+
+        error: (xhr, textStatus, errorThrown) =>
+          # Remove modal message which disabled screen
+          $a.broker.trigger('app:loading_complete')
           # Display Error Message
-          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+          messageBox = new $a.MessageWindowView( {text: "Error Importing Network, " + errorThrown, okButton: true} )
 
-      error: (xhr, textStatus, errorThrown) =>
-        # Remove modal message which disabled screen
-        $a.broker.trigger('app:loading_complete')
-        # Display Error Message
-        messageBox = new $a.MessageWindowView( {text: "Error Importing Network, " + errorThrown, okButton: true} )
-
-      contentType: 'text/json'
-      dataType: 'json'
-      # TODO: Data should be changed to be JSON
-      data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
-    )
-
+        contentType: 'text/json'
+        dataType: 'json'
+        # TODO: Data should be changed to be JSON
+        data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
+      )
+  
   # Save Network into DB
   _saveNetwork: () ->
-    # add overlay to disable screen
-    messageBox = new $a.MessageWindowView( {text: "Saving Network...", okButton:false} )
-    doc = document.implementation.createDocument(null, null, null)
-    # Set save mode to db, so that xml is formatted with CRUDFlag and modstamps
-    $a.fileSaveMode = false
+    if(not @_isNetworkNamed($a.models.network()))
+      @_openNetworkEditor AppView.NAME_SAVE_MSG
+    else
+      # add overlay to disable screen
+      messageBox = new $a.MessageWindowView( {text: "Saving Network...", okButton:false} )
+      doc = document.implementation.createDocument(null, null, null)
+      # Set save mode to db, so that xml is formatted with CRUDFlag and modstamps
+      $a.fileSaveMode = false
 
-    # one off ajax request to get network from DB in XML form
-    # TODO: Implement backbone parse in each model to cascade model creadtion
-    # and pass in JSON instead of XML
-    $.ajax(
-      url: '/via-rest-api/project/1/scenario/1/network/' +  $a.models.network().get('id')
-      type: 'PUT'
-      beforeSend: (xhrObj) ->
-        xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+      # one off ajax request to get network from DB in XML form
+      # TODO: Implement backbone parse in each model to cascade model creadtion
+      # and pass in JSON instead of XML
+      $.ajax(
+        url: '/via-rest-api/project/1/scenario/1/network/' +  $a.models.network().get('id')
+        type: 'PUT'
+        beforeSend: (xhrObj) ->
+          xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+          xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
-      success: (data) =>
-        # remove modal message which disabled screen
-        $a.broker.trigger('app:loading_complete')
-        if data.success == true
-          # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
-          beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
-          data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
-          end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
-          data = data + end
-          @_displayMap(data)
-        else
+        success: (data) =>
+          # remove modal message which disabled screen
+          $a.broker.trigger('app:loading_complete')
+          if data.success == true
+            # TODO: Change this to use JSON ( backbone model parse methods instead of XML)
+            beginning = '<?xml version="1.0" encoding="UTF-8"?> <scenario> <settings/> <NetworkSet>'
+            data = data.resource.replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', beginning)
+            end = '</NetworkSet> <SignalSet/> <SensorSet/> <EventSet/> <ControllerSet/> </scenario>'
+            data = data + end
+            @displayMap(data)
+          else
+            # Display Error Message
+            messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+
+        error: (xhr, textStatus, errorThrown) =>
+          # Remove modal message which disabled screen
+          $a.broker.trigger('app:loading_complete')
           # Display Error Message
-          messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
+          messageBox = new $a.MessageWindowView( {text: "Error Saving Network, " + errorThrown, okButton: true} )
 
-      error: (xhr, textStatus, errorThrown) =>
-        # Remove modal message which disabled screen
-        $a.broker.trigger('app:loading_complete')
-        # Display Error Message
-        messageBox = new $a.MessageWindowView( {text: "Error Saving Network, " + errorThrown, okButton: true} )
-
-      contentType: 'text/json'
-      dataType: 'json'
-      # TODO: Data should be changed to be JSON
-      data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
-    )
+        contentType: 'text/json'
+        dataType: 'json'
+        # TODO: Data should be changed to be JSON
+        data: new XMLSerializer().serializeToString($a.models.network().to_xml(doc))
+      )
 
   # Load Scenario From DB
   _loadScenario: (scenarioId) ->
@@ -338,12 +403,13 @@ class window.beats.AppView extends Backbone.View
       type: 'GET'
       beforeSend: (xhrObj) ->
         xhrObj.setRequestHeader('Authorization', $a.usersession.getHeaders()['Authorization'])
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
 
       success: (data) =>
         # remove modal message which disabled screen
         $a.broker.trigger('app:loading_complete')
         if data.success == true
-          @_displayMap(data.resource)
+          @displayMap(data.resource)
         else
           # Display Error Message
           messageBox = new $a.MessageWindowView( {text: data.message, okButton: true} )
@@ -357,3 +423,108 @@ class window.beats.AppView extends Backbone.View
       contentType: 'text/json'
       dataType: 'json'
     )
+
+  # Load PEMS From DB
+  _loadPEMS: (pos) ->
+    # add overlay to disable screen
+    doc = document.implementation.createDocument(null, null, null)
+    msg = {text: "Loading PEMS...", okButton: false}
+    messageBox = new $a.MessageWindowView(msg)
+    # one off ajax request to get pems from DB in JSON form
+    $.ajax(
+      url: '/via-rest-api/project/0/scenario/0/pems'
+      type: 'POST'
+      beforeSend: (xhrObj) ->
+        auth = $a.usersession.getHeaders()['Authorization']
+        xhrObj.setRequestHeader('Authorization', auth)
+        xhrObj.setRequestHeader('DB', $a.usersession.getHeaders()['DB'])
+
+      success: (data) =>
+        # remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        if data.success == true
+          # First check if sensor set already exists
+          set = $a.models.sensor_set()
+          # set crud flag to update
+          set.set_crud_flag(window.beats.CrudFlag.UPDATE)
+          moSensors = $($.parseXML(data.resource)).children()
+          set = $a.SensorSet.from_xml1(moSensors, set)
+          set.sensors().forEach((sensor) => 
+            flag = $a.models.sensor_set().containsPemsSensor(sensor)
+            if(!flag)
+              sensor.id = sensor.sensor_id_original()
+              $a.sensorList.addSensor(sensor)
+          )
+        else
+          # Display Error Message
+          msg = {text: data.message, okButton: true}
+          messageBox = new $a.MessageWindowView(msg)
+
+      error: (xhr, textStatus, errorThrown) =>      
+        # Remove modal message which disabled screen
+        $a.broker.trigger('app:loading_complete')
+        # Display Error Message
+        msg = {text: "Error Loading PEMS, " + errorThrown, okButton: true}
+        messageBox = new $a.MessageWindowView(msg)
+      
+      contentType: 'application/json'
+      dataType: 'json'
+      data: new XMLSerializer().serializeToString(pos.to_xml(doc))
+    )
+
+  # Save scenario set information one by one to DB
+  _saveScenario: () ->
+    scenario = $a.models
+    if(not @_isScenarioNamed(scenario))
+      @_openScenarioEditor AppView.NAME_SAVE_MSG
+    else if(not @_isNetworkNamed(scenario.network()))
+      @_openNetworkEditor AppView.NAME_SAVE_MSG
+    else
+      # make sure all sets have a name, description and project id
+      scenario.copy_info_to_sets()
+
+      # set up ajax request handler to save modified scenario sets
+      ajaxRequests = new $a.AjaxRequestHandler()
+      fdSet = scenario.fundamentaldiagram_set()
+      splitRatioSet = scenario.splitratio_set()
+      demandSet = scenario.demand_set()
+      sensorSet = scenario.sensor_set()
+
+      # if there is a fd set add to request
+      if fdSet?
+        ajaxRequests.createSaveFDSetRequest(fdSet)
+
+      # if there is a split ratio set add to request
+      if splitRatioSet?
+        ajaxRequests.createSaveSplitRatioSetRequest(splitRatioSet)
+
+      # if there is a demand set, add to request
+      if demandSet?
+        ajaxRequests.createSaveDemandSetRequest(demandSet)
+
+      # if there is a demand set, add to request
+      if sensorSet?
+        ajaxRequests.createSaveSensorSetRequest(sensorSet)
+
+      # now process queue of ajax requests
+      if ajaxRequests.requestQueue.length > 0
+        ajaxRequests.processRequests()
+      else
+        message = new $a.MessageWindowView( {text: "No scenario changes to save.", okButton: true} )
+
+  # Import new scenario
+  _importScenario: () ->
+    # if scenario does not have a name or a project id
+    if(not @_isScenarioNamed($a.models))
+      @_openScenarioEditor AppView.NAME_SAVE_MSG
+    else if (not @_isScenarioProject($a.models))
+      @_openScenarioEditor AppView.PROJECT_SAVE_MSG
+    else
+      scenario = $a.models
+      # make sure all sets have a name, description and project id
+      scenario.copy_info_to_sets()
+
+      # set up ajax request handler to import whole senario
+      ajaxRequest = new $a.AjaxRequestHandler()
+      ajaxRequest.createImportScenarioRequest(scenario)
+      ajaxRequest.processRequests()

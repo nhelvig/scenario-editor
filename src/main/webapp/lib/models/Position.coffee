@@ -11,7 +11,7 @@ class window.beats.Position extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Position()
     point = xml.children('point')
-    obj.set('point', _.map($(point), (point_i) -> $a.Point.from_xml2($(point_i), deferred, object_with_id)))
+    obj.set('point', _.map($(point), (point_i) -> $a.Point.from_xml2($(point_i), deferred, object_with_id))) if point? and point != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

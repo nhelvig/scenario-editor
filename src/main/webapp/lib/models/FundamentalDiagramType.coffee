@@ -11,15 +11,15 @@ class window.beats.FundamentalDiagramType extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.FundamentalDiagramType()
     id = $(xml).attr('id')
-    obj.set('id', Number(id))
+    obj.set('id', Number(id)) if id? and id != ""
     name = $(xml).attr('name')
-    obj.set('name', name)
+    obj.set('name', name) if name? and name != ""
     description = $(xml).attr('description')
-    obj.set('description', description)
+    obj.set('description', description) if description? and description != ""
     in_use = $(xml).attr('in_use')
-    obj.set('in_use', Number(in_use))
+    obj.set('in_use', Number(in_use)) if in_use? and in_use != ""
     mod_stamp = $(xml).attr('mod_stamp')
-    obj.set('mod_stamp', mod_stamp)
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

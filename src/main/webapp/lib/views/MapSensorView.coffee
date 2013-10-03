@@ -50,7 +50,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # context menu
   _contextMenu: () ->
     super 'sensor', $a.sensor_context_menu
-
+    
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->

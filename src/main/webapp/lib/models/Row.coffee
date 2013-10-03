@@ -11,7 +11,7 @@ class window.beats.Row extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Row()
     column = xml.children('column')
-    obj.set('column', _.map($(column), (column_i) -> $a.Column.from_xml2($(column_i), deferred, object_with_id)))
+    obj.set('column', _.map($(column), (column_i) -> $a.Column.from_xml2($(column_i), deferred, object_with_id))) if column? and column != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

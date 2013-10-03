@@ -1,6 +1,6 @@
-html { height: 100% }
-body { height: 100%; margin: 5px; padding: 0 }
-#map_canvas { height: 100%; width:100%; float:left}
+html { height: 100%; }
+body { height: 100%; margin: 0px; padding: 0; overflow: hidden;}
+#map_canvas { height: 100%; width:100%; float:left; }
 #map_canvas img { max-width:none; }
 #header {width:100%}
 .navbar {margin-bottom: 0px}
@@ -10,8 +10,21 @@ body { height: 100%; margin: 5px; padding: 0 }
   position:absolute;
 }
 
-.alert-bottom {position:absolute; bottom:0; right:23%; max-width:200px}
-.container {position:absolute; z-index:1; width: 310px; margin-top:5px;margin-left:80px; background-color: #444444; display:none}
+.login-via-color {
+  color: #3399FF;
+}
+
+.login-text-color {
+  color: #FFFFFF;
+}
+
+.alert-bottom {position:absolute; bottom:0; right:1%; max-width:200px}
+.container {position:absolute; z-index:1; width: 310px; margin-top:5px; margin-left:80px;
+  background-color: #444444; display:none}
+.login-container {position:absolute; z-index:1; width: 90px; height:20px; margin-top:5px;
+  margin-left:66%; color: #FFFFFF; background-color: #444444; display:none; overflow:hidden;
+  text-align: center;}
+
 .ui-dialog .ui-dialog-content
 {
   padding: 1px 0;
@@ -29,6 +42,17 @@ fieldset button {
   display:block;
   margin-bottom:9px;
 }
+
+input[type=button] {
+  border-color: #CCCCCC;
+}
+
+input[disabled], select[disabled], textarea[disabled] {
+  background-color: #000;
+  border-color: #666666;
+  color: #666666;
+}
+
 .time-input {
   display:inline;
   width: 29px;
@@ -69,6 +93,50 @@ fieldset button {
   *border-bottom-width: 2px;
   z-index:3;
 }
+
+/* bottom scenario profile editor styles */
+
+.bottom-profile-editor {
+  position: absolute;
+  bottom: 0;
+  width:99.5%;
+  height: 0%;
+  z-index: 3;
+  overflow: auto;
+}
+
+.inline-display select {
+  display: inline;
+  margin: 5px 5px 5px 5px;
+}
+
+.inline-display label {
+  display: inline;
+  margin: 5px 5px 5px 5px;
+}
+
+.inline-display input {
+  display: inline;
+  margin: 5px 5px 5px 5px;
+}
+
+.inline-display input[type="button"] {
+  float: right;
+}
+
+.datatable-display input {
+  margin: 0px 0px 0px 0px;
+}
+
+.fd-value-field {
+  width: 100px;
+}
+
+.time {
+  margin: 0px 0px 0px 0px;
+}
+
+/* context menu stylings */
 .context_menu_item {
   display: block;
   padding: 3px 15px;
@@ -78,6 +146,11 @@ fieldset button {
   color: #555555;
   white-space: nowrap;
   cursor:pointer; 
+}
+
+.menu_item_disable a{
+  color: #111;
+  text-decoration: none;
 }
 .context_menu_separator {
   height: 1px;
@@ -112,6 +185,7 @@ hr {
 }
 .alert {
   padding: 8px 14px;
+  z-index: 2;
 }
 /* submenu */
 .icon-ok {
@@ -340,7 +414,7 @@ hr {
 .editor_table { 
                 width:100%;
                 color: #F58400;
-                font-size:1.1em;
+                font-size:0.9em;
                 padding: 1px;
                 }
 .editor_table th { color: #F58400; }
@@ -354,4 +428,5 @@ hr {
 
 /* jQuery UI Hacks */
 .ui-widget-content-select { border: 1px solid #666666; background: #000000; color: #ffffff; }
-
+.red {color:red}
+.big16 {font-size:16px}

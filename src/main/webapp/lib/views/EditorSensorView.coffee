@@ -25,7 +25,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   render: ->
     super @elem
     @_setSelectedType()
-    @_checkDisableFields()
+    @_checkMode()
     @
 
   # if in browser we disable some fields from being editted
@@ -34,6 +34,24 @@ class window.beats.EditorSensorView extends window.beats.EditorView
       $('#sensor_lat').attr("disabled", true)
       $('#sensor_lng').attr("disabled", true)
       $('#sensor_elevation').attr("disabled", true)
+  
+  # set up the mode correctly
+  scenarioMode: ->
+    super
+    @$el.find("#tabs-sensor :input").attr("disabled", false)
+    @$el.find("#tabs-sensor-geo :input").attr("disabled", false)
+    @_checkDisableFields()
+
+  networkMode: ->
+    super
+    @$el.find("#tabs-sensor :input").attr("disabled", true)
+    @$el.find("#tabs-sensor-geo :input").attr("disabled", true)
+  
+  # Once an editor is created we sets field to respond to the appropriate modes
+  _checkMode: ->
+    @viewMode() if $a.Mode.VIEW
+    @scenarioMode() if $a.Mode.SCENARIO
+    @networkMode() if $a.Mode.NETWORK
   
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->

@@ -10,10 +10,17 @@ class window.beats.LogInView extends Backbone.View
     @$el.attr 'title', attrs.title
     @$el.attr 'id', "user-dialog"
     @template = _.template($("#login-template").html())
-    @$el.html(@template())
+    @options = {
+      ccoradb: $a.CCORADB
+      cctest: $a.CCTEST
+    }
+    @$el.html(@template(@options))
     $a.broker.on("app:logInCallback", @logInCallback)
     @render()
     @$el.dialog('open')
+    # re-enable dialog close button
+    $('.ui-dialog-titlebar-close').css('visibility', 'visible')
+
 
   # render the dialog box. The calling function has responsability for appending
   # it as well as calling el.tabs and el.diaload('open')
@@ -21,7 +28,6 @@ class window.beats.LogInView extends Backbone.View
     @$el.dialog
       autoOpen: false,
       modal: true,
-      closeOnEscape: false,
       minHeight: 240,
       open: ->
         $('.ui-state-default').blur() #hack to get ui dialog focus bug
@@ -38,6 +44,7 @@ class window.beats.LogInView extends Backbone.View
     args = {
       username: $('body').find('#user-name').val()
       password: $('body').find('#password').val()
+      database: $('body').find('#database :selected').val()
     }
 
     # Create Session Model and attempt to log in
@@ -55,7 +62,11 @@ class window.beats.LogInView extends Backbone.View
       # set authentication header
       $a.usersession.setHeaders()
       $('#user-dialog').remove()
+      # update login indicator container
+      $('#login-nav-container')
+        .html('<span class="login-via-color">Via</span> ' +
+          '<span class="login-text-color">Connected</span>' )
+
       # TODO: Enable DB menu options
     else
       $('#user-login-error').html('Invalid Username or Password')
-

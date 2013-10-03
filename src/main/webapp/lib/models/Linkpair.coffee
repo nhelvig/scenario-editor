@@ -11,9 +11,9 @@ class window.beats.Linkpair extends Backbone.Model
     return null if (not xml? or xml.length == 0)
     obj = new window.beats.Linkpair()
     link_a = $(xml).attr('link_a')
-    obj.set('link_a', Number(link_a))
+    obj.set('link_a', Number(link_a)) if link_a? and link_a != ""
     link_b = $(xml).attr('link_b')
-    obj.set('link_b', Number(link_b))
+    obj.set('link_b', Number(link_b)) if link_b? and link_b != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj

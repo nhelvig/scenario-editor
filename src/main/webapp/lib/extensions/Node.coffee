@@ -4,13 +4,19 @@ window.beats.Node::defaults =
   in_sync: false
 
 window.beats.Node::initialize = ->
-  @set('roadway_markers', new $a.Roadway_markers)
+  @set('roadway_markers', new $a.RoadwayMarkers)
   @set('outputs', new $a.Outputs({output: []}))
   @set('inputs', new $a.Inputs({input: []}))
-  t = new $a.Node_type()
+  t = new $a.NodeType()
   t.set_name("simple")
   t.set_id("4")
   @set('node_type',t)
+
+window.beats.Node::splitratio_profile = ->
+  @get("splitratioprofile")
+
+window.beats.Node::set_splitratio_profile = (profile) ->
+  @set("splitratioprofile", profile)
 
 window.beats.Node::crud = -> @get 'crudFlag'
 window.beats.Node::set_crud = (flag) ->
@@ -33,7 +39,7 @@ window.beats.Node::node_type = -> @get("node_type") if @get("node_type")?
 window.beats.Node::type_id = -> @get("node_type").get("id") if @get("node_type")?
 window.beats.Node::type_name = -> @get("node_type").name() if @get("node_type")?
 window.beats.Node::set_type = (id, name) ->
-  @set('node_type', new window.beats.Node_type)  if not @get('node_type')?
+  @set('node_type', new window.beats.NodeType)  if not @get('node_type')?
   @get("node_type").set_name(name)
   @get("node_type").set_id(id)
   @defaults['node_type'] = id

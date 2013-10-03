@@ -8,7 +8,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   @SELECTED_TERMINAL_ICON: 'red-square'
   @TERMINAL_TYPE: 'Terminal'
   $a = window.beats
-
+  
   initialize: (model, @network) ->
     super model
     @model.on('change:selected', @toggleSelected, @)
@@ -21,11 +21,10 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:show_node_layer', @showMarker, @)
     $a.broker.on('map:hide_node_layer', @hideMarker, @)
-    $a.broker.on("map:nodes:show_#{@model.get('type')}", @showMarker, @)
-    $a.broker.on("map:nodes:hide_#{@model.get('type')}", @hideMarker, @)
+    $a.broker.on("map:nodes:show_#{@model.type_name()?.toLowerCase()}", @showMarker, @)
+    $a.broker.on("map:nodes:hide_#{@model.type_name()?.toLowerCase()}", @hideMarker, @)
     $a.broker.on("map:select_network:#{@network.cid}", @makeSelected, @)
     $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-
 
   getIcon: ->
     super @_getTypeIcon false
@@ -58,13 +57,20 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.off("map:clear_neighbors:#{@model.cid}")
     $a.broker.off('map:show_node_layer')
     $a.broker.off('map:hide_node_layer')
-    $a.broker.off("map:nodes:show_#{@model.get('type')}")
-    $a.broker.off("map:nodes:hide_#{@model.get('type')}")
+    $a.broker.off("map:nodes:show_#{@model.type_name().toLowerCase()}")
+    $a.broker.off("map:nodes:hide_#{@model.type_name().toLowerCase()}")
     $a.broker.off("map:select_network:#{@network.cid}")
     $a.broker.off("map:clear_network:#{@network.cid}")
     $a.broker.off("map:remove_node:#{@model.cid}")
     super
 
+  # set up the response for each mode
+  networkMode: ->
+    @marker.setDraggable(true)
+
+  scenarioMode: ->
+    @marker.setDraggable(false)
+    
   ################# select events for marker
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately
