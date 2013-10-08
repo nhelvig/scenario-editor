@@ -78,4 +78,15 @@ describe("Node", function() {
       expect(testNode1.get('position').get('point')[0].get('lng')).toEqual(latLng.lng());
     });
   });
+  
+  describe("remove_input_output", function() {
+    it("should remove the input and output link from node", function() {
+      beforeIns = testNode1.inputs().length
+      beforeOuts = testNode2.outputs().length
+      testNode1.remove_input_output(testLink3);
+      testNode2.remove_input_output(testLink3);
+      expect(testNode1.inputs().length).toEqual(beforeIns - 1);
+      expect(testNode2.outputs().length).toEqual(beforeOuts - 1);
+    });
+  });
 });

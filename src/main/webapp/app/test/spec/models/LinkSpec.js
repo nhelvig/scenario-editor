@@ -56,7 +56,7 @@ describe("Link", function() {
     });
   });
   
-  describe("remove", function() {
+  describe("remove if CREATE", function() {
     msg = "should remove the link from the links list of models if the CrudFlag";
     msg += "is CREATE";
     it(msg, function() {
@@ -66,4 +66,5 @@ describe("Link", function() {
       expect(length-1).toEqual($a.models.links().length);
     });
   });
+  
 });

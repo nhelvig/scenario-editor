@@ -91,6 +91,10 @@ window.beats.Node::terminal = ->
 window.beats.Node::signalized = ->
   @get('type') is 'S'
 
+window.beats.Node::remove_input_output = (link) ->
+  @get('inputs').set 'input', @inputs().filter (i) -> i.link() isnt link
+  @get('outputs').set 'output', @outputs().filter (o) -> o.link() isnt link
+  
 window.beats.Node::set_input = (link) ->
   @inputs().push new window.beats.Input({link: link})
   
