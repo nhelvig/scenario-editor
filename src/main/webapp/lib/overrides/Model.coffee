@@ -25,7 +25,7 @@ window.Backbone.Model::set_crud_flag = (flag, offset) ->
     switch @crud(offset)
       # When crudflag is not set, remove model if delete
       # otherwise change value to flag
-      when null, undefined
+      when null, undefined, $a.CrudFlag.NONE
         if flag == $a.CrudFlag.DELETE
           @remove()
         else
@@ -52,7 +52,7 @@ window.Backbone.Model::set_crud_flag = (flag, offset) ->
     switch @crud()
       # When crudflag is not set, remove model if delete
       # otherwise change value to flag
-      when null, undefined
+      when null, undefined, $a.CrudFlag.NONE
         if flag == $a.CrudFlag.DELETE
           @remove()
         else

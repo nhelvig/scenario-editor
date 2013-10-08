@@ -45,6 +45,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   addSensorWithPositionLink: (position, link) ->
     s = new $a.Sensor().from_position(position, link)
     # set crudflag to indicate sensor has been added
+    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
     s.set_crud_flag($a.CrudFlag.CREATE)
     @_setUpEvents(s)
     @add(s)
@@ -56,6 +57,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # Sensor Model Object needs to placed on the map 
   addSensor: (sensor) ->
     # set crudflag to indicate sensor has been added
+    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
     sensor.set_crud_flag($a.CrudFlag.CREATE)
     @_setUpEvents(sensor)
     @add(sensor)
@@ -75,16 +77,33 @@ class window.beats.SensorListCollection extends Backbone.Collection
 
   # This method sets up the events each sensor should listen too
   _setUpEvents: (sensor) ->
+    # map any change in sensor object to change crudflag accordingly
+    # Setup profile model change events
+    sensor.on('change:sensor_type change:link_position change:link_id change:java_class /
+      change:sensor_id_original change:data_feed_id change:lane_number change:link_offset change:health_status'
+        => @_updateSensor(sensor))
+    # have event listener if display lat or long changes
+    sensor.display_point().on('change',
+        => @_updateSensor(sensor))
+    # have event listener if sensor type changes
+    sensor.sensor_type().on('change',
+      => @_updateSensor(sensor))
     sensor.bind('remove', =>
                             sensor.remove()
                             @destroy
                       )
     sensor.bind('add', => sensor.add())
     sensor.set('selected', false)
-  
+
+  # Update Sensor and Set's CRUD flag to indicate it has changed
+  _updateSensor: (sensor) ->
+    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
+    sensor.set_crud_flag($a.CrudFlag.UPDATE)
+
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)
     $a.sensorList = {}
     $a.broker.off('sensors:add')
+    $a.broker.off('sensors:add_sensor')
     @off(null, null, @)
