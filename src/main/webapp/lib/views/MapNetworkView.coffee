@@ -10,9 +10,9 @@ class window.beats.MapNetworkView extends Backbone.View
   $a = window.beats
   WARNING_MSG = 'Directions API Warning(s):'
   ERROR_MSG = 'Directions API Error: Could not render link :'
-  NETWORK_EDIT_MSG : 'Network Editting Mode'
-  SCENARIO_EDIT_MSG : 'Scenario Editting Mode'
-  ROUTE_EDIT_MSG : 'Route Editting Mode'
+  NETWORK_EDIT_MSG : 'Network Editing Mode'
+  SCENARIO_EDIT_MSG : 'Scenario Editing Mode'
+  ROUTE_EDIT_MSG : 'Route Editing Mode'
   VIEW_ONLY_MSG : 'View Only Mode'
   
   broker_events: {

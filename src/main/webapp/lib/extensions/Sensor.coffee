@@ -3,6 +3,7 @@ window.beats.Sensor::defaults =
 
 window.beats.Sensor::initialize = ->
   @set('display_position', new window.beats.DisplayPosition)
+  @set('sensor_type', new window.beats.SensorType)
 
 # called by sensor editor to save individual lat, lng, elevation fields
 window.beats.Sensor::set_display_position = (pointField, val) -> 
@@ -40,6 +41,9 @@ window.beats.Sensor::set_table = (t) -> @set('table', t)
 
 window.beats.Sensor::ident = -> @get('id')
 window.beats.Sensor::set_id = (id) -> @set('id', id)
+
+window.beats.Sensor::mod_stamp = -> @get('mod_stamp')
+window.beats.Sensor::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
 
 window.beats.Sensor::crud = -> @get 'crudFlag'
 window.beats.Sensor::set_crud = (flag) ->
@@ -158,3 +162,8 @@ window.beats.Sensor::editor_show = ->
 
 window.beats.Sensor::set_editor_show = (flag) ->
   @set('editor_show', flag)
+
+window.beats.Sensor::old_to_xml = window.beats.Sensor::to_xml 
+window.beats.Sensor::to_xml = (doc) ->
+  xml = @remove_crud_modstamp_for_xml(doc)
+  xml

@@ -149,8 +149,8 @@ window.beats.Link::remove = ->
   @stopListening
 
 window.beats.Link::updateInputOutputs = ->
-  @begin_node().remove_input_output(@)
-  @end_node().remove_input_output(@)
+  @begin_node().remove_input_output(@) if @begin_node()?
+  @end_node().remove_input_output(@) if @end_node()?
   
 window.beats.Link::add = ->
   window.beats.models.links().push(@)
