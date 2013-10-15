@@ -105,7 +105,7 @@ $a.nav_bar_menu_items =
         [ROUTE]
   ]
   Tools: [
-    nav_bar_menu_item 'Import PeMS data',
+    nav_bar_menu_item 'Import PeMS VDS Stations',
         (-> $a.broker.trigger("map:import_pems")),
         [SCENARIO]
     nav_bar_menu_item 'Calibrate',
