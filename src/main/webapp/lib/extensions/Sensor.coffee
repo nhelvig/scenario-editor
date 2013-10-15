@@ -147,7 +147,7 @@ window.beats.Sensor::remove = ->
     # set crudflag for delete
     @set_crud(window.beats.CrudFlag.DELETE)
     # set sensor set crudflag to update
-    window.beats.models.sensor_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
+    window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
   @stopListening
 
 window.beats.Sensor::add = ->

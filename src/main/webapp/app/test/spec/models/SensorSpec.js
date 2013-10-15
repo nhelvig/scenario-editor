@@ -1,6 +1,7 @@
 describe("Sensor", function() {
 
-  beforeEach(function() { 
+  beforeEach(function() {
+    window.beats.sensorList = new window.beats.SensorListCollection(window.beats.models.sensors())
     s = new window.beats.Sensor; 
     pt = new window.beats.Point()
     pt.set('lat',0)
@@ -32,7 +33,7 @@ describe("Sensor", function() {
       s.add();
       var lengthBefore = $a.models.sensors().length;
       s.remove();
-      expect(lengthBefore - 1).toEqual($a.models.sensors().length);
+      expect(s.crud()).toEqual(window.beats.CrudFlag.DELETE);
       var crud = window.beats.models.sensor_set().crud();
       if(crud == window.beats.CrudFlag.CREATE)
         expect(crud).toEqual(window.beats.CrudFlag.CREATE);

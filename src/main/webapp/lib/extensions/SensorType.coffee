@@ -1,6 +1,6 @@
 $a = window.beats
 window.beats.SensorType::defaults =
-  id: 0
+  id: null
   name: ""
   description: ""
 
