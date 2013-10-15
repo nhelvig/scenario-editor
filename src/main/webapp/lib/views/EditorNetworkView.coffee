@@ -39,6 +39,7 @@ class window.beats.EditorNetworkView extends window.beats.EditorView
   
   # creates a hash of values taken from the model for the html template
   _getTemplateData: (models, message) ->
+    'networkId': models[0].ident()
     'name': models[0].name()
     'description': models[0].description_text()
     'message': message if message?

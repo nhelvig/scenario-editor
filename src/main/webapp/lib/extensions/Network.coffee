@@ -49,7 +49,7 @@ window.beats.Network::set_position = (lat,lng) ->
 
 window.beats.Network::position = -> @get('position')
 
-window.beats.Network::id = -> @get('id')
+window.beats.Network::ident = -> @get('id')
 
 window.beats.Network::set_id = (id) ->
   @set('id', id)
