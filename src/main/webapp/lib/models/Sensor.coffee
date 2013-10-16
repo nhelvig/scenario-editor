@@ -42,8 +42,8 @@ class window.beats.Sensor extends Backbone.Model
     obj.set('lane_number', Number(lane_number)) if lane_number? and lane_number != ""
     link_offset = $(xml).attr('link_offset')
     obj.set('link_offset', Number(link_offset)) if link_offset? and link_offset != ""
-    modStamp = $(xml).attr('modStamp')
-    obj.set('modStamp', modStamp) if modStamp? and modStamp != ""
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     health_status = $(xml).attr('health_status')
     obj.set('health_status', Number(health_status)) if health_status? and health_status != ""
     if object_with_id.sensor
@@ -78,7 +78,7 @@ class window.beats.Sensor extends Backbone.Model
     xml.setAttribute('data_feed_id', @get('data_feed_id')) if @has('data_feed_id')
     xml.setAttribute('lane_number', @get('lane_number')) if @has('lane_number')
     xml.setAttribute('link_offset', @get('link_offset')) if @has('link_offset')
-    xml.setAttribute('modStamp', @get('modStamp')) if @has('modStamp')
+    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml.setAttribute('health_status', @get('health_status')) if @has('health_status')
     xml
   

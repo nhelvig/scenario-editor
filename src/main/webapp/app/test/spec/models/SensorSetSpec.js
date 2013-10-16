@@ -1,7 +1,7 @@
 describe("SensorSet", function() {
   
   beforeEach(function() {
-    s = new window.beats.SensorSet()
+    s = new window.beats.SensorSet();
   });
   
   describe("Default Attributes", function() {
@@ -40,7 +40,7 @@ describe("SensorSet", function() {
       s.set_locked_for_history(true)
       expect(s.locked_for_history()).toBeTruthy();
 
-      s.set_crud(window.beats.CrudFlag.UPDATE)      
+      s.set_crud_flag(window.beats.CrudFlag.UPDATE)      
       expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
     });
   });

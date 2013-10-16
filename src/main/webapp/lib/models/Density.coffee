@@ -20,8 +20,8 @@ class window.beats.Density extends Backbone.Model
     obj.set('link_id', Number(link_id)) if link_id? and link_id != ""
     destination_network_id = $(xml).attr('destination_network_id')
     obj.set('destination_network_id', Number(destination_network_id)) if destination_network_id? and destination_network_id != ""
-    modStamp = $(xml).attr('modStamp')
-    obj.set('modStamp', modStamp) if modStamp? and modStamp != ""
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     obj.set('text', xml.text())
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
@@ -36,7 +36,7 @@ class window.beats.Density extends Backbone.Model
     xml.setAttribute('id', @get('id')) if @has('id')
     xml.setAttribute('link_id', @get('link_id')) if @has('link_id')
     xml.setAttribute('destination_network_id', @get('destination_network_id')) if @has('destination_network_id')
-    xml.setAttribute('modStamp', @get('modStamp')) if @has('modStamp')
+    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml.appendChild(doc.createTextNode($a.ArrayText.emit(@get('text') || [])))
     xml
   
