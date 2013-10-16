@@ -6,9 +6,9 @@ describe("SensorType", function() {
   
   describe("Default Attributes", function() {
     it("should be set", function() {
-      expect(s.name()).toEqual('');  
+      expect(s.name()).toEqual('Loop');  
       expect(s.description()).toEqual('');
-      expect(s.ident()).toEqual(null);
+      expect(s.ident()).toEqual(1);
     });
   });
   

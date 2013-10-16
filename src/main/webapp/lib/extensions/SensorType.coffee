@@ -1,7 +1,7 @@
 $a = window.beats
 window.beats.SensorType::defaults =
-  id: null
-  name: ""
+  id: 1
+  name: "Loop"
   description: ""
 
 window.beats.SensorType::name = -> @get 'name'
