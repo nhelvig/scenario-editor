@@ -65,6 +65,9 @@ window.beats.Sensor::set_type = (id, name) ->
 window.beats.Sensor::link_position = -> @get('link_position')
 window.beats.Sensor::set_link_position = (lp) -> @set('link_position',lp)
 
+window.beats.Sensor::link_type = -> @get('link_type')
+window.beats.Sensor::set_link_type = (type) -> @set('link_type',type)
+
 window.beats.Sensor::link_id = -> @get('link_id')
 window.beats.Sensor::set_link_id = (lid) -> @set('link_id',lid)
 window.beats.Sensor::link_reference = -> @get('link_reference')
@@ -151,6 +154,7 @@ window.beats.Sensor::remove = ->
   @stopListening
 
 window.beats.Sensor::add = ->
+  @set_id window.beats.Util.getNewElemId(window.beats.models.sensors())
   window.beats.models.sensors().push(@)
 
 window.beats.Sensor::set_generic = (id, val) -> 
