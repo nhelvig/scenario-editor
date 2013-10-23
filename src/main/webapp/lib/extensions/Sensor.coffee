@@ -65,9 +65,6 @@ window.beats.Sensor::set_type = (id, name) ->
 window.beats.Sensor::link_position = -> @get('link_position')
 window.beats.Sensor::set_link_position = (lp) -> @set('link_position',lp)
 
-window.beats.Sensor::link_type = -> @get('link_type')
-window.beats.Sensor::set_link_type = (type) -> @set('link_type',type)
-
 window.beats.Sensor::link_id = -> @get('link_id')
 window.beats.Sensor::set_link_id = (lid) -> @set('link_id',lid)
 window.beats.Sensor::link_reference = -> @get('link_reference')
@@ -80,6 +77,10 @@ window.beats.Sensor::resolve_references = (deferred, object_with_id) ->
       link = object_with_id.link[@link_id()]
       @set('link_reference', link)
 window.beats.Sensor::road_names = -> @get('link_reference')?.link_name() || ''
+
+window.beats.Sensor::link_type_original = -> @get('link_type_original')
+window.beats.Sensor::set_link_type_original = (type) -> 
+  @set('link_type_original', type)
 
 window.beats.Sensor::sensor_id_original = -> @get('sensor_id_original')
 window.beats.Sensor::set_sensor_id_original = (sid) -> 

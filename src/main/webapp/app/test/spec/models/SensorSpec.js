@@ -25,6 +25,10 @@ describe("Sensor", function() {
       else
         expect(crud).toEqual(window.beats.CrudFlag.UPDATE);
     });
+    it("should add on id to the sensor", function() {
+      s.add();
+      s.set_id()
+    });
   });
   describe("remove", function() {
     var msg = "should remove the sensor from he models schema and update the ";

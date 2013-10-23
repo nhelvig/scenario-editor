@@ -36,6 +36,8 @@ class window.beats.Sensor extends Backbone.Model
     obj.set('java_class', java_class) if java_class? and java_class != ""
     sensor_id_original = $(xml).attr('sensor_id_original')
     obj.set('sensor_id_original', sensor_id_original) if sensor_id_original? and sensor_id_original != ""
+    link_type_original = $(xml).attr('link_type_original')
+    obj.set('link_type_original', link_type_original) if link_type_original? and link_type_original != ""
     data_feed_id = $(xml).attr('data_feed_id')
     obj.set('data_feed_id', Number(data_feed_id)) if data_feed_id? and data_feed_id != ""
     lane_number = $(xml).attr('lane_number')
@@ -75,6 +77,7 @@ class window.beats.Sensor extends Backbone.Model
     xml.setAttribute('link_id', @get('link_id')) if @has('link_id')
     xml.setAttribute('java_class', @get('java_class')) if @has('java_class')
     xml.setAttribute('sensor_id_original', @get('sensor_id_original')) if @has('sensor_id_original')
+    xml.setAttribute('link_type_original', @get('link_type_original')) if @has('link_type_original')
     xml.setAttribute('data_feed_id', @get('data_feed_id')) if @has('data_feed_id')
     xml.setAttribute('lane_number', @get('lane_number')) if @has('lane_number')
     xml.setAttribute('link_offset', @get('link_offset')) if @has('link_offset')

@@ -66,9 +66,8 @@ class window.beats.EditorSensorView extends window.beats.EditorView
       vds: models[0].sensor_id_original()
       url: ''
       url_desc: URL_DESC
-      link_type: models[0].link_type()
+      link_type: models[0].link_type_original()
       links: _.map(models, (m) -> m.link_id() if m.link_id()?).join('; ')
-
     }
   
   # these are callback events for various elements in the interface
