@@ -57,3 +57,8 @@ window.beats.FundamentalDiagram::set_std_dev_congestion_speed = (free) ->
 
 window.beats.FundamentalDiagram::jam_density = -> @get('jam_density')
 window.beats.FundamentalDiagram::set_jam_density = (jam) -> @set('jam_density', jam)
+
+window.beats.FundamentalDiagram::old_to_xml = window.beats.FundamentalDiagram::to_xml 
+window.beats.FundamentalDiagram::to_xml = (doc) ->
+  xml = @remove_crud_modstamp_for_xml(doc)
+  xml

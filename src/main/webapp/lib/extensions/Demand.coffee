@@ -89,3 +89,10 @@ window.beats.Demand::max_offset = () ->
   # get comma seperated demand values, if none exist set demands to empty array
   demands = @get('text')?.split(',') || []
   demands.length
+  
+# removed the crudFlag and modstamp attributes from the object 
+# saves the object to xml and puts the attributes back in
+window.beats.Demand::old_to_xml = window.beats.Demand::to_xml 
+window.beats.Demand::to_xml = (doc) ->
+  xml = @remove_crud_modstamp_for_xml(doc)
+  xml

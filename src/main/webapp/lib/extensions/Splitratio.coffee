@@ -104,3 +104,10 @@ window.beats.Splitratio::max_offset = () ->
   # get comma seperated ratio values, if none exist set ratios to empty array
   ratios = @get('text')?.split(',') || []
   ratios.length
+  
+# removed the crudFlag and modstamp attributes from the object 
+# saves the object to xml and puts the attributes back in
+window.beats.Splitratio::old_to_xml = window.beats.Splitratio::to_xml 
+window.beats.Splitratio::to_xml = (doc) ->
+  xml = @remove_crud_modstamp_for_xml(doc)
+  xml

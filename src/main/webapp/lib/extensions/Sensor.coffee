@@ -168,6 +168,8 @@ window.beats.Sensor::editor_show = ->
 window.beats.Sensor::set_editor_show = (flag) ->
   @set('editor_show', flag)
 
+# removed the crudFlag and modstamp attributes from the object 
+# saves the object to xml and puts the attributes back in
 window.beats.Sensor::old_to_xml = window.beats.Sensor::to_xml 
 window.beats.Sensor::to_xml = (doc) ->
   xml = @remove_crud_modstamp_for_xml(doc)
