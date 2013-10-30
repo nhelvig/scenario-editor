@@ -45,9 +45,7 @@ describe("SensorSet", function() {
     });
   });
   describe("to_xml", function() {
-    msg = "should remove crud flags, mod stamp and deleted elements ";
-    msg += "and then replace them";
-    it(msg, function(){
+    beforeEach(function() {
       s1 = new window.beats.Sensor();
       s1.set_crud(window.beats.CrudFlag.CREATE);
       s2 = new window.beats.Sensor();
@@ -55,6 +53,10 @@ describe("SensorSet", function() {
       s.set_sensors([s1, s2]);
       s.set_mod_stamp("01/01/01");
       s.set_crud(window.beats.CrudFlag.UPDATE);
+    });
+    msg = "should remove crud flags, mod stamp and deleted elements ";
+    msg += "and then replace them";
+    it(msg, function(){   
       doc = document.implementation.createDocument(null, null, null)
       xml = s.to_xml(doc);
       xmlS = new XMLSerializer().serializeToString(xml)
@@ -64,8 +66,10 @@ describe("SensorSet", function() {
       expect(s.sensors().length).toEqual(2);
       expect(s.mod_stamp()).toEqual("01/01/01");
       expect(s.crud()).toEqual(window.beats.CrudFlag.UPDATE);
-      
-      
+    });
+    msg = "should keep all crudFlags, mod_stamps and deleted elements when";
+    msg += " saving to db";
+    it(msg, function(){
       window.beats.fileSaveMode = false;
       doc = document.implementation.createDocument(null, null, null)
       xml = s.to_xml(doc);
