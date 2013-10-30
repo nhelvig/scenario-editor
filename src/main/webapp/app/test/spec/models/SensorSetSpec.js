@@ -44,4 +44,35 @@ describe("SensorSet", function() {
       expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
     });
   });
+  describe("to_xml", function() {
+    msg = "should remove crud flags, mod stamp and deleted elements ";
+    msg += "and then replace them";
+    it(msg, function(){
+      s1 = new window.beats.Sensor();
+      s1.set_crud(window.beats.CrudFlag.CREATE);
+      s2 = new window.beats.Sensor();
+      s2.set_crud(window.beats.CrudFlag.DELETE);
+      s.set_sensors([s1, s2]);
+      s.set_mod_stamp("01/01/01");
+      s.set_crud(window.beats.CrudFlag.UPDATE);
+      doc = document.implementation.createDocument(null, null, null)
+      xml = s.to_xml(doc);
+      xmlS = new XMLSerializer().serializeToString(xml)
+      expect(xmlS.match(/<sensor>/g).length).toEqual(1);
+      expect(xmlS.match(/mod_stamp/g)).toBeNull();
+      expect(xmlS.match(/crudFlag/g)).toBeNull();
+      expect(s.sensors().length).toEqual(2);
+      expect(s.mod_stamp()).toEqual("01/01/01");
+      expect(s.crud()).toEqual(window.beats.CrudFlag.UPDATE);
+      
+      
+      window.beats.fileSaveMode = false;
+      doc = document.implementation.createDocument(null, null, null)
+      xml = s.to_xml(doc);
+      xmlS = new XMLSerializer().serializeToString(xml)
+      expect(xmlS.match(/<\/sensor>/g).length).toEqual(2);
+      expect(xmlS.match(/mod_stamp/g)).not.toBeNull();
+      expect(xmlS.match(/crudFlag=\"UPDATE\"/g).length).toEqual(1);
+    });
+  });
 });

@@ -90,3 +90,21 @@ window.beats.FundamentalDiagramProfile::fd_at_order = (order) ->
       returnFd = fd
   )
   returnFd
+
+# we need to remove the links that are deleted before saving to xml and then
+# put them in the link list so the database can be updated correctly
+window.beats.FundamentalDiagramProfile::old_to_xml = window.beats.FundamentalDiagramProfile::to_xml 
+window.beats.FundamentalDiagramProfile::to_xml = (doc) ->
+  xml = ''
+  # If we are converting to xml to be saved to file remove all deleted elements from list
+  if window.beats? and window.beats.fileSaveMode
+    filter = ((fd) => fd.crud() == window.beats.CrudFlag.DELETE)
+    deletedFDs = _.filter(@fundamental_diagrams(), filter)
+    keepFDs = _.reject(@fundamental_diagrams(), filter)
+    @set_fundamental_diagram keepFDs
+    xml = @remove_crud_modstamp_for_xml(doc)
+    @set('fundamentaldiagram', @fundamental_diagrams().concat(deletedFDs))
+  # Otherwise we are converting to xml to goto the database, so keep delete CRUDFlag
+  else
+    xml = @old_to_xml(doc)
+  xml
