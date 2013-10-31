@@ -9,7 +9,6 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   
   events : {
     'blur #sensor_type' : 'saveType'
-    'blur #sensor_link_type': 'saveLinkType'
     'blur #sensor_links' : 'saveLinks'
     'blur #sensor_lat, #sensor_lng, #sensor_elevation' : 'saveGeo'
     'click #display-at-pos' : 'displayAtPos'
@@ -56,9 +55,7 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   #set selected type element for sensor type and sensor format
   _setSelectedType: ->
     type = @models[0].type_id()
-    lType = @models[0].link_reference()?.type_id()
     $("#sensor_type > option[value='#{type}']").attr('selected','selected')
-    $("#sensor_link_type > option[value='#{lType}']").attr('selected','selected')
   
   # set up a hash of values from the model and inserted into the html template
   _getTemplateData: (models) ->
@@ -66,8 +63,10 @@ class window.beats.EditorSensorView extends window.beats.EditorView
       lat: models[0].display_lat()
       lng: models[0].display_lng()
       elev: models[0].display_elev()
+      vds: models[0].sensor_id_original()
       url: ''
       url_desc: URL_DESC
+      link_type: models[0].link_type_original()
       links: _.map(models, (m) -> m.link_id() if m.link_id()?).join('; ')
     }
   
@@ -83,11 +82,6 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   saveType: (e) ->
     id = e.currentTarget.id
     _.each(@models, (m) -> m.set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
-
-  # Save link type attached to sensor
-  saveLinkType: (e) ->
-    id = e.currentTarget.id
-    _.each(@models, (m) -> m.link_reference().set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
 
   # links are in the link_reference attribute
   saveLinks: (e) ->

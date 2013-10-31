@@ -3,6 +3,7 @@ window.beats.Sensor::defaults =
 
 window.beats.Sensor::initialize = ->
   @set('display_position', new window.beats.DisplayPosition)
+  @set('sensor_type', new window.beats.SensorType)
 
 # called by sensor editor to save individual lat, lng, elevation fields
 window.beats.Sensor::set_display_position = (pointField, val) -> 
@@ -41,6 +42,9 @@ window.beats.Sensor::set_table = (t) -> @set('table', t)
 window.beats.Sensor::ident = -> @get('id')
 window.beats.Sensor::set_id = (id) -> @set('id', id)
 
+window.beats.Sensor::mod_stamp = -> @get('mod_stamp')
+window.beats.Sensor::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
+
 window.beats.Sensor::crud = -> @get 'crudFlag'
 window.beats.Sensor::set_crud = (flag) ->
   if @crud() != window.beats.CrudFlag.CREATE
@@ -73,6 +77,10 @@ window.beats.Sensor::resolve_references = (deferred, object_with_id) ->
       link = object_with_id.link[@link_id()]
       @set('link_reference', link)
 window.beats.Sensor::road_names = -> @get('link_reference')?.link_name() || ''
+
+window.beats.Sensor::link_type_original = -> @get('link_type_original')
+window.beats.Sensor::set_link_type_original = (type) -> 
+  @set('link_type_original', type)
 
 window.beats.Sensor::sensor_id_original = -> @get('sensor_id_original')
 window.beats.Sensor::set_sensor_id_original = (sid) -> 
@@ -143,10 +151,11 @@ window.beats.Sensor::remove = ->
     # set crudflag for delete
     @set_crud(window.beats.CrudFlag.DELETE)
     # set sensor set crudflag to update
-    window.beats.models.sensor_set().set_crud_flag(window.beats.CrudFlag.UPDATE)
+    window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
   @stopListening
 
 window.beats.Sensor::add = ->
+  @set_id window.beats.Util.getNewElemId(window.beats.models.sensors())
   window.beats.models.sensors().push(@)
 
 window.beats.Sensor::set_generic = (id, val) -> 
@@ -158,3 +167,8 @@ window.beats.Sensor::editor_show = ->
 
 window.beats.Sensor::set_editor_show = (flag) ->
   @set('editor_show', flag)
+
+window.beats.Sensor::old_to_xml = window.beats.Sensor::to_xml 
+window.beats.Sensor::to_xml = (doc) ->
+  xml = @remove_crud_modstamp_for_xml(doc)
+  xml

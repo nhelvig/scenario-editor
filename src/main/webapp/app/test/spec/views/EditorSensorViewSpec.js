@@ -45,10 +45,7 @@ describe("EditorSensorView", function() {
     it("returns the view object", function() {
        expect(this.view.render()).toEqual(this.view);
     });
-    it("produces the correct HTML", function() {
-      sample = '<label for="sensor-link-type">Link Type</label>'
-      expect(this.view.el.innerHTML).toContain(sample);
-    });
+
     it("should should have correct type selected", function() {
       type = this.view.models[0].get('type');
       elem = $($(this.view.el).find('#sensor_type option:selected'));
@@ -59,8 +56,6 @@ describe("EditorSensorView", function() {
     it("has the correct text content", function() {
       model = this.view.models[0];
       expect(this.view.$('#sensor_type')).toHaveValue(model.get('type'));
-      link_type = model.get('link').get('type');
-      expect(this.view.$('#sensor_link_type')).toHaveValue(link_type);
       links = model.get('link_reference').get('id')
       expect(this.view.$('#sensor_links')).toHaveValue(links);
       lat = model.display_lat();
@@ -84,10 +79,7 @@ describe("EditorSensorView", function() {
         $('#sensor_type').blur();
         expect($a.EditorSensorView.prototype.save).toHaveBeenCalled();
       });
-      it("Sensor Tab: 'Sensor Link Type' field calls save", function() { 
-        $('#sensor_link_type').blur();
-        expect($a.EditorSensorView.prototype.save).toHaveBeenCalled();
-      });
+
       it("Sensor Tab: 'Links' field calls saveLinks", function() { 
         $('#sensor_links').blur();
         expect($a.EditorSensorView.prototype.saveLinks).toHaveBeenCalled();
@@ -121,15 +113,7 @@ describe("EditorSensorView", function() {
             model: model
           });
         });
-        it("Sensor Tab: Link Type is saved", function() {
-          selected = $($(this.view.el)).find('#sensor_link_type option:selected');
-          $(selected).attr('selected', false);
-          options = $(this.view.el).find('#sensor_link_type option');
-          $(options[8]).attr('selected', true);
-          newSelectedValue = $(options[8]).val();
-          $('#sensor_link_type').blur();
-          expect(model.get('link').get('type')).toEqual(newSelectedValue);
-        });
+
         it("Sensor Tab: Links are saved", function() {
           expectSave({
             id: '#sensor_links',

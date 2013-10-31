@@ -234,11 +234,11 @@ describe("EditorLinkView", function() {
       expect(view.$('#cp_text')).toHaveValue(v.capacityProfile);
       //expect(view.$('#dp_text')).toHaveValue(v.demandProfile);
       expect(view.$('#knob')).toHaveValue(v.knob);
-      expect(view.$('#link_demand_start_hour')).toHaveValue(v.dpStart.h);
-      expect(view.$('#link_demand_start_minute')).toHaveValue(v.dpStart.m);
-      expect(view.$('#link_demand_start_second')).toHaveValue(v.dpStart.s);
-      expect(view.$('#link_demand_sample_hour')).toHaveValue(v.dpSample.h);
-      expect(view.$('#link_demand_sample_minute')).toHaveValue(v.dpSample.m);
+      // expect(view.$('#link_demand_start_hour')).toHaveValue(v.dpStart.h);
+      //       expect(view.$('#link_demand_start_minute')).toHaveValue(v.dpStart.m);
+      //       expect(view.$('#link_demand_start_second')).toHaveValue(v.dpStart.s);
+      // expect(view.$('#link_demand_sample_hour')).toHaveValue(v.dpSample.h);
+      //       expect(view.$('#link_demand_sample_minute')).toHaveValue(v.dpSample.m);
       expect(view.$('#link_capacity_sample_second')).toHaveValue(v.cpSample.s);
       expect(view.$('#link_capacity_start_hour')).toHaveValue(v.cpStart.h);
       expect(view.$('#link_capacity_start_minute')).toHaveValue(v.cpStart.m);

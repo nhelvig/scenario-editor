@@ -31,7 +31,6 @@ class window.beats.AppView extends Backbone.View
     'app:load_pems' : '_loadPEMS'
     'app:import_scenario_db' : '_importScenario'
     'app:save_scenario_db' : '_saveScenario'
-    'app:import_scenario_db' : '_importScenario'
     'map:show_satellite' : '_showSatelliteTiles'
     'map:hide_satellite' : '_showSatelliteTiles'
     'map:import_pems' : '_importPems'

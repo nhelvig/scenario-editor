@@ -22,8 +22,8 @@ class window.beats.InitialDensitySet extends Backbone.Model
     obj.set('name', name) if name? and name != ""
     tstamp = $(xml).attr('tstamp')
     obj.set('tstamp', Number(tstamp)) if tstamp? and tstamp != ""
-    modStamp = $(xml).attr('modStamp')
-    obj.set('modStamp', modStamp) if modStamp? and modStamp != ""
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     if obj.resolve_references
       obj.resolve_references(deferred, object_with_id)
     obj
@@ -38,7 +38,7 @@ class window.beats.InitialDensitySet extends Backbone.Model
     xml.setAttribute('project_id', @get('project_id')) if @has('project_id')
     if @has('name') && @name != "" then xml.setAttribute('name', @get('name'))
     if @has('tstamp') && @tstamp != 0.0 then xml.setAttribute('tstamp', @get('tstamp'))
-    xml.setAttribute('modStamp', @get('modStamp')) if @has('modStamp')
+    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml
   
   deep_copy: -> InitialDensitySet.from_xml1(@to_xml(), {})

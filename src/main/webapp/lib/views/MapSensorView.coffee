@@ -19,7 +19,13 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
 
   getIcon: ->
     super MapSensorView.ICON
-    
+  
+  _getTitle: ->
+    title = super + "\n"
+    title += "PeMS VDS ID: #{@model.sensor_id_original()}\n"
+    title += "Original Link Type: #{@model.link_type_original()}"
+    title
+  
   # creates the editor for this marker
   _editor: ->
     @makeSelected()

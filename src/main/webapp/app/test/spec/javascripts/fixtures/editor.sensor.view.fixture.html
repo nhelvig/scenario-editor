@@ -13,20 +13,8 @@
               <option value="static_area">Static Area</option>
               <option value="moving_point">Moving Point</option>
             </select><br/>
-            <label for="sensor-link-type">Link Type</label>
-            <select id="sensor_link_type" name ="sensor-link-type" class="ui-widget-content ui-corner-all">
-              <option value="freeway">Freeway mainline</option>
-              <option value="freeway_connector">Freeway Connector</option>
-              <option value="heavy_vehicle">Heavy Vehicle</option>
-              <option value="hov_lane">HOV lanes</option>
-              <option value="hot_lane">HOT lanes</option>            
-              <option value="intersection_approach">Intersection Approach</option>            
-              <option value="onramp">On-ramps</option>
-              <option value="offramp">Off-ramps</option>
-              <option value="street">Street</option>
-              <option value="electric_toll">Electric Toll</option>
-              <option value="other">Other</option>
-            </select><br/>
+            <label for="link_type">Link Type</label>
+            <input type="text" name="link_type" id="link_type" class="text ui-widget-content ui-corner-all" value="{{link_type}}" readonly/>
             <label for="sensor-links">Links</label>
             <input type="text" name="sensor-links" id="sensor_links" class="text ui-widget-content ui-corner-all" value="{{links}}" readonly/>
           </fieldset>

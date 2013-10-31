@@ -1,13 +1,13 @@
 describe("SensorSet", function() {
   
   beforeEach(function() {
-    s = new window.beats.SensorSet()
+    s = new window.beats.SensorSet();
   });
   
   describe("Default Attributes", function() {
     it("should be set", function() {
       expect(s.name()).toEqual('');  
-      expect(s.description()).toEqual('');
+      expect(s.description_text()).toEqual('');
       expect(s.ident()).toEqual(null);
       expect(s.project_id()).toEqual(null);
       expect(s.sensors().length).toEqual(0);
@@ -22,8 +22,8 @@ describe("SensorSet", function() {
       s.set_name('SS test');
       expect(s.name()).toEqual('SS test');
       
-      s.set_description('SS Desc');
-      expect(s.description()).toEqual('SS Desc');
+      s.set_description_text('SS Desc');
+      expect(s.description_text()).toEqual('SS Desc');
       
       s.set_id(12);
       expect(s.ident()).toEqual(12);
@@ -40,7 +40,7 @@ describe("SensorSet", function() {
       s.set_locked_for_history(true)
       expect(s.locked_for_history()).toBeTruthy();
 
-      s.set_crud(window.beats.CrudFlag.UPDATE)      
+      s.set_crud_flag(window.beats.CrudFlag.UPDATE)      
       expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
     });
   });

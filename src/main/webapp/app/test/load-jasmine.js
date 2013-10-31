@@ -53,6 +53,9 @@
       class_paths = class_paths.concat(_.flatten(_.map(window.beats.collections, function(cname) {
         return "../js/collections/" + cname + ".js";
       })));
+      class_paths = class_paths.concat(_.flatten(_.map(window.beats.overrides, function(cname) {
+        return "../js/overrides/" + cname + ".js";
+      })));
       class_paths.push(after);
       return head.js.apply(this, class_paths);
     });

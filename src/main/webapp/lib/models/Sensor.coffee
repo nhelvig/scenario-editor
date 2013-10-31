@@ -36,14 +36,16 @@ class window.beats.Sensor extends Backbone.Model
     obj.set('java_class', java_class) if java_class? and java_class != ""
     sensor_id_original = $(xml).attr('sensor_id_original')
     obj.set('sensor_id_original', sensor_id_original) if sensor_id_original? and sensor_id_original != ""
+    link_type_original = $(xml).attr('link_type_original')
+    obj.set('link_type_original', link_type_original) if link_type_original? and link_type_original != ""
     data_feed_id = $(xml).attr('data_feed_id')
     obj.set('data_feed_id', Number(data_feed_id)) if data_feed_id? and data_feed_id != ""
     lane_number = $(xml).attr('lane_number')
     obj.set('lane_number', Number(lane_number)) if lane_number? and lane_number != ""
     link_offset = $(xml).attr('link_offset')
     obj.set('link_offset', Number(link_offset)) if link_offset? and link_offset != ""
-    modStamp = $(xml).attr('modStamp')
-    obj.set('modStamp', modStamp) if modStamp? and modStamp != ""
+    mod_stamp = $(xml).attr('mod_stamp')
+    obj.set('mod_stamp', mod_stamp) if mod_stamp? and mod_stamp != ""
     health_status = $(xml).attr('health_status')
     obj.set('health_status', Number(health_status)) if health_status? and health_status != ""
     if object_with_id.sensor
@@ -75,10 +77,11 @@ class window.beats.Sensor extends Backbone.Model
     xml.setAttribute('link_id', @get('link_id')) if @has('link_id')
     xml.setAttribute('java_class', @get('java_class')) if @has('java_class')
     xml.setAttribute('sensor_id_original', @get('sensor_id_original')) if @has('sensor_id_original')
+    xml.setAttribute('link_type_original', @get('link_type_original')) if @has('link_type_original')
     xml.setAttribute('data_feed_id', @get('data_feed_id')) if @has('data_feed_id')
     xml.setAttribute('lane_number', @get('lane_number')) if @has('lane_number')
     xml.setAttribute('link_offset', @get('link_offset')) if @has('link_offset')
-    xml.setAttribute('modStamp', @get('modStamp')) if @has('modStamp')
+    xml.setAttribute('mod_stamp', @get('mod_stamp')) if @has('mod_stamp')
     xml.setAttribute('health_status', @get('health_status')) if @has('health_status')
     xml
   

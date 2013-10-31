@@ -144,9 +144,14 @@ window.beats.Link::remove = ->
     window.beats.models.set_links(links)
   else
     # remove link from input output
+    @updateInputOutputs()
     @set_crud($a.CrudFlag.DELETE)
   @stopListening
 
+window.beats.Link::updateInputOutputs = ->
+  @begin_node().remove_input_output(@) if @begin_node()?
+  @end_node().remove_input_output(@) if @end_node()?
+  
 window.beats.Link::add = ->
   window.beats.models.links().push(@)
 

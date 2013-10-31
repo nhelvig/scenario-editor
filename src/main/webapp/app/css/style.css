@@ -205,6 +205,10 @@ hr {
   text-align:left;
   width:130px;
 }
+
+.dropdown-menu {
+  width:180px;
+}
 .submenu-show
 {
     border-radius: 3px;

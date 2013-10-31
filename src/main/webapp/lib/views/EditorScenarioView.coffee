@@ -45,6 +45,7 @@ class window.beats.EditorScenarioView extends window.beats.EditorView
     'description': model.description_text()
     'message': message if message?
     'projectId': model.project_id()
+    'scenarioId': model.ident()
     'lockedForEdit': if model.locked_for_edit() then "checked" else ""
     'lockedForHistory': if model.locked_for_history() then "checked" else ""
 

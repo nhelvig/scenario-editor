@@ -93,8 +93,9 @@ beforeEach(function() {
     link.set('fundamentaldiagramprofile', fps);
     link.set('demand', dp);
     
-    link.set('link_type', new window.beats.LinkType)
-    link.get("link_type").set_name('Freeway')
+    link.set('link_type', new window.beats.LinkType);
+    link.get("link_type").set_name('Freeway');
+    link.get("link_type").set_id(1);
     link.set_link_name('Link ' + id);
     
     if(!node1.has('outputs')) {
