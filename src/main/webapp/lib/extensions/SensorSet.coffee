@@ -2,7 +2,6 @@ window.beats.SensorSet::defaults =
   sensor: []
   name: ''
   description: ''
-  crudFlag: window.beats.CrudFlag.CREATE
   id: null
   project_id: null
   lockedForEdit: false
