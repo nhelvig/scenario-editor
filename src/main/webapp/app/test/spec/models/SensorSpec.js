@@ -74,4 +74,22 @@ describe("Sensor", function() {
       });
     });
   });
+  
+   describe("to_xml", function() {
+    beforeEach(function() {
+      s.set_mod_stamp("01/01/01");
+      s.set_crud(window.beats.CrudFlag.UPDATE);
+    });
+    msg = "should remove crud flags and mod stamp";
+    msg += "and then replace them";
+    it(msg, function(){   
+      doc = document.implementation.createDocument(null, null, null)
+      xml = s.to_xml(doc);
+      xmlS = new XMLSerializer().serializeToString(xml)
+      expect(xmlS.match(/mod_stamp/g)).toBeNull();
+      expect(xmlS.match(/crudFlag/g)).toBeNull();
+      expect(s.mod_stamp()).toEqual("01/01/01");
+      expect(s.crud()).toEqual(window.beats.CrudFlag.UPDATE);
+    });
+  });
 });

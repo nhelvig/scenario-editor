@@ -68,6 +68,9 @@ window.beats.Splitratio::set_ident = (id, offset) ->
     ids.push(id)
   @set('ids', ids.join())
 
+window.beats.Splitratio::mod_stamp = -> @get('mod_stamp')
+window.beats.Splitratio::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
+
 # get split ratio crudflag, at dt offset
 window.beats.Splitratio::crud = (offset) ->
   # create array of crudFlags
