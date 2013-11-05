@@ -77,6 +77,7 @@ describe("SensorSet", function() {
       expect(xmlS.match(/<\/sensor>/g).length).toEqual(2);
       expect(xmlS.match(/mod_stamp/g)).not.toBeNull();
       expect(xmlS.match(/crudFlag=\"UPDATE\"/g).length).toEqual(1);
+      window.beats.fileSaveMode = true;
     });
   });
 });

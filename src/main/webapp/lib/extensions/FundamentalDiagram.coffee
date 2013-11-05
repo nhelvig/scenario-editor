@@ -16,6 +16,10 @@ window.beats.FundamentalDiagram::crud = -> @get('crudFlag')
 window.beats.FundamentalDiagram::set_crud = (flag) ->
   @set('crudFlag', flag)
 
+window.beats.FundamentalDiagram::mod_stamp = -> @get('mod_stamp')
+window.beats.FundamentalDiagram::set_mod_stamp = (stamp) -> 
+  @set('mod_stamp', stamp)
+
 window.beats.FundamentalDiagram::ident = -> @get('id')
 window.beats.FundamentalDiagram::set_ident = (id) -> @set('id', id)
 

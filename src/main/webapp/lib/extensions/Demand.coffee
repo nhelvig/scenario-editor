@@ -54,6 +54,9 @@ window.beats.Demand::set_ident = (id, offset) ->
     ids.push(id)
   @set('ids', ids.join())
 
+window.beats.Demand::mod_stamp = -> @get('mod_stamp')
+window.beats.Demand::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
+
 # get demand crudflag, at dt offset
 window.beats.Demand::crud = (offset) ->
   # create array of crudFlags
@@ -94,5 +97,17 @@ window.beats.Demand::max_offset = () ->
 # saves the object to xml and puts the attributes back in
 window.beats.Demand::old_to_xml = window.beats.Demand::to_xml 
 window.beats.Demand::to_xml = (doc) ->
-  xml = @remove_crud_modstamp_for_xml(doc)
+  xml = ''
+  # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
+  if window.beats? and window.beats.fileSaveMode
+    crud = @crud(0)
+    mod = @mod_stamp()
+    @unset 'crudFlags', { silent:true }
+    @unset 'mod_stamp', { silent:true }
+    xml = @old_to_xml(doc)
+    @set_crud(crud, 0) if crud?
+    @set_mod_stamp(mod) if mod?
+  # Otherwise we are converting to xml to goto the database
+  else
+    xml = @old_to_xml(doc)
   xml
