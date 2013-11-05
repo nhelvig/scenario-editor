@@ -6,6 +6,9 @@ window.beats.Splitratio::defaults =
   vehicle_type_id: null
   text: null
 
+window.beats.Splitratio::mod_stamp = -> @get('mod_stamp')
+window.beats.Splitratio::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
+
 window.beats.Splitratio::link_in_id = ->
   @get('link_in')
 
@@ -112,5 +115,17 @@ window.beats.Splitratio::max_offset = () ->
 # saves the object to xml and puts the attributes back in
 window.beats.Splitratio::old_to_xml = window.beats.Splitratio::to_xml 
 window.beats.Splitratio::to_xml = (doc) ->
-  xml = @remove_crud_modstamp_for_xml(doc)
+  xml = ''
+  # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
+  if window.beats? and window.beats.fileSaveMode
+    crud = @crud(0)
+    mod = @mod_stamp()
+    @unset 'crudFlags', { silent:true }
+    @unset 'mod_stamp', { silent:true }
+    xml = @old_to_xml(doc)
+    @set_crud(crud, 0) if crud?
+    @set_mod_stamp(mod) if mod?
+  # Otherwise we are converting to xml to goto the database
+  else
+    xml = @old_to_xml(doc)
   xml

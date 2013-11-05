@@ -16,7 +16,7 @@ describe("Splitratio", function() {
       expect(xmlS.match(/mod_stamp/g)).toBeNull();
       expect(xmlS.match(/crudFlag/g)).toBeNull();
       expect(s.mod_stamp()).toEqual("01/01/01");
-      expect(s.crud()).toEqual(window.beats.CrudFlag.UPDATE);
+      expect(s.crud(0)).toEqual(window.beats.CrudFlag.UPDATE);
     });
   });
 });
