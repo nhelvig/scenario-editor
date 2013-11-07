@@ -26,8 +26,8 @@
     'LinkSpec', 'NodeSpec', 'LinkListSpec','NodeListSpec',
     'SensorSpec', 'SensorTypeSpec', 'SensorSetSpec', 'SplitratioSpec',
     'FundamentalDiagramSpec', 'FundamentalDiagramProfileSpec',
-    'FundamentalDiagramSetSpec'
-    //'ControllerSpec', 'DemandProfileSpec','DensitySpec', 'EventSpec', 
+    'FundamentalDiagramSetSpec', 'DemandProfileSpec'
+    //'ControllerSpec','DensitySpec', 'EventSpec', 
     //'ScenarioSpec', 'SignalSpec', 'SplitratioProfileSpec'
   ];
   

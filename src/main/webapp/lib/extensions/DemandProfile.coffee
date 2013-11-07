@@ -96,7 +96,7 @@ window.beats.DemandProfile::demand = (vehicle_type_id) ->
   for demand in demands
     if demand.equals(vehicle_type_id)
       return demand
-return null
+  return null
 
 # we need to remove the demands that have no ratios before saving to xml 
 # and then put them back in the profile so the database is updated correctly
@@ -105,9 +105,19 @@ window.beats.DemandProfile::to_xml = (doc) ->
   xml = ''
   # If we are saving to file remove all deleted elements from list
   if window.beats? and window.beats.fileSaveMode
-    filter = (demand) -> demand.demands().length == 0
-    deletedDemands = _.filter(@demands(), filter)
-    keepDemands = _.reject(@sensors(), filter)
+    keepDemands = []
+    deletedDemands = []
+    for demand in @demands()
+        count = 0
+        demandsArray = demand.cruds().split(',')
+        for d in demandsArray
+          if d == window.beats.CrudFlag.DELETE
+            count++
+        if count is demandsArray.length
+          deletedDemands.push(demand)
+        else
+          keepDemands.push(demand)
+    
     @set_demands keepDemands
     xml = @remove_crud_modstamp_for_xml(doc)
     @set_demands @demands().concat(deletedDemands)
