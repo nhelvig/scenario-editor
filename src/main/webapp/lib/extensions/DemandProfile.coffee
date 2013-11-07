@@ -88,6 +88,8 @@ window.beats.DemandProfile::set_destintation_network_id = (id) ->
 window.beats.DemandProfile::demands = ->
   @get('demand')
 
+window.beats.DemandProfile::set_demands = (demands) -> @set('demand', demands)
+
 # Returns demands for vehicle_type_id
 window.beats.DemandProfile::demand = (vehicle_type_id) ->
   demands =  @.demands()
@@ -95,3 +97,22 @@ window.beats.DemandProfile::demand = (vehicle_type_id) ->
     if demand.equals(vehicle_type_id)
       return demand
 return null
+
+# we need to remove the demands that have no ratios before saving to xml 
+# and then put them back in the profile so the database is updated correctly
+window.beats.DemandProfile::old_to_xml = window.beats.DemandProfile::to_xml 
+window.beats.DemandProfile::to_xml = (doc) ->
+  xml = ''
+  # If we are saving to file remove all deleted elements from list
+  if window.beats? and window.beats.fileSaveMode
+    filter = (demand) -> demand.demands().length == 0
+    deletedDemands = _.filter(@demands(), filter)
+    keepDemands = _.reject(@sensors(), filter)
+    @set_demands keepDemands
+    xml = @remove_crud_modstamp_for_xml(doc)
+    @set_demands @demands().concat(deletedDemands)
+  # Otherwise we are converting to xml for the database, so keep delete CRUDFlag
+  else
+    xml = @old_to_xml(doc)
+    if @has('crudFlag') then xml.setAttribute('crudFlag', @get('crudFlag'))
+  xml
