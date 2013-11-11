@@ -10,7 +10,7 @@ describe("DemandProfile", function() {
     d.set_demand(100, 0);
     d.set_demand(200, 1);
     d.set_demand(300, 2);
-    d.set_crud(window.beats.CrudFlag.UPDATE, 0);
+    d.set_crud(window.beats.CrudFlag.DELETE, 0);
     d.set_crud(window.beats.CrudFlag.DELETE, 1);
     d.set_crud(window.beats.CrudFlag.DELETE, 2);
     testDemandProfile.set_demands([d])
