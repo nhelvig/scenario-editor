@@ -64,6 +64,7 @@ beforeEach(function() {
   }
   
   modelSetUp = function() {
+    xml = $.parseXML($a.fileText);
     $a.models = $a.Scenario.from_xml($(xml).children());
     network = $a.models.network();
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
