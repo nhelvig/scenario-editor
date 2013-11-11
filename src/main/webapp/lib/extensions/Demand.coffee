@@ -101,9 +101,12 @@ window.beats.Demand::max_offset = () ->
 window.beats.Demand::remove_deleted_vals = ->
   vals = @get('text').split(",")
   cruds = @cruds().split(",")
+  remove = 0
   for crud, i in  cruds
     if(crud == window.beats.CrudFlag.DELETE)
-      vals.splice(i, 1)
+      vals.splice(remove, 1)
+      remove--
+    remove++
   keepText = vals.join(',')
   keepText
 
