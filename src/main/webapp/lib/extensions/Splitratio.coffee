@@ -118,12 +118,12 @@ window.beats.Splitratio::to_xml = (doc) ->
   xml = ''
   # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
   if window.beats? and window.beats.fileSaveMode
-    crud = @crud(0)
+    crud = @get('crudFlags')
     mod = @mod_stamp()
     @unset 'crudFlags', { silent:true }
     @unset 'mod_stamp', { silent:true }
     xml = @old_to_xml(doc)
-    @set_crud(crud, 0) if crud?
+    @set('crudFlags', crud) if crud?
     @set_mod_stamp(mod) if mod?
   # Otherwise we are converting to xml to goto the database
   else

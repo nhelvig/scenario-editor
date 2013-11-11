@@ -19,6 +19,7 @@ describe("Sensor", function() {
       var lengthBefore = $a.models.sensors().length;
       s.add();
       expect(lengthBefore + 1).toEqual($a.models.sensors().length);
+      expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
       var crud = window.beats.models.sensor_set().crud();
       if(crud == window.beats.CrudFlag.CREATE)
         expect(crud).toEqual(window.beats.CrudFlag.CREATE);
@@ -31,11 +32,21 @@ describe("Sensor", function() {
     });
   });
   describe("remove", function() {
-    var msg = "should remove the sensor from he models schema and update the ";
-    msg += "SensorSet crud flag";
+    var msg = "should ONLY remove the sensor from he models schema because the ";
+    msg += "sensor was created and never saved to the database";
     it(msg, function() {
       s.add();
       var lengthBefore = $a.models.sensors().length;
+      s.remove();
+      expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
+      expect(lengthBefore - 1).toEqual($a.models.sensors().length);
+    });
+    
+    msg = "should remove the sensor from he models schema and update the ";
+    msg += "SensorSet crud flag";
+    it(msg, function() {
+      s.add();
+      s.set('crudFlag', window.beats.CrudFlag.NONE); //assume loaded from db
       s.remove();
       expect(s.crud()).toEqual(window.beats.CrudFlag.DELETE);
       var crud = window.beats.models.sensor_set().crud();

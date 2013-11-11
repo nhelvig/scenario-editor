@@ -49,8 +49,8 @@ window.beats.SensorSet::containsPemsSensor = (s) ->
             )
   return obj?
 
-# we need to remove the links that are deleted before saving to xml and then
-# put them in the link list so the database can be updated correctly
+# we need to remove the sensors that are deleted before saving to xml and then
+# put them in the sensor set so the database can be updated correctly
 window.beats.SensorSet::old_to_xml = window.beats.SensorSet::to_xml 
 window.beats.SensorSet::to_xml = (doc) ->
   xml = ''
