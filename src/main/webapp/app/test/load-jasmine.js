@@ -27,9 +27,9 @@
     'FundamentalDiagramSetSpec', 'InputSpec','OutputSpec','LinkSpec', 
     'NodeSpec', 'LinkListSpec','NodeListSpec',
     'SensorSpec', 'SensorTypeSpec', 'SensorSetSpec', 
-    'SplitratioSpec'
+    'SplitratioSpec', 'SplitratioProfileSpec', 'SplitratioSetSpec'
     //'ControllerSpec','DensitySpec', 'EventSpec', 
-    //'ScenarioSpec', 'SignalSpec', 'SplitratioProfileSpec'
+    //'ScenarioSpec', 'SignalSpec', 
   ];
   
   util_jasmine_specs = [

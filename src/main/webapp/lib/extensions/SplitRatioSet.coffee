@@ -40,10 +40,30 @@ window.beats.SplitRatioSet::crud = -> @get('crudFlag')
 window.beats.SplitRatioSet::set_crud = (flag) ->
   @set('crudFlag', flag)
 
-  window.beats.SplitRatioSet::locked_for_edit = -> @get('lockedForEdit')
+window.beats.SplitRatioSet::locked_for_edit = -> @get('lockedForEdit')
 window.beats.SplitRatioSet::set_locked_for_edit = (s) ->
   @set('lockedForEdit',(s.toString().toLowerCase() == 'true') if s?)
 
 window.beats.SplitRatioSet::locked_for_history = -> @get('lockedForHistory')
 window.beats.SplitRatioSet::set_locked_for_history = (s) ->
   @set('lockedForHistory',(s.toString().toLowerCase() == 'true') if s?)
+
+# we need to remove the split ratio profiles that are deleted before saving to 
+# xml and then put them back in the split ratio set so the database can be 
+# updated correctly
+window.beats.SplitRatioSet::old_to_xml = window.beats.SplitRatioSet::to_xml 
+window.beats.SplitRatioSet::to_xml = (doc) ->
+  xml = ''
+  # If we are saving to file remove all deleted elements from list
+  if window.beats? and window.beats.fileSaveMode
+    filter = ((prof) => prof.crud() == window.beats.CrudFlag.DELETE)
+    deletedProf = _.filter(@split_ratio_profiles(), filter)
+    keepProf = _.reject(@split_ratio_profiles(), filter)
+    @set_split_ratio_profiles keepProf
+    xml = @remove_crud_modstamp_for_xml(doc)
+    @set_split_ratio_profiles @split_ratio_profiles().concat(deletedProf)
+  # Otherwise we are converting to xml for the database, so keep delete CRUDFlag
+  else
+    xml = @old_to_xml(doc)
+    if @has('crudFlag') then xml.setAttribute('crudFlag', @get('crudFlag'))
+  xml

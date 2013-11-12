@@ -3,7 +3,9 @@ describe("Splitratio", function() {
   beforeEach(function() {
     s = new window.beats.Splitratio;
     s.set_mod_stamp("01/01/01");
-    s.set_crud(window.beats.CrudFlag.UPDATE);
+    s.set_crud(window.beats.CrudFlag.UPDATE,0);
+    s.set_split_ratio(0.2,0);
+
   });
   
   describe("to_xml", function() {
