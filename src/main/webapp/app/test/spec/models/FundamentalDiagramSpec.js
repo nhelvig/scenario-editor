@@ -49,6 +49,17 @@ describe("FundamentalDiagram", function() {
     beforeEach(function() {
       testFD.set_mod_stamp("01/01/01");
       testFD.set_crud(window.beats.CrudFlag.UPDATE);
+      testFD.set_ident(1);
+      testFD.set_order(1);
+      testFD.set_capacity(1);
+      testFD.set_capacity_drop(1);
+      testFD.set_std_dev_capacity(1);
+      testFD.set_free_flow_speed(1);
+      testFD.set_critical_speed(1);
+      testFD.set_congestion_speed(1);
+      testFD.set_std_dev_free_flow_speed(1);
+      testFD.set_std_dev_congestion_speed(1);
+      testFD.set_jam_density(1);
     });
     msg = "should remove crud flags and mod stamp";
     msg += "and then replace them";
