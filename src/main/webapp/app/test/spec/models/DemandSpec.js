@@ -6,9 +6,11 @@ describe("Demand", function() {
     d.set_demand(100, 0);
     d.set_demand(200, 1);
     d.set_demand(300, 2);
+    d.set_demand(400, 3);
     d.set_crud(window.beats.CrudFlag.DELETE, 0);
     d.set_crud(window.beats.CrudFlag.NONE, 1);
     d.set_crud(window.beats.CrudFlag.UPDATE, 2);
+    d.set_crud(window.beats.CrudFlag.DELETE, 3);
   });
   
   describe("remove_deleted_vals", function() {
