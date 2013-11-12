@@ -84,6 +84,8 @@ window.beats.Splitratio::crud = (offset) ->
     crudFlag = crudFlags[offset]
   crudFlag
 
+window.beats.Splitratio::cruds = -> @get('crudFlags')
+  
 # set crudflag, at dt offset
 window.beats.Splitratio::set_crud = (crudFlag, offset) ->
   # create array of crudFlag values
@@ -110,7 +112,20 @@ window.beats.Splitratio::max_offset = () ->
   # get comma seperated ratio values, if none exist set ratios to empty array
   ratios = @get('text')?.split(',') || []
   ratios.length
-  
+
+# remove the text values that are to be deleted for the xml save
+window.beats.Splitratio::remove_deleted_vals = ->
+  vals = @get('text').split(",")
+  cruds = @cruds().split(",")
+  remove = 0
+  for crud, i in  cruds
+    if(crud == window.beats.CrudFlag.DELETE)
+      vals.splice(remove, 1)
+      remove--
+    remove++
+  keepText = vals.join(',')
+  keepText
+
 # removed the crudFlag and modstamp attributes from the object 
 # saves the object to xml and puts the attributes back in
 window.beats.Splitratio::old_to_xml = window.beats.Splitratio::to_xml 
@@ -118,6 +133,8 @@ window.beats.Splitratio::to_xml = (doc) ->
   xml = ''
   # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
   if window.beats? and window.beats.fileSaveMode
+    originalText = @get('text')
+    @set('text', @remove_deleted_vals())
     crud = @get('crudFlags')
     mod = @mod_stamp()
     @unset 'crudFlags', { silent:true }
@@ -125,6 +142,7 @@ window.beats.Splitratio::to_xml = (doc) ->
     xml = @old_to_xml(doc)
     @set('crudFlags', crud) if crud?
     @set_mod_stamp(mod) if mod?
+    @set('text', originalText)
   # Otherwise we are converting to xml to goto the database
   else
     xml = @old_to_xml(doc)
