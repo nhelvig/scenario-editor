@@ -2,17 +2,6 @@
 # system
 class window.beats.ContextMenuHandler
   $a = window.beats
-
-  # set up the listener that allows for a menu to be created on 
-  # right-click
-  constructor: (args) ->
-    google.maps.event.addListener(
-                      args.element,
-                      'rightclick',
-                      (mouseEvent) => 
-                        args.element._contextMenu()
-                        @_createMenu(args, mouseEvent.latLng)
-                    )
   
   # sets up the options on the context menu and then populates the menu
   # latlng is used to place the menu
