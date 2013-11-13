@@ -199,10 +199,12 @@ class window.beats.MapLinkView extends Backbone.View
   
   # This method swaps the icon for the selected color
   linkSelect: ->
+    @model.set('selected', true)
     @link?.setOptions(options: { strokeColor: MapLinkView.SELECTED_LINK_COLOR })
 
   # This method swaps the icon for the de-selected color
   clearSelected: ->
+    @model.set('selected', false)
     @link?.setOptions(options: { strokeColor: MapLinkView.LINK_COLOR })
 
   # This method toggles the selection of the link

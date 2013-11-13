@@ -63,7 +63,12 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # Create the Sensor Context Menu. Call the super class method to create the
   # context menu
   _contextMenu: (evt) ->
-    args = super 'sensor', $a.sensor_context_menu
+    items = []
+    items = $a.sensor_context_menu
+    isOneSelected = $a.linkList? and $a.linkList.isOneSelected()
+    items = _.union(items, $a.sensor_cm_link_selected) if isOneSelected
+    
+    args = super 'sensor', items
     $a.ContextMenuHandler.createMenu(args, evt.latLng)
     
   # Callback for the markers click event. It decided whether we are selecting
