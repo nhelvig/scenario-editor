@@ -85,9 +85,10 @@ class window.beats.MapLinkView extends Backbone.View
       @model.set_editor_show(true)
       evt.stop()
     )
-    @clickHandler = gme.addListener(@link, 'click', =>  
-      $a.broker.trigger('map:clear_selected') # this could also go in the model?
-      @model.toggle_selected()
+    @clickHandler = gme.addListener(@link, 'click', =>
+      selected = @model.selected()
+      $a.broker.trigger('map:clear_selected')
+      @model.set_selected(!selected)
     )
     lambda = (evt) => @_contextMenu(evt)
     @rClickListener = gme.addListener(@link, 'rightclick', lambda)
@@ -207,7 +208,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method toggles the selection of the link
   toggleSelected: () ->
-    if(@model.selected() is false)
+    if(@model.selected() is true)
       @linkSelect()
     else
       @clearSelected()
