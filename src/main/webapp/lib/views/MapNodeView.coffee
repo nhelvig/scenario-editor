@@ -14,7 +14,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     @model.on('change:selected', @toggleSelected, @)
     @model.on('change:type', @changeIconType, @)
     @model.on('remove', @removeElement, @)
-    @_contextMenu()
+    @_publishGoogleEvents()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:select_neighbors_out:#{@model.cid}", @selectMyOutLinks, @)
     $a.broker.on("map:select_neighbors_in:#{@model.cid}", @selectMyInLinks, @)
@@ -31,9 +31,18 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
 
   # Context Menu
   # Create the Node Context Menu. Call the super class method to create the 
-  # context menu
-  _contextMenu: () ->
-    super 'node', $a.node_context_menu
+  # context menu. This method also populates the menu items by checking the 
+  # context, whether or not another node is selected and ensuring that the
+  # other node is not itself.
+  _contextMenu: (event) ->
+    items = []
+    items = $a.node_context_menu
+    isOneSelected = $a.nodeList? and $a.nodeList.isOneSelected()
+    isDrawLink = isOneSelected  and !@model.selected()
+    items = _.union(items, $a.node_selected_node_clicked) if isDrawLink
+    
+    args = super 'node', items
+    $a.ContextMenuHandler.createMenu(args, event.latLng)
 
   # creates the editor for this marker
   _editor: ->
@@ -48,6 +57,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   # and then calls super to set itself to null, unpublish the general events, 
   # and hide itself
   removeElement: ->
+    @_unpublishGoogleEvents()
     @model.off('change:selected', @toggleSelected)
     @model.off('change:type', @changeIconType)
     @model.off('remove', @removeElement)
@@ -64,6 +74,16 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.off("map:remove_node:#{@model.cid}")
     super
 
+  # publish/unpublish map google events
+  _publishGoogleEvents: ->
+    gme = google.maps.event
+    lambda = (event) => @_contextMenu(event)
+    @rClickListener = gme.addListener(@marker, 'rightclick', lambda)
+  
+  _unpublishGoogleEvents: ->
+    gme = google.maps.event
+    gme.removeListener(@rClickListener)
+  
   # set up the response for each mode
   networkMode: ->
     @marker.setDraggable(true)

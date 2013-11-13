@@ -87,7 +87,7 @@ class window.beats.MapMarkerView extends Backbone.View
       items: $a.Util.copy(menuItems)
       options: @contextMenuOptions 
       model:@model
-    new $a.ContextMenuHandler(args)
+    args
   
   # events used to move the marker and update its position
   dragMarker: ->

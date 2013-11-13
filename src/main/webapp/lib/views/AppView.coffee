@@ -47,7 +47,6 @@ class window.beats.AppView extends Backbone.View
   render: ->
     @_initializeMap()
     @_navBar()
-    @_contextMenu()
     @_messagePanel()
     @newScenario() if $a.Environment.DEV is false
     # Wait for idle map so that we can get projection
@@ -62,6 +61,7 @@ class window.beats.AppView extends Backbone.View
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
     $a.Util.publishEvents($a.broker, @broker_events, @)
+    @_publishGoogleEvents()
     @
 
 
@@ -86,16 +86,32 @@ class window.beats.AppView extends Backbone.View
   # This creates the context menu as well as adds the listeners for map area
   # of the application.Currently we have zoom in and zoom out as well as center
   # the map.
-  _contextMenu: () ->
+  _contextMenu: (evt) ->
+    items = []
+    items = $a.main_context_menu
+    # right-clicking on the map when node is selected
+    isOneSelected = $a.nodeList? and $a.nodeList.isOneSelected()
+    items = _.union(items, $a.node_selected) if isOneSelected
+    
     contextMenuOptions =
       class: 'context_menu'
       id: "main-context-menu"
     args = 
       element: $a.map 
-      items: $a.main_context_menu
+      items: items
       options: contextMenuOptions
-    new $a.ContextMenuHandler(args)
+    $a.ContextMenuHandler.createMenu(args, evt.latLng)
 
+  # publish/unpublish map google events
+  _publishGoogleEvents: ->
+    gme = google.maps.event
+    lambda = ((evt) => @_contextMenu(evt))
+    @rClickListener = gme.addListener($a.map,'rightclick', lambda)
+  
+  _unpublishGoogleEvents: ->
+    gme = google.maps.event
+    gme.removeListener(@rClickListener)
+  
   # This creates the main navigation bar menu
   _navBar: () ->
     attrs = { name: 'localNetwork', id: 'uploadField', attach: '#main-nav div' }
