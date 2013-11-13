@@ -40,6 +40,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link = new window.beats.Link()
     link.set_id($a.Util.getNewElemId($a.models.links()))
     link.set_crud($a.CrudFlag.CREATE)
+    link.set_selected("false")
     link.set_end_node args.end
     link.set_begin_node args.begin
     
