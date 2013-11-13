@@ -14,7 +14,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     @model.on('change:selected', @toggleSelected, @)
     @model.on('change:type', @changeIconType, @)
     @model.on('remove', @removeElement, @)
-    @_publishGoogleEvents()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:select_neighbors_out:#{@model.cid}", @selectMyOutLinks, @)
     $a.broker.on("map:select_neighbors_in:#{@model.cid}", @selectMyInLinks, @)
@@ -57,7 +56,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   # and then calls super to set itself to null, unpublish the general events, 
   # and hide itself
   removeElement: ->
-    @_unpublishGoogleEvents()
     @model.off('change:selected', @toggleSelected)
     @model.off('change:type', @changeIconType)
     @model.off('remove', @removeElement)
@@ -73,16 +71,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.off("map:clear_network:#{@network.cid}")
     $a.broker.off("map:remove_node:#{@model.cid}")
     super
-
-  # publish/unpublish map google events
-  _publishGoogleEvents: ->
-    gme = google.maps.event
-    lambda = (event) => @_contextMenu(event)
-    @rClickListener = gme.addListener(@marker, 'rightclick', lambda)
-  
-  _unpublishGoogleEvents: ->
-    gme = google.maps.event
-    gme.removeListener(@rClickListener)
   
   # set up the response for each mode
   networkMode: ->

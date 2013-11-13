@@ -8,7 +8,6 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
 
   initialize: (model) ->
     super  model
-    @_contextMenu()
     $a.broker.on('map:hide_controller_layer', @hideMarker, @)
     $a.broker.on('map:show_controller_layer', @showMarker, @)
     @model.on('remove', @removeElement, @)
@@ -48,8 +47,9 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
   # Context Menu
   # Create the Controller Context Menu. Call the super class method to create the
   # context menu
-  _contextMenu: () ->
-    super 'controller', $a.controller_context_menu
+  _contextMenu: (evt) ->
+    args  = super 'controller', $a.controller_context_menu
+    $a.ContextMenuHandler.createMenu(args, evt.latLng)
   
   # This function triggers the events that make the selected tree and map 
   # items to de-selected
