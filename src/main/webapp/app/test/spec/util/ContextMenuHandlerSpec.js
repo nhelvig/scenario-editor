@@ -5,10 +5,7 @@ describe("ContextMenuHandler", function() {
       googleMap();
       jasmine.getFixtures().load("context.menu.view.fixture.html");
       spyOn($a.ContextMenuView.prototype, 'show').andCallThrough();
-      this.cmh = new $a.ContextMenuHandler({  
-                                              items:$a.main_context_menu,
-                                              element: $a.map,
-                                          });
+      this.cmh = $a.ContextMenuHandler
     });
     
     describe("Instantiation", function() {
@@ -32,7 +29,7 @@ describe("ContextMenuHandler", function() {
        runs(function() {
          flag = false;
          $a.Util.setMode("view");
-         this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
+         this.cmh.createMenu({items:$a.main_context_menu, options: opt},latLng );
          setTimeout(function() {flag = true;}, 1000);
        });
        waitsFor(function() {
@@ -51,7 +48,7 @@ describe("ContextMenuHandler", function() {
        runs(function() {
          flag = false;
          $a.Util.setMode("network");
-         this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
+         this.cmh.createMenu({items:$a.main_context_menu, options: opt},latLng );
          setTimeout(function() {flag = true;}, 1000);
        });
        waitsFor(function() {
@@ -70,7 +67,7 @@ describe("ContextMenuHandler", function() {
        runs(function() {
          flag = false;
          $a.Util.setMode("scenario");
-         this.cmh._createMenu({items:$a.main_context_menu, options: opt},latLng );
+         this.cmh.createMenu({items:$a.main_context_menu, options: opt},latLng );
          setTimeout(function() {flag = true;}, 1000);
        });
        waitsFor(function() {
@@ -100,17 +97,12 @@ describe("ContextMenuHandler", function() {
          }).length;
          expect(this.items.length).toEqual(expectedLength);
        });
-       it("Models node selected: return menu with standard and node selected actions", function(){
-         scen = scenarioAndFriends()
-         list = scen.scenario.nodes();  
-         $a.nodeList = new $a.NodeListCollection(list);
-         $a.nodeList.models[0].set('selected',true);
+       it("Models node selected: return menu with standard and node selected actions", function(){ 
          $a.Util.setMode("view");
          this.items = this.cmh._populateMenu({items:$a.main_context_menu});
          var expectedLength = _.filter($a.main_context_menu, function(item){
             return item.mode === null;
          }).length;
-         expectedLength += $a.node_selected.length
          expect(this.items.length).toEqual(expectedLength);
        });
      });

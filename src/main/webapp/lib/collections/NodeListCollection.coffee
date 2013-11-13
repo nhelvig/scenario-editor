@@ -122,7 +122,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     $a.broker.trigger('links_collection:add', {begin:selNode[0], end:clickedNode[0]})
 
   # this returns true if exactly one node is selected. It is called by
-  # the context menu handleer to ensure the appropriate items are added
+  # the context menu handler to ensure the appropriate items are added
   # to the context menu if one node is selected
   isOneSelected: ->
     count = 0

@@ -14,7 +14,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     @model.on('change:selected', @toggleSelected, @)
     @model.on('change:type', @changeIconType, @)
     @model.on('remove', @removeElement, @)
-    @_contextMenu()
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:select_neighbors_out:#{@model.cid}", @selectMyOutLinks, @)
     $a.broker.on("map:select_neighbors_in:#{@model.cid}", @selectMyInLinks, @)
@@ -31,9 +30,18 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
 
   # Context Menu
   # Create the Node Context Menu. Call the super class method to create the 
-  # context menu
-  _contextMenu: () ->
-    super 'node', $a.node_context_menu
+  # context menu. This method also populates the menu items by checking the 
+  # context, whether or not another node is selected and ensuring that the
+  # other node is not itself.
+  _contextMenu: (event) ->
+    items = []
+    items = $a.node_context_menu
+    isOneSelected = $a.nodeList? and $a.nodeList.isOneSelected()
+    isDrawLink = isOneSelected  and !@model.selected()
+    items = _.union(items, $a.node_selected_node_clicked) if isDrawLink
+    
+    args = super 'node', items
+    $a.ContextMenuHandler.createMenu(args, event.latLng)
 
   # creates the editor for this marker
   _editor: ->
@@ -63,7 +71,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     $a.broker.off("map:clear_network:#{@network.cid}")
     $a.broker.off("map:remove_node:#{@model.cid}")
     super
-
+  
   # set up the response for each mode
   networkMode: ->
     @marker.setDraggable(true)

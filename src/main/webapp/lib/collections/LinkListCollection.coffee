@@ -40,6 +40,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     link = new window.beats.Link()
     link.set_id($a.Util.getNewElemId($a.models.links()))
     link.set_crud($a.CrudFlag.CREATE)
+    link.set_selected("false")
     link.set_end_node args.end
     link.set_begin_node args.begin
     
@@ -278,6 +279,17 @@ class window.beats.LinkListCollection extends Backbone.Collection
     # bNode.position().on('change',(=> @reDrawLink(link)), @)
     # eNode.position().on('change',(=> @reDrawLink(link)), @)
   
+  # this returns true if exactly one link is selected. It is called by
+  # the context menu handler to ensure the appropriate items are added
+  # to the context menu if one link is selected
+  isOneSelected: ->
+    count = 0
+    @forEach((link) ->
+      if link.get('selected')
+        count++
+    )
+    count is 1
+    
   #view the demands for the link passed in
   viewDemands: (cid) ->
     link =  @getByCid(cid)
