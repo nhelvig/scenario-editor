@@ -155,26 +155,28 @@ class window.beats.TreeView extends Backbone.View
     _.each(params.parentList.get(params.modelListName), (e) =>
       targets = @_findTargetElements(e, params.attachId)
       if targets? and !(targets.length is 0)
-        switch params.type
-          when 'link' then name = targets[0].link_name()
-          when 'node' then name = targets[0].name()
-          else name = targets[0].get('name')
-  
-        # for OD Profiles
-        name = "#{name} -> #{targets[1].get('name')}" if targets.length > 1
-        attrs =
-          e: e
-          targets: targets
-          name: name
-          attach: params.attachId
+          switch params.type
+            when 'link' then name = targets[0]?.link_name()
+            when 'node' then name = targets[0]?.name()
+            else name = targets[0]?.get('name')
 
-        # We create create link and node tree items by calling their
-        # respective tree view classes All others are just tree items
-        switch params.type
-          when 'link' then new $a.TreeChildItemLinkView(attrs)
-          when 'node' then new $a.TreeChildItemNodeView(attrs)
-          when 'network' then new $a.TreeChildItemNetworkView(attrs)
-          else new $a.TreeChildItemView(attrs)
+          # if name is not defined do nothing
+          if name?
+            # for OD Profiles
+            name = "#{name} -> #{targets[1]?.get('name')}" if targets.length > 1
+            attrs =
+              e: e
+              targets: targets
+              name: name
+              attach: params.attachId
+
+            # We create create link and node tree items by calling their
+            # respective tree view classes All others are just tree items
+            switch params.type
+              when 'link' then new $a.TreeChildItemLinkView(attrs)
+              when 'node' then new $a.TreeChildItemNodeView(attrs)
+              when 'network' then new $a.TreeChildItemNetworkView(attrs)
+              else new $a.TreeChildItemView(attrs)
     )
 
   # we case the type in order to appropriately access the node or link
