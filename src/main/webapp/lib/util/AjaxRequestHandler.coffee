@@ -199,7 +199,36 @@ class window.beats.AjaxRequestHandler
 
       @requestQueue.push(request)
 
+  # Creates Request object to update scenario and adds it to request queue
+  createSaveScenarioRequest : (scenario) ->
+    request = {}
+    projectId = scenario.project_id()
+    sId = scenario.ident()
 
+    # request URL
+    request.url = $a.RESTURL + '/project/' + projectId + '/scenario/'  + sId
+    request.type = 'PUT'
+    # request messaging
+    request.errorMessage = '<span style="color: red;">Error Saving Scenario ' +
+      'Attributes:</span> '
+    request.messageText = '<b>Saving Scenario...</b> Note: This may timeout ' + 
+      'if scenario is quite large. Check back later by trying to open ' +
+      'scenario from DB.'
+      
+    # Define Success callback method, which updateds Scenario in backbone 
+    # models with new DB ids
+    request.success = (resource) ->
+      # reload scenario
+      $a.models = {}
+      xml = $.parseXML(resource)
+      $a.models = $a.Scenario.from_xml($(xml).children())
+
+    # Serialize Scenario to xml to pass to rest API
+    doc = document.implementation.createDocument(null, null, null)
+    request.data = new XMLSerializer().serializeToString(scenario.to_xml(doc))
+
+    @requestQueue.push(request)
+  
   # Creates Request object to import scenario and adds it to request queue
   createImportScenarioRequest : (scenario) ->
     request = {}
@@ -224,8 +253,4 @@ class window.beats.AjaxRequestHandler
     request.data = new XMLSerializer().serializeToString(scenario.to_xml(doc))
 
     @requestQueue.push(request)
-
-
-
-
 

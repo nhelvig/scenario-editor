@@ -521,6 +521,9 @@ class window.beats.AppView extends Backbone.View
       if sensorSet?
         ajaxRequests.createSaveSensorSetRequest(sensorSet)
 
+      # ensure any changes to scenario's attributes are updated
+      ajaxRequests.createSaveScenarioRequest(scenario)
+      
       # now process queue of ajax requests
       if ajaxRequests.requestQueue.length > 0
         ajaxRequests.processRequests()
