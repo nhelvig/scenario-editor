@@ -517,8 +517,8 @@ class window.beats.AppView extends Backbone.View
       if demandSet?
         ajaxRequests.createSaveDemandSetRequest(demandSet)
 
-      # if there is a demand set, add to request
-      if sensorSet?
+      # if there is a sensor set, add to request
+      if sensorSet? and sensorSet.sensors().length != 0
         ajaxRequests.createSaveSensorSetRequest(sensorSet)
 
       # ensure any changes to scenario's attributes are updated
