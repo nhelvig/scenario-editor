@@ -55,7 +55,7 @@ class window.beats.AjaxRequestHandler
           error: (xhr, textStatus, errorThrown) =>
             # Display Error Message
             @messageBox.addToMessage(request.errorMessage + errorThrown)
-          contentType: 'text/json'
+          contentType:'application/json'
           dataType: 'json'
           data: request.data
         # After ajax Request, try and execute next one in queue on success and failure
@@ -253,4 +253,3 @@ class window.beats.AjaxRequestHandler
     request.data = new XMLSerializer().serializeToString(scenario.to_xml(doc))
 
     @requestQueue.push(request)
-
