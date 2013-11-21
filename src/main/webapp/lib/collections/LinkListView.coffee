@@ -91,8 +91,8 @@ class window.beats.LinkListView extends Backbone.Collection
       if(not(link.id is removedLink.id))
         begin = link.begin_node()
         end = link.end_node()
-        end.position().on('change',(=> @resetPath(link)), @) if end.id is nID
-        begin.position().on('change',(=> @resetPath(link)), @) if begin.id is nID
+        end.position().on('change',(=> @resetPath(link)), @) if end?.id is nID
+        begin.position().on('change',(=> @resetPath(link)), @) if begin?.id is nID
     )
   
   # tests to see if marker is close enough to snap, highlights it
