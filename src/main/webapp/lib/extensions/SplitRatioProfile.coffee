@@ -15,7 +15,8 @@ window.beats.SplitRatioProfile::resolve_references =
   window.beats.ReferenceHelper.resolver('node_id', 'node', 'node', 'splitratioprofile', 'SplitRatioProfile', true)
 
 window.beats.SplitRatioProfile::encode_references = ->
-  @set 'node_id', @get('node').ident()
+  if @get('node')?
+    @set 'node_id', @get('node').ident()
 
 window.beats.SplitRatioProfile::add = ->
   window.beats.models.split_ratio_profiles().push(@)

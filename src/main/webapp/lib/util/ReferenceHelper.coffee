@@ -12,7 +12,9 @@ window.beats.ReferenceHelper =
       deferred.push =>
         idVal = @get(fieldGet)
         result = object_with_id[fieldType][idVal]
-        throw "#{errName} instance can't find #{fieldType} for obj id == #{idVal}" unless result
-        @set(fieldType, result)
-        if applyToChild
-          result.set(name, @)
+        # Comment out exception in case set has extra elements not defined in scenario
+        #throw "#{errName} instance can't find #{fieldType} for obj id == #{idVal}" unless result
+        if result?
+          @set(fieldType, result)
+          if applyToChild
+            result.set(name, @)

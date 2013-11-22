@@ -1,7 +1,7 @@
 window.beats.SensorSet::defaults =
   sensor: []
-  name: ''
-  description: ''
+  name: null
+  description: null
   id: null
   project_id: null
   lockedForEdit: false
