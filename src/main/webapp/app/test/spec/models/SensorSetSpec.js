@@ -6,8 +6,8 @@ describe("SensorSet", function() {
   
   describe("Default Attributes", function() {
     it("should be set", function() {
-      expect(s.name()).toEqual('');  
-      expect(s.description_text()).toEqual('');
+      expect(s.name()).toEqual(null);
+      expect(s.description_text()).toEqual(null);
       expect(s.ident()).toEqual(null);
       expect(s.project_id()).toEqual(null);
       expect(s.sensors().length).toEqual(0);
