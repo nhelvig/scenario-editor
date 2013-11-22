@@ -90,3 +90,6 @@ window.Backbone.Model::remove_crud_modstamp_for_xml = (doc) ->
   else
     xml = @old_to_xml(doc)
   xml
+  
+window.Backbone.Model::mod_stamp = -> @get('mod_stamp')
+window.Backbone.Model::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)

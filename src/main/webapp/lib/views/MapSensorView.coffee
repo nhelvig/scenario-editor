@@ -8,9 +8,6 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   
   initialize: (model) ->
     super model
-    @_contextMenu()
-    gevent = google.maps.event
-    gevent.addListener(@marker, 'drag', => @snapMarker())
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:hide_sensor_layer', @hideMarker, @)
@@ -45,6 +42,17 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     $a.broker.off('map:show_sensor_layer')
     super
 
+  # publish/unpublish map google events
+  _publishGoogleEvents: ->
+    gme = google.maps.event
+    @dragListener = gme.addListener(@marker, 'drag', => @snapMarker())
+    super
+
+  _unpublishGoogleEvents: ->
+    gme = google.maps.event
+    gme.removeListener(@dragListener)
+    super
+  
   # called by drag event to see if any link is within proximity and
   # the marker should snap to it
   snapMarker: ->
@@ -54,8 +62,14 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # Context Menu
   # Create the Sensor Context Menu. Call the super class method to create the
   # context menu
-  _contextMenu: () ->
-    super 'sensor', $a.sensor_context_menu
+  _contextMenu: (evt) ->
+    items = []
+    items = $a.sensor_context_menu
+    isOneSelected = $a.linkList? and $a.linkList.isOneSelected()
+    items = _.union(items, $a.sensor_cm_link_selected) if isOneSelected
+    
+    args = super 'sensor', items
+    $a.ContextMenuHandler.createMenu(args, evt.latLng)
     
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately 

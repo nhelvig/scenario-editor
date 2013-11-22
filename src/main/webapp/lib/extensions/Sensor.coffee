@@ -154,6 +154,8 @@ window.beats.Sensor::remove = ->
   @stopListening
 
 window.beats.Sensor::add = ->
+  window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
+  @set_crud window.beats.CrudFlag.CREATE
   @set_id window.beats.Util.getNewElemId(window.beats.models.sensors())
   window.beats.models.sensors().push(@)
 

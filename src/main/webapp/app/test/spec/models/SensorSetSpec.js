@@ -13,7 +13,6 @@ describe("SensorSet", function() {
       expect(s.sensors().length).toEqual(0);
       expect(s.locked_for_edit()).toBeFalsy();
       expect(s.locked_for_history()).toBeFalsy();
-      expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
     });
   });
   
@@ -41,7 +40,7 @@ describe("SensorSet", function() {
       expect(s.locked_for_history()).toBeTruthy();
 
       s.set_crud_flag(window.beats.CrudFlag.UPDATE)      
-      expect(s.crud()).toEqual(window.beats.CrudFlag.CREATE);
+      expect(s.crud()).toEqual(window.beats.CrudFlag.UPDATE);
     });
   });
   describe("to_xml", function() {
@@ -77,6 +76,7 @@ describe("SensorSet", function() {
       expect(xmlS.match(/<\/sensor>/g).length).toEqual(2);
       expect(xmlS.match(/mod_stamp/g)).not.toBeNull();
       expect(xmlS.match(/crudFlag=\"UPDATE\"/g).length).toEqual(1);
+      window.beats.fileSaveMode = true;
     });
   });
 });

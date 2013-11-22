@@ -35,7 +35,6 @@ class window.beats.MapLinkView extends Backbone.View
     # only calculates and then updates link length if it not already set
     if !model.length()?
       @_saveLinkLength()
-    @_contextMenu()
     @model.poly = @link
     @_publishEvents()
   
@@ -86,16 +85,20 @@ class window.beats.MapLinkView extends Backbone.View
       @model.set_editor_show(true)
       evt.stop()
     )
-    @clickHandler = gme.addListener(@link, 'click', =>  
-      $a.broker.trigger('map:clear_selected') # this could also go in the model?
-      @model.toggle_selected()
+    @clickHandler = gme.addListener(@link, 'click', =>
+      selected = @model.selected()
+      $a.broker.trigger('map:clear_selected')
+      @model.set_selected(!selected)
     )
+    lambda = (evt) => @_contextMenu(evt)
+    @rClickListener = gme.addListener(@link, 'rightclick', lambda)
   
   _unpublishGoogleEvents: ->
     gme = google.maps.event
     gme.removeListener(@zoomListener)
     gme.removeListener(@dblclckHandler)
     gme.removeListener(@clickHandler)
+    gme.removeListener(@rClickListener)
   
   # this is the rollover window for the link
   _createInfoWindow: ->
@@ -130,7 +133,7 @@ class window.beats.MapLinkView extends Backbone.View
   # a dependency with the ContextMenuView here. There may a better way to do
   # this. I also add the contextMenu itself to the model so the same menu can
   # be added to the tree items for this link
-  _contextMenu: ->
+  _contextMenu: (evt) ->
     menuItems = $a.Util.copy($a.link_context_menu)
     #if it has demand profile then we push the Visualize demand item
     if @model.get('demand')?
@@ -144,7 +147,7 @@ class window.beats.MapLinkView extends Backbone.View
       items: $a.Util.copy(menuItems)
       options: @contextMenuOptions 
       model:@model
-    new $a.ContextMenuHandler(args)
+    $a.ContextMenuHandler.createMenu(args, evt.latLng)
   
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR

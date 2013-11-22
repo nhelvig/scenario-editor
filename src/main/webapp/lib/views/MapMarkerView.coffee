@@ -17,10 +17,7 @@ class window.beats.MapMarkerView extends Backbone.View
     # TODO deal with getting a position if it is not defined
     @latLng = $a.Util.getLatLng(@model)
     @draw()
-    gevent = google.maps.event
-    gevent.addListener(@marker, 'dragend', => @dragMarker())
-    gevent.addListener(@marker, 'click', (event) => @manageMarkerSelect())
-    gevent.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
+    @_publishGoogleEvents()
     $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
@@ -65,9 +62,26 @@ class window.beats.MapMarkerView extends Backbone.View
     $a.broker.off("map:select_item:#{@model.cid}")
     $a.broker.off("map:clear_item:#{@model.cid}")
     $a.broker.off("map:open_editor:#{@model.cid}")
+    @_unpublishGoogleEvents()
     @hideMarker() if @marker?
     @marker = null
+    
+  # publish/unpublish map google events
+  _publishGoogleEvents: ->
+    gme = google.maps.event
+    @dragEndListener = gme.addListener(@marker, 'dragend', => @dragMarker())
+    @clickListener = gme.addListener(@marker, 'click', (event) => @manageMarkerSelect())
+    @dblClickListener = gme.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
+    lambda = (event) => @_contextMenu(event)
+    @rClickListener = gme.addListener(@marker, 'rightclick', lambda)
 
+  _unpublishGoogleEvents: ->
+    gme = google.maps.event
+    gme.removeListener(@rClickListener)
+    gme.removeListener(@dragEndListener)
+    gme.removeListener(@clickListener)
+    gme.removeListener(@dblClickListener)
+  
   # Context Menu
   #
   # Create the Marker Context Menu.
@@ -87,7 +101,7 @@ class window.beats.MapMarkerView extends Backbone.View
       items: $a.Util.copy(menuItems)
       options: @contextMenuOptions 
       model:@model
-    new $a.ContextMenuHandler(args)
+    args
   
   # events used to move the marker and update its position
   dragMarker: ->
