@@ -96,6 +96,7 @@ describe("LinkListView", function() {
   });
    describe("setStrokeWeight", function() {
     it("should set link stroke weight dependent on zoom level", function() {
+      scen = scenarioAndFriends();
       this.view.createAndDrawLink(scen.link1);
       googleMap();
       $a.map.setZoom(18);
