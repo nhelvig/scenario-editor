@@ -167,7 +167,6 @@ class window.beats.AppView extends Backbone.View
       # Create login pop up
       attrs = { title : "Log In"}
       @login = new $a.LogInView(attrs)
-
   
   # displayMap takes the uploaded file or serialized model object from database and parses the
   # xml into backbone model objects, and creates the MapNetworkView

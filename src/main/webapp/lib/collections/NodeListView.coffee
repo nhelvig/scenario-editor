@@ -8,6 +8,7 @@ class window.beats.NodeListView extends Backbone.Collection
   initialize: (@collection, @network) ->
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:init', @render, @)
+    google.maps.event.addListener($a.map, 'zoom_changed', => @setNodeSize())
     @collection.on('add', @addNodeView, @)
     @collection.on('remove', @removeNode, @)
   
@@ -31,3 +32,9 @@ class window.beats.NodeListView extends Backbone.Collection
   # this removes the node from the views array upon removal from collection
   removeNode: (node) ->
     @views = _.reject(@views, (view) => view.model is node)
+
+  # set the size of all node icons based on the zoom level
+  setNodeSize: ->
+    _.each(@views, (view) -> 
+      view.marker.setOptions(icon: {scaledSize:view.getScaledSize()}) if view.marker?
+    )

@@ -49,11 +49,16 @@ class window.beats.MapMarkerView extends Backbone.View
     @getMarkerImage img
 
   getMarkerImage: (img) ->
-    new google.maps.MarkerImage("#{MapMarkerView.IMAGE_PATH}#{img}.png",
-      new google.maps.Size(32, 32),
-      new google.maps.Point(0,0),
-      new google.maps.Point(16, 16)
-    )
+    {
+      url: "#{MapMarkerView.IMAGE_PATH}#{img}.svg",
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 16),
+      scaledSize: new google.maps.Size(32, 32)
+    }
+
+  getScaledSize: () ->
+    new google.maps.Size(64, 64)
 
   # in order to remove an element you need to unpublish the events,
   # hide the marker and set it to null

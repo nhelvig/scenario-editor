@@ -2,9 +2,9 @@
 # show/hide events from the node layer. It also adds itself to and holds a static
 # array of nodes
 class window.beats.MapNodeView extends window.beats.MapMarkerView
-  @ICON: 'dot'
+  @ICON: 'node'
   @SELECTED_ICON: 'reddot'
-  @TERMINAL_ICON: 'square'
+  @TERMINAL_ICON: 'terminal_node'
   @SELECTED_TERMINAL_ICON: 'red-square'
   @TERMINAL_TYPE: 'Terminal'
   $a = window.beats
