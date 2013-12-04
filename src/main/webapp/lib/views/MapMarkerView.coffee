@@ -45,21 +45,64 @@ class window.beats.MapMarkerView extends Backbone.View
     title += "Longitude: #{@latLng.lng()}"
     title
 
-  getIcon: (img) ->
-    @getMarkerImage img
+  getIcon: (@img) ->
+    @getMarkerImage()
+    #@getMarkerImageIcons()
 
-  getMarkerImage: (img) ->
+  getMarkerImageIcons: ->
+    zoom = @getScaledSizeOnZoomIcons()
+    anchorSize = zoom.height / 2
     {
-      url: "#{MapMarkerView.IMAGE_PATH}#{img}.svg",
-      size: new google.maps.Size(32, 32),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(16, 16),
-      scaledSize: new google.maps.Size(32, 32)
+          url: "#{MapMarkerView.IMAGE_PATH}#{@img}.svg",
+          size: new google.maps.Size(64, 64),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(anchorSize, anchorSize),
+          scaledSize: zoom
     }
-
+  
+  getMarkerImage: () ->
+    {
+      strokeColor: 'blue'
+      fillColor : 'white'
+      strokeWeight: 4
+      strokeOpacity: 1
+      fillOpacity : 0.9
+      path: google.maps.SymbolPath.CIRCLE
+      scale: @getScaledSizeOnZoom()
+    }
+    
   getScaledSize: () ->
-    new google.maps.Size(64, 64)
+    @getMarkerImage()
+    #@getMarkerImageIcons()
 
+  # determine marker size based the zoom level
+  getScaledSizeOnZoomIcons: ()->
+    zoomLevel = $a.map.getZoom()
+    console.log zoomLevel
+    if (zoomLevel >= 17)
+      return new google.maps.Size(48, 48)
+    else if (zoomLevel >= 16)
+      return new google.maps.Size(32, 32)
+    else if (zoomLevel >= 15)
+      return new google.maps.Size(24, 24)
+    else if (zoomLevel >= 14)
+      return new google.maps.Size(16, 16)
+    else
+      return new google.maps.Size(16, 16)
+  
+  # determine marker size based the zoom level
+  getScaledSizeOnZoom: ()->
+    zoomLevel = $a.map.getZoom()
+    console.log zoomLevel
+    if (zoomLevel >= 17)
+      return 8
+    else if (zoomLevel >= 15)
+      return 6
+    else if (zoomLevel >= 14)
+      return 4
+    else
+      return 2
+  
   # in order to remove an element you need to unpublish the events,
   # hide the marker and set it to null
   removeElement: ->

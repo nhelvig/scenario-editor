@@ -36,5 +36,5 @@ class window.beats.NodeListView extends Backbone.Collection
   # set the size of all node icons based on the zoom level
   setNodeSize: ->
     _.each(@views, (view) -> 
-      view.marker.setOptions(icon: {scaledSize:view.getScaledSize()}) if view.marker?
+      view.marker.setIcon(view.getScaledSize()) if view.marker?
     )
