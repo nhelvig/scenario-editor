@@ -20,6 +20,7 @@ class window.beats.MapMarkerView extends Backbone.View
     $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
+    google.maps.event.addListener($a.map, 'zoom_changed', => @setMarkerSize())
     $a.Util.publishEvents($a.broker, @broker_events, @)
 
   render: ->
@@ -44,25 +45,20 @@ class window.beats.MapMarkerView extends Backbone.View
     title += "Longitude: #{@latLng.lng()}"
     title
 
-  getIcon: (@img) ->
-    @img
-    #@getMarkerImageIcons()
-
-  getMarkerImageIcons: ->
+  getIcon: (img) ->
+    img
+  
+  getMarkerImageIcons: (img) ->
     zoom = @getScaledSizeOnZoomIcons()
     anchorSize = zoom.height / 2
     {
-          url: "#{MapMarkerView.IMAGE_PATH}#{@img}.svg",
-          size: new google.maps.Size(64, 64),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(anchorSize, anchorSize),
-          scaledSize: zoom
+        url: "#{MapMarkerView.IMAGE_PATH}#{img}.svg",
+        size: new google.maps.Size(64, 64),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(anchorSize, anchorSize),
+        scaledSize: zoom
     }
   
-  
-  getScaledSize: () ->
-    @getMarkerImageIcons()
-
   # determine marker size based the zoom level
   getScaledSizeOnZoomIcons: ()->
     zoomLevel = $a.map.getZoom()
@@ -76,7 +72,11 @@ class window.beats.MapMarkerView extends Backbone.View
     else if (zoomLevel >= 14)
       return new google.maps.Size(16, 16)
     else
-      return new google.maps.Size(16, 16)
+      return new google.maps.Size(12, 12)
+  
+  # re-render the marker when the zoom changes
+  setMarkerSize: ->
+    @marker.setIcon(@getIcon())
   
   # in order to remove an element you need to unpublish the events,
   # hide the marker and set it to null

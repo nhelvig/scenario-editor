@@ -943,8 +943,8 @@
 		</g>
 	</g>
 </pattern>
-<polygon fill="#FBB040" stroke="#000000" points="218.607,253.834 72.799,253.047 0.577,126.381 74.163,0.501 219.97,1.289 
+<polygon fill="#8CC63F" stroke="#000000" points="218.607,253.834 72.799,253.047 0.577,126.381 74.163,0.501 219.97,1.289 
 	292.192,127.955 "/>
-<rect x="99.607" y="56.279" fill="none" width="122.222" height="188.889"/>
-<text transform="matrix(1 0 0 1 99.6069 180.5273)" font-family="'MyriadPro-Regular'" font-size="175">S</text>
+<rect x="87.607" y="55.279" fill="none" width="122.222" height="188.889"/>
+<text transform="matrix(1 0 0 1 87.6069 179.5273)" font-family="'MyriadPro-Regular'" font-size="175">C</text>
 </svg>

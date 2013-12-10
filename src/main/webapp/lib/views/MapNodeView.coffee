@@ -2,10 +2,10 @@
 # show/hide events from the node layer. It also adds itself to and holds a static
 # array of nodes
 class window.beats.MapNodeView extends window.beats.MapMarkerView
-  @ICON: 'node'
-  @SELECTED_ICON: 'reddot'
-  @TERMINAL_ICON: 'terminal_node'
-  @SELECTED_TERMINAL_ICON: 'red-square'
+  @ICON: google.maps.SymbolPath.CIRCLE
+  @SELECTED_ICON_COLOR: 'red'
+  @ICON_COLOR: 'white'
+  @TERMINAL_ICON: 'M -1,-1 1,-1 1,1 -1,1 z'
   @TERMINAL_TYPE: 'Terminal'
   $a = window.beats
   
@@ -29,22 +29,21 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     super @icon()
   
   _getIconFillColor: ->
-    if @model.get('selected')
-      return 'red'
+    if @model.selected()
+      return MapNodeView.SELECTED_ICON_COLOR
     else
-      return 'white'
+      return MapNodeView.ICON_COLOR
       
   # This returns the appropriate icon for terminals and selected or not
   _getTypeIcon: ->
     if @model.type_name() is MapNodeView.TERMINAL_TYPE
-        return 'M -1,-1 1,-1 1,1 -1,1 z'
+        return MapNodeView.TERMINAL_ICON
     else
-        return google.maps.SymbolPath.CIRCLE
+        return MapNodeView.ICON
   
   # determine marker size based the zoom level
-  getScaledSize: ()->
+  getScaledSize: ->
     zoomLevel = $a.map.getZoom()
-    console.log zoomLevel
     if (zoomLevel >= 17)
       return 8
     else if (zoomLevel >= 15)
@@ -57,7 +56,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   # determine marker stroke weight based the zoom level
   getStrokeWeightOnZoom: ->
     zoomLevel = $a.map.getZoom()
-    console.log zoomLevel
     if (zoomLevel >= 16)
       return 4
     else if (zoomLevel >= 14)
@@ -144,8 +142,6 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   _triggerClearSelectEvents: () ->
     $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
     $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
-
-  # remove myself from the map
   
   # This method is called from the context menu and selects itself and all the nodes links.
   # Note: The links references are from the output and input attributes on the node.

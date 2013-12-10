@@ -2,8 +2,8 @@
 # show/hide events from the controller layer. It also adds itself to and 
 # holds a static array of controllers  
 class window.beats.MapControllerView extends window.beats.MapMarkerView
-  @ICON: 'controller-deselected'
-  @SELECTED_ICON: 'controller-selected'
+  @ICON: 'controller'
+  @SELECTED_ICON: 'controller-sel'
   $a = window.beats
 
   initialize: (model) ->
@@ -13,7 +13,7 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
     @model.on('remove', @removeElement, @)
 
   getIcon: ->
-    super MapControllerView.ICON
+    super @getMarkerImageIcons MapControllerView.ICON
 
   # This method overrides MapMarkerView to unpublish specific events to this 
   # type and then calls super to set itself to null, unpublish the general 
@@ -29,7 +29,7 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapControllerView.__super__._getIconName.apply(@, []) 
-    if iconName == "#{MapControllerView.ICON}.png"
+    if iconName == "#{MapControllerView.ICON}.svg"
       @_triggerClearSelectEvents()
       $a.broker.trigger("app:tree_highlight:#{@model.cid}")
       @makeSelected()
@@ -63,8 +63,8 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
           $a.broker.trigger("map:select_item:#{link.cid}")
           $a.broker.trigger("app:tree_highlight:#{link.cid}")
         )
-    super MapControllerView.SELECTED_ICON
+    super @getMarkerImageIcons MapControllerView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
   clearSelected: () ->
-    super MapControllerView.ICON
+    super @getMarkerImageIcons MapControllerView.ICON

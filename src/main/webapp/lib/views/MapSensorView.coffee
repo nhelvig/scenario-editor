@@ -2,8 +2,8 @@
 # show/hide events from the sensors layer. It also adds itself to and holds a
 # static array of sensors
 class window.beats.MapSensorView extends window.beats.MapMarkerView
-  @ICON: 'camera-orig'
-  @SELECTED_ICON: 'camera-selected'
+  @ICON: 'sensor'
+  @SELECTED_ICON: 'sensor-sel'
   $a = window.beats
   
   initialize: (model) ->
@@ -15,7 +15,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     @model.on('remove', @removeElement, @)
 
   getIcon: ->
-    super MapSensorView.ICON
+    super @getMarkerImageIcons MapSensorView.ICON
   
   _getTitle: ->
     title = super + "\n"
@@ -75,7 +75,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
-    if iconName == "#{MapSensorView.ICON}.png"
+    if iconName == "#{MapSensorView.ICON}.svg"
       @_triggerClearSelectEvents()
       @makeSelected()
     else
@@ -107,8 +107,8 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # This method swaps the icon for the selected icon
   makeSelected: () ->
     $a.broker.trigger("app:tree_highlight:#{@model.link_reference()?.cid}") if @model.link_reference()?
-    super MapSensorView.SELECTED_ICON
+    super @getMarkerImageIcons MapSensorView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
   clearSelected: () ->
-    super MapSensorView.ICON
+    super @getMarkerImageIcons MapSensorView.ICON
