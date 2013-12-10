@@ -163,7 +163,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     @toggleSelectedView()
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
     _.each(@model.ios(), (link) ->
-      $a.broker.trigger("map:clear_item:#{link.get('link').cid}")
+      io.link().set_selected(false)
       $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}"))
 
   # This method is called from the context menu to select this nodes output or input links.
@@ -178,7 +178,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     _.each(@model.inputs(), @selectLink)
 
   selectLink: (io) ->
-    $a.broker.trigger("map:select_item:#{io.get('link').cid}")
+    io.link().set_selected(true)
     $a.broker.trigger("app:tree_highlight:#{io.get('link').cid}")
     $a.broker.trigger("app:tree_show_item:#{io.get('link').cid}")
 
