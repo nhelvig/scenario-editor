@@ -9,7 +9,6 @@ class window.beats.MapMarkerView extends Backbone.View
     'map:open_network_mode' : 'networkMode'
     'map:open_scenario_mode' : 'scenarioMode'
     'map:init' : 'render'
-    'map:clear_selected' : 'clearSelected'
   }
   
   initialize: (@model) ->
@@ -46,7 +45,7 @@ class window.beats.MapMarkerView extends Backbone.View
     title
 
   getIcon: (@img) ->
-    @getMarkerImage()
+    @img
     #@getMarkerImageIcons()
 
   getMarkerImageIcons: ->
@@ -60,20 +59,9 @@ class window.beats.MapMarkerView extends Backbone.View
           scaledSize: zoom
     }
   
-  getMarkerImage: () ->
-    {
-      strokeColor: 'blue'
-      fillColor : 'white'
-      strokeWeight: 4
-      strokeOpacity: 1
-      fillOpacity : 0.9
-      path: google.maps.SymbolPath.CIRCLE
-      scale: @getScaledSizeOnZoom()
-    }
-    
+  
   getScaledSize: () ->
-    @getMarkerImage()
-    #@getMarkerImageIcons()
+    @getMarkerImageIcons()
 
   # determine marker size based the zoom level
   getScaledSizeOnZoomIcons: ()->
@@ -89,19 +77,6 @@ class window.beats.MapMarkerView extends Backbone.View
       return new google.maps.Size(16, 16)
     else
       return new google.maps.Size(16, 16)
-  
-  # determine marker size based the zoom level
-  getScaledSizeOnZoom: ()->
-    zoomLevel = $a.map.getZoom()
-    console.log zoomLevel
-    if (zoomLevel >= 17)
-      return 8
-    else if (zoomLevel >= 15)
-      return 6
-    else if (zoomLevel >= 14)
-      return 4
-    else
-      return 2
   
   # in order to remove an element you need to unpublish the events,
   # hide the marker and set it to null
@@ -182,14 +157,12 @@ class window.beats.MapMarkerView extends Backbone.View
     tokens[lastIndex]
 
   _setSelected: (img) ->
-    @marker.setIcon(@getMarkerImage(img))
+    @marker.setIcon(img)
 
   # This method swaps the icon for the selected icon
   makeSelected: (img) ->
-    @model.set('selected', true)
     @_setSelected img
 
   # This method swaps the icon for the de-selected icon
   clearSelected: (img) ->
-    @model.set('selected', false)
     @_setSelected img
