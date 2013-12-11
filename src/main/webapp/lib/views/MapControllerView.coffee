@@ -54,8 +54,8 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
   # This function triggers the events that make the selected tree and map 
   # items to de-selected
   _triggerClearSelectEvents: () ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->

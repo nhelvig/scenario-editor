@@ -140,8 +140,8 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
 
   # This function triggers the events that make the selected tree and map items to de-selected
   _triggerClearSelectEvents: () ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
   
   # This method is called from the context menu and selects itself and all the nodes links.
   # Note: The links references are from the output and input attributes on the node.
