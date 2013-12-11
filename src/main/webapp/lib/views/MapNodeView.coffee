@@ -166,9 +166,9 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     @model.toggle_selected()
     @toggleSelectedView()
     $a.broker.trigger("app:tree_remove_highlight:#{@model.cid}")
-    _.each(@model.ios(), (link) ->
-      io.link().set_selected(false)
-      $a.broker.trigger("app:tree_remove_highlight:#{link.get('link').cid}"))
+    _.each(@model.ios(), (ioLink) ->
+      ioLink.link().set_selected(false)
+      $a.broker.trigger("app:tree_remove_highlight:#{ioLink.link().cid}"))
 
   # This method is called from the context menu to select this nodes output or input links.
   # The type parameter determins whether we are grabbing output or input attributes on the node.
