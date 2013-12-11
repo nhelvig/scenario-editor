@@ -146,6 +146,9 @@ window.beats.Node::toggle_selected =  ->
   else 
     @set('selected', true)
 
+window.beats.Node::set_selected = (flag) ->
+  @set('selected', flag)
+
 window.beats.Node::selected = ->
   @get('selected')
 

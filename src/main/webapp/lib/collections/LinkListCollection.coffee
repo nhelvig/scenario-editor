@@ -93,7 +93,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
   clearSelected: ->
     @forEach((link) -> 
       link.set('selected', false) if link.selected() is true
-    ) unless $a.SHIFT_DOWN
+    ) unless $a.ALT_DOWN
   
   # This removes either the begin or end node from the link if the node
   # itself has been removed from the node collection

@@ -68,11 +68,11 @@ class window.beats.MapLinkView extends Backbone.View
       map: $a.map
       strokeColor: @_getStrokeColor()
       icons: [{
-          icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW }
+          icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
           fillColor: 'blue'
           offset: '60%'
         }]
-      strokeOpacity: 0.6
+      strokeOpacity: 0.9
       strokeWeight: @getLinkStrokeWeight()
     })
     @_publishGoogleEvents()
@@ -297,12 +297,20 @@ class window.beats.MapLinkView extends Backbone.View
     numLines = @model.lanes()
     zoomLevel = $a.map.getZoom()
     if (zoomLevel >= 17)
-      lineWidth = if numLines > 5 then 5 else 3
+      return 7
     else if (zoomLevel >= 16)
-      lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
+      return 4
+    else if (zoomLevel >= 15)
+      return 3
     else
-      lineWidth = $a.MapLinkView.STROKE_WEIGHT_THINNER
-    lineWidth
+      return 2
+    # if (zoomLevel >= 17)
+    #   lineWidth = if numLines > 5 then 5 else 3
+    # else if (zoomLevel >= 16)
+    #   lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
+    # else
+    #   lineWidth = $a.MapLinkView.STROKE_WEIGHT_THINNER
+    # lineWidth
   
   # these 4 methods are all used to deal with the lane offset
   _distance: (p1, p2) ->

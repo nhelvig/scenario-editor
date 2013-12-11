@@ -2,8 +2,8 @@
 # show/hide events from the sensors layer. It also adds itself to and holds a
 # static array of sensors
 class window.beats.MapSensorView extends window.beats.MapMarkerView
-  @ICON: 'camera-orig'
-  @SELECTED_ICON: 'camera-selected'
+  @ICON: 'sensor'
+  @SELECTED_ICON: 'sensor-sel'
   $a = window.beats
   
   initialize: (model) ->
@@ -15,8 +15,14 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     @model.on('remove', @removeElement, @)
 
   getIcon: ->
-    super MapSensorView.ICON
+    super @getMarkerImageIcons @_getImage()
   
+  _getImage: ->
+    if(not @model.selected())
+      return MapSensorView.ICON
+    else
+      return MapSensorView.SELECTED_ICON
+    
   _getTitle: ->
     title = super + "\n"
     title += "PeMS VDS ID: #{@model.sensor_id_original()}\n"
@@ -75,18 +81,19 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
-    if iconName == "#{MapSensorView.ICON}.png"
-      @_triggerClearSelectEvents()
+    @_triggerClearSelectEvents()
+    if iconName == "#{MapSensorView.ICON}.svg"
+      @model.set_selected(true)
       @makeSelected()
     else
-      @_triggerClearSelectEvents()
+      @model.set_selected(false)
       @clearSelected() #Shift key is down and you are deselecting yourself
 
   # This function triggers the events that make the selected tree and map 
   # items to de-selected
   _triggerClearSelectEvents: () ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
 
   # This method is called from the context menu and selects itself and all the 
   # sensor links. Note we filter the Network links for all links with this
@@ -107,8 +114,8 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # This method swaps the icon for the selected icon
   makeSelected: () ->
     $a.broker.trigger("app:tree_highlight:#{@model.link_reference()?.cid}") if @model.link_reference()?
-    super MapSensorView.SELECTED_ICON
+    super @getMarkerImageIcons MapSensorView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
   clearSelected: () ->
-    super MapSensorView.ICON
+    super @getMarkerImageIcons MapSensorView.ICON

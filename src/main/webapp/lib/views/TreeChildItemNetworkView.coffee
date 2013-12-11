@@ -6,8 +6,8 @@ class window.beats.TreeChildItemNetworkView extends window.beats.TreeChildItemVi
   # Overridden method that trigger the select/clear netowrk event as well
   # as highlights itself
   manageHighlight:  ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
 
     if !@highlighted
       @highlighted = true
