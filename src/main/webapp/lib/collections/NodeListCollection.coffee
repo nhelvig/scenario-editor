@@ -38,7 +38,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   # set selected to false for all nodes. It is triggered
   # when the node browser closes as well as when we initialize the collection
   clearSelected: ->
-    @forEach((node) -> node.set('selected', false))
+    @forEach((node) -> node.set('selected', false)) unless $a.ALT_DOWN
   
   # removes the node from the collection and takes it off the map. 
   removeNode: (nodeID) ->

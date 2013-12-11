@@ -183,7 +183,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     if(@model.selected())
       @makeSelected()
     else
-      @clearSelected()
+      @clearSelected() unless $a.ALT_DOWN
   
   # This method swaps the icon for the selected icon
   makeSelected: () ->
