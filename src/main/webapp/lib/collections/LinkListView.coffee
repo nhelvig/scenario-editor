@@ -9,7 +9,10 @@ class window.beats.LinkListView extends Backbone.Collection
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('map:draw_link', @createAndDrawLink, @)
     $a.broker.on('links:check_proximinity', @checkSnap, @)
-    google.maps.event.addListener($a.map, 'zoom_changed', => @setStrokeWeight())
+    google.maps.event.addListener($a.map, 'zoom_changed', =>
+      @setStrokeWeight()
+      @toogleLinkArrow()
+    )
     @collection.on('add', @addAndRender, @)
     @collection.on('remove', @removeLink, @)
     @getLinkGeometry(@collection.models)
@@ -114,4 +117,10 @@ class window.beats.LinkListView extends Backbone.Collection
   setStrokeWeight: ->
     _.each(@views, (view) -> 
       view.link.setOptions(strokeWeight:view.getLinkStrokeWeight()) if view.link?
+    )
+
+  # set the strokeweight of all polyline based on the zoom level
+  toogleLinkArrow: ->
+    _.each(@views, (view) ->
+      view.link.icons[0].icon.path = view.getLinkIconPath() if view.link?
     )

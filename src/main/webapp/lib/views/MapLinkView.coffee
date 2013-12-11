@@ -68,7 +68,7 @@ class window.beats.MapLinkView extends Backbone.View
       map: $a.map
       strokeColor: @_getStrokeColor()
       icons: [{
-          icon: { path: google.maps.SymbolPath.FORWARD_OPEN_ARROW }
+          icon: { path: @getLinkIconPath() }
           fillColor: 'blue'
           offset: '60%'
         }]
@@ -311,6 +311,15 @@ class window.beats.MapLinkView extends Backbone.View
     # else
     #   lineWidth = $a.MapLinkView.STROKE_WEIGHT_THINNER
     # lineWidth
+
+  # determine whether arrow should be drawn or not based on
+  # zoom level
+  getLinkIconPath: () ->
+    zoomLevel = $a.map.getZoom()
+    if (zoomLevel >= 14)
+      return google.maps.SymbolPath.FORWARD_OPEN_ARROW
+    else
+      return null
   
   # these 4 methods are all used to deal with the lane offset
   _distance: (p1, p2) ->

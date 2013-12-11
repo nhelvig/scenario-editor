@@ -8,6 +8,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   
   initialize: (model) ->
     super model
+    @model.on('change:selected', @toggleSelectedView, @)
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:hide_sensor_layer', @hideMarker, @)
@@ -76,7 +77,14 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     
     args = super 'sensor', items
     $a.ContextMenuHandler.createMenu(args, evt.latLng)
-    
+   
+  # This method toggles the selection of the node
+  toggleSelectedView: ->
+    if(@model.selected())
+      @makeSelected()
+    else
+      @clearSelected() unless $a.ALT_DOWN
+ 
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
