@@ -52,7 +52,7 @@ class window.beats.MapMarkerView extends Backbone.View
     anchorSize = zoom.height / 2
     {
         url: "#{MapMarkerView.IMAGE_PATH}#{img}.svg",
-        size: new google.maps.Size(64, 64),
+        size: zoom,
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(anchorSize, anchorSize),
         scaledSize: zoom
