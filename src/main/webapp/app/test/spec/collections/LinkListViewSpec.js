@@ -103,7 +103,7 @@ describe("LinkListView", function() {
       this.view.setStrokeWeight();
       var l =  this.view.views[0].link
       var weight  = l.get('strokeWeight');
-      expect(weight).toEqual(3);
+      expect(weight).toEqual(7);
     });
   }); 
 });
