@@ -20,7 +20,6 @@ class window.beats.MapMarkerView extends Backbone.View
     $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
     $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
     $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
-    google.maps.event.addListener($a.map, 'zoom_changed', => @setMarkerSize())
     $a.Util.publishEvents($a.broker, @broker_events, @)
 
   render: ->
@@ -97,6 +96,7 @@ class window.beats.MapMarkerView extends Backbone.View
     @dblClickListener = gme.addListener(@marker, 'dblclick', (mouseEvent) => @_editor())
     lambda = (event) => @_contextMenu(event)
     @rClickListener = gme.addListener(@marker, 'rightclick', lambda)
+    @zoomListener = google.maps.event.addListener($a.map, 'zoom_changed', => @setMarkerSize())
 
   _unpublishGoogleEvents: ->
     gme = google.maps.event
@@ -104,6 +104,7 @@ class window.beats.MapMarkerView extends Backbone.View
     gme.removeListener(@dragEndListener)
     gme.removeListener(@clickListener)
     gme.removeListener(@dblClickListener)
+    gme.removeListener(@zoomListener)
   
   # Context Menu
   #
