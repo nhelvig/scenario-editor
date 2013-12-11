@@ -15,8 +15,14 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     @model.on('remove', @removeElement, @)
 
   getIcon: ->
-    super @getMarkerImageIcons MapSensorView.ICON
+    super @getMarkerImageIcons @_getImage()
   
+  _getImage: ->
+    if(not @model.selected())
+      return MapSensorView.ICON
+    else
+      return MapSensorView.SELECTED_ICON
+    
   _getTitle: ->
     title = super + "\n"
     title += "PeMS VDS ID: #{@model.sensor_id_original()}\n"
@@ -75,11 +81,12 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
+    @_triggerClearSelectEvents()
     if iconName == "#{MapSensorView.ICON}.svg"
-      @_triggerClearSelectEvents()
+      @model.set_selected(true)
       @makeSelected()
     else
-      @_triggerClearSelectEvents()
+      @model.set_selected(false)
       @clearSelected() #Shift key is down and you are deselecting yourself
 
   # This function triggers the events that make the selected tree and map 

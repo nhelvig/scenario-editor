@@ -61,7 +61,6 @@ class window.beats.MapMarkerView extends Backbone.View
   # determine marker size based the zoom level
   getScaledSizeOnZoomIcons: ()->
     zoomLevel = $a.map.getZoom()
-    console.log zoomLevel
     if (zoomLevel >= 17)
       return new google.maps.Size(48, 48)
     else if (zoomLevel >= 16)

@@ -3,7 +3,9 @@
 # array of nodes
 class window.beats.MapNodeView extends window.beats.MapMarkerView
   @ICON: google.maps.SymbolPath.CIRCLE
-  @SELECTED_ICON_COLOR: 'red'
+  @SELECTED_ICON_COLOR: 'blue'
+  @SELECTED_STROKE_COLOR: 'red'
+  @STROKE_COLOR: 'blue'
   @ICON_COLOR: 'white'
   @TERMINAL_ICON: 'M -1,-1 1,-1 1,1 -1,1 z'
   @TERMINAL_TYPE: 'Terminal'
@@ -33,7 +35,13 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
       return MapNodeView.SELECTED_ICON_COLOR
     else
       return MapNodeView.ICON_COLOR
-      
+  
+  _getStrokeFillColor: ->
+    if @model.selected()
+      return MapNodeView.SELECTED_STROKE_COLOR
+    else
+      return MapNodeView.STROKE_COLOR
+  
   # This returns the appropriate icon for terminals and selected or not
   _getTypeIcon: ->
     if @model.type_name() is MapNodeView.TERMINAL_TYPE
@@ -69,7 +77,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   
   icon: ->
     {
-      strokeColor: 'blue'
+      strokeColor: @_getStrokeFillColor()
       fillColor : @_getIconFillColor()
       strokeWeight: @getStrokeWeightOnZoom()
       strokeOpacity: 1

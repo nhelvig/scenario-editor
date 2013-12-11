@@ -100,6 +100,7 @@ window.beats.Sensor::health_status = -> @get('health_status')
 window.beats.Sensor::set_health_status = (stat) -> @set('health_status', stat)
 
 window.beats.Sensor::selected = -> @get('selected')
+window.beats.Sensor::set_selected = (flag) -> @set('selected', flag)
 
 window.beats.Sensor::from_position = (position, link) ->
   s = new window.beats.Sensor
