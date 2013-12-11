@@ -9,6 +9,7 @@ class window.beats.SensorListCollection extends Backbone.Collection
     $a.broker.on("map:clear_map", @clear, @)
     $a.broker.on('sensors:add', @addSensorWithPositionLink, @)
     $a.broker.on('sensors:add_sensor', @addSensor, @)
+    $a.broker.on('map:clear_selected', @clearSelected, @)
     @on('sensors:attach_to_link', @attachToLink, @)
     @on('sensors:remove', @removeSensor, @)
   
@@ -99,11 +100,19 @@ class window.beats.SensorListCollection extends Backbone.Collection
   _updateSensor: (sensor) ->
     $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
     sensor.set_crud_flag($a.CrudFlag.UPDATE)
-
+  
+  # set selected to false for all sensors. It is triggered
+  # when the sensor browser closes as well as when we initialize the collection
+  clearSelected: ->
+    @forEach((sensor) -> 
+      sensor.set('selected', false) if sensor.selected() is true
+    ) unless $a.ALT_DOWN
+  
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)
     $a.sensorList = {}
     $a.broker.off('sensors:add')
     $a.broker.off('sensors:add_sensor')
+    $a.broker.off('map:clear_selected', @)
     @off(null, null, @)

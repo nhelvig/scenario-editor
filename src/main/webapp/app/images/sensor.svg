@@ -4,7 +4,8 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="292.77px" height="254.336px" viewBox="0 0 292.77 254.336" enable-background="new 0 0 292.77 254.336"
 	 xml:space="preserve">
-<rect x="87.607" y="55.279" fill="none" width="122.222" height="188.889"/>
-<polygon fill="#8CC63F" stroke="#000000" points="6.583,252.668 147.885,1.668 289.185,252.668 "/>
-<text transform="matrix(1 0 0 1 101.6067 214.5273)" font-family="'MyriadPro-Regular'" font-size="175">S</text>
+<polygon fill="#32803E" stroke="#000000" points="218.607,253.834 72.799,253.047 0.577,126.381 74.163,0.501 219.97,1.289 
+	292.192,127.955 "/>
+<rect x="99.607" y="56.279" fill="none" width="122.222" height="188.889"/>
+<text transform="matrix(1 0 0 1 99.6067 180.5273)" font-family="'MyriadPro-Regular'" font-size="175">S</text>
 </svg>
