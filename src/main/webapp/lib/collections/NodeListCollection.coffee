@@ -35,10 +35,14 @@ class window.beats.NodeListCollection extends Backbone.Collection
       node.set('selected', true) if !node.get('selected')
     )
 
-  # set selected to false for all nodes. It is triggered
-  # when the node browser closes as well as when we initialize the collection
-  clearSelected: ->
-    @forEach((node) -> node.set('selected', false)) unless $a.ALT_DOWN
+  # this method sets all the selected attributes to false
+  # which causes the MapNodeViews to re-render themselves 
+  # in an unselected state
+  clearSelected: () ->
+    @forEach((node) -> 
+      if node.selected() or !node.selected()?
+        node.set_selected(false)
+    )
   
   # removes the node from the collection and takes it off the map. 
   removeNode: (nodeID) ->
@@ -148,12 +152,6 @@ class window.beats.NodeListCollection extends Backbone.Collection
     _.map(node.roadway_markers().marker(), 
         (m) -> m.on('change', -> node.set_crud_update())
     ) if(node.roadway_markers()? and node.roadway_markers().marker()?)
-  
-  # this method sets all the selected attributes to false
-  # which causes the MapNodeViews to re-render themselves 
-  # in an unselected state
-  clearSelected: () ->
-    _.filter(@models, (node) -> node.set_selected(false))
   
   #this method clears the collection upon a clear map
   clear: ->

@@ -141,10 +141,8 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately
   manageMarkerSelect: () ->
-    currentState = @model.selected()
     @_triggerClearSelectEvents()
-    @model.toggle_selected() unless currentState is true
-    @toggleSelectedView()
+    @model.toggle_selected() 
 
   # This function triggers the events that make the selected tree and map items to de-selected
   _triggerClearSelectEvents: () ->
@@ -191,7 +189,7 @@ class window.beats.MapNodeView extends window.beats.MapMarkerView
     if(@model.selected())
       @makeSelected()
     else
-      @clearSelected() unless $a.ALT_DOWN
+      @clearSelected()
   
   # This method swaps the icon for the selected icon
   makeSelected: () ->
