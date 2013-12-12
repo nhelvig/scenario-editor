@@ -20,7 +20,7 @@ describe("NodeListCollection", function() {
        });
        it("sets all its models selected attribute to false", function() {
          mod = this.nColl.models;
-         arrSel = mod.filter(function(node){ return node.get('selected') == false});
+         arrSel = mod.filter(function(node){ return node.get('selected') === false});
          expect(arrSel.length).toEqual(this.nColl.length);
        });
        it("should be watching addNode", function() {

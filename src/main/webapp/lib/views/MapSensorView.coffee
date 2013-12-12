@@ -92,11 +92,9 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     @_triggerClearSelectEvents()
     if iconName == "#{MapSensorView.ICON}.svg"
       @model.set_selected(true)
-      @makeSelected()
     else
       @model.set_selected(false)
-      @clearSelected() #Shift key is down and you are deselecting yourself
-
+  
   # This function triggers the events that make the selected tree and map 
   # items to de-selected
   _triggerClearSelectEvents: () ->

@@ -87,7 +87,7 @@ class window.beats.MapLinkView extends Backbone.View
     )
     @clickHandler = gme.addListener(@link, 'click', =>
       selected = @model.selected()
-      $a.broker.trigger('map:clear_selected')
+      $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
       @model.set_selected(!selected)
     )
     lambda = (evt) => @_contextMenu(evt)
