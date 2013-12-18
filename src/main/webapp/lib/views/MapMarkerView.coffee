@@ -11,16 +11,20 @@ class window.beats.MapMarkerView extends Backbone.View
     'map:init' : 'render'
   }
   
+  model_events : {
+    'change:selected': 'toggleSelectedView'
+    'change:editor': 'editor'
+    'remove': 'removeElement'
+  }
+  
   initialize: (@model) ->
     # get the position, we only draw if the position is defined
     # TODO deal with getting a position if it is not defined
     @latLng = $a.Util.getLatLng(@model)
     @draw()
     @_publishGoogleEvents()
-    $a.broker.on("map:select_item:#{@model.cid}", @makeSelected, @)
-    $a.broker.on("map:clear_item:#{@model.cid}", @clearSelected, @)
-    $a.broker.on("map:open_editor:#{@model.cid}", @_editor, @)
     $a.Util.publishEvents($a.broker, @broker_events, @)
+    $a.Util.publishEvents(@model, @model_events, @)
 
   render: ->
     @marker.setMap($a.map)
@@ -80,9 +84,7 @@ class window.beats.MapMarkerView extends Backbone.View
   # hide the marker and set it to null
   removeElement: ->
     $a.Util.unpublishEvents($a.broker, @broker_events, @)
-    $a.broker.off("map:select_item:#{@model.cid}")
-    $a.broker.off("map:clear_item:#{@model.cid}")
-    $a.broker.off("map:open_editor:#{@model.cid}")
+    $a.Util.unpublishEvents(@model, @model_events, @)
     @_unpublishGoogleEvents()
     @hideMarker() if @marker?
     @marker = null
@@ -159,6 +161,29 @@ class window.beats.MapMarkerView extends Backbone.View
   _setSelected: (img) ->
     @marker.setIcon(img)
 
+  # Callback for the markers click event. This function sets the model's
+  # selected attribute to its opposite. We save the current state
+  # before clearing in case the user is de-selecting the current marker.
+  # The setting of the model's selected attribute triggers a series of
+  # events to make sure the icon is correct.
+  manageMarkerSelect: () ->
+    current = @model.selected()
+    @_triggerClearSelectEvents()
+    @model.set_selected(!current)
+  
+  # This function triggers the events that make the selected tree and map 
+  # items to de-selected
+  _triggerClearSelectEvents: () ->
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
+  
+  # This method toggles the selection of the node
+  toggleSelectedView: ->
+    if(@model.selected())
+      @makeSelected()
+    else
+      @clearSelected()
+  
   # This method swaps the icon for the selected icon
   makeSelected: (img) ->
     @_setSelected img
