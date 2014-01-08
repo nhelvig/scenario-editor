@@ -75,7 +75,6 @@ class window.beats.SensorListCollection extends Backbone.Collection
       sensor.set_link_reference(link)
       sensor.set_link_id(link.ident())
 
-
   # This method sets up the events each sensor should listen too
   _setUpEvents: (sensor) ->
     # map any change in sensor object to change crudflag accordingly

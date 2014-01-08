@@ -3,15 +3,27 @@ class window.beats.SensorListView extends Backbone.Collection
   $a = window.beats
   views : []
   
+  broker_events : {
+    'map:clear_map' : 'clear'
+    'map:init' :  'render'
+  }
+  
+  collection_events : {
+    'add' : 'addSensorView'
+    'remove' : 'removeSensor'
+  }
+  
+  view_events : {
+   'sensors:selectSelfAndConnected' : 'selectSelfAndConnected'
+   'sensors:clearSelfAndConnected' : 'clearSelfAndConnected'
+  }
+
   # render all the sensors upon map:init and set up the add and remove event
   # for the collection
   initialize: (@collection) ->
-    $a.broker.on("map:clear_map", @clear, @)
-    $a.broker.on('map:init', @render, @)
-    @collection.on('add', @addSensorView, @)
-    @collection.on('remove', @removeSensor, @)
-    @on('sensors:selectSelfAndConnected', @selectSelfAndConnected, @)
-    @on('sensors:clearSelfAndConnected', @clearSelfAndConnected, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
+    $a.Util.publishEvents(@collection, @collection_events, @)
+    $a.Util.publishEvents(@, @view_events, @)
   
   # create sensor view object and render it when a new sensor is added to the
   # map
@@ -23,6 +35,7 @@ class window.beats.SensorListView extends Backbone.Collection
   
   #this method clears the collection upon a clear map
   clear: ->
+    $a.Util.unpublishEvents(@, @view_events, @)
     $a.sensorListView = {}
   
   # renders all the sensors in the collection by calling addSensorView
