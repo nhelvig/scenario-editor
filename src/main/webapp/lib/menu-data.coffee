@@ -243,10 +243,16 @@ $a.sensor_context_menu = [
       ((e) -> $a.sensorList.trigger("sensors:remove", e.currentTarget.id)),
       SCENARIO
   context_menu_item 'Select sensor link',
-      ((e) -> $a.broker.trigger("map:select_neighbors:#{e.currentTarget.id}")),
+      ((e) -> 
+        i = e.currentTarget.id
+        $a.sensorListView.trigger("sensors:selectSelfAndConnected", i)
+      ),
       SCENARIO
   context_menu_item 'Clear Selection',
-      ((e) -> $a.broker.trigger("map:clear_neighbors:#{e.currentTarget.id}")),
+      ((e) -> 
+        i = e.currentTarget.id
+        $a.sensorListView.trigger("sensors:clearSelfAndConnected", i)
+      ),
       SCENARIO
 ]
 

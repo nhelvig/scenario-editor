@@ -6,13 +6,15 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   @SELECTED_ICON: 'sensor-sel'
   $a = window.beats
   
+  broker_events : {
+    'map:hide_sensor_layer' : 'hideMarker'
+    'map:show_sensor_layer' : 'showMarker'
+  }
+  
   initialize: (model) ->
     super model
-    $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
-    $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
-    $a.broker.on('map:hide_sensor_layer', @hideMarker, @)
-    $a.broker.on('map:show_sensor_layer', @showMarker, @)
-
+    $a.Util.publishEvents($a.broker, @broker_events, @)
+  
   getIcon: ->
     super @getMarkerImageIcons @_getImage()
   
@@ -41,10 +43,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # type and then calls super to set itself to null, unpublish the general 
   # events, and hide itself
   removeElement: ->
-    $a.broker.off("map:select_neighbors:#{@model.cid}")
-    $a.broker.off("map:clear_neighbors:#{@model.cid}")
-    $a.broker.off('map:hide_sensor_layer')
-    $a.broker.off('map:show_sensor_layer')
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
     super
 
   # publish/unpublish map google events
