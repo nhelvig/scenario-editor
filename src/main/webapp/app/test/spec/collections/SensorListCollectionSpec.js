@@ -3,10 +3,13 @@ describe("SensorListCollection", function() {
   var models;
   
   beforeEach(function() {
+    spyOn($a.SensorListCollection.prototype, 'clear').andCallThrough();
+    spyOn($a.SensorListCollection.prototype, 'clearSelected').andCallThrough();
     spyOn($a.SensorListCollection.prototype, 'addSensorWithPositionLink').andCallThrough();
     spyOn($a.SensorListCollection.prototype, 'addSensor').andCallThrough();
+    spyOn($a.SensorListCollection.prototype, 'attachToLink').andCallThrough();
     spyOn($a.SensorListCollection.prototype, 'removeSensor').andCallThrough();
-    models = $a.models.sensors();
+    models = scenarioAndFriends().scenario.sensors()
     this.sColl= new $a.SensorListCollection(models);
   });
   
@@ -35,6 +38,18 @@ describe("SensorListCollection", function() {
       this.sColl.trigger("sensors:remove", 1);
       expect($a.SensorListCollection.prototype.removeSensor).toHaveBeenCalled();
     });
+    it("should be watching clear", function() {
+       $a.broker.trigger("map:clear_map");
+       expect($a.SensorListCollection.prototype.clear).toHaveBeenCalled();
+    });
+    it("should be watching clearSelected", function() {
+       $a.broker.trigger('map:clear_selected');
+       expect($a.SensorListCollection.prototype.clearSelected).toHaveBeenCalled();
+    });
+    it("should be watching attachToLink", function() {
+      this.sColl.trigger('sensors:attach_to_link');
+      expect($a.SensorListCollection.prototype.attachToLink).toHaveBeenCalled();
+    });
   });
   
    describe("getBrowserColumnData", function() {
@@ -44,9 +59,10 @@ describe("SensorListCollection", function() {
        arrColumnsData = this.sColl.getBrowserColumnData();
        s = this.sColl.models[0];
        expect(arrColumnsData[0][0]).toEqual(s.ident());
-       expect(arrColumnsData[0][1]).toEqual(s.type());
-       expect(arrColumnsData[0][2]).toEqual(s.link().type());
-       expect(arrColumnsData[0][3]).toEqual(s.link().ident());
+       expect(arrColumnsData[0][1]).toEqual(s.type_name());
+       link = s.link_reference();
+       expect(arrColumnsData[0][2]).toEqual(link.link_type().name());
+       expect(arrColumnsData[0][3]).toEqual(link.ident());
      });
    });
 
@@ -91,11 +107,21 @@ describe("SensorListCollection", function() {
   
   describe("removeSensor ", function() {
     it("should remove it from collection and schema", function() {
-     sensor = scenarioAndFriends().sensor
+     sensor = new $a.Sensor();
      this.sColl.add(sensor)
      var lengthBefore = this.sColl.length;
      this.sColl.removeSensor(sensor.cid);
      expect(lengthBefore - 1).toEqual(this.sColl.length);
+    });
+  });
+  describe("attachToLink", function() {
+    it("should attach selected link to sensor", function() {
+     s = this.sColl.models[0]
+     link = $a.linkList.models[0];
+     link.set_selected(true);
+     this.sColl.attachToLink(s.cid)
+     expect(sensor.link_reference()).toEqual(link);
+     expect(sensor.link_id()).toEqual(link.id);
     });
   });
 });

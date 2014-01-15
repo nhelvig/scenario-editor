@@ -143,11 +143,7 @@ beforeEach(function() {
     node3 = new window.beats.Node({id: 22, position: p});
     node4 = new window.beats.Node({id: 23, position: p});
     node5 = new window.beats.Node({id: 24, position: p});
-    sensor = new window.beats.Sensor({id:1, position: p});
-    sensor1 = new window.beats.Sensor({id:1, position: p});
-    sensor2 = new window.beats.Sensor({id:2, position: p});
-    sensor3 = new window.beats.Sensor({id:3, position: p});
-    sensor4 = new window.beats.Sensor({id:4, position: p});
+    
     density = new window.beats.Density({id: 1});
     ids = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});
@@ -160,12 +156,21 @@ beforeEach(function() {
     fps = new window.beats.FundamentalDiagramSet({fundamentaldiagram: [fp]});
     srp = new window.beats.SplitRatioProfile({id: 1});
     srps = new window.beats.SplitRatioSet({splitratioprofile: [srp]});
+    
     link1 = simpleLink(99,node1, node2, fps, dp);
     link2 = simpleLink(100,node2, node3);
     link3 = simpleLink(101, node3, node1);
     link4 = simpleLink(102, node4, node5);
+    
+    sensor = new window.beats.Sensor({id:1, position: p, link_reference: link1});
+    sensor1 = new window.beats.Sensor({id:1, position: p, link_reference: link2});
+    sensor2 = new window.beats.Sensor({id:2, position: p, link_reference: link3});
+    sensor3 = new window.beats.Sensor({id:3, position: p, link_reference: link4});
+    sensor4 = new window.beats.Sensor({id:4, position: p, link_reference: link1});
 
-    sensorset = new window.beats.SensorSet({sensor: [sensor1, sensor2, sensor3, sensor4]});
+
+    sensorset = new window.beats.SensorSet();
+    sensorset.set_sensors([sensor1, sensor2, sensor3, sensor4]);
     linkList = new window.beats.LinkList({link: [link1, link2, link3]});
     nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
     network = new window.beats.Network({id: 1});
@@ -182,9 +187,9 @@ beforeEach(function() {
       downstreamboundarycapacityset: cps,
       demandset: dps,
       fundamentaldiagramset: fps,
-      splitratioset: srps,
-      sensorset: sensorset
+      splitratioset: srps
     });
+    scenario.set_sensor_set(sensorset);
     scenario.set_nodes([node1, node2, node3])
     scenario.set_links([link1, link2, link3])
     
