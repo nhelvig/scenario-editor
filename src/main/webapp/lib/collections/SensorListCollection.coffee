@@ -120,7 +120,5 @@ class window.beats.SensorListCollection extends Backbone.Collection
   clear: ->
     @remove(@models)
     $a.sensorList = {}
-    $a.broker.off('sensors:add')
-    $a.broker.off('sensors:add_sensor')
-    $a.broker.off('map:clear_selected', @)
-    @off(null, null, @)
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
+    $a.Util.unpublishEvents(@, @collection_events, @)
