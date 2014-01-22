@@ -8,8 +8,8 @@
     'EditorNodeViewSpec',
     'EditorLinkViewSpec', 
     'MapLinkViewSpec',
-    'MapNodeViewSpec'
-    //'EditorSensorViewSpec'
+    'MapNodeViewSpec',
+    'EditorSensorViewSpec'
   ];
   
   collections_jasmine_specs = [

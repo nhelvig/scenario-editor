@@ -81,7 +81,10 @@ class window.beats.EditorSensorView extends window.beats.EditorView
   # Save sensor type
   saveType: (e) ->
     id = e.currentTarget.id
-    _.each(@models, (m) -> m.set_type($("##{id} :selected").val(), $("##{id} :selected").attr("name")))
+    _.each(@models, (m) -> 
+      elem = $("##{id} :selected")
+      m.set_type(elem.val(), elem.attr("name"))
+    )
 
   # links are in the link_reference attribute
   saveLinks: (e) ->

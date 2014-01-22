@@ -31,7 +31,7 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     title
   
   # creates the editor for this marker
-  editor: ->
+  _editor: ->
     @model.set_selected(true)
     env = new $a.EditorSensorView(elem: 'sensor', models: [@model], width: 300)
     $('body').append(env.el)

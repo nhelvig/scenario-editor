@@ -162,11 +162,28 @@ beforeEach(function() {
     link3 = simpleLink(101, node3, node1);
     link4 = simpleLink(102, node4, node5);
     
-    sensor = new window.beats.Sensor({id:5, position: p, link_reference: link1});
-    sensor1 = new window.beats.Sensor({id:1, position: p, link_reference: link2});
-    sensor2 = new window.beats.Sensor({id:2, position: p, link_reference: link3});
-    sensor3 = new window.beats.Sensor({id:3, position: p, link_reference: link4});
-    sensor4 = new window.beats.Sensor({id:4, position: p, link_reference: link1});
+    args = {id:5, link_id:link1.ident(),link_reference: link1}
+    args1 = {id:1, link_id:link2.ident(), link_reference: link2}
+    args2 = {id:2, link_id:link3.ident(), link_reference: link3}
+    args3 = {id:3, link_id:link4.ident(), link_reference: link4}
+    args4 = {id:4, link_id:link1.ident(), link_reference: link1}
+    
+    sensor = new window.beats.Sensor(args);
+    sensor1 = new window.beats.Sensor(args1);
+    sensor2 = new window.beats.Sensor(args2);
+    sensor3 = new window.beats.Sensor(args3);
+    sensor4 = new window.beats.Sensor(args4);
+    
+    sensor.updatePosition(pt);
+    sensor1.updatePosition(pt);
+    sensor2.updatePosition(pt);
+    sensor3.updatePosition(pt);
+    sensor4.updatePosition(pt);
+    sensor1.set_link_type_original(sensor1.type_name());
+    sensor2.set_link_type_original(sensor2.type_name());
+    sensor3.set_link_type_original(sensor3.type_name());
+    sensor4.set_link_type_original(sensor4.type_name());
+    sensor.set_link_type_original(sensor.type_name());
 
 
     sensorset = new window.beats.SensorSet();
