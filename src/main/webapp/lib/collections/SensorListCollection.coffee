@@ -66,8 +66,8 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # Sensor Model Object needs to placed on the map 
   addSensor: (sensor) ->
     # set crudflag to indicate sensor has been added
-    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
-    sensor.set_crud_flag($a.CrudFlag.CREATE)
+    $a.models.sensor_set().set_crud($a.CrudFlag.UPDATE)
+    sensor.set_crud($a.CrudFlag.CREATE)
     @_setUpEvents(sensor)
     @add(sensor)
     sensor

@@ -162,7 +162,7 @@ beforeEach(function() {
     link3 = simpleLink(101, node3, node1);
     link4 = simpleLink(102, node4, node5);
     
-    sensor = new window.beats.Sensor({id:1, position: p, link_reference: link1});
+    sensor = new window.beats.Sensor({id:5, position: p, link_reference: link1});
     sensor1 = new window.beats.Sensor({id:1, position: p, link_reference: link2});
     sensor2 = new window.beats.Sensor({id:2, position: p, link_reference: link3});
     sensor3 = new window.beats.Sensor({id:3, position: p, link_reference: link4});

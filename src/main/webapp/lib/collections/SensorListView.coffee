@@ -36,6 +36,8 @@ class window.beats.SensorListView extends Backbone.Collection
   #this method clears the collection upon a clear map
   clear: ->
     $a.Util.unpublishEvents(@, @view_events, @)
+    $a.Util.unpublishEvents(@collection, @collection_events, @)
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
     $a.sensorListView = {}
   
   # renders all the sensors in the collection by calling addSensorView

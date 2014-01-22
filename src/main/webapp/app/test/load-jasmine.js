@@ -17,8 +17,8 @@
     'LinkListCollectionSpec',
     'LinkListViewSpec', 
     'NodeListViewSpec',
-    'SensorListCollectionSpec'
-    //'SensorListViewSpec',
+    'SensorListCollectionSpec',
+    'SensorListViewSpec',
     //'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];
   
