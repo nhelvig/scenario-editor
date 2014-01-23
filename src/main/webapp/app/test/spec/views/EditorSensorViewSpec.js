@@ -76,18 +76,11 @@ describe("EditorSensorView", function() {
           expectSaveSelect({
             el: this.view.el,
             id: '#sensor_type',
-            modelField: 'type',
-            model: model
+            modelField: 'id',
+            model: model.get('sensor_type')
           });
         });
 
-        it("Sensor Tab: Links are saved", function() {
-          expectSave({
-            id: '#sensor_links',
-            modelField: 'id',
-            model: model.get('link_reference')
-          });
-        });
         it("Geo Tab: lat is saved", function() { 
           $('#sensor_lat').val("999");
           $("#sensor_lat").blur();
