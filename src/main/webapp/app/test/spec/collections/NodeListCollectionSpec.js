@@ -4,73 +4,80 @@ describe("NodeListCollection", function() {
   var network;
   
   beforeEach(function() {
-    spyOn($a.NodeListCollection.prototype, 'clear').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'clearSelected').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'addNode').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'addLink').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'addConnectingLinkDest').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'addConnectingLinkOrigin').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'addLinkOrigin').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'addLinkDest').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'removeNode').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'removeNodeAndLinks').andCallThrough();
-    spyOn($a.NodeListCollection.prototype, 'removeNodeAndJoinLinks').andCallThrough();
-    this.nColl = new $a.NodeListCollection(scenarioAndFriends().scenario.nodes());
+    nlc = $a.NodeListCollection.prototype;
+    spyOn($a.LinkListCollection.prototype, 'addLink');
+    spyOn(nlc, 'clear').andCallThrough();
+    spyOn(nlc, 'clearSelected').andCallThrough();
+    spyOn(nlc, 'addNode').andCallThrough();
+    spyOn(nlc, 'addLink').andCallThrough();
+    spyOn(nlc, 'addConnectingLinkDest').andCallThrough();
+    spyOn(nlc, 'addConnectingLinkOrigin').andCallThrough();
+    spyOn(nlc, 'addLinkOrigin').andCallThrough();
+    spyOn(nlc, 'addLinkDest').andCallThrough();
+    spyOn(nlc, 'removeNode').andCallThrough();
+    spyOn(nlc, 'removeNodeAndLinks').andCallThrough();
+    spyOn(nlc, 'removeNodeAndJoinLinks').andCallThrough();
+    model = scenarioAndFriends().scenario
+    this.nColl = new $a.NodeListCollection(model.nodes());
+    this.lColl = new window.beats.LinkListCollection(model.links());
    
   });
   
   describe("Instantiation", function() {
+       latLng = new google.maps.LatLng(37,-125);
        it("sets models to a collection of nodes", function() {
          expect(this.nColl.models).not.toBeNull();
        });
        it("sets all its models selected attribute to false", function() {
          mod = this.nColl.models;
-         arrSel = mod.filter(function(node){ return node.get('selected') === false});
+         arrSel = mod.filter(function(node){ 
+           return node.get('selected') === false
+         });
          expect(arrSel.length).toEqual(this.nColl.length);
        });
        it("should be watching clear", function() {
          $a.broker.trigger("map:clear_map");
-         expect($a.NodeListCollection.prototype.clear).toHaveBeenCalled();
+         expect(nlc.clear).toHaveBeenCalled();
        });
        it("should be watching clearSelected", function() {
          $a.broker.trigger('map:clear_selected');
-         expect($a.NodeListCollection.prototype.clearSelected).toHaveBeenCalled();
+         expect(nlc.clearSelected).toHaveBeenCalled();
        })
        it("should be watching addNode", function() {
          $a.broker.trigger("nodes:add", new google.maps.LatLng(35,-122));
-         expect($a.NodeListCollection.prototype.addNode).toHaveBeenCalled();
+         expect(nlc.addNode).toHaveBeenCalled();
        });
        it("should be watching addLink", function() {
          this.nColl.trigger("nodes:add_link", new google.maps.LatLng(37,-123));
-         expect($a.NodeListCollection.prototype.addLink).toHaveBeenCalled();
+         expect(nlc.addLink).toHaveBeenCalled();
        });
        it("should be watching addConnectingLinkDest", function() {
-         this.nColl.trigger('nodes:add_connecting_link_dest', new google.maps.LatLng(37,-125));
-         expect($a.NodeListCollection.prototype.addConnectingLinkDest).toHaveBeenCalled();
+         this.nColl.trigger('nodes:add_connecting_link_dest', latLng);
+         expect(nlc.addConnectingLinkDest).toHaveBeenCalled();
        });
        it("should be watching addLinkDest", function() {
          this.nColl.trigger("nodes:add_dest", new google.maps.LatLng(36,-122));
-         expect($a.NodeListCollection.prototype.addLinkDest).toHaveBeenCalled();
+         expect(nlc.addLinkDest).toHaveBeenCalled();
        });
        it("should be watching addConnectingLinkOrigin", function() {
-         this.nColl.trigger("nodes:add_connecting_link_orig", new google.maps.LatLng(37,-125));
-         expect($a.NodeListCollection.prototype.addConnectingLinkOrigin).toHaveBeenCalled();
+         this.nColl.trigger("nodes:add_connecting_link_orig", latLng);
+         expect(nlc.addConnectingLinkOrigin).toHaveBeenCalled();
        });
        it("should be watching addLinkDest", function() {
          this.nColl.trigger("nodes:add_dest", new google.maps.LatLng(36,-122));
-         expect($a.NodeListCollection.prototype.addLinkDest).toHaveBeenCalled();
+         expect(nlc.addLinkDest).toHaveBeenCalled();
        });
        it("should be watching removeNode", function() {
          $a.broker.trigger("nodes:remove", this.nColl.models[0].cid);
-         expect($a.NodeListCollection.prototype.removeNode).toHaveBeenCalled();
+         expect(nlc.removeNode).toHaveBeenCalled();
        });
        it("should be watching removeNodeAndJoinLinks", function() {
          $a.broker.trigger("nodes:remove_and_join", this.nColl.models[0].cid);
-         expect($a.NodeListCollection.prototype.removeNodeAndJoinLinks).toHaveBeenCalled();
+         expect(nlc.removeNodeAndJoinLinks).toHaveBeenCalled();
        });
        it("should be watching removeNodeAndLinks", function() {
          $a.broker.trigger("nodes:remove_and_links", this.nColl.models[0].cid);
-         expect($a.NodeListCollection.prototype.removeNodeAndLinks).toHaveBeenCalled();
+         expect(nlc.removeNodeAndLinks).toHaveBeenCalled();
        });
   });
      
@@ -97,7 +104,9 @@ describe("NodeListCollection", function() {
      it("should sets the select field to false", function() {
        mod = this.nColl.models;
        this.nColl.clearSelected();
-       arrSel = mod.filter(function(node){ return node.get('selected') == false});
+       arrSel = mod.filter(function(node){ 
+         return node.get('selected') == false
+       });
        expect(arrSel.length).toEqual(this.nColl.length);
      });
   });
@@ -137,12 +146,15 @@ describe("NodeListCollection", function() {
      it("should use selected and clicked node to create a link", function() {
        this.nColl.models[0].set('selected', true)
        this.nColl.addConnectingLinkOrigin(this.nColl.models[1].cid)
+       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
      });
    });
    describe("addConnectingLinkDest", function() {
      it("should use selected and clicked node to create a link", function() {
        this.nColl.models[0].set('selected', true)
        this.nColl.addConnectingLinkDest(this.nColl.models[1].cid)
+       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
+
      });
    });
    
