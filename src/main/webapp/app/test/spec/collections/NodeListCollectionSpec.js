@@ -243,7 +243,6 @@ describe("NodeListCollection", function() {
         this.nColl.trigger("nodes:add_connecting_link_orig", latLng);  
         this.nColl.trigger("nodes:add_dest", latLng);
         
-        
         expect(nlc.prototype.addNode).not.toHaveBeenCalled();
         expect(nlc.prototype.addLink).not.toHaveBeenCalled();
         expect(nlc.prototype.addConnectingLinkDest).not.toHaveBeenCalled();

@@ -3,34 +3,37 @@ class window.beats.LinkListCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Link
   
+  broker_events : {
+    'map:clear_map' : 'clear'
+    'map:clear_selected' : 'clearSelected'
+    'links_collection:add' : 'addLink'
+    'links_collection:join' : 'joinLin'
+    'links:remove' : 'removeLink'
+  }
+  
+  collection_events : {
+    'links:hide_link_layer' :  'hideLinkLayer'
+    'links:show_link_layer' : 'showLinkLayer'
+    'links:duplicate' : 'duplicateLink'
+    'links:add_sensor' : 'addSensorToLink'
+    'links:add_controller' : 'addControllerToLink'
+    'links:add_event' : 'addEventToLink'
+    'links:remove' : 'removeLink'
+    'links:split' : 'splitLink'
+    'links:split_add_node' : 'splitLinkAddNode'
+    'links:open_editor' : 'showEditor'
+    'links:select_neighbors' : 'setNeighborsSelected'
+    'links:deselect_link' : 'deSelectLink'
+    'links:view_demand' : 'viewDemands'
+  }
+  
   # set up the event that calls for the addition of a link to the collection
   # register the links begin and end nodes with the remove method on the model
   # node
-  initialize: (@models, @network)->
-    $a.broker.on("map:clear_map", @clear, @)
-    $a.broker.on('links_collection:add', @addLink, @)
-    $a.broker.on('links_collection:join', @joinLink, @)
-    $a.broker.on('links:remove', @removeLink, @)
-    $a.broker.on('map:clear_selected', @clearSelected, @)
-    if network?
-      $a.broker.on("map:select_network:#{@network.cid}", @setSelected, @)
-      $a.broker.on("map:clear_network:#{@network.cid}", @clearSelected, @)
-
-    @on('links:hide_link_layer', @hideLinkLayer, @)
-    @on('links:show_link_layer', @showLinkLayer, @)
-    @on('links:duplicate', @duplicateLink, @)
-    @on('links:add_sensor', @addSensorToLink, @)
-    @on('links:add_controller', @addControllerToLink, @)
-    @on('links:add_event', @addEventToLink, @)
-    @on('links:remove', @removeLink, @)
-    @on('links:split', @splitLink, @)
-    @on('links:split_add_node', @splitLinkAddNode, @)
-    @on('links:open_editor', @showEditor, @)
-    @on('links:select_neighbors', @setNeighborsSelected, @)
-    @on('links:deselect_link', @deSelectLink, @)
-    @on('links:view_demand', @viewDemands, @)
-    
+  initialize: (@models) ->
     @forEach((link) =>  @_setUpEvents(link))
+    $a.Util.publishEvents($a.broker, @broker_events, @)
+    $a.Util.publishEvents(@, @collection_events, @)
   
   # addLink takes the begin node and end node ids, sets up the appropriate
   # begin and end node objects, creates the link, adds it to the collection
@@ -238,11 +241,8 @@ class window.beats.LinkListCollection extends Backbone.Collection
   clear: ->
     @remove(@models)
     $a.linkList = {}
-    $a.broker.off("map:redraw_link")
-    $a.broker.off('links_collection:add')
-    $a.broker.off('links_collection:join')
-    $a.broker.off('links:remove')
-    @off(null, null, @)
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
+    $a.Util.unpublishEvents(@, @collection_events, @)
   
   # This is called when a link browser is created in order to return
   # the desired column data for the table.

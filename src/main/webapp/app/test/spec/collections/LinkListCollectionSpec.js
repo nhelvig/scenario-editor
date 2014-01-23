@@ -15,7 +15,7 @@ describe("LinkListCollection", function() {
     spyOn($a.LinkListCollection.prototype, 'duplicateLink').andCallThrough();
     scen = scenarioAndFriends();
     links = [scen.link1, scen.link2, scen.link3];
-    this.lColl= new $a.LinkListCollection(links,$a.models.network());
+    this.lColl= new $a.LinkListCollection(links);
   });
   
   describe("Instantiation", function() {
