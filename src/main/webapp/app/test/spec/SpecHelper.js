@@ -64,13 +64,13 @@ beforeEach(function() {
   }
   
   modelSetUp = function() {
-    // xml = $.parseXML($a.fileText);
-    // $a.models = $a.Scenario.from_xml($(xml).children());
-    // network = $a.models.network();
-    // //$a.nodeList = new $a.NodeListCollection($a.models.nodes())
-    // $a.nodeListView = new $a.NodeListView($a.nodeList, network)
-    // $a.linkList = new $a.LinkListCollection($a.models.links(), network)
-    // $a.linkListView = new $a.LinkListView($a.linkList, network)
+    xml = $.parseXML($a.fileText);
+    $a.models = $a.Scenario.from_xml($(xml).children());
+    network = $a.models.network();
+    $a.nodeList = new $a.NodeListCollection($a.models.nodes())
+    $a.nodeListView = new $a.NodeListView($a.nodeList, network)
+    $a.linkList = new $a.LinkListCollection($a.models.links(), network)
+    $a.linkListView = new $a.LinkListView($a.linkList, network)
   }
   
   simpleLink = function(id, node1, node2, fps, dp) {

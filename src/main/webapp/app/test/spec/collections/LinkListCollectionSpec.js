@@ -16,6 +16,8 @@ describe("LinkListCollection", function() {
     scen = scenarioAndFriends();
     links = [scen.link1, scen.link2, scen.link3];
     this.lColl= new $a.LinkListCollection(links);
+    model = scen.scenario
+    $a.nodeList = new $a.NodeListCollection(model.nodes());
   });
   
   describe("Instantiation", function() {
@@ -24,8 +26,8 @@ describe("LinkListCollection", function() {
     });
     
     it("should be watching addLink", function() {
-      begin = $a.linkList.models[0].begin_node();
-      end = $a.linkList.models[0].end_node();
+      begin = this.lColl.models[0].begin_node();
+      end = this.lColl.models[0].end_node();
       $a.broker.trigger("links_collection:add", {begin:begin,end:end});
       expect($a.LinkListCollection.prototype.addLink).toHaveBeenCalled();
     });
