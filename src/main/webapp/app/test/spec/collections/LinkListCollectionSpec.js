@@ -102,11 +102,21 @@ describe("LinkListCollection", function() {
   //     });
   // });  
   describe("removeLink", function() {
-    it("should remove a link from the collection", function() {
+    msg = "should remove a link from the collection as well as remove the ";
+    msg += "link from its begin and end node input and output arrays." 
+    it(msg, function() {
       var lengthBefore = this.lColl.length;
+      var oLength = scen.link1.begin_node().outputs().length;
+      var iLength = scen.link1.end_node().inputs().length;
       this.lColl.removeLink(scen.link1.cid);
+      var afterOLength = scen.link1.begin_node().outputs().length;
+      var afterILength = scen.link1.end_node().inputs().length;
+      expect(oLength - 1).toEqual(afterOLength);
+      expect(iLength - 1).toEqual(afterILength);
       expect(lengthBefore - 1).toEqual(this.lColl.length);
+
     });
+
     msg = "should remove a link without an error if begin or end node are ";
     msg += "missing from link";
     it(msg, function() {
