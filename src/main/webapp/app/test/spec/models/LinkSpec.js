@@ -17,6 +17,7 @@ describe("Link", function() {
     testLink1 = simpleLink(1, testNode, testNode2);
     testLink2 = simpleLink(2, testNode, testNode3);
     testLink3 = simpleLink(3, testNode, testNode3);
+    scen = scenarioAndFriends();
   });
 
   describe("to_xml", function() {
@@ -58,11 +59,20 @@ describe("Link", function() {
   
   describe("remove if CREATE", function() {
     msg = "should remove the link from the links list of models if the CrudFlag";
-    msg += "is CREATE";
+    msg += "is CREATE and remove it from Inputs and Outputs of its begin "
+    msg += "end nodes";
     it(msg, function() {
+      $a.models.links().push(scen.link1);
       var length = $a.models.links().length;
-      $a.models.links()[0].set_crud($a.CrudFlag.CREATE);
-      $a.models.links()[0].remove();
+      var oLength = scen.link1.begin_node().outputs().length
+      var iLength = scen.link1.end_node().inputs().length
+
+      scen.link1.set_crud($a.CrudFlag.CREATE);
+      scen.link1.remove();
+      var afterOLength = scen.link1.begin_node().outputs().length;
+      var afterILength = scen.link1.end_node().inputs().length;
+      expect(oLength - 1).toEqual(afterOLength);
+      expect(iLength - 1).toEqual(afterILength);
       expect(length-1).toEqual($a.models.links().length);
     });
   });
