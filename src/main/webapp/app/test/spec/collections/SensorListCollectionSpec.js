@@ -149,9 +149,8 @@ describe("SensorListCollection", function() {
         expect($a.SensorListCollection.prototype.clear).toHaveBeenCalled();
         expect(this.sColl.models.length).toEqual(0);
         expect($a.sensorList).toEqual({});
-        $a.SensorListCollection.prototype.clear.reset();
-        $a.SensorListCollection.prototype.clearSelected.reset();
-  
+        this.sColl.clear();
+       
         $a.broker.trigger("sensors:add", new google.maps.LatLng(37,-122));
         $a.broker.trigger("sensors:add_sensor", s);
         $a.broker.trigger("map:clear_map");
@@ -162,8 +161,6 @@ describe("SensorListCollection", function() {
         expect($a.SensorListCollection.prototype.addSensor).not.toHaveBeenCalled();
         expect($a.SensorListCollection.prototype.addSensorWithPositionLink).not.toHaveBeenCalled();
         expect($a.SensorListCollection.prototype.removeSensor).not.toHaveBeenCalled();
-        expect($a.SensorListCollection.prototype.clear).not.toHaveBeenCalled();
-        expect($a.SensorListCollection.prototype.clearSelected).not.toHaveBeenCalled();
         expect($a.SensorListCollection.prototype.attachToLink).not.toHaveBeenCalled();
       });
     });

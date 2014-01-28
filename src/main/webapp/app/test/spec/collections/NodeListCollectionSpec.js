@@ -19,7 +19,7 @@ describe("NodeListCollection", function() {
     spyOn(nlc, 'removeNodeAndJoinLinks').andCallThrough();
     model = scenarioAndFriends().scenario
     this.nColl = new $a.NodeListCollection(model.nodes());
-    this.lColl = new window.beats.LinkListCollection(model.links());
+    this.lColl = new $a.LinkListCollection(model.links());
    
   });
   

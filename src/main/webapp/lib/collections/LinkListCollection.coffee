@@ -7,7 +7,7 @@ class window.beats.LinkListCollection extends Backbone.Collection
     'map:clear_map' : 'clear'
     'map:clear_selected' : 'clearSelected'
     'links_collection:add' : 'addLink'
-    'links_collection:join' : 'joinLin'
+    'links_collection:join' : 'joinLink'
     'links:remove' : 'removeLink'
   }
   
