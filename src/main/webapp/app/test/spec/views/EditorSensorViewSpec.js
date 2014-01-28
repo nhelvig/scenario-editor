@@ -26,12 +26,12 @@ describe("EditorSensorView", function() {
     it("should should have id", function() {
       expect(this.view.el.id).toEqual("sensor-dialog-form-" + this.view.models[0].cid);
     });
-
+  
     it("should should have title", function() {
       title = "Sensor Editor: " + this.view.models[0].road_names();
       expect(this.view.el.title).toEqual(title);
     });
-
+  
   });
   
   describe("Rendering", function() {
@@ -41,7 +41,7 @@ describe("EditorSensorView", function() {
     it("returns the view object", function() {
        expect(this.view.render()).toEqual(this.view);
     });
-
+  
     it("should should have correct type selected", function() {
       type = this.view.models[0].type_id();
       elem = $($(this.view.el).find('#sensor_type option:selected'));
@@ -63,7 +63,7 @@ describe("EditorSensorView", function() {
       expect(this.view.$('#sensor_elevation')).toHaveValue(elev);
     });
   });
- 
+   
   describe("Events", function() {
     beforeEach(function() {
       this.view.render();
@@ -80,7 +80,7 @@ describe("EditorSensorView", function() {
             model: model.get('sensor_type')
           });
         });
-
+  
         it("Geo Tab: lat is saved", function() { 
           $('#sensor_lat').val("999");
           $("#sensor_lat").blur();
