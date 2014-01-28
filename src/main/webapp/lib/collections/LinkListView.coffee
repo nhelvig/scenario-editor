@@ -3,18 +3,26 @@ class window.beats.LinkListView extends Backbone.Collection
   $a = window.beats
   views : []
   
+  broker_events : {
+    'map:clear_map' : 'clear'
+    'map:draw_link' : 'createAndDrawLink'
+    'links:check_proximinity' : 'checkSnap'
+  }
+  
+  collection_events : {
+    'add' : 'addAndRender'
+    'remove' : 'removeLink'
+  }
+  
   # set up the draw link and add events and instantiate
   # the MapRouteHanlder for models
   initialize: (@collection, @network) ->
-    $a.broker.on("map:clear_map", @clear, @)
-    $a.broker.on('map:draw_link', @createAndDrawLink, @)
-    $a.broker.on('links:check_proximinity', @checkSnap, @)
     google.maps.event.addListener($a.map, 'zoom_changed', =>
       @setStrokeWeight()
       @toogleLinkArrow()
     )
-    @collection.on('add', @addAndRender, @)
-    @collection.on('remove', @removeLink, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
+    $a.Util.publishEvents(@collection, @collection_events, @)
     @getLinkGeometry(@collection.models)
     @setUpModelsNodePositionChange(@collection.models)
 
@@ -49,8 +57,8 @@ class window.beats.LinkListView extends Backbone.Collection
   clear: ->
     $a.linkListView = {}
     # turn off events
-    $a.broker.off('map:draw_link')
-    $a.broker.off('links:check_proximinity')
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
+    $a.Util.unpublishEvents(@collection, @collection_events, @)
 
   # when a link is added to the link collection or a node moved, this function 
   # is called to set up the geometry on the map via the routeHandler. 
@@ -69,7 +77,7 @@ class window.beats.LinkListView extends Backbone.Collection
   
   # this removes the link from the views array upon removal from collection
   removeLink: (link) ->
-    @views = _.reject(@views, (view) => view.model is link)
+    @views = _.reject(@views, (view) => view.model.id is link.id)
     begin = link.begin_node()
     end = link.end_node()
     if begin?

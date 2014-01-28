@@ -4,8 +4,10 @@ describe("LinkListView", function() {
   
   beforeEach(function() {
     loadFixtures('context.menu.view.fixture.html');
-    network = $a.models.get('networkset').get('network')[0];
-    models = $a.models.links();
+    googleMap();
+    scen = scenarioAndFriends().scenario;
+    network = scen.network();
+    models = scen.links();
     spyOn($a.LinkListView.prototype, 'addAndRender').andCallThrough();
     spyOn($a.LinkListView.prototype, 'createAndDrawLink').andCallThrough();
     spyOn($a.LinkListView.prototype, 'resetPath').andCallThrough();
@@ -15,7 +17,7 @@ describe("LinkListView", function() {
     this.view = new $a.LinkListView(this.lColl, network);
     begin = models[0].begin_node();
     end = models[0].end_node();
-    scen = scenarioAndFriends();
+    
   });
     
   describe("Instantiation", function() {
@@ -25,7 +27,7 @@ describe("LinkListView", function() {
             });
             
             it("should be watching addAndRender", function() {
-                l = scen.link1
+                l = scen.links()[0];
                 args = {begin:l.begin_node(),end:l.end_node(),path:l.geometry(), parallel:true};
                 link = this.lColl.addLink(args);
                 args = {begin:l.begin_node(),end:l.end_node(),path:l.geometry(), parallel:true};
@@ -50,7 +52,7 @@ describe("LinkListView", function() {
                 });
              });   
            it("should be watching createAndDrawLink", function() {
-             $a.broker.trigger('map:draw_link', scen.link1);
+             $a.broker.trigger('map:draw_link', models[0]);
              expect($a.LinkListView.prototype.createAndDrawLink).toHaveBeenCalled();
            });
            
@@ -69,7 +71,7 @@ describe("LinkListView", function() {
    
    describe("createAndDrawLink", function() {
      it("should create MapLinkViews for link", function() {
-       mlv = this.view.createAndDrawLink(scen.link1);
+       mlv = this.view.createAndDrawLink(models[0]);
        expect(mlv).not.toBeNull();
        expect(mlv.link.getMap()).toEqual($a.map);
      });
@@ -85,19 +87,20 @@ describe("LinkListView", function() {
    
   describe("removeLink", function() {
     afterEach(function() {
-      this.view.createAndDrawLink(scen.link1);
+      this.view.createAndDrawLink(models[0]);
     });
     it("should remove the MapLinkView from views array", function() {
-      this.view.createAndDrawLink(scen.link1);
+      scen = scenarioAndFriends();
+      this.view.createAndDrawLink(scen.link4);
       var lengthBefore = this.view.views.length;
-      this.view.removeLink(scen.link1);
+      this.view.removeLink(scen.link4);
       expect(this.view.views.length).toEqual(lengthBefore - 1);
     });
   });
    describe("setStrokeWeight", function() {
     it("should set link stroke weight dependent on zoom level", function() {
       scen = scenarioAndFriends();
-      this.view.createAndDrawLink(scen.link1);
+      this.view.createAndDrawLink(models[0]);
       googleMap();
       $a.map.setZoom(18);
       this.view.setStrokeWeight();
