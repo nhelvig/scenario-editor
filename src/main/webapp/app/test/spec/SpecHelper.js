@@ -6,7 +6,7 @@ describe = function(suiteName, method){
   network = $a.models.network();
   $a.broker = _.clone(Backbone.Events)
   $a.nodeList = new $a.NodeListCollection($a.models.nodes());
-  $a.linkList = new $a.LinkListCollection($a.models.links(), network);
+  $a.linkList = new $a.LinkListCollection($a.models.links());
   return oldDescribe(suiteName, method);
 };
 
@@ -143,11 +143,7 @@ beforeEach(function() {
     node3 = new window.beats.Node({id: 22, position: p});
     node4 = new window.beats.Node({id: 23, position: p});
     node5 = new window.beats.Node({id: 24, position: p});
-    sensor = new window.beats.Sensor({id:1, position: p});
-    sensor1 = new window.beats.Sensor({id:1, position: p});
-    sensor2 = new window.beats.Sensor({id:2, position: p});
-    sensor3 = new window.beats.Sensor({id:3, position: p});
-    sensor4 = new window.beats.Sensor({id:4, position: p});
+    
     density = new window.beats.Density({id: 1});
     ids = new window.beats.InitialDensitySet({density: [density]});
     c = new window.beats.Controller({id:1, display_position:p});
@@ -160,12 +156,38 @@ beforeEach(function() {
     fps = new window.beats.FundamentalDiagramSet({fundamentaldiagram: [fp]});
     srp = new window.beats.SplitRatioProfile({id: 1});
     srps = new window.beats.SplitRatioSet({splitratioprofile: [srp]});
+    
     link1 = simpleLink(99,node1, node2, fps, dp);
     link2 = simpleLink(100,node2, node3);
     link3 = simpleLink(101, node3, node1);
     link4 = simpleLink(102, node4, node5);
+    
+    args = {id:5, link_id:link1.ident(),link_reference: link1}
+    args1 = {id:1, link_id:link2.ident(), link_reference: link2}
+    args2 = {id:2, link_id:link3.ident(), link_reference: link3}
+    args3 = {id:3, link_id:link4.ident(), link_reference: link4}
+    args4 = {id:4, link_id:link1.ident(), link_reference: link1}
+    
+    sensor = new window.beats.Sensor(args);
+    sensor1 = new window.beats.Sensor(args1);
+    sensor2 = new window.beats.Sensor(args2);
+    sensor3 = new window.beats.Sensor(args3);
+    sensor4 = new window.beats.Sensor(args4);
+    
+    sensor.updatePosition(pt);
+    sensor1.updatePosition(pt);
+    sensor2.updatePosition(pt);
+    sensor3.updatePosition(pt);
+    sensor4.updatePosition(pt);
+    sensor1.set_link_type_original(sensor1.type_name());
+    sensor2.set_link_type_original(sensor2.type_name());
+    sensor3.set_link_type_original(sensor3.type_name());
+    sensor4.set_link_type_original(sensor4.type_name());
+    sensor.set_link_type_original(sensor.type_name());
 
-    sensorset = new window.beats.SensorSet({sensor: [sensor1, sensor2, sensor3, sensor4]});
+
+    sensorset = new window.beats.SensorSet();
+    sensorset.set_sensors([sensor1, sensor2, sensor3, sensor4]);
     linkList = new window.beats.LinkList({link: [link1, link2, link3]});
     nodeList = new window.beats.NodeList({node: [node1, node2, node3]});
     network = new window.beats.Network({id: 1});
@@ -182,9 +204,9 @@ beforeEach(function() {
       downstreamboundarycapacityset: cps,
       demandset: dps,
       fundamentaldiagramset: fps,
-      splitratioset: srps,
-      sensorset: sensorset
+      splitratioset: srps
     });
+    scenario.set_sensor_set(sensorset);
     scenario.set_nodes([node1, node2, node3])
     scenario.set_links([link1, link2, link3])
     

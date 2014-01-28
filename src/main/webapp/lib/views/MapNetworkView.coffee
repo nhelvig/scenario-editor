@@ -67,7 +67,7 @@ class window.beats.MapNetworkView extends Backbone.View
   
   _initializeCollections: () ->
     $a.nodeList = new $a.NodeListCollection($a.models.nodes())
-    $a.linkList = new $a.LinkListCollection($a.models.links(), @network)
+    $a.linkList = new $a.LinkListCollection($a.models.links())
     $a.sensorList = new $a.SensorListCollection($a.models.sensors())
     $a.controllerSet = new $a.ControllerSetCollection($a.models.controllers())
     $a.eventSet = new $a.EventSetCollection($a.models.events())

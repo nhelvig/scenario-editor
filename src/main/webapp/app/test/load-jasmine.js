@@ -8,16 +8,17 @@
     'EditorNodeViewSpec',
     'EditorLinkViewSpec', 
     'MapLinkViewSpec',
-    'MapNodeViewSpec'
-    //'EditorSensorViewSpec'
+    'MapNodeViewSpec',
+    'EditorSensorViewSpec'
   ];
   
   collections_jasmine_specs = [
     'NodeListCollectionSpec', 
     'LinkListCollectionSpec',
     'LinkListViewSpec', 
-    'NodeListViewSpec'
-    //'SensorListCollectionSpec', 'SensorListViewSpec',
+    'NodeListViewSpec',
+    'SensorListCollectionSpec',
+    'SensorListViewSpec',
     //'ControllerSetCollectionSpec', 'ControllerSetViewSpec'
   ];
   
@@ -26,7 +27,8 @@
     'FundamentalDiagramSpec', 'FundamentalDiagramProfileSpec',
     'FundamentalDiagramSetSpec', 'InputSpec','OutputSpec','LinkSpec', 
     'NodeSpec', 'LinkListSpec','NodeListSpec',
-    'SensorSpec', 'SensorTypeSpec', 'SensorSetSpec', 
+    'SensorSpec', 'SensorTypeSpec', 
+    'SensorSetSpec', 
     'SplitratioSpec', 'SplitratioProfileSpec', 'SplitratioSetSpec'
     //'ControllerSpec','DensitySpec', 'EventSpec', 
     //'ScenarioSpec', 'SignalSpec', 

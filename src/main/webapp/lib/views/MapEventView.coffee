@@ -35,13 +35,11 @@ class window.beats.MapEventView extends window.beats.MapMarkerView
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapEventView.__super__._getIconName.apply(@, []) 
+    @_triggerClearSelectEvents()
     if iconName == "#{MapEventView.ICON}.svg"
-      @_triggerClearSelectEvents()
-      $a.broker.trigger("app:tree_highlight:#{@model.cid}")
-      @makeSelected()
+      @model.set_selected(true)
     else
-      @_triggerClearSelectEvents()
-      @clearSelected() # Shift key is down and you are deselecting yourself
+      @model.set_selected(false)
 
   # This function triggers the events that make the selected tree and 
   # map items to de-selected

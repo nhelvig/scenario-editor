@@ -3,22 +3,30 @@ class window.beats.NodeListCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Node
   
+  broker_events : {
+    'map:clear_map' : 'clear'
+    'map:clear_selected' : 'clearSelected'
+    'nodes:add' :  'addNode'
+    'nodes:remove' : 'removeNode'
+    'nodes:remove_and_links' : 'removeNodeAndLinks'
+    'nodes:remove_and_join' : 'removeNodeAndJoinLinks'
+  }
+  
+  collection_events : {
+    'nodes:add_link' : 'addLink'
+    'nodes:add_connecting_link_orig' : 'addConnectingLinkOrigin'
+    'nodes:add_connecting_link_dest' : 'addConnectingLinkDest'
+    'nodes:add_origin' : 'addLinkOrigin'
+    'nodes:add_dest' : 'addLinkDest'
+  }
+  
   # when initialized go through the models and set selected to false, and 
   # set up all the events need to add nodes to the collection.
   initialize:(@models) ->
     @clearSelected()
     @forEach((node) => @_setUpEvents(node))
-    $a.broker.on('map:clear_map', @clear, @)
-    $a.broker.on('nodes:add', @addNode, @)
-    $a.broker.on('nodes:remove', @removeNode, @)
-    $a.broker.on('nodes:remove_and_links', @removeNodeAndLinks, @)
-    $a.broker.on('nodes:remove_and_join', @removeNodeAndJoinLinks, @)
-    $a.broker.on('map:clear_selected', @clearSelected, @)
-    @on('nodes:add_link', @addLink, @)
-    @on('nodes:add_connecting_link_orig', @addConnectingLinkOrigin, @)
-    @on('nodes:add_connecting_link_dest', @addConnectingLinkDest, @)
-    @on('nodes:add_origin', @addLinkOrigin, @)
-    @on('nodes:add_dest', @addLinkDest, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
+    $a.Util.publishEvents(@, @collection_events, @)
   
   # the node browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
@@ -139,7 +147,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
   
   # gets the selected node from the collection
   _getSelectedNode:  ->
-    _.filter(@models, (node) -> node.get('selected') is true)
+    _.filter(@models, (node) -> node.selected() is true)
 
   # This method sets up the events each node should listen too
   _setUpEvents: (node) ->
@@ -157,8 +165,5 @@ class window.beats.NodeListCollection extends Backbone.Collection
   clear: ->
     @remove(@models)
     $a.nodeList = {}
-    $a.broker.off('nodes:add')
-    $a.broker.off('nodes:remove')
-    $a.broker.off('nodes:remove_and_links')
-    $a.broker.off('nodes:remove_and_join')
-    @off(null, null, @)
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
+    $a.Util.unpublishEvents(@, @collection_events, @)

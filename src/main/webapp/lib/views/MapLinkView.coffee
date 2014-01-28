@@ -208,7 +208,7 @@ class window.beats.MapLinkView extends Backbone.View
 
   # This method toggles the selection of the link
   toggleSelected: () ->
-    if(@model.selected() is true)
+    if(@model.selected())
       @linkSelect()
     else
       @clearSelected()
@@ -304,13 +304,6 @@ class window.beats.MapLinkView extends Backbone.View
       return 3
     else
       return 2
-    # if (zoomLevel >= 17)
-    #   lineWidth = if numLines > 5 then 5 else 3
-    # else if (zoomLevel >= 16)
-    #   lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
-    # else
-    #   lineWidth = $a.MapLinkView.STROKE_WEIGHT_THINNER
-    # lineWidth
 
   # determine whether arrow should be drawn or not based on
   # zoom level

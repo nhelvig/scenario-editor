@@ -3,15 +3,23 @@ class window.beats.SensorListCollection extends Backbone.Collection
   $a = window.beats
   model: $a.Sensor
   
+  broker_events : {
+    'map:clear_map' : 'clear'
+    'sensors:add' :  'addSensorWithPositionLink'
+    'sensors:add_sensor' : 'addSensor'
+    'map:clear_selected' : 'clearSelected'
+  }
+  
+  collection_events : {
+    'sensors:attach_to_link' : 'attachToLink'
+    'sensors:remove' : 'removeSensor'
+  }
+  
   # when initialized go through the models and set selected to false
   initialize:(@models) ->
     @models.forEach((sensor) => @_setUpEvents(sensor))
-    $a.broker.on("map:clear_map", @clear, @)
-    $a.broker.on('sensors:add', @addSensorWithPositionLink, @)
-    $a.broker.on('sensors:add_sensor', @addSensor, @)
-    $a.broker.on('map:clear_selected', @clearSelected, @)
-    @on('sensors:attach_to_link', @attachToLink, @)
-    @on('sensors:remove', @removeSensor, @)
+    $a.Util.publishEvents($a.broker, @broker_events, @)
+    $a.Util.publishEvents(@, @collection_events, @)
   
   # the sensor browser calls this to gets the column data for the table
   getBrowserColumnData: () ->
@@ -58,8 +66,8 @@ class window.beats.SensorListCollection extends Backbone.Collection
   # Sensor Model Object needs to placed on the map 
   addSensor: (sensor) ->
     # set crudflag to indicate sensor has been added
-    $a.models.sensor_set().set_crud_flag($a.CrudFlag.UPDATE)
-    sensor.set_crud_flag($a.CrudFlag.CREATE)
+    $a.models.sensor_set().set_crud($a.CrudFlag.UPDATE)
+    sensor.set_crud($a.CrudFlag.CREATE)
     @_setUpEvents(sensor)
     @add(sensor)
     sensor
@@ -75,7 +83,6 @@ class window.beats.SensorListCollection extends Backbone.Collection
       sensor.set_link_reference(link)
       sensor.set_link_id(link.ident())
 
-
   # This method sets up the events each sensor should listen too
   _setUpEvents: (sensor) ->
     # map any change in sensor object to change crudflag accordingly
@@ -83,18 +90,19 @@ class window.beats.SensorListCollection extends Backbone.Collection
     sensor.on('change:sensor_type change:link_position change:link_id change:java_class /
       change:sensor_id_original change:data_feed_id change:lane_number change:link_offset change:health_status'
         => @_updateSensor(sensor))
-    # have event listener if display lat or long changes
-    sensor.display_point().on('change',
-        => @_updateSensor(sensor))
-    # have event listener if sensor type changes
-    sensor.sensor_type().on('change',
-      => @_updateSensor(sensor))
-    sensor.bind('remove', =>
+
+    sensor.on('add', => sensor.add())
+    sensor.on('remove', =>
                             sensor.remove()
                             @destroy
                       )
-    sensor.bind('add', => sensor.add())
     sensor.set('selected', false)
+
+    # have event listener if display lat or long changes
+    sensor.display_point().on('change', => @_updateSensor(sensor))
+    # have event listener if sensor type changes
+    sensor.sensor_type().on('change', => @_updateSensor(sensor))
+    
 
   # Update Sensor and Set's CRUD flag to indicate it has changed
   _updateSensor: (sensor) ->
@@ -112,7 +120,5 @@ class window.beats.SensorListCollection extends Backbone.Collection
   clear: ->
     @remove(@models)
     $a.sensorList = {}
-    $a.broker.off('sensors:add')
-    $a.broker.off('sensors:add_sensor')
-    $a.broker.off('map:clear_selected', @)
-    @off(null, null, @)
+    $a.Util.unpublishEvents($a.broker, @broker_events, @)
+    $a.Util.unpublishEvents(@, @collection_events, @)

@@ -1,26 +1,31 @@
     <script type="text/template" id="sensor-editor-dialog-template">
       <ul>
-        <li><a href="#tabs-sensor-1">Sensor</a></li>
-        <li><a href="#tabs-sensor-2">Data</a></li>
-        <li><a href="#tabs-sensor-3">Geo</a></li>
+        <li><a href="#tabs-sensor">Sensor</a></li>
+        <li><a href="#tabs-sensor-data">Data</a></li>
+        <li><a href="#tabs-sensor-geo">Geo</a></li>
       </ul>
-      <div id="tabs-sensor-1">
+      <div id="tabs-sensor">
         <form>
           <fieldset>
             <label for="sensor-type">Type</label>
-            <select id="sensor_type" name ="sensor-type" class="ui-widget-content ui-corner-all">
-              <option value="static_point">Static Point</option>
-              <option value="static_area">Static Area</option>
-              <option value="moving_point">Moving Point</option>
+            <select id="sensor_type" name ="sensor-type" class="ui-widget-content-select ui-corner-all">
+              <option value="0" name="">--------------</option>
+              <option value="1" name="Loop">Loop</option>
+              <option value="2" name="Magnetic">Magnetic</option>
+              <option value="3" name="Radar">Radar</option>
+              <option value="4" name="Camera">Camera</option>
+              <option value="5" name="TMC">TMC</option>
             </select><br/>
-            <label for="link_type">Link Type</label>
+            <label for="link_type">Original Link Type</label>
             <input type="text" name="link_type" id="link_type" class="text ui-widget-content ui-corner-all" value="{{link_type}}" readonly/>
-            <label for="sensor-links">Links</label>
+            <label for="sensor-links">Link</label>
             <input type="text" name="sensor-links" id="sensor_links" class="text ui-widget-content ui-corner-all" value="{{links}}" readonly/>
+            <label for="sensor-vds">PeMS VDS ID</label>
+            <input type="text" name="sensor-vds" id="sensor_vds" class="text ui-widget-content ui-corner-all" value=" {{vds}}" readonly/>
           </fieldset>
         </form>
       </div>
-      <div id="tabs-sensor-2">
+      <div id="tabs-sensor-data">
         <form>
           <fieldset>
             <label>URL *</label>
@@ -29,7 +34,7 @@
           </fieldset>
         </form>      
       </div>
-      <div id="tabs-sensor-3">
+      <div id="tabs-sensor-geo">
         <form>
           <fieldset>
             <label>Latitude</label>
@@ -42,4 +47,4 @@
           </fieldset>
       </form>
       </div>
-    </script>
+</script>
