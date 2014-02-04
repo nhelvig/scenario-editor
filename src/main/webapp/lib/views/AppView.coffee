@@ -37,6 +37,7 @@ class window.beats.AppView extends Backbone.View
   }
   
   initialize: ->
+    @start = new Date().getTime()
     #change underscores symbols for handling interpolation to {{}}
     _.templateSettings =
       evaluate: /{%([\s\S]+?)%}/g,
@@ -49,14 +50,14 @@ class window.beats.AppView extends Backbone.View
     @_navBar()
     @_messagePanel()
     @newScenario() if $a.Environment.DEV is false
-    # Wait for idle map so that we can get projection
-    google.maps.event.addListener($a.map, 'idle', =>
-      @displayMap($a.fileText) if $a.Environment.DEV is true
-      google.maps.event.clearListeners($a.map, 'idle')
-    )
-    # add click event on log in screen
-    $('#login-nav-container').click(@_login)
     
+    # Wait for idle map so that we can get projection
+    #google.maps.event.addListenerOnce($a.map, 'idle', =>
+    google.maps.event.addListenerOnce($a.map, 'tilesloaded', =>
+        @displayMap($a.fileText) if $a.Environment.DEV is true
+    )
+    #)
+    # add click event on log in screen
     $evt.addDomListener(window, 'keydown', (event) => @_setKeyDownEvents(event))
     $evt.addDomListener(window, 'keyup', (event) => @_setKeyUpEvents(event))
     $evt.addListener($a.map, 'mouseover', (mouseEvent) => @fadeIn())
@@ -167,15 +168,19 @@ class window.beats.AppView extends Backbone.View
       # Create login pop up
       attrs = { title : "Log In"}
       @login = new $a.LogInView(attrs)
-  
+      
   # displayMap takes the uploaded file or serialized model object from database and parses the
   # xml into backbone model objects, and creates the MapNetworkView
   displayMap: (fileText) ->
-    $a.broker.trigger("map:clear_map")
+    #$a.broker.trigger("map:clear_map")
     try
+      $a.Util.getTime("Map Tiles Loaded: ", @start)
       xml = $.parseXML(fileText)
+      $a.Util.getTime("Parse XML: ", @start)
       $a.models = $a.Scenario.from_xml($(xml).children())
+      $a.Util.getTime("XML to Model Objects: ", @start)
       $a.mapNetworkView = new $a.MapNetworkView $a.models
+      $a.Util.getTime("Views Loaded: ", @start)
     catch error
       console.log error.stack
       if error.message then errMessage = error.message else errMessage = error

@@ -28,10 +28,10 @@ class window.beats.MapNetworkView extends Backbone.View
   
   initialize: (@scenario) ->
     @networks =  @scenario.networks()
+    @_centerMap() if @networks[0].position()?
     @_initializeCollections()
     # if there are networks in the scenario draw them
     _.each(@networks, (network) => @_drawNetwork(network))
-    @_centerMap() if @networks[0].position()?
     @_drawScenarioItems()
     @_layersMenu()
     @_modeMenu() 

@@ -314,3 +314,8 @@ window.beats.Util =
         seen.push(val)
       return val
     )
+    
+  getTime : (msg, start) ->
+    time = new Date().getTime() - start
+    console.log(msg + " " + time)
+    

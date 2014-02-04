@@ -22,17 +22,18 @@ class window.beats.GoogleMapRouteHandler
   _requestLinks: (indexOfLink) ->
     if indexOfLink > -1  and !@stop
       link = @links[indexOfLink]
-      if(@_geomDoesNotExist(link))
-        link.index = indexOfLink
-        @setUpLink(link)
-        @_directionsRequest(link)
-        if(indexOfLink % 10 == 0)
-          $a.broker.trigger('app:show_message:info', "Loading ... #{indexOfLink} more" )
-        else if(indexOfLink == 0)
-          $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
-      else
-        $a.broker.trigger('map:draw_link', link)
-        @_requestLinks(indexOfLink - 1)
+      if @shouldBeDrawn(link)
+        if(@_geomDoesNotExist(link))
+          link.index = indexOfLink
+          @setUpLink(link)
+          @_directionsRequest(link)
+          if(indexOfLink % 10 == 0)
+            $a.broker.trigger('app:show_message:info', "Loading ... #{indexOfLink} more" )
+          else if(indexOfLink == 0)
+            $a.broker.trigger('app:show_message:success', 'Loaded map successfully')
+        else
+          $a.broker.trigger('map:draw_link', link)
+          @_requestLinks(indexOfLink - 1)
   
   # grab the Google route for one link -- happens on add link and move node
   # events
@@ -54,6 +55,15 @@ class window.beats.GoogleMapRouteHandler
        travelMode: google.maps.TravelMode.DRIVING,
       }
       link
+  
+  shouldBeDrawn : (link) ->
+    begin =  link.begin_node().position()
+    end = link.end_node().position()
+    begin = new google.maps.LatLng(begin.lat(), begin.lng())
+    end = new google.maps.LatLng(end.lat(), end.lng())
+    beginContains = $a.map.getBounds().contains(begin)
+    endContains = $a.map.getBounds().contains(end)
+    return beginContains and endContains
   
   # check to see if the geometry exists before cycling to get route
   # returns true if link geom and position are not set
