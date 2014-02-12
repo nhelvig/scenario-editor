@@ -35,7 +35,6 @@ class window.beats.MapLinkView extends Backbone.View
     # only calculates and then updates link length if it not already set
     if !model.length()?
       @_saveLinkLength()
-    @_contextMenu()
     @model.poly = @link
     @_publishEvents()
   
@@ -69,11 +68,11 @@ class window.beats.MapLinkView extends Backbone.View
       map: $a.map
       strokeColor: @_getStrokeColor()
       icons: [{
-          icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW }
+          icon: { path: @getLinkIconPath() }
           fillColor: 'blue'
           offset: '60%'
         }]
-      strokeOpacity: 0.6
+      strokeOpacity: 0.9
       strokeWeight: @getLinkStrokeWeight()
     })
     @_publishGoogleEvents()
@@ -86,16 +85,20 @@ class window.beats.MapLinkView extends Backbone.View
       @model.set_editor_show(true)
       evt.stop()
     )
-    @clickHandler = gme.addListener(@link, 'click', =>  
-      $a.broker.trigger('map:clear_selected') # this could also go in the model?
-      @model.toggle_selected()
+    @clickHandler = gme.addListener(@link, 'click', =>
+      selected = @model.selected()
+      $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+      @model.set_selected(!selected)
     )
+    lambda = (evt) => @_contextMenu(evt)
+    @rClickListener = gme.addListener(@link, 'rightclick', lambda)
   
   _unpublishGoogleEvents: ->
     gme = google.maps.event
     gme.removeListener(@zoomListener)
     gme.removeListener(@dblclckHandler)
     gme.removeListener(@clickHandler)
+    gme.removeListener(@rClickListener)
   
   # this is the rollover window for the link
   _createInfoWindow: ->
@@ -130,7 +133,7 @@ class window.beats.MapLinkView extends Backbone.View
   # a dependency with the ContextMenuView here. There may a better way to do
   # this. I also add the contextMenu itself to the model so the same menu can
   # be added to the tree items for this link
-  _contextMenu: ->
+  _contextMenu: (evt) ->
     menuItems = $a.Util.copy($a.link_context_menu)
     #if it has demand profile then we push the Visualize demand item
     if @model.get('demand')?
@@ -144,7 +147,7 @@ class window.beats.MapLinkView extends Backbone.View
       items: $a.Util.copy(menuItems)
       options: @contextMenuOptions 
       model:@model
-    new $a.ContextMenuHandler(args)
+    $a.ContextMenuHandler.createMenu(args, evt.latLng)
   
   _getStrokeColor: ->
     strokeColor = MapLinkView.LINK_COLOR
@@ -294,12 +297,29 @@ class window.beats.MapLinkView extends Backbone.View
     numLines = @model.lanes()
     zoomLevel = $a.map.getZoom()
     if (zoomLevel >= 17)
-      lineWidth = if numLines > 5 then 5 else 3
+      return 7
     else if (zoomLevel >= 16)
-      lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
+      return 4
+    else if (zoomLevel >= 15)
+      return 3
     else
-      lineWidth = $a.MapLinkView.STROKE_WEIGHT_THINNER
-    lineWidth
+      return 2
+    # if (zoomLevel >= 17)
+    #   lineWidth = if numLines > 5 then 5 else 3
+    # else if (zoomLevel >= 16)
+    #   lineWidth = $a.MapLinkView.STROKE_WEIGHT_THIN
+    # else
+    #   lineWidth = $a.MapLinkView.STROKE_WEIGHT_THINNER
+    # lineWidth
+
+  # determine whether arrow should be drawn or not based on
+  # zoom level
+  getLinkIconPath: () ->
+    zoomLevel = $a.map.getZoom()
+    if (zoomLevel >= 14)
+      return google.maps.SymbolPath.FORWARD_OPEN_ARROW
+    else
+      return null
   
   # these 4 methods are all used to deal with the lane offset
   _distance: (p1, p2) ->

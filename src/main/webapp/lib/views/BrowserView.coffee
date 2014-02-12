@@ -129,7 +129,7 @@ class window.beats.BrowserView extends Backbone.View
         $(this).removeClass('row_selected')
       else
         rows = $("#{bid} tbody tr.row_selected")
-        rows.removeClass('row_selected') unless $a.SHIFT_DOWN
+        rows.removeClass('row_selected') unless $a.ALT_DOWN
         $(this).addClass('row_selected')
     )
 

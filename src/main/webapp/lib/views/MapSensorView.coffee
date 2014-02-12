@@ -2,15 +2,13 @@
 # show/hide events from the sensors layer. It also adds itself to and holds a
 # static array of sensors
 class window.beats.MapSensorView extends window.beats.MapMarkerView
-  @ICON: 'camera-orig'
-  @SELECTED_ICON: 'camera-selected'
+  @ICON: 'sensor'
+  @SELECTED_ICON: 'sensor-sel'
   $a = window.beats
   
   initialize: (model) ->
     super model
-    @_contextMenu()
-    gevent = google.maps.event
-    gevent.addListener(@marker, 'drag', => @snapMarker())
+    @model.on('change:selected', @toggleSelectedView, @)
     $a.broker.on("map:select_neighbors:#{@model.cid}", @selectSelfandMyLinks, @)
     $a.broker.on("map:clear_neighbors:#{@model.cid}", @clearSelfandMyLinks, @)
     $a.broker.on('map:hide_sensor_layer', @hideMarker, @)
@@ -18,8 +16,14 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     @model.on('remove', @removeElement, @)
 
   getIcon: ->
-    super MapSensorView.ICON
+    super @getMarkerImageIcons @_getImage()
   
+  _getImage: ->
+    if(not @model.selected())
+      return MapSensorView.ICON
+    else
+      return MapSensorView.SELECTED_ICON
+    
   _getTitle: ->
     title = super + "\n"
     title += "PeMS VDS ID: #{@model.sensor_id_original()}\n"
@@ -45,6 +49,17 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
     $a.broker.off('map:show_sensor_layer')
     super
 
+  # publish/unpublish map google events
+  _publishGoogleEvents: ->
+    gme = google.maps.event
+    @dragListener = gme.addListener(@marker, 'drag', => @snapMarker())
+    super
+
+  _unpublishGoogleEvents: ->
+    gme = google.maps.event
+    gme.removeListener(@dragListener)
+    super
+  
   # called by drag event to see if any link is within proximity and
   # the marker should snap to it
   snapMarker: ->
@@ -54,25 +69,37 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # Context Menu
   # Create the Sensor Context Menu. Call the super class method to create the
   # context menu
-  _contextMenu: () ->
-    super 'sensor', $a.sensor_context_menu
+  _contextMenu: (evt) ->
+    items = []
+    items = $a.sensor_context_menu
+    isOneSelected = $a.linkList? and $a.linkList.isOneSelected()
+    items = _.union(items, $a.sensor_cm_link_selected) if isOneSelected
     
+    args = super 'sensor', items
+    $a.ContextMenuHandler.createMenu(args, evt.latLng)
+   
+  # This method toggles the selection of the node
+  toggleSelectedView: ->
+    if(@model.selected())
+      @makeSelected()
+    else
+      @clearSelected() unless $a.ALT_DOWN
+ 
   # Callback for the markers click event. It decided whether we are selecting
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapSensorView.__super__._getIconName.apply(@, [])
-    if iconName == "#{MapSensorView.ICON}.png"
-      @_triggerClearSelectEvents()
-      @makeSelected()
+    @_triggerClearSelectEvents()
+    if iconName == "#{MapSensorView.ICON}.svg"
+      @model.set_selected(true)
     else
-      @_triggerClearSelectEvents()
-      @clearSelected() #Shift key is down and you are deselecting yourself
-
+      @model.set_selected(false)
+  
   # This function triggers the events that make the selected tree and map 
   # items to de-selected
   _triggerClearSelectEvents: () ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
 
   # This method is called from the context menu and selects itself and all the 
   # sensor links. Note we filter the Network links for all links with this
@@ -93,8 +120,8 @@ class window.beats.MapSensorView extends window.beats.MapMarkerView
   # This method swaps the icon for the selected icon
   makeSelected: () ->
     $a.broker.trigger("app:tree_highlight:#{@model.link_reference()?.cid}") if @model.link_reference()?
-    super MapSensorView.SELECTED_ICON
+    super @getMarkerImageIcons MapSensorView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
   clearSelected: () ->
-    super MapSensorView.ICON
+    super @getMarkerImageIcons MapSensorView.ICON

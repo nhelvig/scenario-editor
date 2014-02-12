@@ -51,8 +51,8 @@ class window.beats.TreeChildItemView extends Backbone.View
     $a.Util.publishEvents($a.broker, @broker_events, @)
 
   manageHighlight:  ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
 
     if !@highlighted
       @highlighted = true

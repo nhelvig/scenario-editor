@@ -39,27 +39,31 @@ window.beats.SensorSet::set_locked_for_history = (s) ->
 window.beats.SensorSet::crud = -> @get('crudFlag')
 window.beats.SensorSet::set_crud = (flag) ->
   @set('crudFlag', flag)
-    
+
+window.beats.SensorSet::mod_stamp = -> @get('mod_stamp')
+window.beats.SensorSet::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
+
 window.beats.SensorSet::containsPemsSensor = (s) ->
   obj  = _.find(@sensors(), (sensor) => 
               sensor.sensor_id_original() is s.sensor_id_original()
             )
   return obj?
 
-# we need to remove the links that are deleted before saving to xml and then
-# put them in the link list so the database can be updated correctly
+# we need to remove the sensors that are deleted before saving to xml and then
+# put them in the sensor set so the database can be updated correctly
 window.beats.SensorSet::old_to_xml = window.beats.SensorSet::to_xml 
 window.beats.SensorSet::to_xml = (doc) ->
   xml = ''
-  # If we are converting to xml to be saved to file remove all deleted elements from list
+  # If we are saving to file remove all deleted elements from list
   if window.beats? and window.beats.fileSaveMode
     filter = ((sensor) => sensor.crud() == window.beats.CrudFlag.DELETE)
     deletedSensors = _.filter(@sensors(), filter)
     keepSensors = _.reject(@sensors(), filter)
     @set_sensors keepSensors
-    xml = @old_to_xml(doc)
+    xml = @remove_crud_modstamp_for_xml(doc)
     @set('sensor', @sensors().concat(deletedSensors))
-  # Otherwise we are converting to xml to goto the database, so keep delete CRUDFlag
+  # Otherwise we are converting to xml for the database, so keep delete CRUDFlag
   else
     xml = @old_to_xml(doc)
+    if @has('crudFlag') then xml.setAttribute('crudFlag', @get('crudFlag'))
   xml

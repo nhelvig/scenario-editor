@@ -13,6 +13,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     $a.broker.on('nodes:remove', @removeNode, @)
     $a.broker.on('nodes:remove_and_links', @removeNodeAndLinks, @)
     $a.broker.on('nodes:remove_and_join', @removeNodeAndJoinLinks, @)
+    $a.broker.on('map:clear_selected', @clearSelected, @)
     @on('nodes:add_link', @addLink, @)
     @on('nodes:add_connecting_link_orig', @addConnectingLinkOrigin, @)
     @on('nodes:add_connecting_link_dest', @addConnectingLinkDest, @)
@@ -34,10 +35,14 @@ class window.beats.NodeListCollection extends Backbone.Collection
       node.set('selected', true) if !node.get('selected')
     )
 
-  # set selected to false for all nodes. It is triggered
-  # when the node browser closes as well as when we initialize the collection
-  clearSelected: ->
-    @forEach((node) -> node.set('selected', false))
+  # this method sets all the selected attributes to false
+  # which causes the MapNodeViews to re-render themselves 
+  # in an unselected state
+  clearSelected: () ->
+    @forEach((node) -> 
+      if node.selected() or !node.selected()?
+        node.set_selected(false)
+    )
   
   # removes the node from the collection and takes it off the map. 
   removeNode: (nodeID) ->
@@ -122,7 +127,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     $a.broker.trigger('links_collection:add', {begin:selNode[0], end:clickedNode[0]})
 
   # this returns true if exactly one node is selected. It is called by
-  # the context menu handleer to ensure the appropriate items are added
+  # the context menu handler to ensure the appropriate items are added
   # to the context menu if one node is selected
   isOneSelected: ->
     count = 0
@@ -147,7 +152,7 @@ class window.beats.NodeListCollection extends Backbone.Collection
     _.map(node.roadway_markers().marker(), 
         (m) -> m.on('change', -> node.set_crud_update())
     ) if(node.roadway_markers()? and node.roadway_markers().marker()?)
-    
+  
   #this method clears the collection upon a clear map
   clear: ->
     @remove(@models)

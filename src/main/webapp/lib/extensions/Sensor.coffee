@@ -100,6 +100,7 @@ window.beats.Sensor::health_status = -> @get('health_status')
 window.beats.Sensor::set_health_status = (stat) -> @set('health_status', stat)
 
 window.beats.Sensor::selected = -> @get('selected')
+window.beats.Sensor::set_selected = (flag) -> @set('selected', flag)
 
 window.beats.Sensor::from_position = (position, link) ->
   s = new window.beats.Sensor
@@ -154,6 +155,8 @@ window.beats.Sensor::remove = ->
   @stopListening
 
 window.beats.Sensor::add = ->
+  window.beats.models.sensor_set().set_crud(window.beats.CrudFlag.UPDATE)
+  @set_crud window.beats.CrudFlag.CREATE
   @set_id window.beats.Util.getNewElemId(window.beats.models.sensors())
   window.beats.models.sensors().push(@)
 
@@ -167,6 +170,8 @@ window.beats.Sensor::editor_show = ->
 window.beats.Sensor::set_editor_show = (flag) ->
   @set('editor_show', flag)
 
+# removed the crudFlag and modstamp attributes from the object 
+# saves the object to xml and puts the attributes back in
 window.beats.Sensor::old_to_xml = window.beats.Sensor::to_xml 
 window.beats.Sensor::to_xml = (doc) ->
   xml = @remove_crud_modstamp_for_xml(doc)

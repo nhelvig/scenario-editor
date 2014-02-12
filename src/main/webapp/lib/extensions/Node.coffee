@@ -92,9 +92,9 @@ window.beats.Node::signalized = ->
   @get('type') is 'S'
 
 window.beats.Node::remove_input_output = (link) ->
-  if @has('inputs') and @get('inputs').size > 0
+  if @has('inputs') and @get('inputs').get('input').length > 0
     @get('inputs').set 'input', @inputs().filter (i) -> i.link() isnt link
-  if @has('outputs') and @get('outputs').size > 0
+  if @has('outputs') and @get('outputs').get('output').length > 0
     @get('outputs').set 'output', @outputs().filter (o) -> o.link() isnt link
   
 window.beats.Node::set_input = (link) ->
@@ -145,6 +145,9 @@ window.beats.Node::toggle_selected =  ->
     @set('selected', false) 
   else 
     @set('selected', true)
+
+window.beats.Node::set_selected = (flag) ->
+  @set('selected', flag)
 
 window.beats.Node::selected = ->
   @get('selected')

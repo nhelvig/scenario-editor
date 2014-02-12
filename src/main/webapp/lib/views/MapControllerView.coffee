@@ -2,19 +2,18 @@
 # show/hide events from the controller layer. It also adds itself to and 
 # holds a static array of controllers  
 class window.beats.MapControllerView extends window.beats.MapMarkerView
-  @ICON: 'controller-deselected'
-  @SELECTED_ICON: 'controller-selected'
+  @ICON: 'controller'
+  @SELECTED_ICON: 'controller-sel'
   $a = window.beats
 
   initialize: (model) ->
     super  model
-    @_contextMenu()
     $a.broker.on('map:hide_controller_layer', @hideMarker, @)
     $a.broker.on('map:show_controller_layer', @showMarker, @)
     @model.on('remove', @removeElement, @)
 
   getIcon: ->
-    super MapControllerView.ICON
+    super @getMarkerImageIcons MapControllerView.ICON
 
   # This method overrides MapMarkerView to unpublish specific events to this 
   # type and then calls super to set itself to null, unpublish the general 
@@ -30,7 +29,7 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
   # or de-selecting and triggers appropriately 
   manageMarkerSelect: () ->
     iconName = MapControllerView.__super__._getIconName.apply(@, []) 
-    if iconName == "#{MapControllerView.ICON}.png"
+    if iconName == "#{MapControllerView.ICON}.svg"
       @_triggerClearSelectEvents()
       $a.broker.trigger("app:tree_highlight:#{@model.cid}")
       @makeSelected()
@@ -48,14 +47,15 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
   # Context Menu
   # Create the Controller Context Menu. Call the super class method to create the
   # context menu
-  _contextMenu: () ->
-    super 'controller', $a.controller_context_menu
+  _contextMenu: (evt) ->
+    args  = super 'controller', $a.controller_context_menu
+    $a.ContextMenuHandler.createMenu(args, evt.latLng)
   
   # This function triggers the events that make the selected tree and map 
   # items to de-selected
   _triggerClearSelectEvents: () ->
-    $a.broker.trigger('map:clear_selected') unless $a.SHIFT_DOWN
-    $a.broker.trigger('app:tree_remove_highlight') unless $a.SHIFT_DOWN
+    $a.broker.trigger('map:clear_selected') unless $a.ALT_DOWN
+    $a.broker.trigger('app:tree_remove_highlight') unless $a.ALT_DOWN
 
   # This method swaps the icon for the selected icon
   makeSelected: () ->
@@ -63,8 +63,8 @@ class window.beats.MapControllerView extends window.beats.MapMarkerView
           $a.broker.trigger("map:select_item:#{link.cid}")
           $a.broker.trigger("app:tree_highlight:#{link.cid}")
         )
-    super MapControllerView.SELECTED_ICON
+    super @getMarkerImageIcons MapControllerView.SELECTED_ICON
 
   # This method swaps the icon for the de-selected icon
   clearSelected: () ->
-    super MapControllerView.ICON
+    super @getMarkerImageIcons MapControllerView.ICON

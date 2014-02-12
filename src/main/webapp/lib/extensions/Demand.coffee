@@ -1,5 +1,4 @@
 window.beats.Demand::defaults =
-  crudFlag: null
   id: null
   vehicle_type_id: null
   text: null
@@ -9,6 +8,8 @@ window.beats.Demand::vehicle_type_id = ->
 
 window.beats.Demand::set_vehicle_type_id = (id) ->
   @set('vehicle_type_id', Number(id))
+
+window.beats.Demand::demands = -> @get('text')
 
 # get demand, at dt offset
 window.beats.Demand::demand = (offset) ->
@@ -54,6 +55,12 @@ window.beats.Demand::set_ident = (id, offset) ->
     ids.push(id)
   @set('ids', ids.join())
 
+window.beats.Demand::mod_stamp = -> @get('mod_stamp')
+window.beats.Demand::set_mod_stamp = (stamp) -> @set('mod_stamp', stamp)
+
+# get the array of crudflags
+window.beats.Demand::cruds = () -> @get('crudFlags')
+  
 # get demand crudflag, at dt offset
 window.beats.Demand::crud = (offset) ->
   # create array of crudFlags
@@ -89,3 +96,39 @@ window.beats.Demand::max_offset = () ->
   # get comma seperated demand values, if none exist set demands to empty array
   demands = @get('text')?.split(',') || []
   demands.length
+
+# remove the text values that are to be deleted for the xml save
+window.beats.Demand::remove_deleted_vals = ->
+  vals = @get('text').split(",")
+  cruds = if @cruds() then @cruds().split(",") else Array()
+  remove = 0
+  for crud, i in  cruds
+    if(crud == window.beats.CrudFlag.DELETE)
+      vals.splice(remove, 1)
+      remove--
+    remove++
+  keepText = vals.join(',')
+  keepText
+
+# removed the crudFlag and modstamp attributes from the object as well as  
+# removing all deleted demand values to save the object to xml and then
+# put everything back in order to ensure clean save to db
+window.beats.Demand::old_to_xml = window.beats.Demand::to_xml 
+window.beats.Demand::to_xml = (doc) ->
+  xml = ''
+  # If we are converting to xml to be saved to file removed CRUDFlag and modstamp
+  if window.beats? and window.beats.fileSaveMode
+    originalText = @get('text')
+    @set('text', @remove_deleted_vals())
+    crud = @get('crudFlags')
+    mod = @mod_stamp()
+    @unset 'crudFlags', { silent:true }
+    @unset 'mod_stamp', { silent:true }
+    xml = @old_to_xml(doc)
+    @set('crudFlags', crud) if crud?
+    @set_mod_stamp(mod) if mod?
+    @set('text', originalText)
+  # Otherwise we are converting to xml to goto the database
+  else
+    xml = @old_to_xml(doc)
+  xml
