@@ -88,11 +88,11 @@ window.beats.SplitRatioProfile::to_xml = (doc) ->
     deletedSplits = []
     for split in @split_ratios()
         count = 0
-        splitsArray = split.cruds().split(',')
+        splitsArray = if split.cruds() then split.cruds().split(',') else Array()
         for s in splitsArray
           if s == window.beats.CrudFlag.DELETE
             count++
-        if count is splitsArray.length
+        if count is not 0 and count is splitsArray.length
           deletedSplits.push(split)
         else
           keepSplits.push(split)

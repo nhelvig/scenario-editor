@@ -110,11 +110,11 @@ window.beats.DemandProfile::to_xml = (doc) ->
     deletedDemands = []
     for demand in @demands()
         count = 0
-        demandsArray = demand.cruds().split(',')
+        demandsArray = if demand.cruds() then demand.cruds().split(',') else Array()
         for d in demandsArray
           if d == window.beats.CrudFlag.DELETE
             count++
-        if count is demandsArray.length
+        if count is not 0 and count is demandsArray.length
           deletedDemands.push(demand)
         else
           keepDemands.push(demand)
