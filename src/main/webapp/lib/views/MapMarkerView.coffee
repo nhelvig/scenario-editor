@@ -1,7 +1,7 @@
 # MapMarkerView is base class for scenario elements represented by a
 # single latitude and longitude on the Map
 class window.beats.MapMarkerView extends Backbone.View
-  @IMAGE_PATH: '/scenario-editor-0.4-SNAPSHOT/app/images/'
+  @IMAGE_PATH: '/scenario-editor-0.101-SNAPSHOT/app/images/'
   $a = window.beats
 
   broker_events : {

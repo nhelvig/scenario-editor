@@ -100,7 +100,7 @@ window.beats.Demand::max_offset = () ->
 # remove the text values that are to be deleted for the xml save
 window.beats.Demand::remove_deleted_vals = ->
   vals = @get('text').split(",")
-  cruds = @cruds().split(",")
+  cruds = if @cruds() then @cruds().split(",") else Array()
   remove = 0
   for crud, i in  cruds
     if(crud == window.beats.CrudFlag.DELETE)
