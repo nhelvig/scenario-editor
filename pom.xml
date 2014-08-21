@@ -28,7 +28,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <dependency>
       <groupId>edu.berkeley.path</groupId>
       <artifactId>via-rest-api</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.101-SNAPSHOT</version>
       <type>war</type>
     </dependency>
   </dependencies>
@@ -70,7 +70,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
                         <artifactItem>
                             <groupId>edu.berkeley.path</groupId>
                             <artifactId>via-rest-api</artifactId>
-                            <version>0.1-SNAPSHOT</version>
+                            <version>0.101-SNAPSHOT</version>
                             <type>war</type>
                             <overWrite>true</overWrite>
                             <outputDirectory>target/</outputDirectory>
