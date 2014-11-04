@@ -9,7 +9,7 @@ window.beats.Node::initialize = ->
   @set('inputs', new $a.Inputs({input: []}))
   t = new $a.NodeType()
   t.set_name("simple")
-  t.set_id("4")
+  t.set_id("1")
   @set('node_type',t)
 
 window.beats.Node::splitratio_profile = ->
