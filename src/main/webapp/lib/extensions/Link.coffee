@@ -12,6 +12,7 @@ window.beats.Link::initialize = ->
   @set('subdivide', false)
   @set('shape', new window.beats.Shape)
   t = new window.beats.LinkType()
+  t.set_id("1")
   @set('link_type',t)
 
 window.beats.Link::shape = -> @get("shape")
