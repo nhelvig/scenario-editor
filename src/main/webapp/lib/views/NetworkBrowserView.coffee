@@ -48,8 +48,8 @@ class window.beats.NetworkBrowserView extends Backbone.View
         "aoColumns": $a.networkbrowser._getColumns(),
         "aaSorting": [[ 0, "desc" ]]
         "bPaginate": true,
-        "bLengthChange": true,
-        "bFilter": false,
+        "bLengthChange": false,
+        "bFilter": true,
         "bSort": true,
         "bInfo": false,
         "bAutoWidth": false,

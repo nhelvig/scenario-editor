@@ -48,8 +48,8 @@ class window.beats.ScenarioBrowserView extends Backbone.View
       "aoColumns": $a.scenariobrowser._getColumns(),
       "aaSorting": [[ 0, "desc" ]]
       "bPaginate": true,
-      "bLengthChange": true,
-      "bFilter": false,
+      "bLengthChange": false,
+      "bFilter": true,
       "bSort": true,
       "bInfo": false,
       "bAutoWidth": false,
